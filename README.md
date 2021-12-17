@@ -1,6 +1,6 @@
 # Malware Language
 
-Language only is buildable in nix enivorments.
+Language is only buildable in nix enivorments. But should be able to run on multiple enviroments
 
 ### Example code
 Basic example
@@ -69,3 +69,6 @@ main:{
 ## The compiler should then be able to
 1. List arguments for the compiler, `-h`
 2. Target plattform, windows, nix
+
+## Technical parts
+1. All directories created are temporarly and should be deleted when the program is finished
