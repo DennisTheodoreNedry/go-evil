@@ -1,5 +1,6 @@
 # Malware Language
 
+Language only is buildable in nix enivorments.
 
 ### Example code
 Basic example
@@ -52,3 +53,19 @@ main:{
  system.exit(); @ Exits the program
 }
 ```
+
+## General ideas on what more the language can do
+1. Includes tools to check if the malware is running in a vm, what kind of vm(?)
+2.Include options to open socket to target, send commands and retrieve results, copy files, mv files etc.
+3. Be able to write to specific disk blocks, write & read from the disk.
+4. Encrypt files and decryptions methods. Should contain multiple different encryptions methods
+5. Able to copy the executable to different locaitons
+6. Metasploit compatability? Being able to run metasploit scripts?
+7. Using pastebin for sending commands to zombies in a botnet.
+8. IRC for sending commands to zombies in a botnet(?)
+9. Copy to usb
+10. Copy accross network shared folders
+
+## The compiler should then be able to
+1. List arguments for the compiler, `-h`
+2. Target plattform, windows, nix
