@@ -38,7 +38,7 @@ main:{
 }
 ```
 
-Transform example
+Transmog example
 ```
 use system;
 use object;
