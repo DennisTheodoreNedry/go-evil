@@ -72,3 +72,4 @@ main:{
 
 ## Technical parts
 1. All directories created are temporarly and should be deleted when the program is finished
+2. Internal inputs/outpus are all in json format
