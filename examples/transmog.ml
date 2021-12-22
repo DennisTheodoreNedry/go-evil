@@ -1,6 +1,3 @@
-use system;
-use object;
-use window;
 
 main:{
  object.set_header_target("png"); @ Will result in the end product being identified as a png

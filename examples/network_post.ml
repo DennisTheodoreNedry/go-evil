@@ -1,7 +1,3 @@
-use system; @ Imports exit
-use keyboard; @ Imports log
-use network; @ Imports POST
-use time; @ Imports until
 
 main:{
  wait:(time.until("22:00")){ @ Waits until 22:00 today before exiting
