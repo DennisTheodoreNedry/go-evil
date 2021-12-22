@@ -8,4 +8,5 @@ compile:
 	$(CC) $(OPTION) -o $(BIN) $(SRC)
 
 clean:
+	rm -R output
 	rm $(BIN)

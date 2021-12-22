@@ -44,16 +44,10 @@ func main() {
 
 			// Run interpreter
 			interpeter(file)
-			//			window_setTitle("TEST")
-			//			window_setText("You jsut got hacked brouH!")
-			//			window_setX(600)
-			//			window_setY(800)
-			//			window_setDst("https://mrskeltal.com/")
-			//			window_notify()
 
 			// Run compiler on the interpreted material
-			//write_file()
-			//compile_file()
+			write_file()   // The interpreter has filled the internal array with the correct go code, so this will dump it to a file
+			compile_file() // This compiles the previously written code into a functioan program
 
 		}
 	} else {
