@@ -6,12 +6,15 @@ Language is only buildable in nix enivorments. But should be able to run on mult
 Basic example
 ```
 main:{
- keyboard.lock(); @ Locks the keyboard 
+  malware.name("MrSkeltal"); @ Sets the binary name of our file
 
- window.notify("Oh hi mark!"); @ Utilizes builtin function
+  window.x("600");
+  window.y("800");
+  window.title("You just got hacked bruh!");
+  window.url("https://mrskeltal.com/");
 
- keyboard.unlock(); @ Unlocks the keyboard
- system.exit();
+  window.run(); @ This runs our nice window, displaying the set url
+  system.exit("0");
 }
 ```
 
