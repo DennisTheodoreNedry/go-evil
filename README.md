@@ -1,6 +1,6 @@
 # Malware Language
 
-Language is only buildable in nix enivorments. But should be able to run on multiple enviroments
+Customizing evil has never been so easy
 
 ### Example code
 Basic example
