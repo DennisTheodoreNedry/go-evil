@@ -43,6 +43,10 @@ main:{
  system.exit(); @ Exits the program
 }
 ```
+## TODO
+1. Code clean up
+2. Directory clean up
+3. Add neccessary log functions
 
 ## General ideas on what more the language can do
 1. Includes tools to check if the malware is running in a vm, what kind of vm(?)
