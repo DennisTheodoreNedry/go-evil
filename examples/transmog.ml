@@ -5,5 +5,5 @@ main:{
  
  window.notify("Hello, World!"); @ Prints "Hello, World!" to the screen
 
- system.exit(); @ Exits the program
+ system.exit("0"); @ Exits the program
 }

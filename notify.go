@@ -8,7 +8,7 @@ import (
 var verbose_lvl = "0" // Default level, this will log nothing to the user
 
 func notify_error(msg string, where string) { // Print msg and exit
-	fmt.Println("#### notify_notify_error ####")
+	fmt.Println("#### Error ####")
 	fmt.Println("msg: " + msg)
 	fmt.Println("where: " + where)
 	os.Exit(1)

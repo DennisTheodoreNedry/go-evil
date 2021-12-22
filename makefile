@@ -4,7 +4,7 @@ SRC := .
 BIN := Malware_Language
 
 compile:
-	mkdir output
+	mkdir -p output
 	$(CC) $(OPTION) -o $(BIN) $(SRC)
 
 clean:

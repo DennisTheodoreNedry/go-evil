@@ -45,6 +45,7 @@ func window_run() {
 	}
 
 	win := webview.New(false)
+	defer win.Destroy()
 	win.SetTitle(current_window.window_name)
 	win.SetSize(current_window.window_y, current_window.window_x, webview.HintNone)
 	win.Navigate(current_window.url)
