@@ -5,10 +5,6 @@ Language is only buildable in nix enivorments. But should be able to run on mult
 ### Example code
 Basic example
 ```
-use system; @ Imports exit
-use keyboard; @ Imports lock, unlock
-use window; @ Imports notify
-
 main:{
  keyboard.lock(); @ Locks the keyboard 
 
@@ -21,11 +17,6 @@ main:{
 
 Network POST example
 ```
-use system; @ Imports exit
-use keyboard; @ Imports log
-use network; @ Imports POST
-use time; @ Imports until
-
 main:{
  wait:(time.until("22:00")){ @ Waits until 22:00 today before exiting
   info := keyboard.log(); @ Logs everything the user enters
@@ -40,10 +31,6 @@ main:{
 
 Transmog example
 ```
-use system;
-use object;
-use window;
-
 main:{
  object.set_header_target("png"); @ Will result in the end product being identified as a png
  object.set_extension(".png"); @ Sets the program extension
@@ -56,7 +43,7 @@ main:{
 
 ## General ideas on what more the language can do
 1. Includes tools to check if the malware is running in a vm, what kind of vm(?)
-2.Include options to open socket to target, send commands and retrieve results, copy files, mv files etc.
+2. Include options to open socket to target, send commands and retrieve results, copy files, mv files etc.
 3. Be able to write to specific disk blocks, write & read from the disk.
 4. Encrypt files and decryptions methods. Should contain multiple different encryptions methods
 5. Able to copy the executable to different locaitons
@@ -67,13 +54,8 @@ main:{
 10. Copy accross network shared folders
 
 ## The compiler should then be able to
-1. List arguments for the compiler, `-h`
-2. Target plattform, windows, nix
+1. Target plattform, windows, nix
 
 ## Technical parts
 1. All directories created are temporarly and should be deleted when the program is finished
 2. Internal inputs/outpus are all in json format
-
-
-### Citations
-Lohmann, N. JSON for Modern C++ (Version 3.10.4) [Computer software]. https://github.com/nlohmann
