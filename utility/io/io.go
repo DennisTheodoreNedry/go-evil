@@ -44,7 +44,7 @@ func Read_file(file string) string {
 }
 
 func Compile_file() {
-	arg := "build -o output/" + mal.Malware_getName() + " output/temp.go"
+	arg := "build -o output/" + mal.Malware_getName() + mal.Malware_getExtension() + " output/temp.go"
 
 	fmt.Println(arg)
 	cmd := exec.Command("go", strings.Split(arg, " ")...)
@@ -59,13 +59,4 @@ func Compile_file() {
 	if err != nil {
 		notify.Notify_error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
 	}
-}
-
-func find(array []string, value string) bool {
-	for _, entry := range array {
-		if entry == value {
-			return true
-		}
-	}
-	return false
 }

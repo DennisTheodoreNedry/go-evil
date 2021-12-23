@@ -87,6 +87,8 @@ func Interpeter(file_to_read string) {
 					switch funct[2] {
 					case "name":
 						mal.Malware_setBinaryName(funct[4])
+					case "extension":
+						mal.Malware_setExtension(funct[4])
 
 					default:
 						notify.Notify_error("Unknown function "+funct[2]+" in domain "+funct[1], "parser.interpreter()")
