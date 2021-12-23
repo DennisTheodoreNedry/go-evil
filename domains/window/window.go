@@ -1,4 +1,4 @@
-package main
+package domains
 
 import (
 	"github.com/webview/webview"
@@ -15,25 +15,25 @@ type window struct {
 var current_window window
 
 // Functions that will not start the loop
-func window_setText(new_text string) {
+func Window_setText(new_text string) {
 	current_window.window_text = new_text
 }
-func window_setX(new_x int) {
+func Window_setX(new_x int) {
 	current_window.window_x = new_x
 }
-func window_setY(new_y int) {
+func Window_setY(new_y int) {
 	current_window.window_y = new_y
 }
-func window_setTitle(new_title string) {
+func Window_setTitle(new_title string) {
 	current_window.window_name = new_title
 }
 
-func window_setDst(new_dst string) {
+func Window_setDst(new_dst string) {
 	current_window.url = new_dst
 }
 
 // Functions that will start the loop
-func window_run() {
+func Window_run() {
 	if current_window.window_name == "" { // The user never told us what kind of name the window should utilize
 		current_window.window_name = "Untitled"
 	}

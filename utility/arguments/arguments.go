@@ -1,8 +1,10 @@
-package main
+package arguments
 
 import (
 	"fmt"
 	"os"
+
+	"github.com/s9rA16Bf4/Malware_Language/utility/notify"
 )
 
 type argument struct {
@@ -17,18 +19,18 @@ type argument struct {
 
 var defined_arguments []argument // This array will contain all the defined arguments
 
-func argument_add(longName string, shortName string, argument_required bool, desc string, options []string) {
+func Argument_add(longName string, shortName string, argument_required bool, desc string, options []string) {
 	// Adds an argument
 	defined_arguments = append(defined_arguments, argument{longName, shortName, desc, argument_required, "NULL", false, options})
 }
-func argument_parse() {
+func Argument_parse() {
 	// Parses all entered arguments, check if they contain the correct value and does all magic
 	for i := 1; i <= len(os.Args[1:]); i++ {
 		found := false
 		for j, def_arg := range defined_arguments {
 			if os.Args[i] == def_arg.longName || os.Args[i] == def_arg.shortName {
 				if def_arg.argument_required && i+1 > len(os.Args[1:]) {
-					notify_error("notify_error: The argument "+os.Args[i]+" needs an argument to work!", "arguments.argument_parse()")
+					notify.Notify_error("notify_error: The argument "+os.Args[i]+" needs an argument to work!", "arguments.argument_parse()")
 				} else if def_arg.argument_required {
 					possible_options := false
 					for _, opt := range def_arg.options {
@@ -49,7 +51,7 @@ func argument_parse() {
 						}
 						notify_error_msg += "]"
 
-						notify_error(notify_error_msg, "arguments.argument_parse()")
+						notify.Notify_error(notify_error_msg, "arguments.argument_parse()")
 					}
 				}
 
@@ -59,12 +61,12 @@ func argument_parse() {
 			}
 		}
 		if !found {
-			notify_error("notify_error: The argument "+os.Args[i]+" was not defined!", "arguments.argument_parse()")
+			notify.Notify_error("notify_error: The argument "+os.Args[i]+" was not defined!", "arguments.argument_parse()")
 		}
 	}
 }
 
-func argument_check(arg_name string) bool {
+func Argument_check(arg_name string) bool {
 	// Checks if a argument has been called
 	var toReturn bool = false
 	for _, arg := range defined_arguments {
@@ -76,7 +78,7 @@ func argument_check(arg_name string) bool {
 	return toReturn
 }
 
-func argument_get(arg_name string) string {
+func Argument_get(arg_name string) string {
 	// Gets the provided value for a set argument, and will return NULL otherwise
 	var toReturn string = "NULL"
 	for _, arg := range defined_arguments {
@@ -88,7 +90,7 @@ func argument_get(arg_name string) string {
 	return toReturn
 }
 
-func argument_help() {
+func Argument_help() {
 	// Prints all defined arguments
 	fmt.Println("#### Definied Arguments ####")
 	for id := 0; id < len(defined_arguments); id++ {
