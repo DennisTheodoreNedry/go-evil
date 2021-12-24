@@ -18,6 +18,7 @@ func main() {
 	arg.Argument_add("--target_architecture", "-ta", true, "For which architecture should the malware be compiled for, options are [amd64, i386]", []string{"amd64", "i386"})
 	arg.Argument_add("--file", "-f", true, "File to compile [REQUIRED]", []string{"NULL"})
 	arg.Argument_add("--verbose", "-v", true, "How verbose should the program be, options are [1,2,3]", []string{"0", "1", "2", "3"})
+	arg.Argument_add("--debug", "-d", true, "Debug iptions, options are [false, true]", []string{"false", "true"})
 
 	arg.Argument_parse() // Lets check what the user entered
 
@@ -43,6 +44,13 @@ func main() {
 				notify.Verbose_lvl = arg.Argument_get("-v")
 				notify.Notify_log("Setting verbose level to "+notify.Verbose_lvl, notify.Verbose_lvl, "1")
 			}
+
+			if arg.Argument_check("-d") {
+				if arg.Argument_get("-d") == "true" {
+					io.Set_debug(true)
+				}
+			}
+
 			notify.Notify_log("File to compile is "+file, notify.Verbose_lvl, "1")
 			notify.Notify_log("Malware will be compiled against "+target_platform, notify.Verbose_lvl, "2")
 			notify.Notify_log("Malware will be compiled against a "+architecture+" architecture", notify.Verbose_lvl, "2")

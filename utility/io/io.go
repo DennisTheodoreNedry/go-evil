@@ -13,11 +13,48 @@ import (
 	"github.com/s9rA16Bf4/Malware_Language/utility/notify"
 )
 
-func Write_file() {
-	example := []string{"package main", "import (sys \"github.com/s9rA16Bf4/Malware_Language/domains/system\"\nwin\"github.com/s9rA16Bf4/Malware_Language/domains/window\"\n)", "func main(){"} // This is always the start of a go program
+var debug bool = false
+var domains []string
 
-	example = append(example, mal.Malware_getContent()...) // Insert what the user requested
-	example = append(example, "}")                         // And insert the end
+func Set_debug(new_debug bool) {
+	debug = new_debug
+}
+
+const (
+	sys  = "\tsys \"github.com/s9rA16Bf4/Malware_Language/domains/system\""
+	win  = "\twin \"github.com/s9rA16Bf4/Malware_Language/domains/window\""
+	time = "\ttime \"github.com/s9rA16Bf4/Malware_Language/domains/time\""
+)
+
+func Append_domain(domain string) {
+	if domain == "system" && !find(sys) {
+		domains = append(domains, sys)
+	} else if domain == "window" && !find(win) {
+		domains = append(domains, win)
+	} else if domain == "time" && !find(time) {
+		domains = append(domains, time)
+	}
+}
+
+func find(domain string) bool {
+	for _, line := range domains {
+		if domain == line {
+			return true
+		}
+	}
+	return false
+}
+
+func Write_file() {
+	base_code := []string{
+		"package main",
+		"import (",
+	}
+	base_code = append(base_code, domains...)                  // Which domains to include
+	base_code = append(base_code, ")", "func main(){")         // Main function and closing include tag
+	base_code = append(base_code, "for {")                     // While loop
+	base_code = append(base_code, mal.Malware_getContent()...) // Insert the malware code
+	base_code = append(base_code, "}}")                        // And insert the end
 
 	if mal.Malware_getName() == "" {
 		mal.Malware_setBinaryName("me_no_virus")
@@ -26,7 +63,7 @@ func Write_file() {
 	file, _ := os.Create("output/temp.go") // We utilize a temp directory
 	write := bufio.NewWriter(file)
 
-	for _, line := range example {
+	for _, line := range base_code {
 		_, err := write.WriteString(line + "\n")
 		if err != nil {
 			notify.Notify_error("Failed to write to disk", "io.write_file()")
@@ -45,8 +82,6 @@ func Read_file(file string) string {
 
 func Compile_file() {
 	arg := "build -o output/" + mal.Malware_getName() + mal.Malware_getExtension() + " output/temp.go"
-
-	fmt.Println(arg)
 	cmd := exec.Command("go", strings.Split(arg, " ")...)
 
 	var out bytes.Buffer
@@ -58,5 +93,15 @@ func Compile_file() {
 
 	if err != nil {
 		notify.Notify_error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
+	}
+
+	if !debug {
+		arg = "output/temp.go"
+		cmd = exec.Command("rm", strings.Split(arg, " ")...)
+		err := cmd.Run()
+
+		if err != nil {
+			notify.Notify_error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
+		}
 	}
 }
