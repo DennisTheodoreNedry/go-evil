@@ -1,4 +1,4 @@
-# Malware Language
+# Go evil
 
 Customizing evil has never been so easy
 
