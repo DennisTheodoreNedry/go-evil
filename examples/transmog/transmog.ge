@@ -1,0 +1,12 @@
+@ This example tries to showcase that you can change what kind of extension the virus will have 
+@ after being compiled
+
+main:{    
+    object.extension("png");
+    
+    window.x("600");
+    window.y("800");
+    window.display("Im obviously not an image");
+
+    system.exit("0"); @ Exits the program
+}

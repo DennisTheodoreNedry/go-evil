@@ -1,0 +1,6 @@
+@ This example just showcases how you can write to the console
+
+main:{
+    system.out("Hello, World!");
+    system.exit("0");
+}

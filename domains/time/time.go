@@ -1,7 +1,10 @@
 package time
 
 import (
+	"strconv"
 	"time"
+
+	"github.com/s9rA16Bf4/go-evil/utility/notify"
 )
 
 type time_t struct { // This is utilized to set when the for loop in `run` will end
@@ -14,20 +17,40 @@ type time_t struct { // This is utilized to set when the for loop in `run` will 
 
 var c_time time_t
 
-func Time_setYear(year int) {
-	c_time.year = year
+func Time_setYear(year string) {
+	value, err := strconv.Atoi(year)
+	if err != nil {
+		notify.Notify_error("Failed to convert "+year+" into integer", "time.until()")
+	}
+	c_time.year = value
 }
-func Time_setMonth(month int) {
-	c_time.month = month
+func Time_setMonth(month string) {
+	value, err := strconv.Atoi(month)
+	if err != nil {
+		notify.Notify_error("Failed to convert "+month+" into integer", "time.until()")
+	}
+	c_time.month = value
 }
-func Time_setDay(day int) {
-	c_time.day = day
+func Time_setDay(day string) {
+	value, err := strconv.Atoi(day)
+	if err != nil {
+		notify.Notify_error("Failed to convert "+day+" into integer", "time.until()")
+	}
+	c_time.day = value
 }
-func Time_setHour(hour int) {
-	c_time.hour = hour
+func Time_setHour(hour string) {
+	value, err := strconv.Atoi(hour)
+	if err != nil {
+		notify.Notify_error("Failed to convert "+hour+" into integer", "time.until()")
+	}
+	c_time.hour = value
 }
-func Time_setMin(min int) {
-	c_time.min = min
+func Time_setMin(min string) {
+	value, err := strconv.Atoi(min)
+	if err != nil {
+		notify.Notify_error("Failed to convert "+min+" into integer", "time.until()")
+	}
+	c_time.min = value
 }
 
 func preface() time.Time {
@@ -45,7 +68,7 @@ func preface() time.Time {
 		c_time.hour = c_now.Hour()
 	}
 	if c_time.min == 0 {
-		c_time.min = 00
+		c_time.min = c_now.Minute() + 5 // Adds five minute just because of the heck of it
 	}
 	return c_now
 }
