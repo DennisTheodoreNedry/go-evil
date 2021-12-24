@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/s9rA16Bf4/Malware_Language/utility/notify"
+	"github.com/s9rA16Bf4/go-evil/utility/notify"
 )
 
 type argument struct {

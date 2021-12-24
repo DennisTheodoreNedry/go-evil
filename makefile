@@ -1,7 +1,7 @@
 CC := go
 OPTION := build
 SRC := .
-BIN := Malware_Language
+BIN := gevil
 
 compile:
 	mkdir -p output

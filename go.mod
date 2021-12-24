@@ -1,4 +1,4 @@
-module github.com/s9rA16Bf4/Malware_Language
+module github.com/s9rA16Bf4/go-evil
 
 go 1.17
 

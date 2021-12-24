@@ -9,8 +9,8 @@ import (
 	"os/exec"
 	"strings"
 
-	mal "github.com/s9rA16Bf4/Malware_Language/domains/malware"
-	"github.com/s9rA16Bf4/Malware_Language/utility/notify"
+	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
+	"github.com/s9rA16Bf4/go-evil/utility/notify"
 )
 
 var debug bool = false
@@ -21,9 +21,9 @@ func Set_debug(new_debug bool) {
 }
 
 const (
-	sys  = "\tsys \"github.com/s9rA16Bf4/Malware_Language/domains/system\""
-	win  = "\twin \"github.com/s9rA16Bf4/Malware_Language/domains/window\""
-	time = "\ttime \"github.com/s9rA16Bf4/Malware_Language/domains/time\""
+	sys  = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system\""
+	win  = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window\""
+	time = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
 )
 
 func Append_domain(domain string) {

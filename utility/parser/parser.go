@@ -5,9 +5,9 @@ import (
 	"regexp"
 	"strconv"
 
-	mal "github.com/s9rA16Bf4/Malware_Language/domains/malware"
-	"github.com/s9rA16Bf4/Malware_Language/utility/io"
-	"github.com/s9rA16Bf4/Malware_Language/utility/notify"
+	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
+	"github.com/s9rA16Bf4/go-evil/utility/io"
+	"github.com/s9rA16Bf4/go-evil/utility/notify"
 )
 
 const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                                // Grabs the main function

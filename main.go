@@ -5,10 +5,10 @@ import (
 	"os"
 	"runtime"
 
-	arg "github.com/s9rA16Bf4/Malware_Language/utility/arguments"
-	"github.com/s9rA16Bf4/Malware_Language/utility/io"
-	"github.com/s9rA16Bf4/Malware_Language/utility/notify"
-	"github.com/s9rA16Bf4/Malware_Language/utility/parser"
+	arg "github.com/s9rA16Bf4/go-evil/utility/arguments"
+	"github.com/s9rA16Bf4/go-evil/utility/io"
+	"github.com/s9rA16Bf4/go-evil/utility/notify"
+	"github.com/s9rA16Bf4/go-evil/utility/parser"
 )
 
 func main() {
