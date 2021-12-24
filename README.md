@@ -2,8 +2,8 @@
 
 Customizing evil has never been so easy
 
-### Warning, I take no responsibility for what you create with this
-#### Warning 2, there is a lot of stuff not done with this project and therefore there really isn't much you can currently do.
+# Note: there is a lot of stuff not done with this project and therefore there really isn't much you can currently do.
+# Note: A lot of changes will occur before a v.1 release
 
 ### Example code
 Basic example
@@ -20,3 +20,8 @@ main:{
   system.exit("0");
 }
 ```
+
+
+### Legal notice
+I take no responsibility for what you create and do with this project. But do share of your art as it's fun to see!
+
