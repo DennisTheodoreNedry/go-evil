@@ -1,3 +1,5 @@
+@ Showcases an example of how the program will wait with execution until 01/01/2022 00:00
+
 main:{
     time.year("2022");
     time.month("01");
@@ -5,6 +7,7 @@ main:{
     time.hour("00");
     time.min("00");
     time.run();
-    
+
     system.out("Happy new year's!");
+    system.exit("0");
 }

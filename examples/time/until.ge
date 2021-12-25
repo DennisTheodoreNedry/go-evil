@@ -1,4 +1,4 @@
-@ Waits until 23:47 before executing
+@ Waits until 23:47 today before executing
 
 main:{
     time.until("23:47"); @ Will wait until 23:47 until contuining execution
