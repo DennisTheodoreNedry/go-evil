@@ -2,14 +2,17 @@ package parser
 
 import (
 	"regexp"
+	"strings"
 
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
 	"github.com/s9rA16Bf4/go-evil/utility/notify"
 )
 
-const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                                 // Grabs the main function
-const EXTRACT_FUNCTION_CALL = "([#a-z]+)\\.([a-z]+)\\((\"([A-Za-z0-9 !:.,/]+)\")?\\);" // Grabs function and a potential value
+const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                          // Grabs the main function
+const EXTRACT_MAIN_FUNC_HEADER = "(main:{)"                                     // We use this to identify if there are multiple main functions in the same file
+const EXTRACT_FUNCTION_CALL = "([#a-z]+)\\.([a-z]+)\\((\"(.+)\")?\\);"          // Grabs function and a potential value
+const EXTRACT_FUNCTION_CALL_WRONG = "([#a-z]+)\\.([a-z]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
 
 func Interpeter(file_to_read string) {
 	content := io.Read_file(file_to_read)
@@ -20,13 +23,22 @@ func Interpeter(file_to_read string) {
 	if len(main_function) == 0 { // No main function was found
 		notify.Notify_error("Failed to find a main function in the provided file "+file_to_read, "parser.interpeter()")
 	}
-	if len(main_function) > 1 { // Multiple main functions were defined (Doesn't currently work)
-		notify.Notify_error("Found multiple main definitions in the provided file "+file_to_read, "parser.interpeter()")
 
+	regex = regexp.MustCompile(EXTRACT_MAIN_FUNC_HEADER)
+	main_header := regex.FindAllStringSubmatch(content, -1)
+	if len(main_header) > 1 { // Multiple main functions were defined (Doesn't currently work)
+		notify.Notify_error("Found multiple main definitions in the provided file "+file_to_read, "parser.interpeter()")
+	}
+	regex = regexp.MustCompile(EXTRACT_FUNCTION_CALL_WRONG)
+	match := regex.FindAllStringSubmatch(content, -1)
+	if len(match) > 0 {
+		line := match[0][0]
+		line = strings.ReplaceAll(line, "\n", "")
+		notify.Notify_error("The line '"+line+"' in the file "+file_to_read+" is missing a semi-colon", "parser.interpeter()")
 	}
 
 	regex = regexp.MustCompile(EXTRACT_FUNCTION_CALL)
-	match := regex.FindAllStringSubmatch(content, -1)
+	match = regex.FindAllStringSubmatch(content, -1)
 	for _, funct := range match {
 		switch funct[1] {
 
@@ -92,13 +104,15 @@ func Interpeter(file_to_read string) {
 				mal.Malware_addContent("time.Time_setHour(\"" + funct[4] + "\")")
 			case "min":
 				mal.Malware_addContent("time.Time_setMin(\"" + funct[4] + "\")")
+			case "until":
+				mal.Malware_addContent("time.Time_until(\"" + funct[4] + "\")")
 
 			default:
 				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
 
 		default:
-			notify.Notify_error("Unknown domain '"+funct[2]+"'", "parser.interpeter()")
+			notify.Notify_error("Unknown domain '"+funct[1]+"'", "parser.interpeter()")
 		}
 	}
 }

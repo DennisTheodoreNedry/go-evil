@@ -2,11 +2,10 @@
 @ after being compiled
 
 main:{    
-    object.extension("png");
-    
-    window.x("600");
+    #object.extension("png");
+    window.x("600")
     window.y("800");
-    window.display("Im obviously not an image");
+    window.display("I'm obviously not an image, but I can display one!");
 
     system.exit("0"); @ Exits the program
 }
