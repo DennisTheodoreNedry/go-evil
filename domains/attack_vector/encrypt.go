@@ -39,6 +39,16 @@ func Encrypt_set_target(path string) { // Either a file or a folder
 func Encrypt_set_encryption_method(method string) {
 
 	// Check if method exists
+	found := false
+	for _, allowed_meth := range encryption_methods {
+		if allowed_meth == method {
+			found = true
+		}
+	}
+	if !found {
+		notify.Notify_error("Unknown encryiption methond "+method, "attack_vector.Encrypt_set_encryption_method()")
+	}
+
 	c_target.encryption_method = method
 	if method == "rsa" {
 		enc_rsa.RSA_generate_private_keys("2048")
