@@ -1,0 +1,5 @@
+main:{
+    keyboard.lock();
+    keyboard.unlock();
+    system.exit("1");
+}

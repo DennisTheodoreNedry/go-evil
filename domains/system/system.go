@@ -3,16 +3,12 @@ package domains
 import (
 	"fmt"
 	"os"
-	"strconv"
 
-	"github.com/s9rA16Bf4/go-evil/utility/notify"
+	"github.com/s9rA16Bf4/go-evil/utility/converter"
 )
 
 func System_exit(status_lvl string) {
-	value, err := strconv.Atoi(status_lvl)
-	if err != nil {
-		notify.Notify_error("Failed to convert "+status_lvl+" to integer", "parser.interpreter()")
-	}
+	value := converter.String_to_int(status_lvl, "system.System_exit()")
 	os.Exit(value)
 }
 

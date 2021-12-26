@@ -1,9 +1,7 @@
 package domains
 
 import (
-	"strconv"
-
-	"github.com/s9rA16Bf4/go-evil/utility/notify"
+	"github.com/s9rA16Bf4/go-evil/utility/converter"
 	"github.com/webview/webview"
 )
 
@@ -21,17 +19,11 @@ func Window_setText(new_text string) {
 	current_window.window_text = new_text
 }
 func Window_setX(new_x string) {
-	x, err := strconv.Atoi(new_x)
-	if err != nil {
-		notify.Notify_error("Failed to convert "+new_x+" to integer", "parser.interpreter()")
-	}
+	x := converter.String_to_int(new_x, "window.Window_setX()")
 	current_window.window_x = x
 }
 func Window_setY(new_y string) {
-	y, err := strconv.Atoi(new_y)
-	if err != nil {
-		notify.Notify_error("Failed to convert "+new_y+" to integer", "parser.interpreter()")
-	}
+	y := converter.String_to_int(new_y, "window.Window_setY()")
 	current_window.window_y = y
 }
 func Window_setTitle(new_title string) {

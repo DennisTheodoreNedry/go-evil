@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"runtime"
 
@@ -14,7 +13,7 @@ import (
 func main() {
 
 	arg.Argument_add("--help", "-h", false, "Shows all available arguments and their purpose", []string{"NULL"})
-	arg.Argument_add("--target_platform", "-tp", true, "For which platform should the malware be compiled for, options are [darwin, linux, windows]", []string{"darwin, linux, windws"})
+	arg.Argument_add("--target_platform", "-tp", true, "For which platform should the malware be compiled for, options are [darwin, linux, windows]", []string{"darwin", "linux", "windows"})
 	arg.Argument_add("--target_architecture", "-ta", true, "For which architecture should the malware be compiled for, options are [amd64, i386]", []string{"amd64", "i386"})
 	arg.Argument_add("--file", "-f", true, "File to compile [REQUIRED]", []string{"NULL"})
 	arg.Argument_add("--verbose", "-v", true, "How verbose should the program be, options are [1,2,3]", []string{"0", "1", "2", "3"})
@@ -31,7 +30,14 @@ func main() {
 			var architecture = runtime.GOARCH  // Default is the architecture we are currently running on
 
 			if arg.Argument_check("-tp") { // The user specificed a target platform
-				fmt.Println(arg.Argument_get("-tp"))
+				io.Set_target_OS(arg.Argument_get("-tp"))
+			} else {
+				io.Set_target_OS(target_platform)
+			}
+			if arg.Argument_check("-ta") {
+				io.Set_target_ARCH(arg.Argument_get("-ta"))
+			} else {
+				io.Set_target_ARCH(architecture)
 			}
 
 			if !arg.Argument_check("-f") {

@@ -21,19 +21,50 @@ func Set_debug(new_debug bool) {
 }
 
 const (
-	sys  = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system\""
-	win  = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window\""
-	time = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
+	sys        = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system\""
+	win        = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window\""
+	time       = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
+	keyboard   = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
+	hashing    = "\thash \"github.com/s9rA16Bf4/go-evil/domains/algorithm/hashing\""
+	encryption = "\tenc \"github.com/s9rA16Bf4/go-evil/domains/algorithm/encryption\""
 )
 
 func Append_domain(domain string) {
-	if domain == "system" && !find(sys) {
-		domains = append(domains, sys)
-	} else if domain == "window" && !find(win) {
-		domains = append(domains, win)
-	} else if domain == "time" && !find(time) {
-		domains = append(domains, time)
+	switch domain {
+	case "system":
+		if !find(sys) {
+			domains = append(domains, sys)
+		}
+	case "window":
+		if !find(win) {
+			domains = append(domains, win)
+		}
+	case "time":
+		if !find(time) {
+			domains = append(domains, time)
+		}
+
+	case "keyboard":
+		if !find(keyboard) {
+			domains = append(domains, keyboard)
+		}
+	case "hashing":
+		if !find(hashing) {
+			domains = append(domains, hashing)
+		}
+	case "encryption":
+		if !find(encryption) {
+			domains = append(domains, encryption)
+		}
 	}
+}
+
+func Set_target_OS(new_os string) {
+	os.Setenv("GOOS", new_os)
+
+}
+func Set_target_ARCH(new_arch string) {
+	os.Setenv("GOARCH", new_arch)
 }
 
 func find(domain string) bool {
