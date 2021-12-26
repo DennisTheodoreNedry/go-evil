@@ -21,12 +21,13 @@ func Set_debug(new_debug bool) {
 }
 
 const (
-	sys        = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system\""
-	win        = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window\""
-	time       = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
-	keyboard   = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
-	hashing    = "\thash \"github.com/s9rA16Bf4/go-evil/domains/algorithm/hashing\""
-	encryption = "\tenc \"github.com/s9rA16Bf4/go-evil/domains/algorithm/encryption\""
+	sys           = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system\""
+	win           = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window\""
+	time          = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
+	keyboard      = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
+	hashing       = "\thash \"github.com/s9rA16Bf4/go-evil/domains/algorithm/hashing\""
+	encryption    = "\tenc \"github.com/s9rA16Bf4/go-evil/domains/algorithm/encryption\""
+	attack_vector = "\tattack \"github.com/s9rA16Bf4/go-evil/domains/algorithm/attack_vector\""
 )
 
 func Append_domain(domain string) {
@@ -55,6 +56,10 @@ func Append_domain(domain string) {
 	case "encryption":
 		if !find(encryption) {
 			domains = append(domains, encryption)
+		}
+	case "attack_vector":
+		if !find(attack_vector) {
+			domains = append(domains, attack_vector)
 		}
 	}
 }

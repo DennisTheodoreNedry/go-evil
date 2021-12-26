@@ -1,0 +1,7 @@
+@ Showcasing an encryption attack against a single file
+
+
+main:{
+    attack.set_target("temp.go");
+    system.exit("0");
+}
