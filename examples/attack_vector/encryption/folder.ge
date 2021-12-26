@@ -1,0 +1,11 @@
+
+
+main:{
+    attack.set_target("examples/attack_vector/encryption/testfolder");
+    attack.set_encryption("rsa");
+    attack.encrypt();
+
+    attack.decrypt();
+
+    system.exit("0");
+}

@@ -27,7 +27,7 @@ const (
 	keyboard      = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
 	hashing       = "\thash \"github.com/s9rA16Bf4/go-evil/domains/algorithm/hashing\""
 	encryption    = "\tenc \"github.com/s9rA16Bf4/go-evil/domains/algorithm/encryption\""
-	attack_vector = "\tattack \"github.com/s9rA16Bf4/go-evil/domains/algorithm/attack_vector\""
+	attack_vector = "\tattack \"github.com/s9rA16Bf4/go-evil/domains/attack_vector\""
 )
 
 func Append_domain(domain string) {

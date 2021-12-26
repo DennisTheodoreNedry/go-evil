@@ -191,7 +191,14 @@ func Interpeter(file_to_read string) {
 			io.Append_domain("attack_vector")
 			switch funct[2] {
 			case "set_target":
-				mal.Malware_addContent("attack.encryption.Encrypt_set_target(\"" + funct[4] + "\")")
+				mal.Malware_addContent("attack.Encrypt_set_target(\"" + funct[4] + "\")")
+			case "set_encryption":
+				mal.Malware_addContent("attack.Encrypt_set_encryption_method(\"" + funct[4] + "\")")
+			case "encrypt":
+				mal.Malware_addContent("attack.Encrypt_encrypt()")
+			case "decrypt":
+				mal.Malware_addContent("attack.Encrypt_decrypt()")
+
 			default:
 				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}

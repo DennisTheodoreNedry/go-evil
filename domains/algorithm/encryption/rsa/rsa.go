@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha256"
+	"encoding/base64"
 	"time"
 
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
@@ -13,8 +14,9 @@ import (
 
 type rsa_t struct {
 	private_key   *rsa.PrivateKey
-	encrypted_msg []byte
 	public_key    rsa.PublicKey
+	encrypted_msg string
+	decrypted_msg string
 	random_label  string
 }
 
@@ -31,32 +33,31 @@ func RSA_generate_private_keys(length string) {
 	}
 	c_rsa.private_key = private_key          // assign private
 	c_rsa.public_key = private_key.PublicKey // assign public
+	c_rsa.random_label = randstr.String(time.Now().Day() + time.Now().Hour() + time.Now().Minute())
 }
 
 func RSA_encrypt(msg string) {
-	c_rsa.random_label = randstr.String(time.Now().Day() + time.Now().Hour() + time.Now().Minute())
-	ciphertext, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, &c_rsa.public_key, []byte(c_rsa.random_label), []byte(msg))
+	ciphertext, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, &c_rsa.public_key, []byte(msg), []byte(c_rsa.random_label))
 
 	if err != nil {
 		notify.Notify_error(err.Error(), "rsa.RSA_encrypt()")
 	}
-
-	c_rsa.encrypted_msg = ciphertext
+	c_rsa.encrypted_msg = base64.StdEncoding.EncodeToString(ciphertext)
 }
 
-func RSA_get_encrypt() string {
-	return string(c_rsa.encrypted_msg)
-}
-
-func RSA_decrypt() string {
-	plaintext, err := rsa.DecryptOAEP(sha256.New(), rand.Reader, c_rsa.private_key, c_rsa.encrypted_msg, []byte(c_rsa.random_label))
-
+func RSA_decrypt(msg string) {
+	msg_b, _ := base64.StdEncoding.DecodeString(msg)
+	plaintext, err := rsa.DecryptOAEP(sha256.New(), rand.Reader, c_rsa.private_key, msg_b, []byte(c_rsa.random_label))
 	if err != nil {
 		notify.Notify_error(err.Error(), "rsa.RSA_decrypt()")
 	}
-	return string(plaintext)
+	c_rsa.decrypted_msg = string(plaintext)
 }
 
 func RSA_get_encrypted() string {
-	return string(c_rsa.encrypted_msg)
+	return c_rsa.encrypted_msg
+}
+
+func RSA_get_decrypted() string {
+	return c_rsa.decrypted_msg
 }
