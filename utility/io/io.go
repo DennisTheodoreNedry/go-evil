@@ -4,9 +4,12 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
@@ -28,6 +31,12 @@ const (
 	hashing       = "\thash \"github.com/s9rA16Bf4/go-evil/domains/algorithm/hashing\""
 	encryption    = "\tenc \"github.com/s9rA16Bf4/go-evil/domains/algorithm/encryption\""
 	attack_vector = "\tattack \"github.com/s9rA16Bf4/go-evil/domains/attack_vector\""
+
+	// Related to webview
+	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"
+	view_x86   = "https://github.com/webview/webview/raw/master/dll/x86/webview.dll"
+	loader_x64 = "https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll"
+	view_x64   = "https://github.com/webview/webview/raw/master/dll/x64/webview.dll"
 )
 
 func Append_domain(domain string) {
@@ -117,6 +126,9 @@ func Read_file(file string) string {
 }
 
 func Compile_file() {
+	if runtime.GOOS == "windows" && mal.Malware_getExtension() == "" {
+		mal.Malware_setExtension(".exe") // Apparently golang on windows doesn't do this automatically
+	}
 	arg := "build -o output/" + mal.Malware_getName() + mal.Malware_getExtension() + " output/temp.go"
 	cmd := exec.Command("go", strings.Split(arg, " ")...)
 
@@ -139,5 +151,62 @@ func Compile_file() {
 		if err != nil {
 			notify.Notify_error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
 		}
+	}
+
+	create_dll() // Creates only if necessary to the somewhat required dll files
+}
+
+func create_dll() {
+	if runtime.GOOS == "windows" { // Only required on windows, seems like most posix systems has this already included
+		_, err := os.Stat("output/WebView2Loader.dll")
+		if err != nil {
+			create_WebView2Loader()
+		}
+		_, err = os.Stat("output/webview.dll")
+		if err != nil {
+			create_webView()
+		}
+	}
+}
+func create_webView() {
+	target := ""
+	if os.Getenv("GOARCH") == "x64" {
+		target = view_x64
+	} else {
+		target = view_x86
+	}
+	response, err := http.Get(target)
+	if err != nil {
+		notify.Notify_error(err.Error(), "io.create_webView()")
+	}
+	out, err := os.Create("output/webView.dll")
+	if err != nil {
+		notify.Notify_error(err.Error(), "io.create_webView()")
+	}
+
+	_, err = io.Copy(out, response.Body)
+	if err != nil {
+		notify.Notify_error(err.Error(), "io.create_webView()")
+	}
+}
+func create_WebView2Loader() {
+	target := ""
+	if os.Getenv("GOARCH") == "x64" {
+		target = loader_x64
+	} else {
+		target = loader_x86
+	}
+	response, err := http.Get(target)
+	if err != nil {
+		notify.Notify_error(err.Error(), "io.create_WebView2Loader()")
+	}
+	out, err := os.Create("output/WebView2Loader.dll")
+	if err != nil {
+		notify.Notify_error(err.Error(), "io.create_WebView2Loader()")
+	}
+
+	_, err = io.Copy(out, response.Body)
+	if err != nil {
+		notify.Notify_error(err.Error(), "io.create_WebView2Loader()")
 	}
 }

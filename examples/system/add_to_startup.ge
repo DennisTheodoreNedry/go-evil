@@ -1,0 +1,5 @@
+
+main:{
+    #sys.add_to_startup();
+    #sys.exit("1");
+}
