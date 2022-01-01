@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
-	"github.com/s9rA16Bf4/go-evil/utility/notify"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 type time_t struct { // This is utilized to set when the for loop in `run` will end
@@ -40,7 +40,7 @@ func Time_setMin(min string) {
 
 func Time_until(value string) {
 	if len(value) < 5 || len(value) > 5 {
-		notify.Notify_error("Expected format hh:mm", "time.Time_until()")
+		notify.Error("Expected format hh:mm", "time.Time_until()")
 	}
 
 	converter.String_to_int(value[0:2], "time.Time_until()") // Is the hour legit?

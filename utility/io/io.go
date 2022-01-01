@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
-	"github.com/s9rA16Bf4/go-evil/utility/notify"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 var debug bool = false
@@ -111,7 +111,7 @@ func Write_file() {
 	for _, line := range base_code {
 		_, err := write.WriteString(line + "\n")
 		if err != nil {
-			notify.Notify_error("Failed to write to disk", "io.write_file()")
+			notify.Error("Failed to write to disk", "io.write_file()")
 		}
 	}
 	write.Flush()
@@ -120,7 +120,7 @@ func Write_file() {
 func Read_file(file string) string {
 	file_gut, err := ioutil.ReadFile(file)
 	if err != nil {
-		notify.Notify_error(err.Error(), "io.read_file()")
+		notify.Error(err.Error(), "io.read_file()")
 	}
 	return string(file_gut)
 }
@@ -140,7 +140,7 @@ func Compile_file() {
 	err := cmd.Run()
 
 	if err != nil {
-		notify.Notify_error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
+		notify.Error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
 	}
 
 	if !debug {
@@ -149,7 +149,7 @@ func Compile_file() {
 		err := cmd.Run()
 
 		if err != nil {
-			notify.Notify_error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
+			notify.Error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
 		}
 	}
 
@@ -177,16 +177,16 @@ func create_webView() {
 	}
 	response, err := http.Get(target)
 	if err != nil {
-		notify.Notify_error(err.Error(), "io.create_webView()")
+		notify.Error(err.Error(), "io.create_webView()")
 	}
 	out, err := os.Create("output/webView.dll")
 	if err != nil {
-		notify.Notify_error(err.Error(), "io.create_webView()")
+		notify.Error(err.Error(), "io.create_webView()")
 	}
 
 	_, err = io.Copy(out, response.Body)
 	if err != nil {
-		notify.Notify_error(err.Error(), "io.create_webView()")
+		notify.Error(err.Error(), "io.create_webView()")
 	}
 }
 func create_WebView2Loader() {
@@ -198,15 +198,15 @@ func create_WebView2Loader() {
 	}
 	response, err := http.Get(target)
 	if err != nil {
-		notify.Notify_error(err.Error(), "io.create_WebView2Loader()")
+		notify.Error(err.Error(), "io.create_WebView2Loader()")
 	}
 	out, err := os.Create("output/WebView2Loader.dll")
 	if err != nil {
-		notify.Notify_error(err.Error(), "io.create_WebView2Loader()")
+		notify.Error(err.Error(), "io.create_WebView2Loader()")
 	}
 
 	_, err = io.Copy(out, response.Body)
 	if err != nil {
-		notify.Notify_error(err.Error(), "io.create_WebView2Loader()")
+		notify.Error(err.Error(), "io.create_WebView2Loader()")
 	}
 }

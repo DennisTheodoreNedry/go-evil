@@ -1,3 +1,9 @@
+github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101091817-1486f0b90ee0 h1:fCfb8DpUix0wxDNgNk4POcI2MZ8SgFYL9GAZ3HqIbSI=
+github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101091817-1486f0b90ee0/go.mod h1:NRKlnWNTdhYI+whq5u0Dx+pH/iE+NMGg/31yuWPHwaU=
+github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101094000-f8d9d87d9f53 h1:akl2MS7V0ipKZfUr5P/3EjVxg+lfDrGgJtsy7Itv34w=
+github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101094000-f8d9d87d9f53/go.mod h1:NRKlnWNTdhYI+whq5u0Dx+pH/iE+NMGg/31yuWPHwaU=
+github.com/s9rA16Bf4/notify_handler v0.0.0-20220101093549-e3d8c2b26911 h1:P6zYATXXiC6PSTA9H0fB9Uy5f8mNr/Wc7Ub5Fg7qX6Q=
+github.com/s9rA16Bf4/notify_handler v0.0.0-20220101093549-e3d8c2b26911/go.mod h1:QNjxlxplV4bgRq0hMkD/ssRExdUmsuqql+lRh9afWgA=
 github.com/thanhpk/randstr v1.0.4 h1:IN78qu/bR+My+gHCvMEXhR/i5oriVHcTB/BJJIRTsNo=
 github.com/thanhpk/randstr v1.0.4/go.mod h1:M/H2P1eNLZzlDwAzpkkkUvoyNNMbzRGhESZuEQk3r0U=
 github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e h1:z780M7mCrdt6KiICeW9SGirvQjxDlrVU+n99FO93nbI=

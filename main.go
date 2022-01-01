@@ -4,14 +4,13 @@ import (
 	"os"
 	"runtime"
 
-	arg "github.com/s9rA16Bf4/go-evil/utility/arguments"
+	arg "github.com/s9rA16Bf4/ArgumentParser/go/arguments"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
-	"github.com/s9rA16Bf4/go-evil/utility/notify"
 	"github.com/s9rA16Bf4/go-evil/utility/parser"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 func main() {
-
 	arg.Argument_add("--help", "-h", false, "Shows all available arguments and their purpose", []string{"NULL"})
 	arg.Argument_add("--target_platform", "-tp", true, "For which platform should the malware be compiled for, options are [darwin, linux, windows]", []string{"darwin", "linux", "windows"})
 	arg.Argument_add("--target_architecture", "-ta", true, "For which architecture should the malware be compiled for, options are [amd64, i386]", []string{"amd64", "i386"})
@@ -41,14 +40,14 @@ func main() {
 			}
 
 			if !arg.Argument_check("-f") {
-				notify.Notify_error("The '--file'/'-f' flag was not passed.", "main.main()")
+				notify.Error("The '--file'/'-f' flag was not passed.", "main.main()")
 			} else {
 				file = arg.Argument_get("-f") // Get the file
 			}
 
 			if arg.Argument_check("-v") {
 				notify.Verbose_lvl = arg.Argument_get("-v")
-				notify.Notify_log("Setting verbose level to "+notify.Verbose_lvl, notify.Verbose_lvl, "1")
+				notify.Log("Setting verbose level to "+notify.Verbose_lvl, notify.Verbose_lvl, "1")
 			}
 
 			if arg.Argument_check("-d") {
@@ -57,9 +56,9 @@ func main() {
 				}
 			}
 
-			notify.Notify_log("File to compile is "+file, notify.Verbose_lvl, "1")
-			notify.Notify_log("Malware will be compiled against "+target_platform, notify.Verbose_lvl, "2")
-			notify.Notify_log("Malware will be compiled against a "+architecture+" architecture", notify.Verbose_lvl, "2")
+			notify.Log("File to compile is "+file, notify.Verbose_lvl, "1")
+			notify.Log("Malware will be compiled against "+target_platform, notify.Verbose_lvl, "2")
+			notify.Log("Malware will be compiled against a "+architecture+" architecture", notify.Verbose_lvl, "2")
 
 			// Run interpreter
 			parser.Interpeter(file)
@@ -70,6 +69,6 @@ func main() {
 
 		}
 	} else {
-		notify.Notify_error("No argument was provided, run '--help'/'-h' to have a look at the arguments available", "main.main()")
+		notify.Error("No argument was provided, run '--help'/'-h' to have a look at the arguments available", "main.main()")
 	}
 }

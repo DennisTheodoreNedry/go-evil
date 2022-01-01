@@ -6,7 +6,7 @@ import (
 
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
-	"github.com/s9rA16Bf4/go-evil/utility/notify"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                           // Grabs the main function
@@ -21,20 +21,20 @@ func Interpeter(file_to_read string) {
 	main_function := regex.FindAllStringSubmatch(content, -1)
 
 	if len(main_function) == 0 { // No main function was found
-		notify.Notify_error("Failed to find a main function in the provided file "+file_to_read, "parser.interpeter()")
+		notify.Error("Failed to find a main function in the provided file "+file_to_read, "parser.interpeter()")
 	}
 
 	regex = regexp.MustCompile(EXTRACT_MAIN_FUNC_HEADER)
 	main_header := regex.FindAllStringSubmatch(content, -1)
 	if len(main_header) > 1 { // Multiple main functions were defined
-		notify.Notify_error("Found multiple main definitions in the provided file "+file_to_read, "parser.interpeter()")
+		notify.Error("Found multiple main definitions in the provided file "+file_to_read, "parser.interpeter()")
 	}
 	regex = regexp.MustCompile(EXTRACT_FUNCTION_CALL_WRONG)
 	match := regex.FindAllStringSubmatch(content, -1)
 	if len(match) > 0 {
 		line := match[0][0]
 		line = strings.ReplaceAll(line, "\n", "")
-		notify.Notify_error("The line '"+line+"' in the file "+file_to_read+" is missing a semi-colon", "parser.interpeter()")
+		notify.Error("The line '"+line+"' in the file "+file_to_read+" is missing a semi-colon", "parser.interpeter()")
 	}
 
 	regex = regexp.MustCompile(EXTRACT_FUNCTION_CALL)
@@ -60,7 +60,7 @@ func Interpeter(file_to_read string) {
 				mal.Malware_addContent("win.Window_display(\"" + funct[4] + "\")")
 
 			default:
-				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
+				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
 
 		case "system", "#sys": // The system domain was called
@@ -75,7 +75,7 @@ func Interpeter(file_to_read string) {
 				mal.Malware_addContent("sys.System_add_to_startup()")
 
 			default:
-				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
+				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
 
 		case "malware", "#object", "#self", "#this": // We are gonna modify the binary in some way
@@ -86,7 +86,7 @@ func Interpeter(file_to_read string) {
 				mal.Malware_setExtension(funct[4])
 
 			default:
-				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
+				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
 
 		case "time", "#wait": // Somebody wants to utilize our wait functionallity
@@ -108,7 +108,7 @@ func Interpeter(file_to_read string) {
 				mal.Malware_addContent("time.Time_until(\"" + funct[4] + "\")")
 
 			default:
-				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
+				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
 		case "keyboard":
 			io.Append_domain("keyboard")
@@ -119,7 +119,7 @@ func Interpeter(file_to_read string) {
 				mal.Malware_addContent("keyboard.Keyboard_unlock()")
 
 			default:
-				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
+				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
 		case "encryption", "#encrpt":
 			io.Append_domain("encryption")
@@ -145,7 +145,7 @@ func Interpeter(file_to_read string) {
 				mal.Malware_addContent("enc.RSA_get_encrypt()")
 
 			default:
-				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
+				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
 		case "attack":
 			io.Append_domain("attack_vector")
@@ -160,11 +160,11 @@ func Interpeter(file_to_read string) {
 				mal.Malware_addContent("attack.Encrypt_decrypt()")
 
 			default:
-				notify.Notify_error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
+				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
 
 		default:
-			notify.Notify_error("Unknown domain '"+funct[1]+"'", "parser.interpeter()")
+			notify.Error("Unknown domain '"+funct[1]+"'", "parser.interpeter()")
 		}
 	}
 }
