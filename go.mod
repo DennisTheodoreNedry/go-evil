@@ -8,6 +8,6 @@ require (
 )
 
 require (
-	github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101094000-f8d9d87d9f53 // indirect
-	github.com/s9rA16Bf4/notify_handler v0.0.0-20220101093549-e3d8c2b26911 // indirect
+	github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101094000-f8d9d87d9f53 // direct
+	github.com/s9rA16Bf4/notify_handler v0.0.0-20220101093549-e3d8c2b26911 // direct
 )
