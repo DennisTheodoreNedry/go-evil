@@ -23,5 +23,5 @@ main:{
 
 
 ### Legal notice
-I take no responsibility for what you create and do with this project. But do share of your art as it's fun to see!
+I take no responsibility for what you create and do with this project. But do share your art as it's fun to see!
 
