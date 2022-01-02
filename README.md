@@ -6,7 +6,8 @@
 
 Customizing evil has never been so easy
 
-# Note: there is a lot of stuff not done with this project and therefore there really isn't much you can currently do.
+
+Take a look at the provided examples and the information found in the wikis.
 
 ### Example code
 Basic example
