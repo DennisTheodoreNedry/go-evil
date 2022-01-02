@@ -1,5 +1,8 @@
 @ Example showing how the malware can access a website
 
+version 1.0;
+
+
 main:{
 	window.x("600");
 	window.y("800");

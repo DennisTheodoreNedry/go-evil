@@ -6,6 +6,7 @@ import (
 
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
+	"github.com/s9rA16Bf4/go-evil/utility/version"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -13,6 +14,7 @@ const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                          
 const EXTRACT_MAIN_FUNC_HEADER = "(main:{)"                                      // We use this to identify if there are multiple main functions in the same file
 const EXTRACT_FUNCTION_CALL = "([#a-z]+)\\.([a-z0-9_]+)\\((\"(.+)\")?\\);"       // Grabs function and a potential value
 const EXTRACT_FUNCTION_CALL_WRONG = "([#a-z]+)\\.([a-z_]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
+const EXTRACT_COMPILER_VERSION = "(version ([0-9]+\\.[0-9]+));"                  // Extracts the major version
 
 func Interpeter(file_to_read string) {
 	content := io.Read_file(file_to_read)
@@ -22,6 +24,19 @@ func Interpeter(file_to_read string) {
 
 	if len(main_function) == 0 { // No main function was found
 		notify.Error("Failed to find a main function in the provided file "+file_to_read, "parser.interpeter()")
+	}
+
+	regex = regexp.MustCompile(EXTRACT_COMPILER_VERSION) // Extracts the high and medium version
+	compiler_version := regex.FindAllStringSubmatch(content, -1)
+	if len(compiler_version) == 0 { // Compiler version was never specified
+		notify.Error("No compiler version was specificed", "parser.interpeter()")
+	} else {
+		listed_version := compiler_version[0][2]
+		if version.Get_high_medium_version() < listed_version {
+			notify.Error("Unknown compiler version "+listed_version, "parser.interpeter()")
+		} else if version.Get_high_medium_version() > listed_version {
+			notify.Warning("You're running a script for an older version of the compiler. This means that there might be functions/syntaxes that have changed")
+		}
 	}
 
 	regex = regexp.MustCompile(EXTRACT_MAIN_FUNC_HEADER)
