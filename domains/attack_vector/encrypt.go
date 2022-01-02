@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	enc_aes "github.com/s9rA16Bf4/go-evil/domains/algorithm/encryption/aes"
-	enc_rsa "github.com/s9rA16Bf4/go-evil/domains/algorithm/encryption/rsa"
+	enc_aes "github.com/s9rA16Bf4/go-evil/utility/algorithm/encryption/aes"
+	enc_rsa "github.com/s9rA16Bf4/go-evil/utility/algorithm/encryption/rsa"
 
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )

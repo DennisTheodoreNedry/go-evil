@@ -40,10 +40,12 @@ func Interpeter(file_to_read string) {
 	regex = regexp.MustCompile(EXTRACT_FUNCTION_CALL)
 	match = regex.FindAllStringSubmatch(content, -1)
 	for _, funct := range match {
+		notify.Log("Found possible domain "+funct[1], notify.Verbose_lvl, "3")
 		switch funct[1] {
 
 		case "window": // The window domain was called
 			io.Append_domain("window")
+			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
 			switch funct[2] { // Checks the function that were called from the domain
 			case "x":
 				mal.Malware_addContent("win.Window_setX(\"" + funct[4] + "\")")
@@ -63,8 +65,10 @@ func Interpeter(file_to_read string) {
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
 
-		case "system", "#sys": // The system domain was called
+		case "system": // The system domain was called
 			io.Append_domain("system")
+			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
+
 			switch funct[2] { // Function within this domain
 			case "exit":
 				mal.Malware_addContent("sys.System_exit(\"" + funct[4] + "\")")
@@ -79,6 +83,8 @@ func Interpeter(file_to_read string) {
 			}
 
 		case "malware", "#object", "#self", "#this": // We are gonna modify the binary in some way
+			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
+
 			switch funct[2] {
 			case "name":
 				mal.Malware_setBinaryName(funct[4])
@@ -91,6 +97,8 @@ func Interpeter(file_to_read string) {
 
 		case "time", "#wait": // Somebody wants to utilize our wait functionallity
 			io.Append_domain("time")
+			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
+
 			switch funct[2] {
 			case "run":
 				mal.Malware_addContent("time.Time_run()")
@@ -112,6 +120,8 @@ func Interpeter(file_to_read string) {
 			}
 		case "keyboard":
 			io.Append_domain("keyboard")
+			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
+
 			switch funct[2] {
 			case "lock":
 				mal.Malware_addContent("keyboard.Keyboard_lock()")
@@ -121,34 +131,10 @@ func Interpeter(file_to_read string) {
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
-		case "encryption", "#encrpt":
-			io.Append_domain("encryption")
-			switch funct[2] {
-			// AES
-			case "aes_generate_private_keys":
-				mal.Malware_addContent("enc.AES_generate_private_keys()")
-			case "aes_encrypt":
-				mal.Malware_addContent("enc.AES_encrypt(\"" + funct[4] + "\")")
-			case "aes_decrypt":
-				mal.Malware_addContent("enc.AES_decrypt()")
-			case "aes_fetch":
-				mal.Malware_addContent("enc.AES_get_encrypt()")
-
-			// RSA
-			case "rsa_generate_private_keys":
-				mal.Malware_addContent("enc.RSA_generate_private_keys(\"" + funct[4] + "\")")
-			case "rsa_encrypt":
-				mal.Malware_addContent("enc.RSA_encrypt(\"" + funct[4] + "\")")
-			case "rsa_decrypt":
-				mal.Malware_addContent("enc.RSA_decrypt()")
-			case "rsa_fetch":
-				mal.Malware_addContent("enc.RSA_get_encrypt()")
-
-			default:
-				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
-			}
 		case "attack":
 			io.Append_domain("attack_vector")
+			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
+
 			switch funct[2] {
 			case "set_target":
 				mal.Malware_addContent("attack.Encrypt_set_target(\"" + funct[4] + "\")")

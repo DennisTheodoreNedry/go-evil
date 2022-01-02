@@ -1,3 +1,5 @@
+@ Example showing how the malware can access a website
+
 main:{
 	window.x("600");
 	window.y("800");

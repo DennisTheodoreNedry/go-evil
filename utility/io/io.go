@@ -29,7 +29,6 @@ const (
 	time          = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
 	keyboard      = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
 	hashing       = "\thash \"github.com/s9rA16Bf4/go-evil/domains/algorithm/hashing\""
-	encryption    = "\tenc \"github.com/s9rA16Bf4/go-evil/domains/algorithm/encryption\""
 	attack_vector = "\tattack \"github.com/s9rA16Bf4/go-evil/domains/attack_vector\""
 
 	// Related to webview
@@ -43,41 +42,45 @@ func Append_domain(domain string) {
 	switch domain {
 	case "system":
 		if !find(sys) {
+			notify.Log("Adding domain 'system'", notify.Verbose_lvl, "2")
 			domains = append(domains, sys)
 		}
 	case "window":
 		if !find(win) {
+			notify.Log("Adding domain 'window'", notify.Verbose_lvl, "2")
 			domains = append(domains, win)
 		}
 	case "time":
 		if !find(time) {
+			notify.Log("Adding domain 'time'", notify.Verbose_lvl, "2")
 			domains = append(domains, time)
 		}
 
 	case "keyboard":
 		if !find(keyboard) {
+			notify.Log("Adding domain 'keyboard'", notify.Verbose_lvl, "2")
 			domains = append(domains, keyboard)
 		}
 	case "hashing":
 		if !find(hashing) {
+			notify.Log("Adding domain 'hashing'", notify.Verbose_lvl, "2")
 			domains = append(domains, hashing)
-		}
-	case "encryption":
-		if !find(encryption) {
-			domains = append(domains, encryption)
 		}
 	case "attack_vector":
 		if !find(attack_vector) {
+			notify.Log("Adding domain 'attack_vector'", notify.Verbose_lvl, "2")
 			domains = append(domains, attack_vector)
 		}
 	}
 }
 
 func Set_target_OS(new_os string) {
+	notify.Log("Updating target os, "+new_os, notify.Verbose_lvl, "2")
 	os.Setenv("GOOS", new_os)
 
 }
 func Set_target_ARCH(new_arch string) {
+	notify.Log("Updating target architecture, "+new_arch, notify.Verbose_lvl, "2")
 	os.Setenv("GOARCH", new_arch)
 }
 
@@ -109,6 +112,7 @@ func Write_file() {
 	write := bufio.NewWriter(file)
 
 	for _, line := range base_code {
+		notify.Log("Writing line '"+line+"' to the target file", notify.Verbose_lvl, "3")
 		_, err := write.WriteString(line + "\n")
 		if err != nil {
 			notify.Error("Failed to write to disk", "io.write_file()")
@@ -128,9 +132,11 @@ func Read_file(file string) string {
 func Compile_file() {
 	if runtime.GOOS == "windows" && mal.Malware_getExtension() == "" {
 		mal.Malware_setExtension(".exe") // Apparently golang on windows doesn't do this automatically
+		notify.Log("Setting .exe extension on the target file", notify.Verbose_lvl, "3")
 	}
 	arg := "build -o output/" + mal.Malware_getName() + mal.Malware_getExtension() + " output/temp.go"
 	cmd := exec.Command("go", strings.Split(arg, " ")...)
+	notify.Log("Compiling malware", notify.Verbose_lvl, "1")
 
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -144,6 +150,7 @@ func Compile_file() {
 	}
 
 	if !debug {
+		notify.Log("Removing the temoporarly made golang file", notify.Verbose_lvl, "2")
 		arg = "output/temp.go"
 		cmd = exec.Command("rm", strings.Split(arg, " ")...)
 		err := cmd.Run()
@@ -152,18 +159,19 @@ func Compile_file() {
 			notify.Error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
 		}
 	}
-
-	create_dll() // Creates only if necessary to the somewhat required dll files
+	create_dll() // Creates only if necessary to the somewhat required dll files (only on windows)
 }
 
 func create_dll() {
 	if runtime.GOOS == "windows" { // Only required on windows, seems like most posix systems has this already included
 		_, err := os.Stat("output/WebView2Loader.dll")
 		if err != nil {
+			notify.Log("Creating DLL file 'WebView2Loader.dll'", notify.Verbose_lvl, "2")
 			create_WebView2Loader()
 		}
 		_, err = os.Stat("output/webview.dll")
 		if err != nil {
+			notify.Log("Creating DLL file 'webView.dll'", notify.Verbose_lvl, "2")
 			create_webView()
 		}
 	}
@@ -175,6 +183,7 @@ func create_webView() {
 	} else {
 		target = view_x86
 	}
+	notify.Log("Downloading 'webView.dll'", notify.Verbose_lvl, "3")
 	response, err := http.Get(target)
 	if err != nil {
 		notify.Error(err.Error(), "io.create_webView()")
@@ -196,6 +205,7 @@ func create_WebView2Loader() {
 	} else {
 		target = loader_x86
 	}
+	notify.Log("Downloading 'WebView2Loader.dll'", notify.Verbose_lvl, "3")
 	response, err := http.Get(target)
 	if err != nil {
 		notify.Error(err.Error(), "io.create_WebView2Loader()")
