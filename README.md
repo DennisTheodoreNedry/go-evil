@@ -7,7 +7,6 @@
 Customizing evil has never been so easy
 
 # Note: there is a lot of stuff not done with this project and therefore there really isn't much you can currently do.
-# Note: A lot of changes will occur before a v.1 release
 
 ### Example code
 Basic example
