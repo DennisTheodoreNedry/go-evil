@@ -7,7 +7,7 @@
 Customizing evil has never been so easy
 
 
-Take a look at the provided examples and the information found in the wikis.
+Take a look at the provided examples in the example folder and the information found in the wikis.
 
 ### Example code
 Basic example
