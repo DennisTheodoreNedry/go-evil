@@ -1,4 +1,4 @@
-name: Makefile CI
+name: Building on latest ubuntu
 
 on:
   push:
