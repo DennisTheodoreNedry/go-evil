@@ -28,7 +28,6 @@ const (
 	win           = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window\""
 	time          = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
 	keyboard      = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
-	hashing       = "\thash \"github.com/s9rA16Bf4/go-evil/domains/algorithm/hashing\""
 	attack_vector = "\tattack \"github.com/s9rA16Bf4/go-evil/domains/attack_vector\""
 
 	// Related to webview
@@ -60,11 +59,6 @@ func Append_domain(domain string) {
 		if !find(keyboard) {
 			notify.Log("Adding domain 'keyboard'", notify.Verbose_lvl, "2")
 			domains = append(domains, keyboard)
-		}
-	case "hashing":
-		if !find(hashing) {
-			notify.Log("Adding domain 'hashing'", notify.Verbose_lvl, "2")
-			domains = append(domains, hashing)
 		}
 	case "attack_vector":
 		if !find(attack_vector) {

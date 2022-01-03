@@ -19,7 +19,6 @@ type target_t struct {
 	target_type       string // File or Folder
 }
 
-var encryption_methods = []string{"rsa", "aes"}
 var c_target target_t
 
 func Encrypt_set_target(path string) { // Either a file or a folder
@@ -40,6 +39,8 @@ func Encrypt_set_encryption_method(method string) {
 
 	// Check if method exists
 	found := false
+	var encryption_methods = []string{"rsa", "aes"}
+
 	for _, allowed_meth := range encryption_methods {
 		if allowed_meth == method {
 			found = true

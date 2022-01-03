@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	VERSION                 = "1.0.0"           // high version. medium version. small version
+	VERSION                 = "1.1.1"           // high version. medium version. small version
 	EXTRACT_HIGH_AND_MEDIUM = "([0-9]\\.[0-9])" // Extracts the high and medium version of the compiler
 )
 
