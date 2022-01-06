@@ -16,7 +16,7 @@ const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                          
 const EXTRACT_MAIN_FUNC_HEADER = "(main:{)"                                       // We use this to identify if there are multiple main functions in the same file
 const EXTRACT_FUNCTION_CALL = "([#a-z]+)\\.([$a-z0-9_]+)\\((\"(.+)\")?\\);"       // Grabs function and a potential value
 const EXTRACT_FUNCTION_CALL_WRONG = "([#a-z]+)\\.([$a-z_]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
-const EXTRACT_COMPILER_VERSION = "(version ([0-9]+\\.[0-9]+));"                   // Extracts the major version
+const EXTRACT_COMPILER_VERSION = "\\[.?version +([0-9]+\\.[0-9]+).?\\]"           // Extracts the major version
 const EXTRACT_VARIABLE = "(\\$[0-9]+)"                                            // Extracts the variable
 
 func Interpeter(file_to_read string) {
@@ -34,7 +34,7 @@ func Interpeter(file_to_read string) {
 	if len(compiler_version) == 0 { // Compiler version was never specified
 		notify.Error("No compiler version was specificed", "parser.interpeter()")
 	} else {
-		listed_version := compiler_version[0][2]
+		listed_version := compiler_version[0][1]
 		if version.Get_high_medium_version() < listed_version {
 			notify.Error("Unknown compiler version "+listed_version, "parser.interpeter()")
 		} else if version.Get_high_medium_version() > listed_version {
@@ -159,7 +159,6 @@ func Interpeter(file_to_read string) {
 			}
 		case "attack":
 			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
-
 			switch funct[2] {
 			case "set_target":
 				io.Append_domain("attack_vector")
@@ -176,9 +175,45 @@ func Interpeter(file_to_read string) {
 
 			// Hash, everything here is done in realtime when compiling.
 			case "set_hash":
+				io.Append_domain("attack_vector")
+				mal.Malware_addContent("attack.Set_hash(\"" + funct[4] + "\")")
 				attack_vector.Set_hash(funct[4])
 			case "hash":
 				attack_vector.Hash(funct[4])
+
+			default:
+				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
+			}
+
+		case "backdoor":
+			io.Append_domain("backdoor")
+			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
+			switch funct[2] {
+			case "set_port":
+				mal.Malware_addContent("back.Set_port(\"" + funct[4] + "\")")
+			case "start":
+				mal.Malware_addContent("back.Start()")
+			case "stop":
+				mal.Malware_addContent("back.Close()")
+			case "serve":
+				mal.Malware_addContent("back.Serve()")
+			case "read_size":
+				mal.Malware_addContent("back.Set_read_size(\"" + funct[4] + "\")")
+
+			case "welcome":
+				mal.Malware_addContent("back.Set_welcome_msg(\"" + funct[4] + "\")")
+
+			case "enable_login":
+				mal.Malware_addContent("back.Enable_login()")
+			case "disable_login":
+				mal.Malware_addContent("back.Disable_login()")
+
+			case "user":
+				mal.Malware_addContent("back.Set_username(\"" + funct[4] + "\")")
+			case "password":
+				mal.Malware_addContent("back.Set_password(\"" + funct[4] + "\")")
+			case "set_hash":
+				mal.Malware_addContent("back.Set_hash(\"" + funct[4] + "\")")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")

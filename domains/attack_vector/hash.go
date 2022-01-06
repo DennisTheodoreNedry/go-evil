@@ -28,35 +28,39 @@ func Set_hash(hash_to_use string) {
 	curr_hash.hash_func = hash_to_use
 }
 
-func Hash(msg string) {
+func Hash(msg string) string {
+	var toReturn string
 	switch curr_hash.hash_func {
 	case "md5":
-		hash.Hashing_md5(msg)
+		toReturn = hash.Hashing_md5(msg)
 	case "sha1":
-		hash.Hashing_sha1(msg)
+		toReturn = hash.Hashing_sha1(msg)
 	case "sha224":
-		hash.Hashing_sha224(msg)
+		toReturn = hash.Hashing_sha224(msg)
 	case "sha256":
-		hash.Hashing_sha256(msg)
+		toReturn = hash.Hashing_sha256(msg)
 	case "sha384":
-		hash.Hashing_sha384(msg)
+		toReturn = hash.Hashing_sha384(msg)
 	case "sha512":
-		hash.Hashing_sha512(msg)
+		toReturn = hash.Hashing_sha512(msg)
 	case "sha3_224":
-		hash.Hashing_sha3_224(msg)
+		toReturn = hash.Hashing_sha3_224(msg)
 	case "sha3_256":
-		hash.Hashing_sha3_256(msg)
+		toReturn = hash.Hashing_sha3_256(msg)
 	case "sha3_384":
-		hash.Hashing_sha3_384(msg)
+		toReturn = hash.Hashing_sha3_384(msg)
 	case "sha3_512":
-		hash.Hashing_sha3_512(msg)
+		toReturn = hash.Hashing_sha3_512(msg)
 	case "blake2s_256":
-		hash.Hashing_blake2s_256(msg)
+		toReturn = hash.Hashing_blake2s_256(msg)
 	case "blake2b_256":
-		hash.Hashing_blake2b_256(msg)
+		toReturn = hash.Hashing_blake2b_256(msg)
 	case "blake2b_384":
-		hash.Hashing_blake2b_384(msg)
+		toReturn = hash.Hashing_blake2b_384(msg)
 	case "blake2b_512":
-		hash.Hashing_blake2b_512(msg)
+		toReturn = hash.Hashing_blake2b_512(msg)
+	default:
+		toReturn = "NULL"
 	}
+	return toReturn
 }

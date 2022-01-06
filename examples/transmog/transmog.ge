@@ -1,6 +1,8 @@
 @ This example tries to showcase that you can change what kind of extension the virus will have 
 @ after being compiled
 
+[version 1.0] @ Compiler version
+
 main:{    
     #object.extension("png");
     window.x("600")

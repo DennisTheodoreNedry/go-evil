@@ -1,5 +1,8 @@
+@ Example shows the command to utilize if you want the malware to be run at startup
+
+[version 1.0] @ Compiler version
 
 main:{
-    #sys.add_to_startup();
-    #sys.exit("1");
+    system.add_to_startup();
+    system.exit("0");
 }

@@ -1,7 +1,6 @@
 @ Example showing how the malware can access a website
 
-version 1.0;
-
+[version 1.0] @ Compiler version
 
 main:{
 	window.x("600");

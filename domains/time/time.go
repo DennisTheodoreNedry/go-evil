@@ -61,7 +61,7 @@ func preface() time.Time {
 		Time_setYear(fmt.Sprint(c_now.Year()))
 	}
 	if c_time.month == 0 {
-		Time_setMonth(fmt.Sprint(c_now.Month()))
+		Time_setMonth(fmt.Sprint(int(c_now.Month())))
 	}
 	if c_time.day == 0 {
 		Time_setDay(fmt.Sprint(c_now.Day()))

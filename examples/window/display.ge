@@ -1,5 +1,6 @@
 @ Showcases how to display something within the webview window
 
+[version 1.0] @ Compiler version
 
 main:{
 	window.display("Hello, world!"); @ Displays the message "Hello, world!"

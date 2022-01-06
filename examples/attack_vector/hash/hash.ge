@@ -1,6 +1,6 @@
 @ Example showcasing a basic MD5 hash
 
-version 1.0;
+[version 1.0] @ Compiler version
 
 main:{
     attack.set_hash("md5");
@@ -11,5 +11,5 @@ main:{
     attack.hash("hello again!");
     system.out("MD5 gave $2 instead of 'hello again!'"); @ Now prints "cf890860d911e0ece33e648fc5fcd1e0" 
 
-    system.exit("1");
+    system.exit("0");
 }

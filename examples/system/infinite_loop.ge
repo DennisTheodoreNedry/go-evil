@@ -1,5 +1,7 @@
 @ This showcases what happens when you dont include `system.exit("<value>") in your scripts
 
+[version 1.0] @ Compiler version
+
 main:{
     system.out("This is an infinite loop");
 }

@@ -1,3 +1,6 @@
+@ Showcasing how you can lock the keyboard, enter a website and then unlock the keyboard
+[version 1.0] @ Compiler version
+
 main:{
     keyboard.lock();
     window.x("600"); @ Widht on the x-axis
@@ -5,5 +8,5 @@ main:{
 	window.title("You just got hacked bruh!");
 	window.goto("https://mrskeltal.com/")
     keyboard.unlock();
-    system.exit("1");
+    system.exit("0");
 }
