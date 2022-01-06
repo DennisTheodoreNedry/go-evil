@@ -12,6 +12,8 @@ Take a look at the provided examples in the example folder and the information f
 ### Example code
 Basic example
 ```
+[version 1.0] @ Compiler version
+
 main:{
     window.x("600"); @ Set the size on the x axis
     window.y("800"); @ Set the size on the y axis
