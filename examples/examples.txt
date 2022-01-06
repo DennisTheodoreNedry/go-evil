@@ -1,9 +1,9 @@
 examples/window/display.ge
 examples/window/url.ge
 examples/transmog/transmog.ge
-examples/malware/binaryname.ge
 examples/malware/randomVariable.ge
 examples/malware/randomFunction.ge
+examples/malware/binaryName.ge
 examples/backdoor/backdoor.ge
 examples/backdoor/backdoor_login.ge
 examples/attack_vector/encryption/file/file.ge

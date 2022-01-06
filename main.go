@@ -16,7 +16,7 @@ func main() {
 	arg.Argument_add("--target_platform", "-tp", true, "For which platform should the malware be compiled for, options are [darwin, linux, windows]", []string{"darwin", "linux", "windows"})
 	arg.Argument_add("--target_architecture", "-ta", true, "For which architecture should the malware be compiled for, options are [amd64, i386]", []string{"amd64", "i386"})
 	arg.Argument_add("--file", "-f", true, "File to compile [REQUIRED]", []string{"NULL"})
-	arg.Argument_add("--verbose", "-vv", true, "How verbose should the program be, options are [1,2,3]", []string{"0", "1", "2", "3"})
+	arg.Argument_add("--verbose", "-vv", true, "How verbose should the program be, options are [0,1,2,3]", []string{"0", "1", "2", "3"})
 	arg.Argument_add("--debug", "-d", true, "Debug iptions, options are [false, true]", []string{"false", "true"})
 	arg.Argument_add("--version", "-v", false, "Prints the compiler version", []string{"NULL"})
 

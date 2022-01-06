@@ -12,12 +12,12 @@ import (
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                            // Grabs the main function
-const EXTRACT_MAIN_FUNC_HEADER = "(main:{)"                                       // We use this to identify if there are multiple main functions in the same file
-const EXTRACT_FUNCTION_CALL = "([#a-z]+)\\.([$a-z0-9_]+)\\((\"(.+)\")?\\);"       // Grabs function and a potential value
-const EXTRACT_FUNCTION_CALL_WRONG = "([#a-z]+)\\.([$a-z_]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
-const EXTRACT_COMPILER_VERSION = "\\[.?version +([0-9]+\\.[0-9]+).?\\]"           // Extracts the major version
-const EXTRACT_VARIABLE = "(\\$[0-9]+)"                                            // Extracts the variable
+const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                             // Grabs the main function
+const EXTRACT_MAIN_FUNC_HEADER = "(main:{)"                                        // We use this to identify if there are multiple main functions in the same file
+const EXTRACT_FUNCTION_CALL = "([@#a-z]+)\\.([$a-z0-9_]+)\\((\"(.+)\")?\\);"       // Grabs function and a potential value
+const EXTRACT_FUNCTION_CALL_WRONG = "([@#a-z]+)\\.([$a-z_]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
+const EXTRACT_COMPILER_VERSION = "\\[.?version +([0-9]+\\.[0-9]+).?\\]"            // Extracts the major version
+const EXTRACT_VARIABLE = "(\\$[0-9]+)"                                             // Extracts the variable
 
 func Interpeter(file_to_read string) {
 	content := io.Read_file(file_to_read)
@@ -59,6 +59,10 @@ func Interpeter(file_to_read string) {
 	match = regex.FindAllStringSubmatch(content, -1)
 	for _, funct := range match {
 		notify.Log("Found possible domain "+funct[1], notify.Verbose_lvl, "3")
+		if funct[1][0] == '@' { // Found a comment at the start, so we will ignore this one
+			notify.Log("Found comment, will ignore this line", notify.Verbose_lvl, "3")
+			continue
+		}
 
 		regex = regexp.MustCompile(EXTRACT_VARIABLE)
 		variable := regex.FindAllStringSubmatch(funct[4], -1)
@@ -145,7 +149,6 @@ func Interpeter(file_to_read string) {
 				mal.AddContent("time.SetMin(\"" + funct[4] + "\")")
 			case "until":
 				mal.AddContent("time.Until(\"" + funct[4] + "\")")
-
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
@@ -171,13 +174,10 @@ func Interpeter(file_to_read string) {
 					mal.AddContent("attack_encrypt.SetTarget(\"" + funct[4] + "\")")
 				} else if funct[2] == "set_encryption" {
 					mal.AddContent("attack_encrypt.SetEncryptionMethod(\"" + funct[4] + "\")")
-
 				} else if funct[2] == "encrypt" {
 					mal.AddContent("attack_encrypt.Encrypt()")
-
 				} else if funct[2] == "decrypt" {
 					mal.AddContent("attack_encrypt.Decrypt()")
-
 				}
 
 			// Hash, everything here is done in realtime when compiling.
