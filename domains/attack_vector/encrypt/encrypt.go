@@ -1,4 +1,4 @@
-package attack_vector
+package encrypt
 
 import (
 	"bufio"
@@ -21,10 +21,10 @@ type target_t struct {
 
 var c_target target_t
 
-func Encrypt_set_target(path string) { // Either a file or a folder
+func SetTarget(path string) { // Either a file or a folder
 	info, err := os.Stat(path)
 	if err != nil { // The target didn't exist
-		notify.Error(err.Error(), "attack_vector.Encrypt_set_target()")
+		notify.Error(err.Error(), "attack_vector.SetTarget()")
 	}
 	if info.IsDir() {
 		c_target.target_type = "dir"
@@ -35,7 +35,7 @@ func Encrypt_set_target(path string) { // Either a file or a folder
 	c_target.target_name = path
 }
 
-func Encrypt_set_encryption_method(method string) {
+func SetEncryptionMethod(method string) {
 
 	// Check if method exists
 	found := false
@@ -47,7 +47,7 @@ func Encrypt_set_encryption_method(method string) {
 		}
 	}
 	if !found {
-		notify.Error("Unknown encryiption methond "+method, "attack_vector.Encrypt_set_encryption_method()")
+		notify.Error("Unknown encryiption methond "+method, "attack_vector.SetEncryptionMethod()")
 	}
 
 	c_target.encryption_method = method
@@ -58,37 +58,37 @@ func Encrypt_set_encryption_method(method string) {
 	}
 }
 
-func Encrypt_encrypt() {
+func Encrypt() {
 	if c_target.target_type == "file" {
-		Encrypt_encrypt_file(c_target.target_name)
+		EncryptFile(c_target.target_name)
 	} else {
-		Encrypt_encrypt_folder(c_target.target_name)
+		EncryptFolder(c_target.target_name)
 	}
 }
 
-func Encrypt_decrypt() {
+func Decrypt() {
 	if c_target.target_type == "file" {
-		Encrypt_decrypt_file(c_target.target_name)
+		DecryptFile(c_target.target_name)
 	} else {
-		Encrypt_decrypt_folder(c_target.target_name)
+		DecryptFolder(c_target.target_name)
 	}
 }
 
-func Encrypt_encrypt_folder(dir string) {
+func EncryptFolder(dir string) {
 	folder, err := os.Open(dir)
 	if err != nil {
-		notify.Error(err.Error(), "attack_vector.Encrypt_encrypt_folder()")
+		notify.Error(err.Error(), "attack_vector.EncryptFolder()")
 	}
 	children, _ := folder.Readdir(0)
 	for _, child := range children {
-		Encrypt_encrypt_file(dir + "/" + child.Name())
+		EncryptFile(dir + "/" + child.Name())
 	}
 }
 
-func Encrypt_encrypt_file(file string) {
+func EncryptFile(file string) {
 	in, err := os.Open(file) // Target
 	if err != nil {
-		notify.Error(err.Error(), "attack_vector.Encrypt_encrypt_file()")
+		notify.Error(err.Error(), "attack_vector.EncryptFile()")
 	}
 	enc_file, _ := os.Create(file + "_encrypted") // Our new file
 	// Read every line
@@ -105,23 +105,23 @@ func Encrypt_encrypt_file(file string) {
 	}
 	// Remove the file we encrypted
 }
-func Encrypt_decrypt_folder(dir string) {
+func DecryptFolder(dir string) {
 	folder, err := os.Open(dir)
 	if err != nil {
-		notify.Error(err.Error(), "attack_vector.Encrypt_decrypt_folder()")
+		notify.Error(err.Error(), "attack_vector.DecryptFolder()")
 	}
 	children, _ := folder.Readdir(0)
 	for _, child := range children {
 		if strings.HasSuffix(child.Name(), "_encrypted") {
-			Encrypt_decrypt_file(dir + "/" + child.Name())
+			DecryptFile(dir + "/" + child.Name())
 		}
 	}
 }
 
-func Encrypt_decrypt_file(file string) {
+func DecryptFile(file string) {
 	in, err := os.Open(file) // Target
 	if err != nil {
-		notify.Error(err.Error(), "attack_vector.Encrypt_encrypt_file()")
+		notify.Error(err.Error(), "attack_vector.EncryptFile()")
 	}
 	file = strings.ReplaceAll(file, "_encrypted", "")
 	enc_file, _ := os.Create(file + "_decrypted") // Our new file

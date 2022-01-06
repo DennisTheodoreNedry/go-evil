@@ -24,13 +24,14 @@ func Set_debug(new_debug bool) {
 }
 
 const (
-	sys           = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system\""
-	win           = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window\""
-	time          = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
-	keyboard      = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
-	attack_vector = "\tattack \"github.com/s9rA16Bf4/go-evil/domains/attack_vector\""
-	backdoor      = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor\""
-	fmt_          = "\"fmt\""
+	sys            = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system\""
+	win            = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window\""
+	time           = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
+	keyboard       = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
+	attack_hash    = "\tattack_hash \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash\""
+	attack_encrypt = "\tattack_encrypt \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/encrypt\""
+	backdoor       = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor\""
+	fmt_           = "\"fmt\""
 
 	// Related to webview
 	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"
@@ -62,10 +63,15 @@ func Append_domain(domain string) {
 			notify.Log("Adding domain 'keyboard'", notify.Verbose_lvl, "2")
 			domains = append(domains, keyboard)
 		}
-	case "attack_vector":
-		if !find(attack_vector) {
-			notify.Log("Adding domain 'attack_vector'", notify.Verbose_lvl, "2")
-			domains = append(domains, attack_vector)
+	case "attack_hash":
+		if !find(attack_hash) {
+			notify.Log("Adding domain 'attack_hash'", notify.Verbose_lvl, "2")
+			domains = append(domains, attack_hash)
+		}
+	case "attack_encrypt":
+		if !find(attack_encrypt) {
+			notify.Log("Adding domain 'attack_encrypt'", notify.Verbose_lvl, "2")
+			domains = append(domains, attack_encrypt)
 		}
 	case "backdoor":
 		if !find(backdoor) {

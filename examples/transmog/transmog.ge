@@ -5,7 +5,7 @@
 
 main:{    
     #object.extension("png");
-    window.x("600")
+    window.x("600");
     window.y("800");
     window.display("I'm obviously not an image, but I can display one!");
 

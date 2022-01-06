@@ -16,3 +16,9 @@ clean_output:
 
 clean_binary:
 	rm $(BIN)
+
+generate_examples:
+	python examples/generate_list_of_examples.py
+
+test: compile generate_examples
+	bash run_tests.bash

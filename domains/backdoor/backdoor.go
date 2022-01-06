@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/s9rA16Bf4/go-evil/domains/attack_vector"
+	attack_vector "github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash"
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )

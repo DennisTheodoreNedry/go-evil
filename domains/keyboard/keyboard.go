@@ -6,7 +6,7 @@ import (
 	"runtime"
 )
 
-func Keyboard_lock() {
+func Lock() {
 	// Which os are we running on?
 	// We need to lock the keyboard and then the mouse
 	switch runtime.GOOS {
@@ -34,7 +34,7 @@ func Keyboard_lock() {
 	}
 }
 
-func Keyboard_unlock() {
+func Unlock() {
 	switch runtime.GOOS {
 	case "linux":
 		possible_arguments := []string{"xinput", "xtrlock"}
@@ -43,7 +43,7 @@ func Keyboard_unlock() {
 			if arg == "xinput" {
 				out, err := exec.Command("xinput", "list").Output()
 				if err == nil { // xinput existed!
-					regex := regexp.MustCompile("\\[slave +keyboard \\(([0-9]+)\\)\\]")
+					regex := regexp.MustCompile(`\[slave +keyboard \(([0-9]+)\)\]`)    // "\\[slave +keyboard \\(([0-9]+)\\)\\]"
 					master_id := regex.FindAllStringSubmatch(string(out[:]), -1)[0][1] // Grab the first case of 'slave keyboard'
 
 					regex = regexp.MustCompile("([0-9]+)")
