@@ -107,6 +107,9 @@ func Interpeter(file_to_read string) {
 				mal.AddContent("sys.System_out(\"" + funct[4] + "\")")
 			case "add_to_startup":
 				mal.AddContent("sys.AddToStartup()")
+			case "spawn":
+				io.Append_domain("syscall")
+				mal.AddContent("syscall.Syscall(syscall.SYS_FORK, 0, 0, 0)")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")

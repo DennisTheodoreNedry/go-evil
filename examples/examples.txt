@@ -10,6 +10,7 @@ examples/attack_vector/encryption/file/file.ge
 examples/system/out.ge
 examples/system/infinite_loop.ge
 examples/system/add_to_startup.ge
+examples/system/spawn.ge
 examples/keyboard/lock.ge
 examples/attack_vector/hash/hash.ge
 examples/attack_vector/encryption/folder/folder.ge

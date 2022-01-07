@@ -22,3 +22,5 @@ generate_examples:
 
 test: compile generate_examples
 	bash run_tests.bash
+
+check: test

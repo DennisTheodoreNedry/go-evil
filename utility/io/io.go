@@ -32,6 +32,7 @@ const (
 	attack_encrypt = "\tattack_encrypt \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/encrypt\""
 	backdoor       = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor\""
 	fmt_           = "\"fmt\""
+	syscall        = "\"syscall\""
 
 	// Related to webview
 	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"
@@ -79,9 +80,14 @@ func Append_domain(domain string) {
 			domains = append(domains, backdoor)
 		}
 	case "fmt":
-		if !find(backdoor) {
+		if !find(fmt_) {
 			notify.Log("Adding library 'fmt'", notify.Verbose_lvl, "2")
 			domains = append(domains, fmt_)
+		}
+	case "syscall":
+		if !find(syscall) {
+			notify.Log("Adding library 'syscall'", notify.Verbose_lvl, "2")
+			domains = append(domains, syscall)
 		}
 	}
 }
