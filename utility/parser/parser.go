@@ -108,7 +108,7 @@ func Interpeter(file_to_read string) {
 			case "add_to_startup":
 				mal.AddContent("sys.AddToStartup()")
 			case "spawn":
-				io.Append_domain("syscall")
+				io.Append_domain("syscall") // Needed
 				mal.AddContent("syscall.Syscall(syscall.SYS_FORK, 0, 0, 0)")
 
 			default:

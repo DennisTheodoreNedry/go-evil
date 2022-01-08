@@ -24,3 +24,11 @@ test: compile generate_examples
 	bash run_tests.bash
 
 check: test
+
+install_dependencies:
+	go get github.com/thanhpk/randstr
+	go get github.com/webview/webview
+	go get github.com/s9rA16Bf4/ArgumentParser
+	go get github.com/s9rA16Bf4/notify_handler
+	go get golang.org/x/crypto
+	go get golang.org/x/sys
