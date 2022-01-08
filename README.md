@@ -3,8 +3,7 @@
 [<!--lint ignore no-dead-urls-->![GitHub Actions status](https://github.com/s9rA16Bf4/go-evil/workflows/Building%20on%20latest%20windows/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions?workflow=Building+on+latest+windows)
 
 # Go evil
-
-Customizing evil has never been so easy
+<img src="https://github.com/s9rA16Bf4/go-evil/blob/unstable/pictures/logo.png" width="650"/>
 
 
 Take a look at the provided examples in the example folder and the information found in the wikis.
