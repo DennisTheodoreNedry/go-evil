@@ -35,10 +35,10 @@ func Interpeter(file_to_read string) {
 		notify.Error("No compiler version was specificed", "parser.interpeter()")
 	} else {
 		listed_version := compiler_version[0][1]
-		if version.Get_high_medium_version() < listed_version {
+		if version.Get_Compiler_version() < listed_version {
 			notify.Error("Unknown compiler version "+listed_version, "parser.interpeter()")
-		} else if version.Get_high_medium_version() > listed_version {
-			notify.Warning("You're running a script for an older version of the compiler. This means that there might be functions/syntaxes that have changed")
+		} else if version.Get_Compiler_version() > listed_version {
+			notify.Warning("You're running a script for an older version of the compiler.\nThis means that there might be functions/syntaxes that have changed")
 		}
 	}
 

@@ -9,7 +9,7 @@ compile: create_directory
 create_directory:
 	mkdir -p output
 
-clean: clean_output clean_binary
+clean: clean_output clean_binary clean_examples_list
 
 clean_output:
 	rm -R output
@@ -17,10 +17,17 @@ clean_output:
 clean_binary:
 	rm $(BIN)
 
-generate_examples:
-	python examples/generate_list_of_examples.py
+clean_examples_list:
+	rm examples/examples.txt
 
-test: compile generate_examples
+generate_example_list:
+	python3 examples/generate_list_of_examples.py
+
+update_examples: compile
+	python3 examples/update_compiler_version.py
+
+
+test: compile generate_example_list
 	bash run_tests.bash
 
 check: test
@@ -32,3 +39,4 @@ install_dependencies:
 	go get github.com/s9rA16Bf4/notify_handler
 	go get golang.org/x/crypto
 	go get golang.org/x/sys
+

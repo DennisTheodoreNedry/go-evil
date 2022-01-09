@@ -1,8 +1,7 @@
 @ This examples shows a basic version where you would like to print the contents of a variable
 @ The available variables are $1, $2, $3, $4 and $5
 
-[version 1.0] @ Compiler version
-
+[version 1.1]
 main:{
     system.out("$1"); @ This will print NULL as it doesn't contain anything
     system.exit("1");

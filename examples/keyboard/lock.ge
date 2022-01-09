@@ -1,6 +1,5 @@
 @ Showcasing how you can lock the keyboard, enter a website and then unlock the keyboard
-[version 1.0] @ Compiler version
-
+[version 1.1]
 main:{
     keyboard.lock();
     window.x("600"); @ Widht on the x-axis

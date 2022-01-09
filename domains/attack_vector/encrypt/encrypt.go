@@ -19,7 +19,7 @@ type target_t struct {
 	target_name       string
 	encryption_method string
 	target_type       string   // File or Folder
-	target_extension  []string // What kind of extension are we looking for
+	target_extension  []string // What kind of extensions are we looking for
 }
 
 var c_target target_t
