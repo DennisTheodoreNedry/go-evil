@@ -1,9 +1,10 @@
 @ This example tries to showcase that you can change what kind of extension the virus will have 
 @ after being compiled
 
+[version 1.1]
 main:{    
     #object.extension("png");
-    window.x("600")
+    window.x("600");
     window.y("800");
     window.display("I'm obviously not an image, but I can display one!");
 

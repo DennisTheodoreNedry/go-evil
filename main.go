@@ -7,6 +7,7 @@ import (
 	arg "github.com/s9rA16Bf4/ArgumentParser/go/arguments"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
 	"github.com/s9rA16Bf4/go-evil/utility/parser"
+	"github.com/s9rA16Bf4/go-evil/utility/version"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -15,14 +16,17 @@ func main() {
 	arg.Argument_add("--target_platform", "-tp", true, "For which platform should the malware be compiled for, options are [darwin, linux, windows]", []string{"darwin", "linux", "windows"})
 	arg.Argument_add("--target_architecture", "-ta", true, "For which architecture should the malware be compiled for, options are [amd64, i386]", []string{"amd64", "i386"})
 	arg.Argument_add("--file", "-f", true, "File to compile [REQUIRED]", []string{"NULL"})
-	arg.Argument_add("--verbose", "-v", true, "How verbose should the program be, options are [1,2,3]", []string{"0", "1", "2", "3"})
+	arg.Argument_add("--verbose", "-vv", true, "How verbose should the program be, options are [0,1,2,3]", []string{"0", "1", "2", "3"})
 	arg.Argument_add("--debug", "-d", true, "Debug iptions, options are [false, true]", []string{"false", "true"})
+	arg.Argument_add("--version", "-v", false, "Prints the compiler version", []string{"NULL"})
 
 	arg.Argument_parse() // Lets check what the user entered
 
 	if len(os.Args[0:]) > 1 { // The user entered something
 		if arg.Argument_check("-h") {
 			arg.Argument_help()
+		} else if arg.Argument_check("-v") {
+			version.Print_version()
 		} else {
 			var file = ""                      // Which file to compile
 			var target_platform = runtime.GOOS // Default is the current system we are running on
@@ -45,8 +49,8 @@ func main() {
 				file = arg.Argument_get("-f") // Get the file
 			}
 
-			if arg.Argument_check("-v") {
-				notify.Verbose_lvl = arg.Argument_get("-v")
+			if arg.Argument_check("-vv") {
+				notify.Verbose_lvl = arg.Argument_get("-vv")
 				notify.Log("Setting verbose level to "+notify.Verbose_lvl, notify.Verbose_lvl, "1")
 			}
 
@@ -55,7 +59,6 @@ func main() {
 					io.Set_debug(true)
 				}
 			}
-
 			notify.Log("File to compile is "+file, notify.Verbose_lvl, "1")
 			notify.Log("Malware will be compiled against "+target_platform, notify.Verbose_lvl, "2")
 			notify.Log("Malware will be compiled against a "+architecture+" architecture", notify.Verbose_lvl, "2")

@@ -1,0 +1,10 @@
+@ Showcasing an easy example on when you can spawn a child which will continue to execute from 
+@ the line you called on it from
+
+[version 1.1]
+main:{
+    system.out("Parent");
+    system.spawn();
+    system.out("Hi all");
+    system.exit("0");
+}

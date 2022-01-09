@@ -1,5 +1,6 @@
-@ This showcases what happens when you dont include `system.exit("<value>") in your scripts
+@ This showcases what happens when you dont include a system exit
 
+[version 1.1]
 main:{
     system.out("This is an infinite loop");
 }
