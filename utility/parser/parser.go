@@ -171,16 +171,21 @@ func Interpeter(file_to_read string) {
 		case "attack":
 			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
 			switch funct[2] {
-			case "set_target", "set_encryption", "encrypt", "decrypt":
+			case "set_target", "set_encryption", "encrypt", "decrypt", "set_extension":
 				io.Append_domain("attack_encrypt")
-				if funct[2] == "set_target" {
+				switch funct[2] {
+				case "set_target":
 					mal.AddContent("attack_encrypt.SetTarget(\"" + funct[4] + "\")")
-				} else if funct[2] == "set_encryption" {
+				case "set_encryption":
 					mal.AddContent("attack_encrypt.SetEncryptionMethod(\"" + funct[4] + "\")")
-				} else if funct[2] == "encrypt" {
+				case "encrypt":
 					mal.AddContent("attack_encrypt.Encrypt()")
-				} else if funct[2] == "decrypt" {
+				case "decrypt":
 					mal.AddContent("attack_encrypt.Decrypt()")
+
+				case "set_extension":
+					mal.AddContent("attack_encrypt.SetExtension(\"" + funct[4] + "\")")
+
 				}
 
 			// Hash, everything here is done in realtime when compiling.
