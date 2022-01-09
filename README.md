@@ -22,6 +22,7 @@ main:{
     system.exit("0");
 }
 ```
+<b>Tip:</b> The compiler version is obtained through `gevil -v`
 
 ### Example code
 Basic example showcasing how we can display a website.
