@@ -1,11 +1,11 @@
 from os import path
 from subprocess import check_output, run
-import re
+from re import search
 
 def get_current_compiler_version() -> str:
     """ This function will run gevil passing the -v flag, and regex the result """
     output = str(check_output(["./gevil", "-v"]))
-    regex = re.search("([0-9]\\.[0-9])", output)
+    regex = search("([0-9]\\.[0-9])", output)
     return regex.group()
 
 def main():
@@ -20,10 +20,10 @@ def main():
                 script_version = line.split(" ")[1]
                 script_version = script_version.replace("]  ", "")       
                 if script_version != current_version: # We need to update
-                    content[i] = f"[version {current_version}]\n" 
+                    content[i] = f"[version {current_version}]\n" # Simply replaces this line 
 
         with open(examples, "w") as out:
-            out.writelines(content)
+            out.writelines(content) # Then we overwrite the file but with our newly modified section
 
 if __name__ == "__main__":
     if not path.exists("examples/examples.txt"):
