@@ -2,7 +2,7 @@ package domains
 
 import (
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	user_var "github.com/s9rA16Bf4/go-evil/utility/variables/user"
 	"github.com/webview/webview"
 )
 
@@ -16,17 +16,17 @@ var current_window window
 
 // Functions that will not start the loop
 func SetX(new_x string) {
+	new_x = user_var.Check_if_variable(new_x)
 	x := converter.String_to_int(new_x, "window.SetX()")
-	notify.Log("Setting the length of the x axis to "+new_x, notify.Verbose_lvl, "3")
 	current_window.window_x = x
 }
 func SetY(new_y string) {
+	new_y = user_var.Check_if_variable(new_y)
 	y := converter.String_to_int(new_y, "window.SetY()")
-	notify.Log("Setting the length of the y axis to "+new_y, notify.Verbose_lvl, "3")
 	current_window.window_y = y
 }
 func SetTitle(new_title string) {
-	notify.Log("Setting the window title to "+new_title, notify.Verbose_lvl, "3")
+	new_title = user_var.Check_if_variable(new_title)
 	current_window.window_name = new_title
 }
 
@@ -44,7 +44,7 @@ func preface() {
 
 // Functions that will start the loop
 func GoToUrl(url string) {
-	notify.Log("Will set the target url to "+url, notify.Verbose_lvl, "3")
+	url = user_var.Check_if_variable(url)
 	preface()
 	win := webview.New(false)
 	defer win.Destroy()
@@ -55,7 +55,7 @@ func GoToUrl(url string) {
 }
 
 func Display(msg string) {
-	notify.Log("Will display the message "+msg, notify.Verbose_lvl, "3")
+	msg = user_var.Check_if_variable(msg)
 	preface()
 	win := webview.New(false)
 	defer win.Destroy()

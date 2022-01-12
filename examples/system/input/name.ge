@@ -1,0 +1,10 @@
+@ Showcasing how runtime variables work
+
+[version 1.1]
+
+main:{
+    system.out("What's your name?");
+    system.in(); @ Takes the user input and the result will be saved in €1
+    system.out("Hello €1"); @ Prints what the user entered
+    system.exit("0");
+}

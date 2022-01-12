@@ -7,17 +7,19 @@ import (
 	attack_hash "github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash"
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
-	"github.com/s9rA16Bf4/go-evil/utility/variables"
+	system_variable "github.com/s9rA16Bf4/go-evil/utility/variables/system"
 	"github.com/s9rA16Bf4/go-evil/utility/version"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-const EXTRACT_MAIN_FUNC = "((main ?: ?{{1,1}(?s).*}))"                             // Grabs the main function
-const EXTRACT_MAIN_FUNC_HEADER = "(main:{)"                                        // We use this to identify if there are multiple main functions in the same file
-const EXTRACT_FUNCTION_CALL = "([@#a-z]+)\\.([$a-z0-9_]+)\\((\"(.+)\")?\\);"       // Grabs function and a potential value
-const EXTRACT_FUNCTION_CALL_WRONG = "([@#a-z]+)\\.([$a-z_]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
-const EXTRACT_COMPILER_VERSION = "\\[.?version +([0-9]+\\.[0-9]+).?\\]"            // Extracts the major version
-const EXTRACT_VARIABLE = "(\\$[0-9]+)"                                             // Extracts the variable
+const (
+	EXTRACT_MAIN_FUNC           = "((main ?: ?{{1,1}(?s).*}))"                   // Grabs the main function
+	EXTRACT_MAIN_FUNC_HEADER    = "(main:{)"                                     // We use this to identify if there are multiple main functions in the same file
+	EXTRACT_FUNCTION_CALL       = "([@#a-z]+)\\.([$a-z0-9_]+)\\((\"(.+)\")?\\);" // Grabs function and a potential value
+	EXTRACT_FUNCTION_CALL_WRONG = "([@#a-z]+)\\.([$a-z_]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
+	EXTRACT_COMPILER_VERSION    = "\\[.?version +([0-9]+\\.[0-9]+).?\\]"         // Extracts the major version
+	EXTRACT_SYSTEM_VARIABLE     = "(\\$[0-9]+)"                                  // Extracts the system variable
+)
 
 func Interpeter(file_to_read string) {
 	content := io.Read_file(file_to_read)
@@ -64,11 +66,11 @@ func Interpeter(file_to_read string) {
 			continue
 		}
 
-		regex = regexp.MustCompile(EXTRACT_VARIABLE)
+		regex = regexp.MustCompile(EXTRACT_SYSTEM_VARIABLE)
 		variable := regex.FindAllStringSubmatch(funct[4], -1)
 		if len(variable) > 0 { // We found a variable
-			funct[4] = strings.Replace(funct[4], variable[0][1], variables.Get_variable(variable[0][1]), 1) // so we replace it with it's value
-			notify.Log("Found variable "+variable[0][1]+" which contained the value "+variables.Get_variable(variable[0][1]), notify.Verbose_lvl, "2")
+			funct[4] = strings.Replace(funct[4], variable[0][1], system_variable.Get_variable(variable[0][1]), 1) // so we replace it with it's value
+			notify.Log("Found variable "+variable[0][1]+" which contained the value "+system_variable.Get_variable(variable[0][1]), notify.Verbose_lvl, "2")
 		}
 
 		switch funct[1] {
@@ -110,6 +112,8 @@ func Interpeter(file_to_read string) {
 			case "spawn":
 				io.Append_domain("syscall") // Needed
 				mal.AddContent("syscall.Syscall(syscall.SYS_FORK, 0, 0, 0)")
+			case "in":
+				mal.AddContent("sys.User_input()")
 
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")

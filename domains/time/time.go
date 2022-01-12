@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
+	user_var "github.com/s9rA16Bf4/go-evil/utility/variables/user"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -19,28 +20,28 @@ type time_t struct { // This is utilized to set when the for loop in `run` will 
 var c_time time_t
 
 func SetYear(year string) {
+	year = user_var.Check_if_variable(year)
 	value := converter.String_to_int(year, "time.SetYear()")
-	notify.Log("Setting target year to "+year, notify.Verbose_lvl, "3")
 	c_time.year = value
 }
 func SetMonth(month string) {
+	month = user_var.Check_if_variable(month)
 	value := converter.String_to_int(month, "time.SetMonth()")
-	notify.Log("Setting target month to "+month, notify.Verbose_lvl, "3")
 	c_time.month = value
 }
 func SetDay(day string) {
+	day = user_var.Check_if_variable(day)
 	value := converter.String_to_int(day, "time.SetDay()")
-	notify.Log("Setting target day to "+day, notify.Verbose_lvl, "3")
 	c_time.day = value
 }
 func SetHour(hour string) {
+	hour = user_var.Check_if_variable(hour)
 	value := converter.String_to_int(hour, "time.SetHour()")
-	notify.Log("Setting target hour to "+hour, notify.Verbose_lvl, "3")
 	c_time.hour = value
 }
 func SetMin(min string) {
+	min = user_var.Check_if_variable(min)
 	value := converter.String_to_int(min, "time.SetMin()")
-	notify.Log("Setting target min to "+min, notify.Verbose_lvl, "3")
 	c_time.min = value
 }
 
@@ -51,7 +52,6 @@ func Until(value string) {
 
 	SetHour(value[0:2]) // Extracts hour
 	SetMin(value[3:5])  // Extracts minute
-	notify.Log("Setting time until execution continues too "+value, notify.Verbose_lvl, "2")
 	Run()
 }
 

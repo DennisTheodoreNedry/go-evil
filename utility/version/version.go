@@ -7,13 +7,13 @@ import (
 )
 
 const (
-	EVIL_VERSION     = "1.1.1"           // high version. medium version. small version
+	EVIL_VERSION     = "1.0.2"           // high version. medium version. small version
 	EXTRACT_COMPILER = "([0-9]\\.[0-9])" // Extracts the high and medium version of the compiler
 )
 
 func Print_version() {
-	notify.Inform("Compiler version: " + Get_Compiler_version())
-	notify.Inform("Current version of evil: " + EVIL_VERSION)
+	notify.Inform("Major version: " + Get_Compiler_version())
+	notify.Inform("Current version " + EVIL_VERSION)
 }
 
 func Get_Compiler_version() string {
