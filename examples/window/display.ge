@@ -1,6 +1,6 @@
 @ Showcases how to display something within the webview window
 
-[version 1.1]
+[version 1.0]
 main:{
 	window.display("Hello, world!"); @ Displays the message "Hello, world!"
     system.exit("0");
