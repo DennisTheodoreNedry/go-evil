@@ -12,3 +12,4 @@ for LINE in $(cat examples/examples.txt)
         echo -e "---------------------------------\n"
 
 	done;
+echo "All tests successfully compiled!"

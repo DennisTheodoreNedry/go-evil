@@ -1,6 +1,6 @@
 @ Showcasing an encryption attack against a single file
 
-[version 1.1]
+[version 1.0]
 main:{
     attack.set_target("examples/attack_vector/encryption/file/testfile.txt"); @ Just must keep in mind were the binary malware is being run from for this to work
     attack.set_encryption("aes");
