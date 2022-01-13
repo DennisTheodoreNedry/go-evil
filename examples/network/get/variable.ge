@@ -1,0 +1,11 @@
+@ Examples shows how we can scrape a website and save the result in
+@ a runtime variable
+
+[version 1.0]
+
+main:{
+    #net.save_variable(); @ Tells the system that we want to save the result to a runtime variable
+    #net.get("mrskeltal.com"); @ The target
+    system.out("€1"); @ And here lies the output
+    system.exit("0");
+}

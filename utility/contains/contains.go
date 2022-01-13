@@ -4,15 +4,16 @@ import (
 	"github.com/s9rA16Bf4/go-evil/utility/reverse"
 )
 
-func EndsWith(string_to_look_for string, target_extension []string) bool {
+func EndsWith(string_to_look_in string, target_extension []string) bool {
 	toReturn := false
-	reverse.ReverseString(&string_to_look_for) // This should reverse our string
+	reverse.ReverseString(&string_to_look_in) // This should reverse our string
 
 	for _, extension := range target_extension {
 		toReturn = false
 		reverse.ReverseString(&extension) // This helps us alot
+		input_string := []rune(string_to_look_in)
 		for i, c := range extension {
-			if string_to_look_for[i] == byte(c) {
+			if input_string[i] == c {
 				toReturn = true
 			} else {
 				toReturn = false

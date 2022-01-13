@@ -1,0 +1,23 @@
+@ Showcasing how we can create a post request with our own headers
+
+[version 1.0]
+main:{
+    @ First we define our headers in the post request
+    #net.add_header("name");
+    #net.add_header("occupation");
+    
+    @ Then we target each defined header, and assign them a value
+    #net.set_header("name");
+    #net.bind_value("John Doe");
+    
+    #net.set_header("occupation");
+    #net.bind_value("gardener");
+    
+    @ To later post it 
+    #net.post("https://httpbin.org/post");
+
+    @ And the response code will be saved here
+    system.out("€1");
+
+    system.exit("0");
+}

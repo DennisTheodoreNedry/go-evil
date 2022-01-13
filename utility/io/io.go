@@ -33,6 +33,7 @@ const (
 	backdoor       = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor\""
 	fmt_           = "\"fmt\""
 	syscall        = "\"syscall\""
+	network        = "\tnet \"github.com/s9rA16Bf4/go-evil/domains/network\""
 
 	// Related to webview
 	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"
@@ -88,6 +89,11 @@ func Append_domain(domain string) {
 		if !find(syscall) {
 			notify.Log("Adding library 'syscall'", notify.Verbose_lvl, "2")
 			domains = append(domains, syscall)
+		}
+	case "network":
+		if !find(network) {
+			notify.Log("Adding library 'network'", notify.Verbose_lvl, "2")
+			domains = append(domains, network)
 		}
 	}
 }

@@ -235,6 +235,30 @@ func Interpeter(file_to_read string) {
 			default:
 				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
 			}
+		case "network", "#net":
+			io.Append_domain("network")
+			notify.Log("Found possible function "+funct[2], notify.Verbose_lvl, "3")
+			switch funct[2] {
+			case "get":
+				mal.AddContent("net.GET(\"" + funct[4] + "\")")
+			case "save_variable":
+				mal.AddContent("net.GET_save_variable()")
+			case "save_disk":
+				mal.AddContent("net.GET_save_disk()")
+			case "set_prefix":
+				mal.AddContent("net.GET_set_prefix(\"" + funct[4] + "\")")
+			case "add_header":
+				mal.AddContent("net.POST_add_header(\"" + funct[4] + "\")")
+			case "set_header":
+				mal.AddContent("net.POST_set_header(\"" + funct[4] + "\")")
+			case "bind_value":
+				mal.AddContent("net.POST_bind_value_to_latest_header(\"" + funct[4] + "\")")
+			case "post":
+				mal.AddContent("net.POST(\"" + funct[4] + "\")")
+
+			default:
+				notify.Error("Unknown function '"+funct[2]+"' in domain '"+funct[1]+"'", "parser.interpreter()")
+			}
 
 		default:
 			notify.Error("Unknown domain '"+funct[1]+"'", "parser.interpeter()")
