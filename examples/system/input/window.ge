@@ -5,11 +5,11 @@
 main:{
     system.out("Length on x-axis?");
     system.in();
-    window.x("€1");
+    window.set.x("€1");
 
     system.out("Length on y-axis?");
     system.in();
-    window.y("€2");
+    window.set.y("€2");
 
     system.out("Website to visit?");
     system.in();

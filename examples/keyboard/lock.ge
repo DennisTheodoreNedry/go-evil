@@ -2,9 +2,9 @@
 [version 1.0]
 main:{
     keyboard.lock();
-    window.x("600"); @ Widht on the x-axis
-	window.y("800"); @ Height on the y-axis
-	window.title("You just got hacked bruh!");
+    window.set.x("600"); @ Widht on the x-axis
+	window.set.y("800"); @ Height on the y-axis
+	window.set.title("You just got hacked bruh!");
 	window.goto("https://mrskeltal.com/");
     keyboard.unlock();
     system.exit("0");

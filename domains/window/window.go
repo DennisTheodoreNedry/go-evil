@@ -1,66 +1,54 @@
-package domains
+package window
 
 import (
-	"github.com/s9rA16Bf4/go-evil/utility/converter"
-	user_var "github.com/s9rA16Bf4/go-evil/utility/variables/user"
-	"github.com/webview/webview"
+	"regexp"
+
+	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-type window struct {
-	window_name string // Window name
-	window_x    int    // Length on x axis
-	window_y    int    // Length on y axis
-}
+const (
+	EXTRACT_SUBDOMAIN = "[a-z]+\\.([a-z]+)\\.([a-z]+)\\(\"(.*)\"\\);"
+	EXTRACT_FUNCTION  = "window\\.([a-z]+)\\((\"(.+)\")?\\);"
+)
 
-var current_window window
-
-// Functions that will not start the loop
-func SetX(new_x string) {
-	new_x = user_var.Check_if_variable(new_x)
-	x := converter.String_to_int(new_x, "window.SetX()")
-	current_window.window_x = x
-}
-func SetY(new_y string) {
-	new_y = user_var.Check_if_variable(new_y)
-	y := converter.String_to_int(new_y, "window.SetY()")
-	current_window.window_y = y
-}
-func SetTitle(new_title string) {
-	new_title = user_var.Check_if_variable(new_title)
-	current_window.window_name = new_title
-}
-
-func preface() {
-	if current_window.window_name == "" { // The user never told us what kind of name the window should utilize
-		SetTitle("Untitled")
+func Parse(new_line string) {
+	regex := regexp.MustCompile(EXTRACT_SUBDOMAIN)
+	result := regex.FindAllStringSubmatch(new_line, -1)
+	if len(result) > 0 { // There is a subdomain to extract
+		switch result[0][1] {
+		case "set":
+			switch result[0][2] {
+			case "x":
+				mal.AddContent("win.SetX(\"" + result[0][3] + "\")")
+			case "y":
+				mal.AddContent("win.SetY(\"" + result[0][3] + "\")")
+			case "title":
+				mal.AddContent("win.SetTitle(\"" + result[0][3] + "\")")
+			default:
+				function_error(result[0][2])
+			}
+		default:
+			subdomain_error(result[0][1])
+		}
+	} else { // There might be a function which doesn't require a subdomain to work
+		regex = regexp.MustCompile(EXTRACT_FUNCTION)
+		result = regex.FindAllStringSubmatch(new_line, -1)
+		if len(result) > 0 {
+			switch result[0][1] {
+			case "goto":
+				mal.AddContent("win.GoToUrl(\"" + result[0][3] + "\")")
+			case "display":
+				mal.AddContent("win.Display(\"" + result[0][3] + "\")")
+			default:
+				function_error(result[0][1])
+			}
+		}
 	}
-	if current_window.window_y == 0 { // The user never specificed the length on the y axis
-		SetY("400")
-	}
-	if current_window.window_x == 0 { // The user never specificed the length on the x axis
-		SetX("200")
-	}
 }
-
-// Functions that will start the loop
-func GoToUrl(url string) {
-	url = user_var.Check_if_variable(url)
-	preface()
-	win := webview.New(false)
-	defer win.Destroy()
-	win.SetTitle(current_window.window_name)
-	win.SetSize(current_window.window_y, current_window.window_x, webview.HintNone)
-	win.Navigate(url)
-	win.Run()
+func subdomain_error(subdomain string) {
+	notify.Error("Unknown subdomain "+subdomain, "window.Parse()")
 }
-
-func Display(msg string) {
-	msg = user_var.Check_if_variable(msg)
-	preface()
-	win := webview.New(false)
-	defer win.Destroy()
-	win.SetTitle(current_window.window_name)
-	win.SetSize(current_window.window_y, current_window.window_x, webview.HintNone)
-	win.Navigate("data:text/html,<!doctype html><html><body><p>" + msg + "</p></body></html>")
-	win.Run()
+func function_error(function string) {
+	notify.Error("Unknown function "+function, "window.Parse()")
 }

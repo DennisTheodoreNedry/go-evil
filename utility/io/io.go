@@ -12,7 +12,7 @@ import (
 	"runtime"
 	"strings"
 
-	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
+	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -24,16 +24,16 @@ func Set_debug(new_debug bool) {
 }
 
 const (
-	sys            = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system\""
-	win            = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window\""
-	time           = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
-	keyboard       = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
-	attack_hash    = "\tattack_hash \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash\""
-	attack_encrypt = "\tattack_encrypt \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/encrypt\""
-	backdoor       = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor\""
+	sys            = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system/private\""
+	win            = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window/private\""
+	time           = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time/private\""
+	keyboard       = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard/private\""
+	attack_hash    = "\tattack_hash \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash/private\""
+	attack_encrypt = "\tattack_encrypt \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/encrypt/private\""
+	backdoor       = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor/private\""
 	fmt_           = "\"fmt\""
 	syscall        = "\"syscall\""
-	network        = "\tnet \"github.com/s9rA16Bf4/go-evil/domains/network\""
+	network        = "\tnet \"github.com/s9rA16Bf4/go-evil/domains/network/private\""
 
 	// Related to webview
 	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"

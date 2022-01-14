@@ -1,0 +1,9 @@
+
+[version 1.0]
+
+main:{
+	#net.ping.set_max("5");
+	#net.ping("google.com");
+	system.out("€1");
+	system.exit("0");
+}
