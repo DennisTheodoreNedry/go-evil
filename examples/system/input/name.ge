@@ -1,6 +1,6 @@
 @ Showcasing how runtime variables work
 
-[version 1.0]
+[version 1.1]
 
 main:{
     system.out("What's your name?");

@@ -1,12 +1,12 @@
 @ Showcases an example of how the program will wait with execution until 01/01/2022 00:00
 
-[version 1.0]
+[version 1.1]
 main:{
-    time.year("2022");
-    time.month("01");
-    time.day("01");
-    time.hour("00");
-    time.min("00");
+    time.set.year("2022");
+    time.set.month("01");
+    time.set.day("01");
+    time.set.hour("00");
+    time.set.min("00");
     time.run();
 
     system.out("Happy new year's!");

@@ -9,9 +9,12 @@ import (
 	"github.com/s9rA16Bf4/go-evil/domains/keyboard"
 	"github.com/s9rA16Bf4/go-evil/domains/malware"
 	"github.com/s9rA16Bf4/go-evil/domains/network"
+	"github.com/s9rA16Bf4/go-evil/domains/powershell"
 	"github.com/s9rA16Bf4/go-evil/domains/system"
+	"github.com/s9rA16Bf4/go-evil/domains/time"
 	"github.com/s9rA16Bf4/go-evil/domains/window"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
+	system_variable "github.com/s9rA16Bf4/go-evil/utility/variables/system"
 	"github.com/s9rA16Bf4/go-evil/utility/version"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -19,7 +22,7 @@ import (
 const (
 	EXTRACT_MAIN_FUNC           = "((main ?: ?{{1,1}(?s).*}))"                                    // Grabs the main function
 	EXTRACT_MAIN_FUNC_HEADER    = "(main:{)"                                                      // We use this to identify if there are multiple main functions in the same file
-	EXTRACT_FUNCTION_CALL       = "([a-z]+).*\\((.*)\\);"                                         // Grabs function and a potential value
+	EXTRACT_FUNCTION_CALL       = "([@#a-z]+).*\\((.*)\\);"                                       // Grabs function and a potential value
 	EXTRACT_FUNCTION_CALL_WRONG = "([@#a-z]+)\\.([$a-z0-9_]+).([$a-z0-9_]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
 	EXTRACT_COMPILER_VERSION    = "\\[.?version +([0-9]+\\.[0-9]+).?\\]"                          // Extracts the major version
 	EXTRACT_SYSTEM_VARIABLE     = "(\\$[0-9]+)"                                                   // Extracts the system variable
@@ -70,17 +73,17 @@ func Interpeter(file_to_read string) {
 			continue
 		}
 
-		//regex = regexp.MustCompile(EXTRACT_SYSTEM_VARIABLE)
-		//variable := regex.FindAllStringSubmatch(funct[4], -1)
-		//if len(variable) > 0 { // We found a variable
-		//	funct[4] = strings.Replace(funct[4], variable[0][1], system_variable.Get_variable(variable[0][1]), 1) // so we replace it with it's value
-		//	notify.Log("Found variable "+variable[0][1]+" which contained the value "+system_variable.Get_variable(variable[0][1]), notify.Verbose_lvl, "2")
-		//}
+		regex = regexp.MustCompile(EXTRACT_SYSTEM_VARIABLE)
+		variable := regex.FindAllStringSubmatch(funct[0], -1)
+		if len(variable) > 0 { // We found a variable
+			funct[0] = strings.Replace(funct[0], variable[0][1], system_variable.Get_variable(variable[0][1]), 1) // so we replace it with it's value
+			notify.Log("Found variable "+variable[0][1]+" which contained the value "+system_variable.Get_variable(variable[0][1]), notify.Verbose_lvl, "2")
+		}
 		switch funct[1] { // This will be the top level domain
 		case "window":
 			io.Append_domain("window")
 			window.Parse(funct[0])
-		case "system", "#wait":
+		case "system":
 			io.Append_domain("system")
 			system.Parse(funct[0])
 		case "network", "#net":
@@ -97,6 +100,15 @@ func Interpeter(file_to_read string) {
 			backdoor.Parse(funct[0])
 		case "attack":
 			attack_vector.Parse(funct[0])
+		case "powershell", "#pwsh":
+			io.Append_domain("powershell")
+			powershell.Parse(funct[0])
+		case "time", "#wait":
+			io.Append_domain("time")
+			time.Parse(funct[0])
+
+		default:
+			notify.Error("Unknwon top level domain '"+funct[1]+"'", "parser.Parse()")
 		}
 	}
 }

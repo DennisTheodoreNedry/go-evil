@@ -1,6 +1,8 @@
 package attack_vector
 
 import (
+	"strings"
+
 	"github.com/s9rA16Bf4/go-evil/utility/algorithm/hash"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -12,6 +14,7 @@ type hash_t struct {
 var curr_hash hash_t
 
 func Set_hash(hash_to_use string) {
+	hash_to_use = strings.ReplaceAll(hash_to_use, "\"", "")
 	var available_hashes = []string{"md5", "sha1", "sha224", "sha256", "sha384", "sha512", "sha3_224", "sha3_256", "sha3_384", "sha3_512",
 		"blake2s_256", "blake2b_256", "blake2b_384", "blake2b_512"}
 
@@ -29,6 +32,7 @@ func Set_hash(hash_to_use string) {
 }
 
 func Hash(msg string) string {
+	msg = strings.ReplaceAll(msg, "\"", "")
 	var toReturn string
 	switch curr_hash.hash_func {
 	case "md5":

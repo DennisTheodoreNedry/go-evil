@@ -1,6 +1,6 @@
 @ This example just showcases how you can write to the console
 
-[version 1.0]
+[version 1.1]
 main:{
     system.out("Hello, World!");
     system.exit("0");

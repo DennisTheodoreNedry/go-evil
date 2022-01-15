@@ -1,8 +1,8 @@
 @ Example showcasing a basic MD5 hash
 
-[version 1.0]
+[version 1.1]
 main:{
-    attack.set_hash("md5");
+    attack.set.hash("md5");
     attack.hash("hello world!");
     system.out("MD5 gave $1 instead of 'hello world!'"); @ Prints "fc3ff98e8c6a0d3087d515c0473f8677"
     

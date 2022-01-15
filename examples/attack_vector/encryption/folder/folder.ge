@@ -1,9 +1,9 @@
 @ Showcasing how the malware can enter a folder and encrypt everything within
-[version 1.0]
+[version 1.1]
 
 main:{
-    attack.set_target("examples/attack_vector/encryption/folder/testfolder");
-    attack.set_encryption("rsa");
+    attack.set.target("examples/attack_vector/encryption/folder/testfolder");
+    attack.set.encryption("rsa");
     attack.encrypt();
 
     attack.decrypt();

@@ -31,9 +31,9 @@ const (
 	attack_hash    = "\tattack_hash \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash/private\""
 	attack_encrypt = "\tattack_encrypt \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/encrypt/private\""
 	backdoor       = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor/private\""
-	fmt_           = "\"fmt\""
 	syscall        = "\"syscall\""
 	network        = "\tnet \"github.com/s9rA16Bf4/go-evil/domains/network/private\""
+	pwsh           = "\tpwsh \"github.com/s9rA16Bf4/go-evil/domains/powershell/private\""
 
 	// Related to webview
 	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"
@@ -80,11 +80,6 @@ func Append_domain(domain string) {
 			notify.Log("Adding domain 'backdoor'", notify.Verbose_lvl, "2")
 			domains = append(domains, backdoor)
 		}
-	case "fmt":
-		if !find(fmt_) {
-			notify.Log("Adding library 'fmt'", notify.Verbose_lvl, "2")
-			domains = append(domains, fmt_)
-		}
 	case "syscall":
 		if !find(syscall) {
 			notify.Log("Adding library 'syscall'", notify.Verbose_lvl, "2")
@@ -94,6 +89,11 @@ func Append_domain(domain string) {
 		if !find(network) {
 			notify.Log("Adding library 'network'", notify.Verbose_lvl, "2")
 			domains = append(domains, network)
+		}
+	case "powershell":
+		if !find(pwsh) {
+			notify.Log("Adding library 'powershell'", notify.Verbose_lvl, "2")
+			domains = append(domains, pwsh)
 		}
 	}
 }

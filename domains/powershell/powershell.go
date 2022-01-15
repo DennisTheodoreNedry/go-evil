@@ -1,4 +1,4 @@
-package window
+package powershell
 
 import (
 	"regexp"
@@ -8,35 +8,32 @@ import (
 )
 
 const (
-	EXTRACT_SUBDOMAIN      = "(window)\\.(.+)\\.(.+)\\(.*\\);" // Captures subdomain and function
-	EXTRACT_FUNCTION_VALUE = ".+\\(\"(.*)\"\\);"               // Grabs the value being passed to the function
-	EXTRACT_FUNCTION       = "(window)\\.(.+)\\(.*\\);"        // This is for the cases when we don't have a subdomain
+	EXTRACT_SUBDOMAIN      = "(powershell|#pwsh)\\.(.+)\\.(.+)\\(.*\\);" // Captures subdomain and function
+	EXTRACT_FUNCTION_VALUE = ".+\\(\"(.*)\"\\);"                         // Grabs the value being passed to the function
+	EXTRACT_FUNCTION       = "(powershell|#pwsh)\\.(.+)\\(.*\\);"        // This is for the cases when we don't have a subdomain
 )
 
 func Parse(new_line string) {
 	regex := regexp.MustCompile(EXTRACT_FUNCTION_VALUE)
 	result := regex.FindAllStringSubmatch(new_line, -1)
-	var value string
-	if len(result) > 0 {
-		value = result[0][1]
-	} else {
-		value = "NULL"
-	}
+	//var value string
+	//if len(result) > 0 {
+	//	value = result[0][1]
+	//} else {
+	//	value = "NULL"
+	//}
 	regex = regexp.MustCompile(EXTRACT_SUBDOMAIN)
 	result = regex.FindAllStringSubmatch(new_line, -1)
 
 	if len(result) > 0 { // There is a subdomain to extract
 		subdomain := result[0][2]
 		function := result[0][3]
+
 		switch subdomain {
-		case "set":
+		case "disable":
 			switch function {
-			case "x":
-				mal.AddContent("win.SetX(\"" + value + "\")")
-			case "y":
-				mal.AddContent("win.SetY(\"" + value + "\")")
-			case "title":
-				mal.AddContent("win.SetTitle(\"" + value + "\")")
+			case "defender":
+				mal.AddContent("pwsh.Disable_defender()")
 			default:
 				function_error(function)
 			}
@@ -47,12 +44,8 @@ func Parse(new_line string) {
 		regex = regexp.MustCompile(EXTRACT_FUNCTION)
 		result = regex.FindAllStringSubmatch(new_line, -1)
 		if len(result) > 0 {
-			function := result[0][2]
+			function := result[0][1]
 			switch function {
-			case "goto":
-				mal.AddContent("win.GoToUrl(\"" + value + "\")")
-			case "display":
-				mal.AddContent("win.Display(\"" + value + "\")")
 			default:
 				function_error(function)
 			}
@@ -60,8 +53,8 @@ func Parse(new_line string) {
 	}
 }
 func subdomain_error(subdomain string) {
-	notify.Error("Unknown subdomain '"+subdomain+"'", "window.Parse()")
+	notify.Error("Unknown subdomain '"+subdomain+"'", "powershell.Parse()")
 }
 func function_error(function string) {
-	notify.Error("Unknown function '"+function+"'", "window.Parse()")
+	notify.Error("Unknown function '"+function+"'", "powershell.Parse()")
 }
