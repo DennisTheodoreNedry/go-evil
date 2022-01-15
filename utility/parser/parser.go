@@ -20,12 +20,12 @@ import (
 )
 
 const (
-	EXTRACT_MAIN_FUNC           = "((main ?: ?{{1,1}(?s).*}))"                                    // Grabs the main function
-	EXTRACT_MAIN_FUNC_HEADER    = "(main:{)"                                                      // We use this to identify if there are multiple main functions in the same file
-	EXTRACT_FUNCTION_CALL       = "([@#a-z]+).*\\((.*)\\);"                                       // Grabs function and a potential value
-	EXTRACT_FUNCTION_CALL_WRONG = "([@#a-z]+)\\.([$a-z0-9_]+).([$a-z0-9_]+)\\((\"(.*)\")?\\)[^;]" // And this is utilized to find rows that don't end in ;
-	EXTRACT_COMPILER_VERSION    = "\\[.?version +([0-9]+\\.[0-9]+).?\\]"                          // Extracts the major version
-	EXTRACT_SYSTEM_VARIABLE     = "(\\$[0-9]+)"                                                   // Extracts the system variable
+	EXTRACT_MAIN_FUNC           = "((main ?: ?{{1,1}(?s).*}))"           // Grabs the main function
+	EXTRACT_MAIN_FUNC_HEADER    = "(main:{)"                             // We use this to identify if there are multiple main functions in the same file
+	EXTRACT_FUNCTION_CALL       = "([@#a-z]+).*\\((.*)\\);"              // Grabs function and a potential value
+	EXTRACT_FUNCTION_CALL_WRONG = "([@#a-z]+).*\\((\"(.*)\")?\\)[^;]"    // And this is utilized to find rows that don't end in ;
+	EXTRACT_COMPILER_VERSION    = "\\[.?version +([0-9]+\\.[0-9]+).?\\]" // Extracts the major version
+	EXTRACT_SYSTEM_VARIABLE     = "(\\$[0-9]+)"                          // Extracts the system variable
 )
 
 func Interpeter(file_to_read string) {
@@ -54,7 +54,7 @@ func Interpeter(file_to_read string) {
 	regex = regexp.MustCompile(EXTRACT_MAIN_FUNC_HEADER)
 	main_header := regex.FindAllStringSubmatch(content, -1)
 	if len(main_header) > 1 { // Multiple main functions were defined
-		notify.Error("Found multiple main definitions in the provided file "+file_to_read, "parser.interpeter()")
+		notify.Error("Found multiple main definitions in the provided file '"+file_to_read+"'", "parser.interpeter()")
 	}
 	regex = regexp.MustCompile(EXTRACT_FUNCTION_CALL_WRONG)
 	match := regex.FindAllStringSubmatch(content, -1)

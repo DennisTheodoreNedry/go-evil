@@ -39,7 +39,7 @@ def algorithm(input_list):
 
 def main():
     high_lvl_dir = os.listdir("examples/")
-    high_lvl_dir.pop() # The last entry is this file
+    high_lvl_dir.remove("generate_list_of_examples.py")
     all_examples_found = list_files(high_lvl_dir, "examples/")
     final = algorithm(all_examples_found)
     write_to_file(final)
