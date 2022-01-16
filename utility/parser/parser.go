@@ -8,13 +8,14 @@ import (
 	"github.com/s9rA16Bf4/go-evil/domains/backdoor"
 	"github.com/s9rA16Bf4/go-evil/domains/keyboard"
 	"github.com/s9rA16Bf4/go-evil/domains/malware"
+	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
 	"github.com/s9rA16Bf4/go-evil/domains/network"
 	"github.com/s9rA16Bf4/go-evil/domains/powershell"
 	"github.com/s9rA16Bf4/go-evil/domains/system"
 	"github.com/s9rA16Bf4/go-evil/domains/time"
 	"github.com/s9rA16Bf4/go-evil/domains/window"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
-	system_variable "github.com/s9rA16Bf4/go-evil/utility/variables/system"
+	compiler_time "github.com/s9rA16Bf4/go-evil/utility/variables/compiler-time"
 	"github.com/s9rA16Bf4/go-evil/utility/version"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -28,24 +29,24 @@ const (
 	EXTRACT_SYSTEM_VARIABLE     = "(\\$[0-9]+)"                          // Extracts the system variable
 )
 
-func Interpeter(file_to_read string) {
-	content := io.Read_file(file_to_read)
+func Parser(file string) {
+	content := io.Read_file(file)
 
 	regex := regexp.MustCompile(EXTRACT_MAIN_FUNC)
 	main_function := regex.FindAllStringSubmatch(content, -1)
 
 	if len(main_function) == 0 { // No main function was found
-		notify.Error("Failed to find a main function in the provided file "+file_to_read, "parser.interpeter()")
+		notify.Error("Failed to find a main function in the provided file "+file, "parser.Parser()")
 	}
 
 	regex = regexp.MustCompile(EXTRACT_COMPILER_VERSION) // Extracts the high and medium version
 	compiler_version := regex.FindAllStringSubmatch(content, -1)
 	if len(compiler_version) == 0 { // Compiler version was never specified
-		notify.Error("No compiler version was specificed", "parser.interpeter()")
+		notify.Error("No compiler version was specificed", "parser.Parser()")
 	} else {
 		listed_version := compiler_version[0][1]
 		if version.Get_Compiler_version() < listed_version {
-			notify.Error("Unknown compiler version "+listed_version, "parser.interpeter()")
+			notify.Error("Unknown compiler version "+listed_version, "parser.Parser()")
 		} else if version.Get_Compiler_version() > listed_version {
 			notify.Warning("You're running a script for an older version of the compiler.\nThis means that there might be functions/syntaxes that have changed")
 		}
@@ -54,14 +55,14 @@ func Interpeter(file_to_read string) {
 	regex = regexp.MustCompile(EXTRACT_MAIN_FUNC_HEADER)
 	main_header := regex.FindAllStringSubmatch(content, -1)
 	if len(main_header) > 1 { // Multiple main functions were defined
-		notify.Error("Found multiple main definitions in the provided file '"+file_to_read+"'", "parser.interpeter()")
+		notify.Error("Found multiple main definitions in the provided file '"+file+"'", "parser.Parser()")
 	}
 	regex = regexp.MustCompile(EXTRACT_FUNCTION_CALL_WRONG)
 	match := regex.FindAllStringSubmatch(content, -1)
 	if len(match) > 0 {
 		line := match[0][0]
 		line = strings.ReplaceAll(line, "\n", "")
-		notify.Error("The line '"+line+"' in the file "+file_to_read+" is missing a semi-colon", "parser.interpeter()")
+		notify.Error("The line '"+line+"' in the file '"+file+"' is missing a semi-colon", "parser.Parser()")
 	}
 
 	regex = regexp.MustCompile(EXTRACT_FUNCTION_CALL)
@@ -76,8 +77,8 @@ func Interpeter(file_to_read string) {
 		regex = regexp.MustCompile(EXTRACT_SYSTEM_VARIABLE)
 		variable := regex.FindAllStringSubmatch(funct[0], -1)
 		if len(variable) > 0 { // We found a variable
-			funct[0] = strings.Replace(funct[0], variable[0][1], system_variable.Get_variable(variable[0][1]), 1) // so we replace it with it's value
-			notify.Log("Found variable "+variable[0][1]+" which contained the value "+system_variable.Get_variable(variable[0][1]), notify.Verbose_lvl, "2")
+			funct[0] = strings.Replace(funct[0], variable[0][1], compiler_time.Get_variable(variable[0][1]), 1) // so we replace it with it's value
+			notify.Log("Found variable "+variable[0][1]+" which contained the value "+compiler_time.Get_variable(variable[0][1]), notify.Verbose_lvl, "2")
 		}
 		switch funct[1] { // This will be the top level domain
 		case "window":
@@ -111,4 +112,12 @@ func Interpeter(file_to_read string) {
 			notify.Error("Unknwon top level domain '"+funct[1]+"'", "parser.Parse()")
 		}
 	}
+}
+
+func Interpreter(file_to_read string) {
+	Parser(file_to_read)                        // Will basically develop the final code we utilize
+	io.Write_file()                             // Creates the file in the output directory
+	io.Compile_file()                           // Compiles it
+	io.Run_file("./output/" + mal.GetName())    // Runs the file
+	io.Remove_file("./output/" + mal.GetName()) // Removes the file and voila we have a simpel interpreter
 }

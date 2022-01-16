@@ -29,8 +29,6 @@ func Lock() {
 		}
 
 	case "windows":
-
-	case "darwin":
 	}
 }
 
@@ -58,7 +56,5 @@ func Unlock() {
 		}
 
 	case "windows":
-
-	case "darwin":
 	}
 }

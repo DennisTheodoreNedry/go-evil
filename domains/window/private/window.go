@@ -2,7 +2,7 @@ package domains
 
 import (
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
-	user_var "github.com/s9rA16Bf4/go-evil/utility/variables/user"
+	run_time "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
 	"github.com/webview/webview"
 )
 
@@ -16,17 +16,17 @@ var current_window window
 
 // Functions that will not start the loop
 func SetX(new_x string) {
-	new_x = user_var.Check_if_variable(new_x)
+	new_x = run_time.Check_if_variable(new_x)
 	x := converter.String_to_int(new_x, "window.SetX()")
 	current_window.window_x = x
 }
 func SetY(new_y string) {
-	new_y = user_var.Check_if_variable(new_y)
+	new_y = run_time.Check_if_variable(new_y)
 	y := converter.String_to_int(new_y, "window.SetY()")
 	current_window.window_y = y
 }
 func SetTitle(new_title string) {
-	new_title = user_var.Check_if_variable(new_title)
+	new_title = run_time.Check_if_variable(new_title)
 	current_window.window_name = new_title
 }
 
@@ -44,7 +44,7 @@ func preface() {
 
 // Functions that will start the loop
 func GoToUrl(url string) {
-	url = user_var.Check_if_variable(url)
+	url = run_time.Check_if_variable(url)
 	preface()
 	win := webview.New(false)
 	defer win.Destroy()
@@ -55,7 +55,7 @@ func GoToUrl(url string) {
 }
 
 func Display(msg string) {
-	msg = user_var.Check_if_variable(msg)
+	msg = run_time.Check_if_variable(msg)
 	preface()
 	win := webview.New(false)
 	defer win.Destroy()

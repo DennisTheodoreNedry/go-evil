@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
-	user_var "github.com/s9rA16Bf4/go-evil/utility/variables/user"
+	run_time "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -20,27 +20,27 @@ type time_t struct { // This is utilized to set when the for loop in `run` will 
 var c_time time_t
 
 func SetYear(year string) {
-	year = user_var.Check_if_variable(year)
+	year = run_time.Check_if_variable(year)
 	value := converter.String_to_int(year, "time.SetYear()")
 	c_time.year = value
 }
 func SetMonth(month string) {
-	month = user_var.Check_if_variable(month)
+	month = run_time.Check_if_variable(month)
 	value := converter.String_to_int(month, "time.SetMonth()")
 	c_time.month = value
 }
 func SetDay(day string) {
-	day = user_var.Check_if_variable(day)
+	day = run_time.Check_if_variable(day)
 	value := converter.String_to_int(day, "time.SetDay()")
 	c_time.day = value
 }
 func SetHour(hour string) {
-	hour = user_var.Check_if_variable(hour)
+	hour = run_time.Check_if_variable(hour)
 	value := converter.String_to_int(hour, "time.SetHour()")
 	c_time.hour = value
 }
 func SetMin(min string) {
-	min = user_var.Check_if_variable(min)
+	min = run_time.Check_if_variable(min)
 	value := converter.String_to_int(min, "time.SetMin()")
 	c_time.min = value
 }

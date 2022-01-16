@@ -1,6 +1,7 @@
-package user
+package runtime
 
 import (
+	"os/user"
 	"strings"
 
 	"github.com/s9rA16Bf4/go-evil/utility/contains"
@@ -27,11 +28,19 @@ func Set_variable(value string) {
 
 func Get_variable(index string) string {
 	if index != "" && contains.StartsWith(index, []string{"€"}) { // Is it even a variable that was passed?
-		index = index[3:]                                                     // Gets whatever is left after €
-		id := converter.String_to_int(index, "variables.user.Get_variable()") // Convert
+		index = index[3:]                                              // Gets whatever is left after €
+		id := converter.String_to_int(index, "runtime.Get_variable()") // Convert
 		if id > 5 || id < 1 {
-			notify.Error("Out-of-bonds variable "+index, "variables.user.Get_variable()")
-			return "NULL"
+			if id == 666 {
+				user, err := user.Current()
+				if err != nil {
+					notify.Error(err.Error(), "runtime.Get_variable()")
+				}
+				return user.Name
+			} else {
+				notify.Error("Out-of-bonds variable "+index, "runtime.Get_variable()")
+				return "NULL"
+			}
 		}
 		return curr_var.variable[id-1] // Returns the value
 	}

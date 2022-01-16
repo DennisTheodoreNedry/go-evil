@@ -8,7 +8,7 @@ import (
 
 	"github.com/s9rA16Bf4/go-evil/utility/contains"
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
-	"github.com/s9rA16Bf4/go-evil/utility/variables/user"
+	user "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 

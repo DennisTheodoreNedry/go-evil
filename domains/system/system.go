@@ -51,6 +51,9 @@ func Parse(new_line string) {
 				mal.AddContent("syscall.Syscall(syscall.SYS_FORK, 0, 0, 0)")
 			case "in":
 				mal.AddContent("sys.User_input()")
+			case "elevate":
+				mal.AddContent("sys.Elevate()")
+
 			default:
 				function_error(function)
 			}
