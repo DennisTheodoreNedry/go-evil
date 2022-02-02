@@ -2,9 +2,9 @@ package runtime
 
 import (
 	"os/user"
+	"regexp"
 	"strings"
 
-	"github.com/s9rA16Bf4/go-evil/utility/contains"
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -17,6 +17,10 @@ type var_t struct {
 
 var curr_var var_t
 
+const (
+	EXTRACT_VARIABLE = "€[0-9]+"
+)
+
 func Set_variable(value string) {
 	if curr_var.index >= 5 {
 		curr_var.index = 0
@@ -27,24 +31,26 @@ func Set_variable(value string) {
 }
 
 func Get_variable(index string) string {
-	if index != "" && contains.StartsWith(index, []string{"€"}) { // Is it even a variable that was passed?
-		index = index[3:]                                              // Gets whatever is left after €
-		id := converter.String_to_int(index, "runtime.Get_variable()") // Convert
-		if id > 5 || id < 1 {
-			if id == 666 {
-				user, err := user.Current()
-				if err != nil {
-					notify.Error(err.Error(), "runtime.Get_variable()")
-				}
-				return user.Name
-			} else {
-				notify.Error("Out-of-bonds variable "+index, "runtime.Get_variable()")
-				return "NULL"
+	regex := regexp.MustCompile(EXTRACT_VARIABLE)
+	result := regex.FindAllStringSubmatch(index, -1)
+	if len(result) >= 1 {
+		found_value := ""
+		variable := result[0][0]
+		var_int := converter.String_to_int(variable[3:], "runtime.Get_variable()")
+		if var_int == 666 {
+			user, err := user.Current()
+			if err != nil {
+				notify.Error(err.Error(), "runtime.Get_variable()")
 			}
+			found_value = user.Name
+		} else if var_int > 0 || var_int < 6 {
+			found_value = curr_var.variable[var_int-1]
+		} else {
+			notify.Error("Illegal index "+variable, "runtime.Get_variable()")
 		}
-		return curr_var.variable[id-1] // Returns the value
+		index = strings.Replace(index, variable, found_value, 1)
 	}
-	return "NULL"
+	return index
 }
 
 func Get_latest_variable() int {

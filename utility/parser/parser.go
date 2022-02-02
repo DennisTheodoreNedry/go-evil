@@ -10,6 +10,7 @@ import (
 	"github.com/s9rA16Bf4/go-evil/domains/malware"
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
 	"github.com/s9rA16Bf4/go-evil/domains/network"
+	"github.com/s9rA16Bf4/go-evil/domains/pastebin"
 	"github.com/s9rA16Bf4/go-evil/domains/powershell"
 	"github.com/s9rA16Bf4/go-evil/domains/system"
 	"github.com/s9rA16Bf4/go-evil/domains/time"
@@ -26,7 +27,6 @@ const (
 	EXTRACT_FUNCTION_CALL       = "([@#a-z]+).*\\((.*)\\);"              // Grabs function and a potential value
 	EXTRACT_FUNCTION_CALL_WRONG = "([@#a-z]+).*\\((\"(.*)\")?\\)[^;]"    // And this is utilized to find rows that don't end in ;
 	EXTRACT_COMPILER_VERSION    = "\\[.?version +([0-9]+\\.[0-9]+).?\\]" // Extracts the major version
-	EXTRACT_SYSTEM_VARIABLE     = "(\\$[0-9]+)"                          // Extracts the system variable
 )
 
 func Parser(file string) {
@@ -74,12 +74,8 @@ func Parser(file string) {
 			continue
 		}
 
-		regex = regexp.MustCompile(EXTRACT_SYSTEM_VARIABLE)
-		variable := regex.FindAllStringSubmatch(funct[0], -1)
-		if len(variable) > 0 { // We found a variable
-			funct[0] = strings.Replace(funct[0], variable[0][1], compiler_time.Get_variable(variable[0][1]), 1) // so we replace it with it's value
-			notify.Log("Found variable "+variable[0][1]+" which contained the value "+compiler_time.Get_variable(variable[0][1]), notify.Verbose_lvl, "2")
-		}
+		funct[0] = compiler_time.Get_variable(funct[0]) // Replacing any potential variables
+
 		switch funct[1] { // This will be the top level domain
 		case "window":
 			io.Append_domain("window")
@@ -107,6 +103,9 @@ func Parser(file string) {
 		case "time", "#wait":
 			io.Append_domain("time")
 			time.Parse(funct[0])
+		case "pastebin", "#paste":
+			io.Append_domain("pastebin")
+			pastebin.Parse(funct[0])
 
 		default:
 			notify.Error("Unknwon top level domain '"+funct[1]+"'", "parser.Parse()")

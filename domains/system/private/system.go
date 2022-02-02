@@ -15,13 +15,13 @@ import (
 	"gopkg.in/go-rillas/subprocess.v1"
 )
 
-func System_exit(status_lvl string) {
+func Exit(status_lvl string) {
 	status_lvl = run_time.Check_if_variable(status_lvl)
-	value := converter.String_to_int(status_lvl, "system.System_exit()")
+	value := converter.String_to_int(status_lvl, "system.Exit()")
 	os.Exit(value)
 }
 
-func System_out(msg string) {
+func Out(msg string) {
 	msg = run_time.Check_if_variable(msg)
 	fmt.Println(msg)
 }
@@ -95,4 +95,19 @@ func Elevate() {
 			run_time.Set_variable(resp.StdOut)
 		}
 	}
+}
+
+func ReadFile(file string) {
+	file = run_time.Check_if_variable(file)
+	open_file, err := os.Open(file)
+	if err != nil {
+		notify.Error(err.Error(), "system.ReadFile()")
+	}
+	var content string
+	scanner := bufio.NewScanner(open_file)
+	scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		content += scanner.Text()
+	}
+	run_time.Set_variable(content)
 }

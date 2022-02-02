@@ -32,6 +32,7 @@ const (
 	syscall        = "\"syscall\""
 	net            = "\tnet \"github.com/s9rA16Bf4/go-evil/domains/network/private\""
 	pwsh           = "\tpwsh \"github.com/s9rA16Bf4/go-evil/domains/powershell/private\""
+	pastebin       = "\tpastebin \"github.com/s9rA16Bf4/go-evil/domains/pastebin/private\""
 
 	// Related to webview
 	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"
@@ -92,6 +93,11 @@ func Append_domain(domain string) {
 		if !find(pwsh) && !mal.Is_disabled("pwsh") {
 			notify.Log("Adding library 'powershell'", notify.Verbose_lvl, "2")
 			domains = append(domains, pwsh)
+		}
+	case "pastebin":
+		if !find(pastebin) {
+			notify.Log("Adding library 'pastebin'", notify.Verbose_lvl, "2")
+			domains = append(domains, pastebin)
 		}
 	}
 }

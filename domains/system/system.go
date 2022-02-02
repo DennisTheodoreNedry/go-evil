@@ -41,9 +41,9 @@ func Parse(new_line string) {
 			function := result[0][2]
 			switch function {
 			case "exit":
-				mal.AddContent("sys.System_exit(\"" + value + "\")")
+				mal.AddContent("sys.Exit(\"" + value + "\")")
 			case "out":
-				mal.AddContent("sys.System_out(\"" + value + "\")")
+				mal.AddContent("sys.Out(\"" + value + "\")")
 			case "add_to_startup":
 				mal.AddContent("sys.AddToStartup()")
 			case "spawn":
@@ -53,6 +53,8 @@ func Parse(new_line string) {
 				mal.AddContent("sys.User_input()")
 			case "elevate":
 				mal.AddContent("sys.Elevate()")
+			case "read_file":
+				mal.AddContent("sys.ReadFile(\"" + value + "\")")
 
 			default:
 				function_error(function)

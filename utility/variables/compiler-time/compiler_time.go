@@ -1,6 +1,9 @@
 package compiler_time
 
 import (
+	"regexp"
+	"strings"
+
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -13,6 +16,10 @@ type var_t struct {
 
 var curr_var var_t
 
+const (
+	EXTRACT_VARIABLE = "\\$[0-9]+"
+)
+
 func Set_variable(value string) {
 	if curr_var.index >= 5 {
 		curr_var.index = 0
@@ -23,18 +30,23 @@ func Set_variable(value string) {
 }
 
 func Get_variable(index string) string {
-	index = index[1:]                                                    // Gets whatever is left after $
-	id := converter.String_to_int(index, "compiler_time.Get_variable()") // Convert
-
-	if id > 5 || id < 1 {
-		notify.Error("Out-of-bonds variable "+index, "compiler_time.Get_variable()")
-		return "NULL"
+	regex := regexp.MustCompile(EXTRACT_VARIABLE)
+	result := regex.FindAllStringSubmatch(index, -1)
+	if len(result) >= 1 {
+		found_value := "NULL"
+		variable := result[0][0]
+		var_int := converter.String_to_int(variable[1:], "compilter_time.Get_variable()")
+		if var_int > 0 || var_int < 6 {
+			if curr_var.variable[var_int-1] != "" {
+				found_value = curr_var.variable[var_int-1]
+			}
+		} else {
+			notify.Error("Illegal index "+variable, "compilter_time.Get_variable()")
+		}
+		index = strings.Replace(index, variable, found_value, 1)
+		notify.Log("Found variable "+variable+" which contained the value "+found_value, notify.Verbose_lvl, "2")
 	}
-
-	if curr_var.variable[id-1] == "" { // If it's empty
-		return "NULL"
-	}
-	return curr_var.variable[id-1]
+	return index
 }
 
 func Get_latest_variable() int {
