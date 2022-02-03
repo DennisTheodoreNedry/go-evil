@@ -13,7 +13,7 @@ type paste_t struct {
 	titel      string
 	message    string
 	expiration string
-	visibility string
+	visibility int
 	returnKey  bool // Should we return the pastebin key-url? If yes then it will be added to a runtime variable
 }
 
@@ -41,11 +41,29 @@ func Set_content(msg string) {
 }
 func Set_expiration(expiration string) {
 	expiration = run_time.Check_if_variable(expiration)
-	c_paste.expiration = expiration
+
+	if expiration == "10M" || expiration == "1H" || expiration == "1W" || expiration == "2W" ||
+		expiration == "1M" || expiration == "6M" || expiration == "1Y" || expiration == "N" {
+		c_paste.expiration = expiration
+		return
+	}
+	notify.Error("Unknown expiration: "+expiration, "pastebin.Set_expiration()")
 }
 func Set_visibility(visibility string) {
 	visibility = run_time.Check_if_variable(visibility)
-	c_paste.visibility = visibility
+	if visibility == "public" || visibility == "unlisted" || visibility == "private" {
+		if visibility == "public" {
+			c_paste.visibility = 0
+		} else if visibility == "unlisted" {
+			c_paste.visibility = 1
+		} else if visibility == "private" {
+			c_paste.visibility = 2
+
+		}
+		return
+	}
+	notify.Error("Unknown visibility: "+visibility, "pastebin.Set_visibility()")
+
 }
 func Set_key(new_value string) {
 	new_value = run_time.Check_if_variable(new_value)
@@ -76,7 +94,7 @@ func Paste() {
 		c_paste.titel = "No titel"
 	}
 
-	pasteKey, err := client.CreatePaste(pastebin.NewCreatePasteRequest(c_paste.titel, c_paste.message, pastebin.ExpirationTenMinutes, pastebin.VisibilityUnlisted, "go"))
+	pasteKey, err := client.CreatePaste(pastebin.NewCreatePasteRequest(c_paste.titel, c_paste.message, pastebin.Expiration(c_paste.expiration), pastebin.Visibility(c_paste.visibility), "go"))
 	if err != nil {
 		notify.Error(err.Error(), "pastebin.Paste()")
 	}

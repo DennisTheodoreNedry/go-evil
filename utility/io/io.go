@@ -95,7 +95,7 @@ func Append_domain(domain string) {
 			domains = append(domains, pwsh)
 		}
 	case "pastebin":
-		if !find(pastebin) {
+		if !find(pastebin) && !mal.Is_disabled("pastebin") {
 			notify.Log("Adding library 'pastebin'", notify.Verbose_lvl, "2")
 			domains = append(domains, pastebin)
 		}
@@ -124,6 +124,7 @@ func Set_testMode(new_mode bool) {
 		mal.Disable_domain("sys")      // System domain
 		mal.Disable_domain("back")     // Backdoor
 		mal.Disable_domain("keyboard") // Keyboard
+		mal.Disable_domain("pastebin") // pastebin
 	}
 }
 
@@ -278,7 +279,6 @@ func Create_file(file_name string, gut []string) {
 
 func Run_file(file_path string) string {
 	resp := subprocess.RunShell("", "", file_path)
-
 	return resp.StdOut
 }
 func Remove_file(file_path string) {

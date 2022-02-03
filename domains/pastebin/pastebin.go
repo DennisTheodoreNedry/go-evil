@@ -42,7 +42,9 @@ func Parse(new_line string) {
 			case "titel":
 				mal.AddContent("pastebin.Set_titel(\"" + value + "\")")
 			case "expiration_time":
+				mal.AddContent("pastebin.Set_expiration(\"" + value + "\")")
 			case "visibility":
+				mal.AddContent("pastebin.Set_visibility(\"" + value + "\")")
 			case "key":
 				mal.AddContent("pastebin.Set_key(\"" + value + "\")")
 
