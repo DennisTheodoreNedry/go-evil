@@ -10,6 +10,7 @@ import (
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
 	"github.com/s9rA16Bf4/go-evil/utility/parser"
+	"github.com/s9rA16Bf4/go-evil/utility/version"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -27,28 +28,31 @@ func Main_menu() {
 		fmt.Printf("File name: %s\n", c_ide.file_name)
 		fmt.Println("------------------------------------")
 		fmt.Println("## Selection")
-		fmt.Println("1. (i)nsert")
-		fmt.Println("2. (e)dit")
-		fmt.Println("3. (o)pen")
-		fmt.Println("4. (r)un")
-		fmt.Println("5. (s)ave")
-		fmt.Println("6. (q)uit")
+		fmt.Println("1. insert")
+		fmt.Println("2. edit")
+		fmt.Println("3. open")
+		fmt.Println("4. run")
+		fmt.Println("5. save")
+		fmt.Println("6. info")
+		fmt.Println("7. quit")
 
 		fmt.Print(":: ")
 		var user_input string
 		fmt.Scanln(&user_input)
 		switch user_input {
-		case "i", "insert":
+		case "1", "insert":
 			insert()
-		case "e", "edit":
+		case "2", "edit":
 			edit()
-		case "o", "open":
+		case "3", "open":
 			open()
-		case "r", "run":
+		case "4", "run":
 			run()
-		case "s", "save":
+		case "5", "save":
 			save()
-		case "q", "quit":
+		case "6", "info":
+			info()
+		case "7", "quit":
 			return
 		default:
 			notify.Inform("Unknown command " + user_input)
@@ -99,6 +103,10 @@ func edit() {
 			return
 		} else {
 			i := converter.String_to_int(input, "ide.edit()")
+			if i >= len(c_ide.file_gut) || i < 0 {
+				notify.Inform("Invalid index, out-of-bounds")
+				return
+			}
 			var new_line string
 			input := bufio.NewScanner(os.Stdin)
 			for input.Scan() {
@@ -144,4 +152,8 @@ func run() {
 func save() {
 	io.Create_file("./output/"+c_ide.file_name, c_ide.file_gut)
 	notify.Inform("Successfully saved file '" + "./output/" + c_ide.file_name + "'")
+}
+
+func info() {
+	version.Get_IDE_version()
 }

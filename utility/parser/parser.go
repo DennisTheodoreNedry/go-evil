@@ -42,7 +42,7 @@ func Parser(file string) {
 	regex = regexp.MustCompile(EXTRACT_COMPILER_VERSION) // Extracts the high and medium version
 	compiler_version := regex.FindAllStringSubmatch(content, -1)
 	if len(compiler_version) == 0 { // Compiler version was never specified
-		notify.Error("No compiler version was specificed", "parser.Parser()")
+		notify.Error("No major version was specificed", "parser.Parser()")
 	} else {
 		listed_version := compiler_version[0][1]
 		if version.Get_Compiler_version() < listed_version {

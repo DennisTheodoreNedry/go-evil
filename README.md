@@ -15,7 +15,7 @@ Compiling the project is as simple as running `make` and run `make install_depen
 
 To check if the compiler is working correctly either run the following code section or run `make test/check`
 ```
-[version <compiler_version>]
+[version <major_version>]
 
 main:{
     system.out("Hello world");
@@ -30,9 +30,9 @@ Basic example showcasing how we can display a website.
 [version 1.0] @ Compiler version
 
 main:{
-    window.x("600"); @ Set the size on the x axis
-    window.y("800"); @ Set the size on the y axis
-    window.title("You just got hacked bruh!");
+    window.set.x("600"); @ Set the size on the x axis
+    window.set.y("800"); @ Set the size on the y axis
+    window.set.title("You just got hacked bruh!");
     window.goto("https://mrskeltal.com/"); @ Goes to the webiste specified
 
     system.exit("0"); @ Preventions the never ending loop

@@ -23,7 +23,7 @@ func main() {
 	arg.Argument_add("--version", "-v", false, "Prints the compiler version", []string{"NULL"})
 	arg.Argument_add("--output", "-o", true, "Name of the binary malware", []string{"NULL"})
 	arg.Argument_add("--extension", "-exe", true, "Extension of the binary malware", []string{"NULL"})
-	arg.Argument_add("--test_mode", "-tm", true, "Used to test the included examples, [THIS SHOULD NOT BE USED IN PRODUCTION]", []string{"false", "true"})
+	arg.Argument_add("--test_mode", "-tm", true, "Enables test mode on your malware, [THIS SHOULD NOT BE USED IN PRODUCTION]", []string{"false", "true"})
 	arg.Argument_add("--integrated_development_environment", "-ide", false, "A builtin ide to develop your malware in", []string{"NULL"})
 	arg.Argument_add("--interpreter", "-i", true, "A builtin interpreter that allows you to directly run your code", []string{"NULL"})
 
