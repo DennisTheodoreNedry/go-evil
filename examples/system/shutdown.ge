@@ -1,0 +1,7 @@
+@ Showcasing how the malware can shutdown a computer
+
+[version 1.1]
+
+main:{
+    system.shutdown();
+}

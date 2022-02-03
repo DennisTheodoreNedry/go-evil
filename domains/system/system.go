@@ -55,7 +55,10 @@ func Parse(new_line string) {
 				mal.AddContent("sys.Elevate()")
 			case "read_file":
 				mal.AddContent("sys.ReadFile(\"" + value + "\")")
-
+			case "reboot":
+				mal.AddContent("sys.Reboot()")
+			case "shutdown":
+				mal.AddContent("sys.Shutdown()")
 			default:
 				function_error(function)
 			}

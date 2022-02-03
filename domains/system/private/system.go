@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
+	"github.com/s9rA16Bf4/go-evil/utility/io"
 	run_time "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 	"gopkg.in/go-rillas/subprocess.v1"
@@ -110,4 +111,19 @@ func ReadFile(file string) {
 		content += scanner.Text()
 	}
 	run_time.Set_variable(content)
+}
+
+func Reboot() {
+	if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
+		io.Run_file("shutdown -r now")
+	} else if runtime.GOOS == "windows" {
+		io.Run_file("shutdown /r")
+	}
+}
+func Shutdown() {
+	if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
+		io.Run_file("shutdown -h now")
+	} else if runtime.GOOS == "windows" {
+		io.Run_file("shutdown /s")
+	}
 }

