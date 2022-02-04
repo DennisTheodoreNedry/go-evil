@@ -48,4 +48,5 @@ install_dependencies:
 	go get golang.org/x/sys
 	go get gopkg.in/go-rillas/subprocess.v1
 	go get github.com/TwiN/go-pastebin
+	go get github.com/cloudfoundry/jibber_jabber
 

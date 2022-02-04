@@ -1,5 +1,7 @@
 github.com/TwiN/go-pastebin v1.0.2 h1:1e1eohCuTRZMZ6cxuSswsCfUOvlq9NvosdP+g+yOxJ0=
 github.com/TwiN/go-pastebin v1.0.2/go.mod h1:q+APl3yzVTpYt0p49muLOwuQwGccnlc0Y6tL/UgWhRM=
+github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21 h1:tuijfIjZyjZaHq9xDUh0tNitwXshJpbLkqMOJv4H3do=
+github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21/go.mod h1:po7NpZ/QiTKzBKyrsEAxwnTamCoh8uDk/egRpQ7siIc=
 github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101091817-1486f0b90ee0 h1:fCfb8DpUix0wxDNgNk4POcI2MZ8SgFYL9GAZ3HqIbSI=
 github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101091817-1486f0b90ee0/go.mod h1:NRKlnWNTdhYI+whq5u0Dx+pH/iE+NMGg/31yuWPHwaU=
 github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101094000-f8d9d87d9f53 h1:akl2MS7V0ipKZfUr5P/3EjVxg+lfDrGgJtsy7Itv34w=

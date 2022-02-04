@@ -1,0 +1,9 @@
+@ Creates a copy of the malware and places it in the home directory of the running user
+
+[version 1.1]
+
+main:{
+    infect.set.start_after_birth();
+    infect.disk("/home/€666");
+    system.exit("0");
+}
