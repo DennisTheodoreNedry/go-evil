@@ -1,0 +1,7 @@
+@ Showcasing how you can load a built in binary
+[version 1.1]
+main:{
+    mbr.load.tetris();
+    mbr.overwrite();
+    system.reboot();
+}
