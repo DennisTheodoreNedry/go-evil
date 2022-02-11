@@ -176,6 +176,7 @@ func Write_file() {
 		_, err := write.WriteString(line + "\n")
 		if err != nil {
 			notify.Error("Failed to write to disk", "io.write_file()")
+			return
 		}
 	}
 	write.Flush()
@@ -185,6 +186,7 @@ func Read_file(file string) string {
 	file_gut, err := ioutil.ReadFile(file)
 	if err != nil {
 		notify.Error(err.Error(), "io.read_file()")
+		return ""
 	}
 	return string(file_gut)
 }
@@ -207,6 +209,7 @@ func Compile_file() {
 
 	if err != nil {
 		notify.Error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
+		return
 	}
 
 	if !debug {
@@ -217,6 +220,7 @@ func Compile_file() {
 
 		if err != nil {
 			notify.Error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
+			return
 		}
 	}
 	create_dll() // Creates only if necessary to the somewhat required dll files (only on windows)
@@ -247,15 +251,18 @@ func create_webView() {
 	response, err := http.Get(target)
 	if err != nil {
 		notify.Error(err.Error(), "io.create_webView()")
+		return
 	}
 	out, err := os.Create("output/webView.dll")
 	if err != nil {
 		notify.Error(err.Error(), "io.create_webView()")
+		return
 	}
 
 	_, err = io.Copy(out, response.Body)
 	if err != nil {
 		notify.Error(err.Error(), "io.create_webView()")
+		return
 	}
 }
 func create_WebView2Loader() {
@@ -269,15 +276,18 @@ func create_WebView2Loader() {
 	response, err := http.Get(target)
 	if err != nil {
 		notify.Error(err.Error(), "io.create_WebView2Loader()")
+		return
 	}
 	out, err := os.Create("output/WebView2Loader.dll")
 	if err != nil {
 		notify.Error(err.Error(), "io.create_WebView2Loader()")
+		return
 	}
 
 	_, err = io.Copy(out, response.Body)
 	if err != nil {
 		notify.Error(err.Error(), "io.create_WebView2Loader()")
+		return
 	}
 }
 
@@ -285,6 +295,7 @@ func Create_file(file_name string, gut []string) {
 	file, err := os.Create(file_name)
 	if err != nil {
 		notify.Error(err.Error(), "io.Create_file()")
+		return
 	}
 	write := bufio.NewWriter(file)
 	for _, line := range gut {

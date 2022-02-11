@@ -26,7 +26,9 @@ type backdoor_t struct {
 var c_back backdoor_t
 
 func Set_port(new_port string) {
-	converter.String_to_int(new_port, "backdoor.Set_port()") // Will also check if the new port is an actual int
+	if converter.String_to_int(new_port, "backdoor.Set_port()") == -1 { // Will also check if the new port is an actual int
+		return
+	}
 	c_back.port = new_port
 }
 
@@ -47,6 +49,7 @@ func Set_password(password string) {
 func Set_protocol(new_proto string) {
 	if new_proto != "tcp" && new_proto != "udp" {
 		notify.Error("Unknown network protocol '"+new_proto+"'", "backdoor.Set_protocol")
+		return
 	}
 
 	c_back.protocol = new_proto
@@ -62,6 +65,9 @@ func Set_hash(new_hash string) {
 
 func Set_read_size(new_size string) {
 	value := converter.String_to_int(new_size, "backdoor.Set_read_size()")
+	if value == -1 {
+		return
+	}
 	c_back.read_size = value
 }
 
@@ -80,6 +86,7 @@ func Start() {
 	conn, err := net.Listen(c_back.protocol, c_back.ip+":"+c_back.port)
 	if err != nil {
 		notify.Error(err.Error(), "backdoor.Start()")
+		return
 	}
 	c_back.conn = conn
 }
@@ -106,6 +113,7 @@ func Serve() {
 		active_conn.Close() // Closes the connection
 		Close()
 		notify.Error(err.Error(), "backdoor.serve()")
+		return
 	}
 	if c_back.login { // We must authenticate the user
 		for { // We will exit ony once a login is correct

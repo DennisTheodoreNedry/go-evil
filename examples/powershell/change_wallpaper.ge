@@ -4,8 +4,9 @@
 [version 1.1]
 
 main:{
+    system.elevate(); @ Tries to gain elevated priviliges
     #net.get.save_disk(); @ Save data to the disk
-    #net.get("https://wallpapertops.com/walldb/original/d/8/b/792371.jpg"); @ Fetches the disk
+    #net.get("https://wallpapertops.com/walldb/original/d/8/b/792371.jpg"); @ Fetches the image
     #pwsh.change.wallpaper("€1"); @ Changes the wallpaper to what we downloaded
     system.exit("0");
 }

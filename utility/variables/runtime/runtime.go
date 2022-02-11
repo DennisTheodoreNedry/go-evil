@@ -41,12 +41,14 @@ func Get_variable(index string) string {
 			user, err := user.Current()
 			if err != nil {
 				notify.Error(err.Error(), "runtime.Get_variable()")
+				return index
 			}
 			found_value = user.Name
 		} else if var_int > 0 || var_int < 6 {
 			found_value = curr_var.variable[var_int-1]
 		} else {
 			notify.Error("Illegal index "+variable, "runtime.Get_variable()")
+			return index
 		}
 		index = strings.Replace(index, variable, found_value, 1)
 	}

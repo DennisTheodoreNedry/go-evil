@@ -131,6 +131,7 @@ func open() {
 	file, err := os.Open(path)
 	if err != nil {
 		notify.Error(err.Error(), "ide.open()")
+		return
 	}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {

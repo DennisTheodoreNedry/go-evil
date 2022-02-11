@@ -22,32 +22,48 @@ var c_time time_t
 func SetYear(year string) {
 	year = run_time.Check_if_variable(year)
 	value := converter.String_to_int(year, "time.SetYear()")
+	if value == -1 {
+		return
+	}
 	c_time.year = value
 }
 func SetMonth(month string) {
 	month = run_time.Check_if_variable(month)
 	value := converter.String_to_int(month, "time.SetMonth()")
+	if value == -1 {
+		return
+	}
 	c_time.month = value
 }
 func SetDay(day string) {
 	day = run_time.Check_if_variable(day)
 	value := converter.String_to_int(day, "time.SetDay()")
+	if value == -1 {
+		return
+	}
 	c_time.day = value
 }
 func SetHour(hour string) {
 	hour = run_time.Check_if_variable(hour)
 	value := converter.String_to_int(hour, "time.SetHour()")
+	if value == -1 {
+		return
+	}
 	c_time.hour = value
 }
 func SetMin(min string) {
 	min = run_time.Check_if_variable(min)
 	value := converter.String_to_int(min, "time.SetMin()")
+	if value == -1 {
+		return
+	}
 	c_time.min = value
 }
 
 func Until(value string) {
 	if len(value) < 5 || len(value) > 5 {
 		notify.Error("Expected format hh:mm", "time.Until()")
+		return
 	}
 
 	SetHour(value[0:2]) // Extracts hour

@@ -1,6 +1,9 @@
 package domains
 
 import (
+	"os"
+
+	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
 	run_time "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
 	"github.com/webview/webview"
@@ -18,11 +21,17 @@ var current_window window
 func SetX(new_x string) {
 	new_x = run_time.Check_if_variable(new_x)
 	x := converter.String_to_int(new_x, "window.SetX()")
+	if x == -1 {
+		return
+	}
 	current_window.window_x = x
 }
 func SetY(new_y string) {
 	new_y = run_time.Check_if_variable(new_y)
 	y := converter.String_to_int(new_y, "window.SetY()")
+	if y == -1 {
+		return
+	}
 	current_window.window_y = y
 }
 func SetTitle(new_title string) {
@@ -62,5 +71,22 @@ func Display(msg string) {
 	win.SetTitle(current_window.window_name)
 	win.SetSize(current_window.window_y, current_window.window_x, webview.HintNone)
 	win.Navigate("data:text/html,<!doctype html><html><body><p>" + msg + "</p></body></html>")
+	win.Run()
+}
+
+func DisplayFile(file_to_display string) {
+	file_to_display = run_time.Check_if_variable(file_to_display)
+	preface()
+	win := webview.New(false)
+	defer win.Destroy()
+	win.SetTitle(current_window.window_name)
+	win.SetSize(current_window.window_y, current_window.window_x, webview.HintNone)
+
+	target := file_to_display
+	if _, err := os.Open(file_to_display); err != nil { // If the file didn't exist at the specified location
+		target = mal.Get_malware_location() + file_to_display // we will instead check local to the malware
+	}
+
+	win.Navigate("file://" + target)
 	win.Run()
 }

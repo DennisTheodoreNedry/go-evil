@@ -39,16 +39,19 @@ func Parser(file string) {
 
 	if len(main_function) == 0 { // No main function was found
 		notify.Error("Failed to find a main function in the provided file "+file, "parser.Parser()")
+		return
 	}
 
 	regex = regexp.MustCompile(EXTRACT_COMPILER_VERSION) // Extracts the high and medium version
 	compiler_version := regex.FindAllStringSubmatch(content, -1)
 	if len(compiler_version) == 0 { // Compiler version was never specified
 		notify.Error("No major version was specificed", "parser.Parser()")
+		return
 	} else {
 		listed_version := compiler_version[0][1]
 		if version.Get_Compiler_version() < listed_version {
 			notify.Error("Unknown compiler version "+listed_version, "parser.Parser()")
+			return
 		} else if version.Get_Compiler_version() > listed_version {
 			notify.Warning("You're running a script for an older version of the compiler.\nThis means that there might be functions/syntaxes that have changed")
 		}
@@ -58,6 +61,7 @@ func Parser(file string) {
 	main_header := regex.FindAllStringSubmatch(content, -1)
 	if len(main_header) > 1 { // Multiple main functions were defined
 		notify.Error("Found multiple main definitions in the provided file '"+file+"'", "parser.Parser()")
+		return
 	}
 	regex = regexp.MustCompile(EXTRACT_FUNCTION_CALL_WRONG)
 	match := regex.FindAllStringSubmatch(content, -1)
@@ -65,6 +69,7 @@ func Parser(file string) {
 		line := match[0][0]
 		line = strings.ReplaceAll(line, "\n", "")
 		notify.Error("The line '"+line+"' in the file '"+file+"' is missing a semi-colon", "parser.Parser()")
+		return
 	}
 
 	regex = regexp.MustCompile(EXTRACT_FUNCTION_CALL)
@@ -117,6 +122,7 @@ func Parser(file string) {
 
 		default:
 			notify.Error("Unknwon top level domain '"+funct[1]+"'", "parser.Parse()")
+			return
 		}
 	}
 }

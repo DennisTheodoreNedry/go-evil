@@ -44,6 +44,13 @@ func Parse(new_line string) {
 			default:
 				function_error(function)
 			}
+		case "set":
+			switch function {
+			case "execution_policy":
+				mal.AddContent("pwsh.Change_wallpaper(\"" + value + "\")")
+			default:
+				function_error(function)
+			}
 
 		default:
 			subdomain_error(subdomain)

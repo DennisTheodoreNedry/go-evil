@@ -25,6 +25,7 @@ func Generate_random_path() string {
 		dirs, err := os.ReadDir(start)
 		if err != nil {
 			notify.Error(err.Error(), "path.Generate_random_path()")
+			return "./"
 		}
 		if len(dirs) == 0 {
 			break // We can't continue

@@ -19,6 +19,9 @@ import (
 func Exit(status_lvl string) {
 	status_lvl = run_time.Check_if_variable(status_lvl)
 	value := converter.String_to_int(status_lvl, "system.Exit()")
+	if value == -1 {
+		return
+	}
 	os.Exit(value)
 }
 
@@ -89,6 +92,7 @@ func Elevate() {
 		user, err := user.Current()
 		if err != nil {
 			notify.Error(err.Error(), "system.Elevate()")
+			return
 		}
 		if user.Username != "root" { // We are not root
 			executable_location = "sudo " + executable_location
@@ -103,6 +107,7 @@ func ReadFile(file string) {
 	open_file, err := os.Open(file)
 	if err != nil {
 		notify.Error(err.Error(), "system.ReadFile()")
+		return
 	}
 	var content string
 	scanner := bufio.NewScanner(open_file)

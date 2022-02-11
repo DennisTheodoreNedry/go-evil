@@ -80,11 +80,13 @@ func Set_key(new_value string) {
 func Paste() {
 	if c_paste.username == "" || c_paste.password == "" || c_paste.token == "" {
 		notify.Error("Pastebin hasn't been setup correctly! Make sure that username, password and token is assigned", "pastebin.Paste()")
+		return
 	}
 
 	client, err := pastebin.NewClient(c_paste.username, c_paste.password, c_paste.token)
 	if err != nil {
 		notify.Error(err.Error(), "pastebin.Paste()")
+		return
 	}
 
 	if c_paste.message == "" {
@@ -97,6 +99,7 @@ func Paste() {
 	pasteKey, err := client.CreatePaste(pastebin.NewCreatePasteRequest(c_paste.titel, c_paste.message, pastebin.Expiration(c_paste.expiration), pastebin.Visibility(c_paste.visibility), "go"))
 	if err != nil {
 		notify.Error(err.Error(), "pastebin.Paste()")
+		return
 	}
 
 	if c_paste.returnKey { // Save the key only if the user requested it

@@ -40,6 +40,13 @@ func Parse(new_line string) {
 			default:
 				function_error(function)
 			}
+		case "display":
+			switch function {
+			case "file":
+				mal.AddContent("win.DisplayFile(\"" + value + "\")")
+			default:
+				function_error(function)
+			}
 		default:
 			subdomain_error(subdomain)
 		}

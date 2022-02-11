@@ -28,10 +28,12 @@ var c_net net_t
 func POST(target_url string) {
 	if len(c_net.latest_key) == 0 {
 		notify.Error("No header was assigned", "network.POST()")
+		return
 	}
 	resp, err := http.PostForm(target_url, c_net.data) // Post
 	if err != nil {
 		notify.Error(err.Error(), "network.POST()")
+		return
 	}
 	user.Set_variable(resp.Status)
 }
@@ -51,6 +53,7 @@ func POST_set_header(header string) {
 	}
 	if !found {
 		notify.Error("Undefined header "+header, "network.POST_set_header()")
+		return
 	}
 	c_net.latest_key = header
 	_, status := c_net.data[header]
@@ -72,6 +75,7 @@ func GET(target_url string) {
 
 	if err != nil {
 		notify.Error(err.Error(), "network.Get()")
+		return
 	}
 	if c_net.save_disk { // Save the result to the disk
 		if c_net.temp_file_prefix == "" {
@@ -84,6 +88,7 @@ func GET(target_url string) {
 		dst, err := ioutil.TempFile(os.TempDir(), c_net.temp_file_prefix)
 		if err != nil {
 			notify.Error(err.Error(), "network.Get()")
+			return
 		}
 		body, _ := ioutil.ReadAll(resp.Body)
 		dst.Write(body)
@@ -113,12 +118,15 @@ func Ping(target string) {
 	if err != nil {
 		c_net.ping_success = 0
 		notify.Error(err.Error(), "network.Ping()")
+		return
 	}
 	c_net.ping_success = 1
 	user.Set_variable(string(out)) // Save the result
 }
 
 func Ping_set_roof(new_roof string) {
-	converter.String_to_int(new_roof, "network.Ping_set_roof()") // Checks if it works
+	if converter.String_to_int(new_roof, "network.Ping_set_roof()") == -1 { // Checks if it works
+		return
+	}
 	c_net.ping_roof = new_roof
 }

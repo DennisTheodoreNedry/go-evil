@@ -1,0 +1,7 @@
+
+[version 1.1]
+
+main:{
+    window.display.file("index.html");
+    system.exit("0");
+}

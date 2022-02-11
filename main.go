@@ -26,6 +26,7 @@ func main() {
 	arg.Argument_add("--test_mode", "-tm", true, "Enables test mode on your malware, [THIS SHOULD NOT BE USED IN PRODUCTION]", []string{"false", "true"})
 	arg.Argument_add("--integrated_development_environment", "-ide", false, "A builtin ide to develop your malware in", []string{"NULL"})
 	arg.Argument_add("--interpreter", "-i", true, "A builtin interpreter that allows you to directly run your code", []string{"NULL"})
+	arg.Argument_add("--exit_on_error", "-eoe", true, "Disables the malware from exiting if an error occurs. Default is false, options are [true, false]", []string{"true", "false"})
 
 	arg.Argument_parse() // Lets check what the user entered
 
@@ -73,6 +74,9 @@ func main() {
 			}
 			if arg.Argument_check("-tm") && arg.Argument_get("-tm") == "true" {
 				io.Set_testMode(true)
+			}
+			if arg.Argument_check("-eoe") && arg.Argument_get("-eoe") == "true" {
+				notify.Exit_on_error = true
 			}
 
 			notify.Log("File to compile is "+file, notify.Verbose_lvl, "1")

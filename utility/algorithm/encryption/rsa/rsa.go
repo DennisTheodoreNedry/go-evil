@@ -24,12 +24,17 @@ var c_rsa rsa_t
 
 func RSA_generate_private_keys(length string) {
 	value := converter.String_to_int(length, "rsa.RSA_generate_private_keys()") // If this succedes we will have a int value
+	if value == -1 {
+		return
+	}
 	if value < 1024 || value > 4096 {
 		notify.Error("Key length was either too short or too long, should exist within 1024 - 4096", "rsa.RSA_generate_private_keys()")
+		return
 	}
 	private_key, err := rsa.GenerateKey(rand.Reader, value)
 	if err != nil {
 		notify.Error(err.Error(), "rsa.RSA_generate_private_keys()")
+		return
 	}
 	c_rsa.private_key = private_key          // assign private
 	c_rsa.public_key = private_key.PublicKey // assign public
@@ -41,6 +46,7 @@ func RSA_encrypt(msg string) {
 
 	if err != nil {
 		notify.Error(err.Error(), "rsa.RSA_encrypt()")
+		return
 	}
 	c_rsa.encrypted_msg = base64.StdEncoding.EncodeToString(ciphertext)
 }
@@ -50,6 +56,7 @@ func RSA_decrypt(msg string) {
 	plaintext, err := rsa.DecryptOAEP(sha256.New(), rand.Reader, c_rsa.private_key, msg_b, []byte(c_rsa.random_label))
 	if err != nil {
 		notify.Error(err.Error(), "rsa.RSA_decrypt()")
+		return
 	}
 	c_rsa.decrypted_msg = string(plaintext)
 }

@@ -27,6 +27,7 @@ func Set_hash(hash_to_use string) {
 	}
 	if !found {
 		notify.Error("Unknown hash "+hash_to_use, "attack_vector.Set_hash()")
+		return
 	}
 	curr_hash.hash_func = hash_to_use
 }
