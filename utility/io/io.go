@@ -192,7 +192,7 @@ func Read_file(file string) string {
 }
 
 func Compile_file() {
-	if runtime.GOOS == "windows" && mal.GetExtension() == "" {
+	if os.Getenv("GOOS") == "windows" && mal.GetExtension() == "" {
 		mal.SetExtension(".exe") // Apparently golang on windows doesn't do this automatically
 		notify.Log("Setting .exe extension on the target file", notify.Verbose_lvl, "3")
 	}

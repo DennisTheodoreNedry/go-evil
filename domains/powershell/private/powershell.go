@@ -1,6 +1,7 @@
 package powershell
 
 import (
+	"fmt"
 	"os/exec"
 	"runtime"
 	"strings"
@@ -20,9 +21,10 @@ func Disable_defender() {
 func Change_wallpaper(path_to_new_wallpaper string) {
 	if runtime.GOOS == "windows" {
 		path_to_new_wallpaper = run_time.Check_if_variable(path_to_new_wallpaper)
-		subprocess.RunShell("powershell", "-Command", "{reg", "add", "HKEY_CURRENT_USER\\Control Panel\\Desktop", "/v", "Wallpaper", "/t", "REG_SZ", "/d", "h:\\"+path_to_new_wallpaper, "/f}")
-		subprocess.RunShell("powershell", "-Command", "{Start-Sleep", "-s", "10}")
-		subprocess.RunShell("powershell", "-Command", "{rundll32.exe user32.dll, UpdatePerUserSystemParameters, 0, $false}")
+		resp := subprocess.RunShell("powershell", "-Command", "{", "set-itemproperty", "-path", "\"HKCU:Control Panel\\Desktop\"", "-name", "WallPaper", "-value", path_to_new_wallpaper, "}")
+		fmt.Println(resp)
+		subprocess.RunShell("powershell", "-Command", "{", "Start-Sleep", "-s", "10", "}")
+		subprocess.RunShell("powershell", "-Command", "{", "rundll32.exe", "user32.dll", ",", "UpdatePerUserSystemParameters", ",", "0", ",", "$false", "}")
 
 	}
 }
