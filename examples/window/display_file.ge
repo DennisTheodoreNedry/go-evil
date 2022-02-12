@@ -1,4 +1,4 @@
-
+@ Displays a file 'index.html' if it exists in the same directory as the malware
 [version 1.1]
 
 main:{
