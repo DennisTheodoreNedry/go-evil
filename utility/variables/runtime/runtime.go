@@ -13,6 +13,10 @@ type var_t struct {
 	variable        [5]string // €1 - €5
 	index           int       // Where we currently are in the array above
 	latest_variable int       // Which was the latest variable that we modified
+
+	static_index           int          // Where we currently are in the static array
+	static_variables       [10][]string // Static variables that range from $10 - $20
+	latest_static_variable int          // Last modified static variable
 }
 
 var curr_var var_t
@@ -44,11 +48,20 @@ func Get_variable(index string) string {
 				return index
 			}
 			found_value = user.Name
-		} else if var_int > 0 || var_int < 6 {
+		} else if var_int > 0 && var_int < 6 {
 			found_value = curr_var.variable[var_int-1]
 		} else {
-			notify.Error("Illegal index "+variable, "runtime.Get_variable()")
-			return index
+			if var_int > 9 && var_int < 21 { // Range of static variables
+				for _, line := range curr_var.static_variables[var_int-10] {
+					if line != "" { // It contains something
+						found_value = strings.Join(curr_var.static_variables[var_int-10], "\n")
+						break
+					}
+				}
+			} else {
+				notify.Error("Illegal index "+variable, "runtime.Get_variable()")
+				return index
+			}
 		}
 		index = strings.Replace(index, variable, found_value, 1)
 	}
@@ -76,9 +89,22 @@ func Check_if_variable(input string) string {
 			variable += string(c)
 		}
 	}
-	if Get_variable(variable) != "NULL" && Get_variable(variable) != "" {
+	if Get_variable(variable) != "" {
 		input = strings.Replace(input, variable, Get_variable(variable), 1)
 	}
 
 	return input
+}
+
+func Set_Static_Variable(new_value []string) {
+	if curr_var.static_index >= 10 {
+		curr_var.static_index = 0
+	}
+	curr_var.latest_static_variable = curr_var.static_index
+	curr_var.static_variables[curr_var.static_index] = new_value
+	curr_var.static_index++ // Index to the next address
+}
+
+func Get_latest_static_variable() int {
+	return curr_var.latest_static_variable
 }

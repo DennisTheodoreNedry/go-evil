@@ -17,11 +17,11 @@ main:{
 
     #paste.set.content("€1"); @ Post the public key
     #paste.paste();
-    system.out("Key: €3");
+    system.io.out("Key: €3");
 
     #paste.set.content("€2"); @ Post the private key
     #paste.paste();
-    system.out("Key: €4");
+    system.io.out("Key: €4");
 
     system.exit("0");
 }

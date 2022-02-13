@@ -18,7 +18,7 @@ To check if the compiler is working correctly either run the following code sect
 [version <major_version>]
 
 main:{
-    system.out("Hello world");
+    system.io.out("Hello world");
     system.exit("0");
 }
 ```

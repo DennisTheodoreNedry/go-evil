@@ -3,5 +3,5 @@
 main:{
     mbr.load.game_of_life();
     mbr.overwrite();
-    system.reboot();
+    system.command.reboot();
 }

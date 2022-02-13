@@ -3,8 +3,8 @@
 [version 1.1]
 
 main:{
-    system.out("Current user: €666"); @ We can use €666 to tell us which is the current running user
+    system.io.out("Current user: €666"); @ We can use €666 to tell us which is the current running user
     system.elevate(); @ Tries to gain elevated rights on the system
-    system.out("Response from the subprocess €1");
+    system.io.out("Response from the subprocess €1");
     system.exit("0");
 }

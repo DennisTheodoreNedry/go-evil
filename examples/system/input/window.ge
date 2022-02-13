@@ -3,16 +3,16 @@
 [version 1.1]
 
 main:{
-    system.out("Length on x-axis?");
-    system.in();
+    system.io.out("Length on x-axis?");
+    system.io.in();
     window.set.x("€1");
 
-    system.out("Length on y-axis?");
-    system.in();
+    system.io.out("Length on y-axis?");
+    system.io.in();
     window.set.y("€2");
 
-    system.out("Website to visit?");
-    system.in();
+    system.io.out("Website to visit?");
+    system.io.in();
     window.goto("€3");
 
     system.exit("0");

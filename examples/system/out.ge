@@ -2,6 +2,6 @@
 
 [version 1.1]
 main:{
-    system.out("Hello, World!");
+    system.io.out("Hello, World!");
     system.exit("0");
 }

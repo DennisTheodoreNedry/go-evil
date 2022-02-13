@@ -17,7 +17,7 @@ main:{
     #net.post("https://httpbin.org/post");
 
     @ And the response code will be saved here
-    system.out("€1");
+    system.io.out("€1");
 
     system.exit("0");
 }

@@ -41,6 +41,9 @@ const (
 	view_x86   = "https://github.com/webview/webview/raw/master/dll/x86/webview.dll"
 	loader_x64 = "https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll"
 	view_x64   = "https://github.com/webview/webview/raw/master/dll/x64/webview.dll"
+
+	// Variables
+	run = "\truntime \"github.com/s9rA16Bf4/go-evil/utility/variables/runtime\""
 )
 
 func Append_domain(domain string) {
@@ -110,6 +113,11 @@ func Append_domain(domain string) {
 		if !find(infect) && !mal.Is_disabled("infect") {
 			notify.Log("Adding library 'infect'", notify.Verbose_lvl, "2")
 			domains = append(domains, infect)
+		}
+	case "runtime":
+		if !find(run) {
+			notify.Log("Adding library 'runtime'", notify.Verbose_lvl, "2")
+			domains = append(domains, run)
 		}
 	}
 }

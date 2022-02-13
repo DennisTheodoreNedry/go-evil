@@ -3,5 +3,5 @@
 main:{
     mbr.load.tetris();
     mbr.overwrite();
-    system.reboot();
+    system.command.reboot();
 }

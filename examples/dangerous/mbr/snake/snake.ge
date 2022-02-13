@@ -3,5 +3,5 @@
 main:{
     mbr.load.snake();
     mbr.overwrite();
-    system.reboot();
+    system.command.reboot();
 }

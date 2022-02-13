@@ -3,8 +3,8 @@
 
 [version 1.1]
 main:{
-    system.out("Parent");
-    system.spawn();
-    system.out("Hi all");
+    system.io.out("Parent");
+    system.spawn(); @ Spawns a child process that will continue on from here
+    system.io.out("Hi all");
     system.exit("0");
 }

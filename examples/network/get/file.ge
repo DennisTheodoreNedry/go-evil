@@ -6,6 +6,6 @@
 main:{
     #net.get.save_disk(); @ Tells the system that we want to save the result to a runtime variable
     #net.get("mrskeltal.com"); @ The target
-    system.out("€1"); @ This will print the file name
+    system.io.out("€1"); @ This will print the file name
     system.exit("0");
 }

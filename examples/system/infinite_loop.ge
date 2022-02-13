@@ -2,5 +2,5 @@
 
 [version 1.1]
 main:{
-    system.out("This is an infinite loop");
+    system.io.out("This is an infinite loop");
 }

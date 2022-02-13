@@ -28,9 +28,43 @@ func Parse(new_line string) {
 
 	if len(result) > 0 { // There is a subdomain to extract
 		subdomain := result[0][2]
-		//function := result[0][3]
+		function := result[0][3]
 
 		switch subdomain {
+		case "command":
+			switch function {
+			case "run":
+				mal.AddContent("sys.RunCommand(\"" + value + "\")")
+			case "reboot":
+				mal.AddContent("sys.Reboot()")
+			case "shutdown":
+				mal.AddContent("sys.Shutdown()")
+			default:
+				function_error(function)
+			}
+		case "io":
+			switch function {
+			case "in":
+				mal.AddContent("sys.User_input()")
+			case "out":
+				mal.AddContent("sys.Out(\"" + value + "\")")
+			case "read_file":
+				mal.AddContent("sys.ReadFile(\"" + value + "\")")
+			case "write_file":
+				mal.AddContent("sys.CreateFile(\"" + value + "\")")
+			default:
+				function_error(function)
+			}
+
+		case "set":
+			switch function {
+			case "file_name":
+				mal.AddContent("sys.Set_filename(\"" + value + "\")")
+			case "output":
+				mal.AddContent("sys.Set_output(\"" + value + "\")")
+			default:
+				function_error(function)
+			}
 		default:
 			subdomain_error(subdomain)
 		}
@@ -42,23 +76,13 @@ func Parse(new_line string) {
 			switch function {
 			case "exit":
 				mal.AddContent("sys.Exit(\"" + value + "\")")
-			case "out":
-				mal.AddContent("sys.Out(\"" + value + "\")")
 			case "add_to_startup":
 				mal.AddContent("sys.AddToStartup()")
 			case "spawn":
 				io.Append_domain("syscall") // Needed
 				mal.AddContent("syscall.Syscall(syscall.SYS_FORK, 0, 0, 0)")
-			case "in":
-				mal.AddContent("sys.User_input()")
 			case "elevate":
 				mal.AddContent("sys.Elevate()")
-			case "read_file":
-				mal.AddContent("sys.ReadFile(\"" + value + "\")")
-			case "reboot":
-				mal.AddContent("sys.Reboot()")
-			case "shutdown":
-				mal.AddContent("sys.Shutdown()")
 			default:
 				function_error(function)
 			}

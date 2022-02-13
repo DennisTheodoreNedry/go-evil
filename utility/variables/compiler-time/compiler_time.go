@@ -43,6 +43,7 @@ func Get_variable(index string) string {
 		} else {
 			notify.Error("Illegal index "+variable, "compilter_time.Get_variable()")
 			return index
+
 		}
 		index = strings.Replace(index, variable, found_value, 1)
 		notify.Log("Found variable "+variable+" which contained the value "+found_value, notify.Verbose_lvl, "2")
