@@ -14,4 +14,6 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Install dependencies
+      run: make install_dependencies    
+    - name: Compile
       run: make
