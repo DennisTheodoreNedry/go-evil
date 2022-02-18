@@ -1,6 +1,6 @@
 @ Basic example of a backdoor
 
-[version 1.1]
+[version 1.0]
 main:{
     system.io.out("Starting backdoor");
     backdoor.start(); @ Bind a port (default is 8888) on the localhost

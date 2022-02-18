@@ -1,6 +1,6 @@
 @ Waits until 23:47 today before executing
 
-[version 1.1]
+[version 1.0]
 main:{
     time.until("23:47"); @ Will wait until 23:47 until contuining execution
     system.io.out("Hello");

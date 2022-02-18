@@ -1,6 +1,6 @@
 @ Example that shows how to utilize the builtin login system
 
-[version 1.1]
+[version 1.0]
 main:{
     attack.set.hash("sha256"); @ Set which hashing algorithm we will use
     attack.hash("user"); @ Hashes our username, this will be saved in $1
