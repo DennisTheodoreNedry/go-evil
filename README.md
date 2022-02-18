@@ -1,9 +1,5 @@
 # Go evil
 
-[<!--lint ignore no-dead-urls-->![GitHub Actions status](https://github.com/s9rA16Bf4/go-evil/workflows/Building%20on%20latest%20ubuntu/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions?workflow=Building+on+latest+ubuntu)
-[<!--lint ignore no-dead-urls-->![GitHub Actions status](https://github.com/s9rA16Bf4/go-evil/workflows/Building%20on%20latest%20macos/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions?workflow=Building+on+latest+macos)
-[<!--lint ignore no-dead-urls-->![GitHub Actions status](https://github.com/s9rA16Bf4/go-evil/workflows/Building%20on%20latest%20windows/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions?workflow=Building+on+latest+windows)
-
 <img src="https://github.com/s9rA16Bf4/go-evil/blob/unstable/pictures/logo.png" width="650"/>
 
 Go-evil is a red teams wet dream, a tool to beat all other tools of it's kind.<br>
