@@ -16,4 +16,6 @@ jobs:
 
       
     - name: Install dependencies
+      run: make install_dependencies    
+    - name: Compile
       run: make
