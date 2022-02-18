@@ -3,6 +3,6 @@
 [version 1.0]
 main:{
     time.until("23:47"); @ Will wait until 23:47 until contuining execution
-    system.out("Hello");
-    system.exit("0");
+    system.io.out("Hello");
+    system.exit("0"); @ Remove this line if you want it to loop
 }

@@ -1,3 +1,7 @@
+github.com/TwiN/go-pastebin v1.0.2 h1:1e1eohCuTRZMZ6cxuSswsCfUOvlq9NvosdP+g+yOxJ0=
+github.com/TwiN/go-pastebin v1.0.2/go.mod h1:q+APl3yzVTpYt0p49muLOwuQwGccnlc0Y6tL/UgWhRM=
+github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21 h1:tuijfIjZyjZaHq9xDUh0tNitwXshJpbLkqMOJv4H3do=
+github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21/go.mod h1:po7NpZ/QiTKzBKyrsEAxwnTamCoh8uDk/egRpQ7siIc=
 github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101091817-1486f0b90ee0 h1:fCfb8DpUix0wxDNgNk4POcI2MZ8SgFYL9GAZ3HqIbSI=
 github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101091817-1486f0b90ee0/go.mod h1:NRKlnWNTdhYI+whq5u0Dx+pH/iE+NMGg/31yuWPHwaU=
 github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220101094000-f8d9d87d9f53 h1:akl2MS7V0ipKZfUr5P/3EjVxg+lfDrGgJtsy7Itv34w=
@@ -6,6 +10,8 @@ github.com/s9rA16Bf4/notify_handler v0.0.0-20220101093549-e3d8c2b26911 h1:P6zYAT
 github.com/s9rA16Bf4/notify_handler v0.0.0-20220101093549-e3d8c2b26911/go.mod h1:QNjxlxplV4bgRq0hMkD/ssRExdUmsuqql+lRh9afWgA=
 github.com/s9rA16Bf4/notify_handler v0.0.0-20220101100229-7200575df531 h1:qq/j13qkGGKjgRbzvnpbc3YYclS3mFhyztzJU3cMPls=
 github.com/s9rA16Bf4/notify_handler v0.0.0-20220101100229-7200575df531/go.mod h1:QNjxlxplV4bgRq0hMkD/ssRExdUmsuqql+lRh9afWgA=
+github.com/s9rA16Bf4/notify_handler v0.0.0-20220208193125-57a8d2d1a641 h1:IEe8Ypfpm0SQes/XPZTyFZiAL+sLYhqYm338/ybdaj4=
+github.com/s9rA16Bf4/notify_handler v0.0.0-20220208193125-57a8d2d1a641/go.mod h1:QNjxlxplV4bgRq0hMkD/ssRExdUmsuqql+lRh9afWgA=
 github.com/thanhpk/randstr v1.0.4 h1:IN78qu/bR+My+gHCvMEXhR/i5oriVHcTB/BJJIRTsNo=
 github.com/thanhpk/randstr v1.0.4/go.mod h1:M/H2P1eNLZzlDwAzpkkkUvoyNNMbzRGhESZuEQk3r0U=
 github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e h1:z780M7mCrdt6KiICeW9SGirvQjxDlrVU+n99FO93nbI=
@@ -16,3 +22,5 @@ golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1 h1:SrN+KX8Art/Sf4HNj6Zcz06G7
 golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e h1:fLOSk5Q00efkSvAm+4xcoXD+RRmLmmulPn5I3Y9F2EM=
 golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+gopkg.in/go-rillas/subprocess.v1 v1.0.1 h1:7BKf22lkgKdPh5/tnAtUI9oE3BQNwaAlCB4g4DMcuvw=
+gopkg.in/go-rillas/subprocess.v1 v1.0.1/go.mod h1:SEn6IkZR3/CKq2aWTZbCyXDKR1NBUr72knNTVL7vdeo=

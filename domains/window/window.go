@@ -1,66 +1,74 @@
-package domains
+package window
 
 import (
-	"github.com/s9rA16Bf4/go-evil/utility/converter"
+	"regexp"
+
+	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
-	"github.com/webview/webview"
 )
 
-type window struct {
-	window_name string // Window name
-	window_x    int    // Length on x axis
-	window_y    int    // Length on y axis
-}
+const (
+	EXTRACT_SUBDOMAIN      = "(window)\\.(.+)\\.(.+)\\(.*\\);" // Captures subdomain and function
+	EXTRACT_FUNCTION_VALUE = ".+\\(\"(.*)\"\\);"               // Grabs the value being passed to the function
+	EXTRACT_FUNCTION       = "(window)\\.(.+)\\(.*\\);"        // This is for the cases when we don't have a subdomain
+)
 
-var current_window window
-
-// Functions that will not start the loop
-func SetX(new_x string) {
-	x := converter.String_to_int(new_x, "window.SetX()")
-	notify.Log("Setting the length of the x axis to "+new_x, notify.Verbose_lvl, "3")
-	current_window.window_x = x
-}
-func SetY(new_y string) {
-	y := converter.String_to_int(new_y, "window.SetY()")
-	notify.Log("Setting the length of the y axis to "+new_y, notify.Verbose_lvl, "3")
-	current_window.window_y = y
-}
-func SetTitle(new_title string) {
-	notify.Log("Setting the window title to "+new_title, notify.Verbose_lvl, "3")
-	current_window.window_name = new_title
-}
-
-func preface() {
-	if current_window.window_name == "" { // The user never told us what kind of name the window should utilize
-		SetTitle("Untitled")
+func Parse(new_line string) {
+	regex := regexp.MustCompile(EXTRACT_FUNCTION_VALUE)
+	result := regex.FindAllStringSubmatch(new_line, -1)
+	var value string
+	if len(result) > 0 {
+		value = result[0][1]
+	} else {
+		value = "NULL"
 	}
-	if current_window.window_y == 0 { // The user never specificed the length on the y axis
-		SetY("400")
-	}
-	if current_window.window_x == 0 { // The user never specificed the length on the x axis
-		SetX("200")
+	regex = regexp.MustCompile(EXTRACT_SUBDOMAIN)
+	result = regex.FindAllStringSubmatch(new_line, -1)
+
+	if len(result) > 0 { // There is a subdomain to extract
+		subdomain := result[0][2]
+		function := result[0][3]
+		switch subdomain {
+		case "set":
+			switch function {
+			case "x":
+				mal.AddContent("win.SetX(\"" + value + "\")")
+			case "y":
+				mal.AddContent("win.SetY(\"" + value + "\")")
+			case "title":
+				mal.AddContent("win.SetTitle(\"" + value + "\")")
+			default:
+				function_error(function)
+			}
+		case "display":
+			switch function {
+			case "file":
+				mal.AddContent("win.DisplayFile(\"" + value + "\")")
+			default:
+				function_error(function)
+			}
+		default:
+			subdomain_error(subdomain)
+		}
+	} else { // There might be a function which doesn't require a subdomain to work
+		regex = regexp.MustCompile(EXTRACT_FUNCTION)
+		result = regex.FindAllStringSubmatch(new_line, -1)
+		if len(result) > 0 {
+			function := result[0][2]
+			switch function {
+			case "goto":
+				mal.AddContent("win.GoToUrl(\"" + value + "\")")
+			case "display":
+				mal.AddContent("win.Display(\"" + value + "\")")
+			default:
+				function_error(function)
+			}
+		}
 	}
 }
-
-// Functions that will start the loop
-func GoToUrl(url string) {
-	notify.Log("Will set the target url to "+url, notify.Verbose_lvl, "3")
-	preface()
-	win := webview.New(false)
-	defer win.Destroy()
-	win.SetTitle(current_window.window_name)
-	win.SetSize(current_window.window_y, current_window.window_x, webview.HintNone)
-	win.Navigate(url)
-	win.Run()
+func subdomain_error(subdomain string) {
+	notify.Error("Unknown subdomain '"+subdomain+"'", "window.Parse()")
 }
-
-func Display(msg string) {
-	notify.Log("Will display the message "+msg, notify.Verbose_lvl, "3")
-	preface()
-	win := webview.New(false)
-	defer win.Destroy()
-	win.SetTitle(current_window.window_name)
-	win.SetSize(current_window.window_y, current_window.window_x, webview.HintNone)
-	win.Navigate("data:text/html,<!doctype html><html><body><p>" + msg + "</p></body></html>")
-	win.Run()
+func function_error(function string) {
+	notify.Error("Unknown function '"+function+"'", "window.Parse()")
 }

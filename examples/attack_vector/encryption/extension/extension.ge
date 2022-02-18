@@ -2,10 +2,10 @@
 
 [version 1.0]
 main:{
-    attack.set_extension(".xlsx");
-    attack.set_extension(".very_important_extension"); @ You can even add multipile extensions to target
-    attack.set_target("examples/attack_vector/encryption/extension/target_folder"); @ Target folder
-    attack.set_encryption("rsa"); @ Encryption/Decryption method
+    attack.set.extension(".xlsx");
+    attack.set.extension(".very_important_extension"); @ You can even add multipile extensions to target
+    attack.set.target("examples/attack_vector/encryption/extension/target_folder"); @ Target folder
+    attack.set.encryption("rsa"); @ Encryption/Decryption method
     
     attack.encrypt();
     attack.decrypt();

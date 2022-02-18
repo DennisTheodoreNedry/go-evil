@@ -1,0 +1,9 @@
+
+
+[version 1.1]
+
+main:{
+    system.command.run("echo hello");
+    system.io.out("Output from the previous command was €1");
+    system.exit("0");
+}

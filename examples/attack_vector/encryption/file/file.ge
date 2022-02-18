@@ -2,11 +2,11 @@
 
 [version 1.0]
 main:{
-    attack.set_target("examples/attack_vector/encryption/file/testfile.txt"); @ Just must keep in mind were the binary malware is being run from for this to work
-    attack.set_encryption("aes");
+    attack.set.target("examples/attack_vector/encryption/file/testfile.txt"); @ Just must keep in mind were the binary malware is being run from for this to work
+    attack.set.encryption("aes");
     attack.encrypt();
 
-    attack.set_target("examples/attack_vector/encryption/file/testfile.txt_encrypted");
+    attack.set.target("examples/attack_vector/encryption/file/testfile.txt_encrypted");
     attack.decrypt();
     
     system.exit("0");

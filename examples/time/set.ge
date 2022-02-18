@@ -2,13 +2,13 @@
 
 [version 1.0]
 main:{
-    time.year("2022");
-    time.month("01");
-    time.day("01");
-    time.hour("00");
-    time.min("00");
+    time.set.year("2022");
+    time.set.month("01");
+    time.set.day("01");
+    time.set.hour("00");
+    time.set.min("00");
     time.run();
 
-    system.out("Happy new year's!");
+    system.io.out("Happy new year's!");
     system.exit("0");
 }

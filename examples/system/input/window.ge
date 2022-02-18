@@ -1,0 +1,19 @@
+@ Showcasing how you can combine the builtin webview with a runtime variable
+
+[version 1.1]
+
+main:{
+    system.io.out("Length on x-axis?");
+    system.io.in();
+    window.set.x("€1");
+
+    system.io.out("Length on y-axis?");
+    system.io.in();
+    window.set.y("€2");
+
+    system.io.out("Website to visit?");
+    system.io.in();
+    window.goto("€3");
+
+    system.exit("0");
+}

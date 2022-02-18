@@ -6,14 +6,15 @@ from itertools import chain
 def list_files(dir, parent):
     toReturn = []
     for child in dir:
-        child = parent+child
-        if os.path.isdir(child):
-            output = list_files(os.listdir(child), child+"/")
-            if len(output) > 0:
-                toReturn.append(output)
-        else:
-            if child.endswith(".ge"): # The only thing we care about
-                toReturn.append(child)
+        if (child != "dangerous"):
+            child = parent+child
+            if os.path.isdir(child):
+                output = list_files(os.listdir(child), child+"/")
+                if len(output) > 0:
+                    toReturn.append(output)
+            else:
+                if child.endswith(".ge"): # The only thing we care about
+                    toReturn.append(child)
     return toReturn
 
 def write_to_file(all_examples):
@@ -39,7 +40,7 @@ def algorithm(input_list):
 
 def main():
     high_lvl_dir = os.listdir("examples/")
-    high_lvl_dir.pop() # The last entry is this file
+    high_lvl_dir.remove("generate_list_of_examples.py")
     all_examples_found = list_files(high_lvl_dir, "examples/")
     final = algorithm(all_examples_found)
     write_to_file(final)
