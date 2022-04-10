@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	EVIL_VERSION     = "1.1.0"           // high version. medium version. small version
+	EVIL_VERSION     = "1.1.1"           // high version. medium version. small version
 	IDE_VERSION      = "1.0.1"           // Version of the builtin ide
 	EXTRACT_COMPILER = "([0-9]\\.[0-9])" // Extracts the high and medium version of the compiler
 )

@@ -1,13 +1,14 @@
 package main
 
 import (
+	"encoding/base64"
+	"fmt"
 	"os"
 	"runtime"
 
 	arg "github.com/s9rA16Bf4/ArgumentParser/go/arguments"
-	malware "github.com/s9rA16Bf4/go-evil/domains/malware/private"
 	"github.com/s9rA16Bf4/go-evil/utility/ide"
-	"github.com/s9rA16Bf4/go-evil/utility/io"
+	"github.com/s9rA16Bf4/go-evil/utility/json"
 	"github.com/s9rA16Bf4/go-evil/utility/parser"
 	"github.com/s9rA16Bf4/go-evil/utility/version"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
@@ -40,62 +41,74 @@ func main() {
 		} else if arg.Argument_check("-i") {
 			parser.Interpreter(arg.Argument_get("-i"))
 		} else {
-			var file = ""                      // Which file to compile
-			var target_platform = runtime.GOOS // Default is the current system we are running on
-			var architecture = runtime.GOARCH  // Default is the architecture we are currently running on
+			json_object := json.Create_object()
+			json_object.Host_OS = runtime.GOOS
+			json_object.Append_to_call("main")
 
 			if arg.Argument_check("-tp") { // The user specificed a target platform
-				io.Set_target_OS(arg.Argument_get("-tp"))
+				json_object.Target_OS = arg.Argument_get("-tp")
 			} else {
-				io.Set_target_OS(target_platform)
+				json_object.Target_OS = runtime.GOOS
 			}
 			if arg.Argument_check("-ta") {
-				io.Set_target_ARCH(arg.Argument_get("-ta"))
+				json_object.Target_ARCH = arg.Argument_get("-ta")
 			} else {
-				io.Set_target_ARCH(architecture)
+				json_object.Target_ARCH = runtime.GOARCH
 			}
 			if !arg.Argument_check("-f") {
 				notify.Error("The '--file'/'-f' flag was not passed.", "main.main()")
 			} else {
-				file = arg.Argument_get("-f") // Get the file
+				json_object.File = arg.Argument_get("-f") // Get and remember the file
 			}
 			if arg.Argument_check("-vv") {
-				notify.Verbose_lvl = arg.Argument_get("-vv")
-				notify.Log("Setting verbose level to "+notify.Verbose_lvl, notify.Verbose_lvl, "1")
+				json_object.Verbose_LVL = arg.Argument_get("-vv")
+				notify.Log("Setting verbose level to "+json_object.Verbose_LVL, json_object.Verbose_LVL, "1")
+			} else {
+				json_object.Verbose_LVL = "0"
 			}
+
 			if arg.Argument_check("-d") && arg.Argument_get("-d") == "true" {
-				io.Set_debug(true)
+				json_object.Debug = true
+			} else {
+				json_object.Debug = false
 			}
+
 			if arg.Argument_check("-o") {
-				malware.SetBinaryName(arg.Argument_get("-o"))
+				json_object.Binary_name = arg.Argument_get("-o")
 			}
 			if arg.Argument_check("-exe") {
-				malware.SetExtension(arg.Argument_get("-exe"))
+				json_object.Binary_name = arg.Argument_get("-exe")
 			}
 			if arg.Argument_check("-tm") && arg.Argument_get("-tm") == "true" {
-				io.Set_testMode(true)
+				json_object.TestMode = arg.Argument_get("-tm")
 			}
 			if arg.Argument_check("-eoe") && arg.Argument_get("-eoe") == "true" {
 				notify.Exit_on_error = true
 			}
 
-			notify.Log("File to compile is "+file, notify.Verbose_lvl, "1")
-			notify.Log("Malware will be compiled against "+target_platform, notify.Verbose_lvl, "2")
-			notify.Log("Malware will be compiled against a "+architecture+" architecture", notify.Verbose_lvl, "2")
+			notify.Log("File to compile is "+json_object.File, json_object.Verbose_LVL, "1")
+			notify.Log("Malware will be compiled against "+json_object.Target_OS, json_object.Verbose_LVL, "2")
+			notify.Log("Malware will be compiled against a "+json_object.Target_ARCH+" architecture", json_object.Verbose_LVL, "2")
 			if arg.Argument_get("-tm") == "true" {
-				notify.Log("Malware will be compiled in test mode", notify.Verbose_lvl, "2")
+				notify.Log("Malware will be compiled in test mode", json_object.Verbose_LVL, "2")
 			} else {
-				notify.Log("Malware will be compiled in production mode", notify.Verbose_lvl, "2")
+				notify.Log("Malware will be compiled in production mode", json_object.Verbose_LVL, "2")
 			}
 
+			base_64_serialize_json := base64.StdEncoding.EncodeToString(json.Convert_to_json(json_object))
+
 			// Run the parser
-			parser.Parser(file)
+			base_64_serialize_json = parser.Parser(base_64_serialize_json)
+			serialize_json, _ := base64.StdEncoding.DecodeString(base_64_serialize_json)
+			data_structure := json.Convert_to_data_t(serialize_json)
+
+			fmt.Println(string(json.Convert_to_json(data_structure)))
 
 			// Run compiler on the interpreted material
-			io.Write_file()   // The interpreter has filled the internal array with the correct go code, so this will dump it to a file
-			io.Compile_file() // This compiles the previously written code into a functioan program
-
+			//io.Write_file()   // The interpreter has filled the internal array with the correct go code, so this will dump it to a file
+			//io.Compile_file() // This compiles the previously written code into a functioan program
 		}
+
 	} else {
 		notify.Error("No argument was provided, run '--help'/'-h' to have a look at the arguments available", "main.main()")
 	}
