@@ -50,22 +50,22 @@ func Hashing_sha512(value string) string {
 }
 
 func Hashing_sha3_224(value string) string {
-	temp := sha3.New224().Sum([]byte(value))
+	temp := sha3.Sum224([]byte(value))
 	compiler_time.Set_variable(hex.EncodeToString(temp[:]))
 	return hex.EncodeToString(temp[:])
 }
 func Hashing_sha3_256(value string) string {
-	temp := sha3.New256().Sum([]byte(value))
+	temp := sha3.Sum256([]byte(value))
 	compiler_time.Set_variable(hex.EncodeToString(temp[:]))
 	return hex.EncodeToString(temp[:])
 }
 func Hashing_sha3_384(value string) string {
-	temp := sha3.New384().Sum([]byte(value))
+	temp := sha3.Sum384([]byte(value))
 	compiler_time.Set_variable(hex.EncodeToString(temp[:]))
 	return hex.EncodeToString(temp[:])
 }
 func Hashing_sha3_512(value string) string {
-	temp := sha3.New512().Sum([]byte(value))
+	temp := sha3.Sum512([]byte(value))
 	compiler_time.Set_variable(hex.EncodeToString(temp[:]))
 	return hex.EncodeToString(temp[:])
 }

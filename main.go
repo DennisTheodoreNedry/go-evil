@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/base64"
 	"fmt"
 	"os"
 	"runtime"
@@ -16,18 +15,19 @@ import (
 
 func main() {
 	arg.Argument_add("--help", "-h", false, "Shows all available arguments and their purpose", []string{"NULL"})
-	arg.Argument_add("--target_platform", "-tp", true, "For which platform should the malware be compiled for, options are [darwin, linux, windows]", []string{"darwin", "linux", "windows"})
-	arg.Argument_add("--target_architecture", "-ta", true, "For which architecture should the malware be compiled for, options are [amd64, i386]", []string{"amd64", "i386"})
+	arg.Argument_add("--target_platform", "-tp", true, "For which platform should the malware be compiled for", []string{"darwin", "linux", "windows"})
+	arg.Argument_add("--target_architecture", "-ta", true, "For which architecture should the malware be compiled for", []string{"amd64", "i386"})
 	arg.Argument_add("--file", "-f", true, "File to compile [REQUIRED]", []string{"NULL"})
-	arg.Argument_add("--verbose", "-vv", true, "How verbose should the program be, options are [0,1,2,3]", []string{"0", "1", "2", "3"})
-	arg.Argument_add("--debug", "-d", true, "Debug iptions, options are [false, true]", []string{"false", "true"})
+	arg.Argument_add("--verbose", "-vv", true, "How verbose should the program be", []string{"0", "1", "2", "3"})
+	arg.Argument_add("--debug", "-d", true, "Debug iptions", []string{"false", "true"})
 	arg.Argument_add("--version", "-v", false, "Prints the compiler version", []string{"NULL"})
 	arg.Argument_add("--output", "-o", true, "Name of the binary malware", []string{"NULL"})
 	arg.Argument_add("--extension", "-exe", true, "Extension of the binary malware", []string{"NULL"})
 	arg.Argument_add("--test_mode", "-tm", true, "Enables test mode on your malware, [THIS SHOULD NOT BE USED IN PRODUCTION]", []string{"false", "true"})
 	arg.Argument_add("--integrated_development_environment", "-ide", false, "A builtin ide to develop your malware in", []string{"NULL"})
 	arg.Argument_add("--interpreter", "-i", true, "A builtin interpreter that allows you to directly run your code", []string{"NULL"})
-	arg.Argument_add("--exit_on_error", "-eoe", true, "Disables the malware from exiting if an error occurs. Default is false, options are [true, false]", []string{"true", "false"})
+	arg.Argument_add("--exit_on_error", "-eoe", true, "Disables the malware from exiting if an error occurs. Default is false", []string{"true", "false"})
+	arg.Argument_add("--print_json_data", "-pjd", false, "Prints the finalized json structure after compiling a file", []string{"NULL"})
 
 	arg.Argument_parse() // Lets check what the user entered
 
@@ -80,33 +80,32 @@ func main() {
 				json_object.Binary_name = arg.Argument_get("-exe")
 			}
 			if arg.Argument_check("-tm") && arg.Argument_get("-tm") == "true" {
-				json_object.TestMode = arg.Argument_get("-tm")
+				json_object.TestMode = true
+				notify.Log("Malware will be compiled in test mode", json_object.Verbose_LVL, "2")
+			} else {
+				json_object.TestMode = false
+				notify.Log("Malware will be compiled in production mode", json_object.Verbose_LVL, "2")
 			}
+
 			if arg.Argument_check("-eoe") && arg.Argument_get("-eoe") == "true" {
 				notify.Exit_on_error = true
 			}
 
-			notify.Log("File to compile is "+json_object.File, json_object.Verbose_LVL, "1")
-			notify.Log("Malware will be compiled against "+json_object.Target_OS, json_object.Verbose_LVL, "2")
-			notify.Log("Malware will be compiled against a "+json_object.Target_ARCH+" architecture", json_object.Verbose_LVL, "2")
-			if arg.Argument_get("-tm") == "true" {
-				notify.Log("Malware will be compiled in test mode", json_object.Verbose_LVL, "2")
-			} else {
-				notify.Log("Malware will be compiled in production mode", json_object.Verbose_LVL, "2")
-			}
-
-			base_64_serialize_json := base64.StdEncoding.EncodeToString(json.Convert_to_json(json_object))
+			notify.Log(fmt.Sprintf("File to compile is '%s'", json_object.File), json_object.Verbose_LVL, "1")
+			notify.Log(fmt.Sprintf("Malware will be compiled against '%s'", json_object.Target_OS), json_object.Verbose_LVL, "2")
+			notify.Log(fmt.Sprintf("Malware will be compiled against a '%s' architecture", json_object.Target_ARCH), json_object.Verbose_LVL, "2")
 
 			// Run the parser
-			base_64_serialize_json = parser.Parser(base_64_serialize_json)
-			serialize_json, _ := base64.StdEncoding.DecodeString(base_64_serialize_json)
-			data_structure := json.Convert_to_data_t(serialize_json)
-
-			fmt.Println(string(json.Convert_to_json(data_structure)))
+			base_64_serialize_json := parser.Parser(json.Send(json_object))
+			data_structure := json.Receive(base_64_serialize_json)
 
 			// Run compiler on the interpreted material
 			//io.Write_file()   // The interpreter has filled the internal array with the correct go code, so this will dump it to a file
 			//io.Compile_file() // This compiles the previously written code into a functioan program
+
+			if arg.Argument_check("-pjd") {
+				fmt.Println(string(json.Convert_to_json(data_structure)))
+			}
 		}
 
 	} else {

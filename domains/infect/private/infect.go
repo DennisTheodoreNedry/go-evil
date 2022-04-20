@@ -83,6 +83,6 @@ func Disk_random() {
 		Set_infection_count("5")
 	}
 	for i := 0; i < c_infect.count; i++ {
-		Disk(path.Generate_random_path())
+		Disk(path.Generate_random_path(3))
 	}
 }

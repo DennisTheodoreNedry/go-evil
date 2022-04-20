@@ -66,6 +66,7 @@ func Parse(new_line string) {
 		}
 	}
 }
+
 func subdomain_error(subdomain string) {
 	notify.Error("Unknown subdomain '"+subdomain+"'", "window.Parse()")
 }

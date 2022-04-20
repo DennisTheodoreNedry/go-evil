@@ -74,9 +74,9 @@ func SetEncryptionMethod(method string) {
 
 	c_target.encryption_method = method
 	if method == "rsa" {
-		enc_rsa.RSA_generate_private_keys("2048")
+		enc_rsa.Generate_private_keys("2048")
 	} else {
-		enc_aes.AES_generate_private_keys()
+		enc_aes.Generate_private_keys()
 	}
 }
 
@@ -124,11 +124,11 @@ func EncryptFile(file string) {
 
 	for file_out.Scan() { // Line for line
 		if c_target.encryption_method == "rsa" {
-			enc_rsa.RSA_encrypt(file_out.Text())                     // Gets the next line
-			enc_file.WriteString(enc_rsa.RSA_get_encrypted() + "\n") // Gets the encrypted line and writes it to disk
+			enc_rsa.Encrypt(file_out.Text())                         // Gets the next line
+			enc_file.WriteString(enc_rsa.Get_encrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
 		} else if c_target.encryption_method == "aes" {
-			enc_aes.AES_encrypt(file_out.Text())                   // Gets the next line
-			enc_file.WriteString(enc_aes.AES_get_encrypt() + "\n") // Gets the encrypted line and writes it to disk
+			enc_aes.Encrypt(file_out.Text())                         // Gets the next line
+			enc_file.WriteString(enc_aes.Get_encrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
 		}
 	}
 	// Remove the file we encrypted
@@ -159,11 +159,11 @@ func DecryptFile(file string) {
 	file_out := bufio.NewScanner(in) // The files contents
 	for file_out.Scan() {            // Line for line
 		if c_target.encryption_method == "rsa" {
-			enc_rsa.RSA_decrypt(file_out.Text())                     // Gets the next line
-			enc_file.WriteString(enc_rsa.RSA_get_decrypted() + "\n") // Gets the encrypted line and writes it to disk
+			enc_rsa.Decrypt(file_out.Text())                         // Gets the next line
+			enc_file.WriteString(enc_rsa.Get_decrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
 		} else if c_target.encryption_method == "aes" {
-			enc_aes.AES_decrypt(file_out.Text())                     // Gets the next line
-			enc_file.WriteString(enc_aes.AES_get_decrypted() + "\n") // Gets the encrypted line and writes it to disk
+			enc_aes.Decrypt(file_out.Text())                         // Gets the next line
+			enc_file.WriteString(enc_aes.Get_decrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
 		}
 	}
 }
