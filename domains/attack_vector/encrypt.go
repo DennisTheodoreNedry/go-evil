@@ -1,4 +1,4 @@
-package encrypt
+package attack_vector
 
 import (
 	"bufio"

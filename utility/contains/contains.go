@@ -1,7 +1,13 @@
 package contains
 
 import (
+	"regexp"
+
 	"github.com/s9rA16Bf4/go-evil/utility/reverse"
+)
+
+const (
+	EXTRACT_FUNCTION_VALUE = ".+\\(\"(.*)\"\\);" // Grabs the value being passed to the function
 )
 
 func StartsWith(string_to_look_in string, what_to_look_for []string) bool {
@@ -68,4 +74,16 @@ func Contains(string_to_look_in string, string_to_look_for string) bool {
 	}
 
 	return toReturn
+}
+
+func Passed_value(line string) string {
+	regex := regexp.MustCompile(EXTRACT_FUNCTION_VALUE)
+	result := regex.FindAllStringSubmatch(line, -1)
+	var value string
+	if len(result) > 0 {
+		value = result[0][1]
+	} else {
+		value = "NULL"
+	}
+	return value
 }

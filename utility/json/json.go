@@ -17,35 +17,44 @@ type data_t struct {
 	File_lines int      `json:"FileRowCount"` // Amount of rows in the file
 	File_count int      `json:"FileCount"`    // The amount of rows in `File_gut`
 
-	Target_OS   string `json:"TOS"`   // The OS you're targeting
-	Target_ARCH string `json:"TARCH"` // Target architecture
-	Host_OS     string `json:"HOS"`   // The current running os
+	Target_OS   string `json:"Target_OS"`   // The OS you're targeting
+	Target_ARCH string `json:"Target_ARCH"` // Target architecture
+	Host_OS     string `json:"Host_OS"`     // The current running os
 
-	Binary_name string `json:"BinName"` // The binary malware name
-	Extension   string `json:"Ext"`     // Extension of the malware
+	Binary_name string `json:"BinaryName"` // The binary malware name
+	Extension   string `json:"Extension"`  // Extension of the malware
 
-	Debug    bool `json:"Debug"`    // Debug mode
-	TestMode bool `json:"TestMode"` // Test mode, it's different from debug and can be seen as the counterpart to production mode
+	DebugMode bool `json:"DebugMode"`       // Debug mode, doesn't delete the malware go file after compilation
+	TestMode  bool `json:"TestMode"`        // Test mode, disables domains and tries to test all examples
+	DevelMode bool `json:"DevelopmentMode"` // Development mode, essentially a global flag that informs the end user that usage may vary
 
 	Verbose_LVL  string   `json:"VerLV"`       // Verbose level
 	Call_history []string `json:"CallHistory"` // A string array containing all the functions we have passed through
 
 	Malware_gut []string `json:"MalwareLine"` // The content of the malware
 
-	File_Domains     []string `json:"UsedDomains"`     // The domains that were used in the extracted file
-	Imported_headers []string `json:"ImportedHeaders"` // The imported headers
+	File_Headers     []string `json:"UsedHeaders"`     // The encountered headers
+	Imported_headers []string `json:"ImportedHeaders"` // The user specificed headers
+	Disabled_domains []string `json:"DisabledHeaders"` // Headers that have been set to be disabled during this run
 
-	Compile_Time_variables []string `json:"CompTimeVar"`   // The variables themself
-	Compile_Time_value     []string `json:"CompTimeValue"` // The values of the defined compile time variables
-	Compile_Time_amount    int      `json:"CompTimeAmo"`   // The amount of defined compile time variables
+	Compile_Time_variables []string `json:"CompTimeVar"`    // The variables themself
+	Compile_Time_value     []string `json:"CompTimeValue"`  // The values of the defined compile time variables
+	Compile_Time_amount    int      `json:"CompTimeAmount"` // The amount of defined compile time variables
 
-	Run_Time_variables []string `json:"RunTimeVar"` // The variables themself
-	Run_Time_amount    int      `json:"RunTimeAmo"` // The amount of defined run time variables
+	Run_Time_variables []string `json:"RunTimeVar"`    // The variables themself
+	Run_Time_amount    int      `json:"RunTimeAmount"` // The amount of defined run time variables
+
+	Disable_region []string `json:"DisableRegion"` // The malware will not run on these regions
+
+	Infection_count int `json:"Infection_Count"`
+
+	Start_on_birth bool `json:"Start_on_birth"`
 }
 
 func (json_object *data_t) Set_creation_time() {
 	json_object.Creation_Time = time.Now().String()
 }
+
 func (json_object *data_t) Set_update_time() {
 	json_object.Update_Time = time.Now().String()
 }
@@ -55,9 +64,20 @@ func (json_object *data_t) Append_to_call(new_call string) {
 	json_object.Set_update_time()
 }
 
-func (json_object *data_t) Append_new_imported_domain(new_header string) {
+func (json_object *data_t) Append_imported_domain(new_header string) {
+
+	for _, already_imported_header := range json_object.Imported_headers {
+		if already_imported_header == new_header { // The header already exist, no need to add it
+			return
+		}
+	}
+
 	json_object.Imported_headers = append(json_object.Imported_headers, new_header)
 	json_object.Set_update_time()
+}
+
+func (json_object *data_t) Get_imported_domain() []string {
+	return json_object.Imported_headers
 }
 
 func (json_object *data_t) Append_file_gut(new_line string) {
@@ -72,12 +92,25 @@ func (json_object *data_t) Add_file_row() {
 }
 
 func (json_object *data_t) Append_File_domain(new_domain string) {
-	json_object.File_Domains = append(json_object.File_Domains, new_domain)
+
+	for _, already_imported_header := range json_object.File_Headers {
+		if already_imported_header == new_domain { // The header already exist, no need to add it
+			return
+		}
+	}
+
+	for _, disabled_domains := range json_object.Disabled_domains {
+		if disabled_domains == new_domain { // The header is disabled, so ignore it.
+			return
+		}
+	}
+
+	json_object.File_Headers = append(json_object.File_Headers, new_domain)
 	json_object.Set_update_time()
 }
 
 func (json_object *data_t) Get_File_domain() []string {
-	return json_object.File_Domains
+	return json_object.File_Headers
 }
 
 func (json_object *data_t) Append_malware_gut(new_line string) {
@@ -85,11 +118,16 @@ func (json_object *data_t) Append_malware_gut(new_line string) {
 	json_object.Set_update_time()
 }
 
+func (json_object *data_t) Get_malware_gut() []string {
+	return json_object.Malware_gut
+}
+
 func (json_object *data_t) Append_compile_time_var(new_var string) {
 	json_object.Compile_Time_variables = append(json_object.Compile_Time_variables, new_var)
 	json_object.Compile_Time_amount += 1
 	json_object.Set_update_time()
 }
+
 func (json_object *data_t) Append_compile_time_value(new_value string) {
 	json_object.Compile_Time_value = append(json_object.Compile_Time_value, new_value)
 	json_object.Set_update_time()
@@ -101,8 +139,69 @@ func (json_object *data_t) Append_run_time_var(new_var string) {
 	json_object.Set_update_time()
 }
 
+func (json_object *data_t) Set_Extension(new_ext string) {
+	json_object.Extension = new_ext
+	json_object.Set_update_time()
+}
+
+func (json_object *data_t) Get_Extension() string {
+	return json_object.Extension
+}
+
+func (json_object *data_t) Set_binary_name(new_name string) {
+	json_object.Binary_name = new_name
+	json_object.Set_update_time()
+}
+func (json_object *data_t) Get_binary_name() string {
+	return json_object.Binary_name
+}
+
+func (json_object *data_t) Append_disabled_domain(new_header string) {
+	for _, already_imported_header := range json_object.Disabled_domains {
+		if already_imported_header == new_header { // The header already exist, no need to add it
+			return
+		}
+	}
+
+	json_object.Disabled_domains = append(json_object.Disabled_domains, new_header)
+	json_object.Set_update_time()
+}
+
+func (json_object *data_t) Append_disabled_region(new_region string) {
+	for _, line := range json_object.Disable_region {
+		if line == new_region { // Region is already marked
+			return
+		}
+	}
+
+	json_object.Disable_region = append(json_object.Disabled_domains, new_region)
+	json_object.Set_update_time()
+}
+
+func (json_object *data_t) Set_infect_count(new_count int) {
+	json_object.Infection_count = new_count
+	json_object.Set_update_time()
+}
+
+func (json_object *data_t) Get_infect_count() int {
+	return json_object.Infection_count
+}
+
+func (json_object *data_t) Start_malware_on_birth(status bool) {
+	json_object.Start_on_birth = status
+	json_object.Set_update_time()
+}
+
+func (json_object *data_t) Get_status_start_malware_on_birth() bool {
+	return json_object.Start_on_birth
+}
+
+// General functions
 func Create_object() data_t {
 	var new_json data_t
+
+	new_json.DevelMode = true
+
 	new_json.Set_creation_time() // Sets the time
 	return new_json
 }

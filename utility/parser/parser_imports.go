@@ -20,7 +20,7 @@ func Imports(base_64_serialize_json string) string {
 	for _, line := range data_structure.File_gut {
 		result := regex.FindAllStringSubmatch(line, -1)
 		if len(result) > 0 {
-			data_structure.Append_new_imported_domain(result[0][1])
+			data_structure.Append_imported_domain(result[0][1])
 		}
 	}
 

@@ -6,7 +6,7 @@ import (
 	"runtime"
 
 	arg "github.com/s9rA16Bf4/ArgumentParser/go/arguments"
-	"github.com/s9rA16Bf4/go-evil/utility/ide"
+	"github.com/s9rA16Bf4/go-evil/utility/io"
 	"github.com/s9rA16Bf4/go-evil/utility/json"
 	"github.com/s9rA16Bf4/go-evil/utility/parser"
 	"github.com/s9rA16Bf4/go-evil/utility/version"
@@ -24,27 +24,23 @@ func main() {
 	arg.Argument_add("--output", "-o", true, "Name of the binary malware", []string{"NULL"})
 	arg.Argument_add("--extension", "-exe", true, "Extension of the binary malware", []string{"NULL"})
 	arg.Argument_add("--test_mode", "-tm", true, "Enables test mode on your malware, [THIS SHOULD NOT BE USED IN PRODUCTION]", []string{"false", "true"})
-	arg.Argument_add("--integrated_development_environment", "-ide", false, "A builtin ide to develop your malware in", []string{"NULL"})
 	arg.Argument_add("--interpreter", "-i", true, "A builtin interpreter that allows you to directly run your code", []string{"NULL"})
 	arg.Argument_add("--exit_on_error", "-eoe", true, "Disables the malware from exiting if an error occurs. Default is false", []string{"true", "false"})
 	arg.Argument_add("--print_json_data", "-pjd", false, "Prints the finalized json structure after compiling a file", []string{"NULL"})
 
 	arg.Argument_parse() // Lets check what the user entered
+	json_object := json.Create_object()
+	json_object.Host_OS = runtime.GOOS
+	json_object.Append_to_call("main")
 
 	if len(os.Args[0:]) > 1 { // The user entered something
 		if arg.Argument_check("-h") {
 			arg.Argument_help()
 		} else if arg.Argument_check("-v") {
 			version.Print_version()
-		} else if arg.Argument_check("-ide") {
-			ide.Main_menu()
 		} else if arg.Argument_check("-i") {
-			parser.Interpreter(arg.Argument_get("-i"))
+			parser.Interpreter(arg.Argument_get("-i"), json.Send(json_object))
 		} else {
-			json_object := json.Create_object()
-			json_object.Host_OS = runtime.GOOS
-			json_object.Append_to_call("main")
-
 			if arg.Argument_check("-tp") { // The user specificed a target platform
 				json_object.Target_OS = arg.Argument_get("-tp")
 			} else {
@@ -68,9 +64,9 @@ func main() {
 			}
 
 			if arg.Argument_check("-d") && arg.Argument_get("-d") == "true" {
-				json_object.Debug = true
+				json_object.DebugMode = true
 			} else {
-				json_object.Debug = false
+				json_object.DebugMode = false
 			}
 
 			if arg.Argument_check("-o") {
@@ -100,10 +96,10 @@ func main() {
 			data_structure := json.Receive(base_64_serialize_json)
 
 			// Run compiler on the interpreted material
-			//io.Write_file()   // The interpreter has filled the internal array with the correct go code, so this will dump it to a file
-			//io.Compile_file() // This compiles the previously written code into a functioan program
+			data_structure = json.Receive(io.Write_file(json.Send(data_structure)))   // The interpreter has filled the internal array with the correct go code, so this will dump it to a file
+			data_structure = json.Receive(io.Compile_file(json.Send(data_structure))) // This compiles the previously written code into a functioan program
 
-			if arg.Argument_check("-pjd") {
+			if arg.Argument_check("-pjd") { // These names are gonna give me a stroke
 				fmt.Println(string(json.Convert_to_json(data_structure)))
 			}
 		}
