@@ -1,6 +1,7 @@
 
 
-[version 1.1]
+[version 1.2]
+use system;
 
 main:{
     system.command.run("echo hello");

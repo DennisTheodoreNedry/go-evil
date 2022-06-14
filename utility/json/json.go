@@ -24,9 +24,7 @@ type data_t struct {
 	Binary_name string `json:"BinaryName"` // The binary malware name
 	Extension   string `json:"Extension"`  // Extension of the malware
 
-	DebugMode bool `json:"DebugMode"`       // Debug mode, doesn't delete the malware go file after compilation
-	TestMode  bool `json:"TestMode"`        // Test mode, disables domains and tries to test all examples
-	DevelMode bool `json:"DevelopmentMode"` // Development mode, essentially a global flag that informs the end user that usage may vary
+	DebugMode bool `json:"DebugMode"` // Debug mode, doesn't delete the malware go file after compilation
 
 	Verbose_LVL  string   `json:"VerLV"`       // Verbose level
 	Call_history []string `json:"CallHistory"` // A string array containing all the functions we have passed through
@@ -78,6 +76,17 @@ func (json_object *data_t) Append_imported_domain(new_header string) {
 
 func (json_object *data_t) Get_imported_domain() []string {
 	return json_object.Imported_headers
+}
+
+func (json_object *data_t) Is_imported(domain string) bool {
+	toReturn := false
+
+	for _, imported_domain := range json_object.Imported_headers {
+		if imported_domain == domain { // Has this domain been imported?
+			toReturn = true
+		}
+	}
+	return toReturn
 }
 
 func (json_object *data_t) Append_file_gut(new_line string) {
@@ -199,8 +208,6 @@ func (json_object *data_t) Get_status_start_malware_on_birth() bool {
 // General functions
 func Create_object() data_t {
 	var new_json data_t
-
-	new_json.DevelMode = true
 
 	new_json.Set_creation_time() // Sets the time
 	return new_json

@@ -1,6 +1,7 @@
 package attack_vector
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/s9rA16Bf4/go-evil/utility/algorithm/hash"
@@ -26,8 +27,7 @@ func Set_hash(hash_to_use string) {
 		}
 	}
 	if !found {
-		notify.Error("Unknown hash "+hash_to_use, "attack_vector.Set_hash()")
-		return
+		notify.Error(fmt.Sprintf("Unknown hash %s", hash_to_use), "attack_vector.Set_hash()")
 	}
 	curr_hash.hash_func = hash_to_use
 }

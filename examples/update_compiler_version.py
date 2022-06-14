@@ -27,6 +27,6 @@ def main():
 
 if __name__ == "__main__":
     if not path.exists("examples/examples.txt"):
-        run(["python", "examples/generate_list_of_examples.py"]) # Needs to exist
+        run(["python3", "examples/generate_list_of_examples.py"]) # Needs to exist
 
     main()

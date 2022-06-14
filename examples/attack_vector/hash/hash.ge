@@ -1,6 +1,10 @@
 @ Example showcasing a basic MD5 hash
 
-[version 1.0]
+[version 1.2]
+
+use attack;
+use system;
+
 main:{
     attack.set.hash("md5");
     attack.hash("hello world!");

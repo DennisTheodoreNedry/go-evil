@@ -102,13 +102,14 @@ func Elevate() {
 		user, err := user.Current()
 		if err != nil {
 			notify.Error(err.Error(), "system.Elevate()")
-			return
+		} else {
+			if user.Username != "root" { // We are not root
+				executable_location = "sudo " + executable_location
+				resp := subprocess.RunShell("", "", strings.Split(executable_location, " ")...)
+				run_time.Set_variable(resp.StdOut)
+			}
 		}
-		if user.Username != "root" { // We are not root
-			executable_location = "sudo " + executable_location
-			resp := subprocess.RunShell("", "", strings.Split(executable_location, " ")...)
-			run_time.Set_variable(resp.StdOut)
-		}
+
 	}
 }
 
@@ -117,15 +118,16 @@ func ReadFile(file string) {
 	open_file, err := os.Open(file)
 	if err != nil {
 		notify.Error(err.Error(), "system.ReadFile()")
-		return
+	} else {
+		var content string
+		scanner := bufio.NewScanner(open_file)
+		scanner.Split(bufio.ScanLines)
+		for scanner.Scan() {
+			content += scanner.Text()
+		}
+		run_time.Set_variable(content)
 	}
-	var content string
-	scanner := bufio.NewScanner(open_file)
-	scanner.Split(bufio.ScanLines)
-	for scanner.Scan() {
-		content += scanner.Text()
-	}
-	run_time.Set_variable(content)
+
 }
 
 func Reboot() {
@@ -156,22 +158,22 @@ func CreateFile(content string) {
 	file, err := os.Create(c_system.output_directory + c_system.file_name)
 	if err != nil {
 		notify.Error(err.Error(), "system.CreateFile()")
-		return
-	}
-
-	_, err = hex.DecodeString(content)
-	if err == nil { // Its a text
-		file.WriteString(content)
 	} else {
-		splitted_data := strings.Split(content, "\n")
-		for _, read_data := range splitted_data {
-			data, _ := hex.DecodeString(read_data)
-			file.Write(data)
+		_, err = hex.DecodeString(content)
+		if err == nil { // Its a text
+			file.WriteString(content)
+		} else {
+			splitted_data := strings.Split(content, "\n")
+			for _, read_data := range splitted_data {
+				data, _ := hex.DecodeString(read_data)
+				file.Write(data)
+			}
 		}
+
+		file.Close()
+		run_time.Set_variable(c_system.file_name) // Filename
 	}
 
-	file.Close()
-	run_time.Set_variable(c_system.file_name) // Filename
 }
 
 func RunCommand(command string) {

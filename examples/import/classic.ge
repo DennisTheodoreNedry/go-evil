@@ -2,7 +2,7 @@
 @ When using 'use' you must include all domains that you're gonna use
 @ Meaning that if you would include the line 'window.display("Hello, world!");' will end in an error
 
-[version 1.1]
+[version 1.2]
 
 use system;
 

@@ -26,54 +26,51 @@ func Generate_private_keys() {
 	_, err := rand.Read(b_key)
 	if err != nil {
 		notify.Error(err.Error(), "aes.Generate_private_keys()")
-		return
+	} else {
+		c_aes.key = b_key
 	}
-	c_aes.key = b_key
 }
 
 func Encrypt(msg string) {
 	block, err := aes.NewCipher(c_aes.key)
 	if err != nil {
 		notify.Error(err.Error(), "aes.Encrypt()")
-		return
+	} else {
+		aes_gcm, err := cipher.NewGCM(block)
+		if err != nil {
+			notify.Error(err.Error(), "aes.Encrypt()")
+		} else {
+			nonce := make([]byte, aes_gcm.NonceSize())
+			if err != nil {
+				notify.Error(err.Error(), "aes.Encrypt()")
+			} else {
+				c_aes.encrypted_msg = base64.StdEncoding.EncodeToString(aes_gcm.Seal(nonce, nonce, []byte(msg), nil))
+			}
+		}
 	}
-	aes_gcm, err := cipher.NewGCM(block)
-	if err != nil {
-		notify.Error(err.Error(), "aes.Encrypt()")
-		return
-	}
-	nonce := make([]byte, aes_gcm.NonceSize())
-	if err != nil {
-		notify.Error(err.Error(), "aes.Encrypt()")
-		return
-	}
-	c_aes.encrypted_msg = base64.StdEncoding.EncodeToString(aes_gcm.Seal(nonce, nonce, []byte(msg), nil))
 }
 
 func Decrypt(msg string) {
 	block, err := aes.NewCipher(c_aes.key)
 	if err != nil {
 		notify.Error(err.Error(), "aes.Decrypt()")
-		return
+	} else {
+		aes_gcm, err := cipher.NewGCM(block)
+		if err != nil {
+			notify.Error(err.Error(), "aes.Decrypt()")
+		} else {
+			nonce_size := aes_gcm.NonceSize()
+			msg_b, _ := base64.StdEncoding.DecodeString(msg)
+			nonce, cipher := string(msg_b)[:nonce_size], string(msg_b)[nonce_size:]
+			plain, err := aes_gcm.Open(nil, []byte(nonce), []byte(cipher), nil)
+
+			if err != nil {
+				notify.Error(err.Error(), "aes.Decrypt()")
+			} else {
+				c_aes.decrypted_msg = string(plain)
+			}
+		}
 	}
-	aes_gcm, err := cipher.NewGCM(block)
-	if err != nil {
-		notify.Error(err.Error(), "aes.Decrypt()")
-		return
-	}
-	nonce_size := aes_gcm.NonceSize()
-
-	msg_b, _ := base64.StdEncoding.DecodeString(msg)
-
-	nonce, cipher := string(msg_b)[:nonce_size], string(msg_b)[nonce_size:]
-
-	plain, err := aes_gcm.Open(nil, []byte(nonce), []byte(cipher), nil)
-	if err != nil {
-		notify.Error(err.Error(), "aes.Decrypt()")
-		return
-	}
-
-	c_aes.decrypted_msg = string(plain)
 }
 
 func Get_encrypted_msg() string {

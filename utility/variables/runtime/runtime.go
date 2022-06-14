@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"fmt"
 	"os/user"
 	"regexp"
 	"strings"
@@ -59,7 +60,7 @@ func Get_variable(index string) string {
 					}
 				}
 			} else {
-				notify.Error("Illegal index "+variable, "runtime.Get_variable()")
+				notify.Error(fmt.Sprintf("Illegal index %s", variable), "runtime.Get_variable()")
 				return index
 			}
 		}

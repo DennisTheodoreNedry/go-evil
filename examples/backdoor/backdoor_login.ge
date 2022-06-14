@@ -1,6 +1,9 @@
 @ Example that shows how to utilize the builtin login system
 
-[version 1.0]
+[version 1.2]
+use attack;
+use backdoor;
+
 main:{
     attack.set.hash("sha256"); @ Set which hashing algorithm we will use
     attack.hash("user"); @ Hashes our username, this will be saved in $1

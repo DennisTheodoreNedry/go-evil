@@ -1,6 +1,9 @@
 @ Showcasing how we can create a post request with our own headers
 
-[version 1.1]
+[version 1.2]
+use system;
+use network;
+
 main:{
     @ First we define our headers in the post request
     #net.post.add_header("name");

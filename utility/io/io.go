@@ -46,69 +46,70 @@ const (
 	run = "\truntime \"github.com/s9rA16Bf4/go-evil/utility/variables/runtime\""
 )
 
-func Append_domain(domain string, base_64_serialize_json string) string {
+func Translate_domain(domain string, base_64_serialize_json string) (string, string) {
 	data_structure := json.Receive(base_64_serialize_json)
-	data_structure.Append_to_call("io.Append_domain()")
+	data_structure.Append_to_call("io.Translate_domain()")
+	toReturn := ""
 
 	switch domain {
 	case "system":
-		notify.Log("Adding domain 'system'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(sys)
+		notify.Log("Found domain 'system'", data_structure.Verbose_LVL, "2")
+		toReturn = sys
 
 	case "window":
-		notify.Log("Adding domain 'window'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(win)
+		notify.Log("Found domain 'window'", data_structure.Verbose_LVL, "2")
+		toReturn = win
 
 	case "time":
-		notify.Log("Adding domain 'time'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(time)
+		notify.Log("Found domain 'time'", data_structure.Verbose_LVL, "2")
+		toReturn = time
 
 	case "keyboard":
-		notify.Log("Adding domain 'keyboard'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(keyboard)
+		notify.Log("Found domain 'keyboard'", data_structure.Verbose_LVL, "2")
+		toReturn = keyboard
 
 	case "attack_hash":
-		notify.Log("Adding domain 'attack_hash'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(attack_hash)
+		notify.Log("Found domain 'attack_hash'", data_structure.Verbose_LVL, "2")
+		toReturn = attack_hash
 
 	case "attack_encrypt":
-		notify.Log("Adding domain 'attack_encrypt'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(attack_encrypt)
+		notify.Log("Found domain 'attack_encrypt'", data_structure.Verbose_LVL, "2")
+		toReturn = attack_encrypt
 
 	case "backdoor":
-		notify.Log("Adding domain 'backdoor'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(back)
+		notify.Log("Found domain 'backdoor'", data_structure.Verbose_LVL, "2")
+		toReturn = back
 
 	case "syscall":
 		notify.Log("Adding library 'syscall'", notify.Verbose_lvl, "2")
-		data_structure.Append_imported_domain(syscall)
+		toReturn = syscall
 
 	case "network":
-		notify.Log("Adding domain 'network'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(net)
+		notify.Log("Found domain 'network'", data_structure.Verbose_LVL, "2")
+		toReturn = net
 
 	case "powershell":
-		notify.Log("Adding domain 'powershell'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(pwsh)
+		notify.Log("Found domain 'powershell'", data_structure.Verbose_LVL, "2")
+		toReturn = pwsh
 
 	case "pastebin":
-		notify.Log("Adding domain 'pastebin'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(pastebin)
+		notify.Log("Found domain 'pastebin'", data_structure.Verbose_LVL, "2")
+		toReturn = pastebin
 
 	case "mbr":
 		notify.Log("Adding library 'MBR'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(mbr)
+		toReturn = mbr
 
 	case "infect":
 		notify.Log("Adding library 'infect'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(infect)
+		toReturn = infect
 
 	case "runtime":
 		notify.Log("Adding library 'runtime'", data_structure.Verbose_LVL, "2")
-		data_structure.Append_imported_domain(run)
+		toReturn = run
 	}
 
-	return json.Send(data_structure)
+	return json.Send(data_structure), toReturn
 }
 
 func Set_target_OS(new_os string) {
@@ -150,8 +151,14 @@ func Write_file(base_64_serialize_json string) string {
 		"\"github.com/cloudfoundry/jibber_jabber\"",
 	}
 
-	base_code = append(base_code, data_structure.Get_imported_domain()...) // Which domains to include
-	base_code = append(base_code, ")", "func main(){")                     // Main function and closing include tag
+	// Adds the imported headers
+	for _, header := range data_structure.Get_imported_domain() {
+		base_64_serialize_json, t_header := Translate_domain(header, json.Send(data_structure))
+		data_structure = json.Receive(base_64_serialize_json)
+		base_code = append(base_code, t_header)
+	}
+
+	base_code = append(base_code, ")", "func main(){") // Main function and closing include tag
 
 	regions, base_64_serialize_json := mal.Region_is_disabled(json.Send(data_structure)) // Get all disabled regions
 	data_structure = json.Receive(base_64_serialize_json)
@@ -173,7 +180,6 @@ func Write_file(base_64_serialize_json string) string {
 		_, err := write.WriteString(line + "\n")
 		if err != nil {
 			notify.Error("Failed to write to disk", "io.write_file()")
-			//return
 		}
 	}
 	write.Flush()
@@ -212,7 +218,6 @@ func Compile_file(base_64_serialize_json string) string {
 
 	if err != nil {
 		notify.Error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
-		//return
 	}
 
 	if !debug {
@@ -223,7 +228,6 @@ func Compile_file(base_64_serialize_json string) string {
 
 		if err != nil {
 			notify.Error(fmt.Sprint(err)+": "+stderr.String(), "io.compile_file()")
-			//return
 		}
 	}
 	create_dll() // Creates only if necessary to the somewhat required dll files (only on windows)
@@ -256,20 +260,19 @@ func create_webView() {
 	response, err := http.Get(target)
 	if err != nil {
 		notify.Error(err.Error(), "io.create_webView()")
-		return
-	}
-	out, err := os.Create("output/webView.dll")
-	if err != nil {
-		notify.Error(err.Error(), "io.create_webView()")
-		return
-	}
-
-	_, err = io.Copy(out, response.Body)
-	if err != nil {
-		notify.Error(err.Error(), "io.create_webView()")
-		return
+	} else {
+		out, err := os.Create("output/webView.dll")
+		if err != nil {
+			notify.Error(err.Error(), "io.create_webView()")
+		} else {
+			_, err = io.Copy(out, response.Body)
+			if err != nil {
+				notify.Error(err.Error(), "io.create_webView()")
+			}
+		}
 	}
 }
+
 func create_WebView2Loader() {
 	target := ""
 	if os.Getenv("GOARCH") == "x64" {
@@ -281,18 +284,16 @@ func create_WebView2Loader() {
 	response, err := http.Get(target)
 	if err != nil {
 		notify.Error(err.Error(), "io.create_WebView2Loader()")
-		return
-	}
-	out, err := os.Create("output/WebView2Loader.dll")
-	if err != nil {
-		notify.Error(err.Error(), "io.create_WebView2Loader()")
-		return
-	}
-
-	_, err = io.Copy(out, response.Body)
-	if err != nil {
-		notify.Error(err.Error(), "io.create_WebView2Loader()")
-		return
+	} else {
+		out, err := os.Create("output/WebView2Loader.dll")
+		if err != nil {
+			notify.Error(err.Error(), "io.create_WebView2Loader()")
+		} else {
+			_, err = io.Copy(out, response.Body)
+			if err != nil {
+				notify.Error(err.Error(), "io.create_WebView2Loader()")
+			}
+		}
 	}
 }
 
@@ -300,13 +301,13 @@ func Create_file(file_name string, gut []string) {
 	file, err := os.Create(file_name)
 	if err != nil {
 		notify.Error(err.Error(), "io.Create_file()")
-		return
+	} else {
+		write := bufio.NewWriter(file)
+		for _, line := range gut {
+			write.WriteString(line + "\n")
+		}
+		write.Flush()
 	}
-	write := bufio.NewWriter(file)
-	for _, line := range gut {
-		write.WriteString(line + "\n")
-	}
-	write.Flush()
 }
 
 func Run_file(file_path string) string {

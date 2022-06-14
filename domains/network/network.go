@@ -1,6 +1,7 @@
 package network
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -28,14 +29,15 @@ var c_net net_t
 func POST(target_url string) {
 	if len(c_net.latest_key) == 0 {
 		notify.Error("No header was assigned", "network.POST()")
-		return
+	} else {
+		resp, err := http.PostForm(target_url, c_net.data) // Post
+		if err != nil {
+			notify.Error(err.Error(), "network.POST()")
+		} else {
+			user.Set_variable(resp.Status)
+		}
 	}
-	resp, err := http.PostForm(target_url, c_net.data) // Post
-	if err != nil {
-		notify.Error(err.Error(), "network.POST()")
-		return
-	}
-	user.Set_variable(resp.Status)
+
 }
 func POST_add_header(new_header string) {
 	if c_net.data == nil {
@@ -52,14 +54,15 @@ func POST_set_header(header string) {
 		}
 	}
 	if !found {
-		notify.Error("Undefined header "+header, "network.POST_set_header()")
-		return
+		notify.Error(fmt.Sprintf("Undefined header %s", header), "network.POST_set_header()")
+	} else {
+		c_net.latest_key = header
+		_, status := c_net.data[header]
+		if !status {
+			c_net.data[header] = make([]string, 0)
+		}
 	}
-	c_net.latest_key = header
-	_, status := c_net.data[header]
-	if !status {
-		c_net.data[header] = make([]string, 0)
-	}
+
 }
 func POST_bind_value_to_latest_header(value string) {
 	c_net.data[c_net.latest_key] = append(c_net.data[c_net.latest_key], value)
@@ -75,29 +78,30 @@ func GET(target_url string) {
 
 	if err != nil {
 		notify.Error(err.Error(), "network.Get()")
-		return
-	}
-	if c_net.save_disk { // Save the result to the disk
-		if c_net.temp_file_prefix == "" {
-			GET_set_prefix("eat_my_ass-")
-		}
-		if !contains.EndsWith(c_net.temp_file_prefix, []string{"-"}) {
-			c_net.temp_file_prefix += "-"
-		}
+	} else {
+		if c_net.save_disk { // Save the result to the disk
+			if c_net.temp_file_prefix == "" {
+				GET_set_prefix("eat_my_ass-")
+			}
+			if !contains.EndsWith(c_net.temp_file_prefix, []string{"-"}) {
+				c_net.temp_file_prefix += "-"
+			}
 
-		dst, err := ioutil.TempFile(os.TempDir(), c_net.temp_file_prefix)
-		if err != nil {
-			notify.Error(err.Error(), "network.Get()")
-			return
-		}
-		body, _ := ioutil.ReadAll(resp.Body)
-		dst.Write(body)
-		user.Set_variable(dst.Name()) // Save the filename
+			dst, err := ioutil.TempFile(os.TempDir(), c_net.temp_file_prefix)
+			if err != nil {
+				notify.Error(err.Error(), "network.Get()")
+			} else {
+				body, _ := ioutil.ReadAll(resp.Body)
+				dst.Write(body)
+				user.Set_variable(dst.Name()) // Save the filename
+			}
 
-	} else if c_net.save_variable {
-		body, _ := ioutil.ReadAll(resp.Body)
-		user.Set_variable(string(body))
+		} else if c_net.save_variable {
+			body, _ := ioutil.ReadAll(resp.Body)
+			user.Set_variable(string(body))
+		}
 	}
+
 }
 
 func GET_save_disk() { // Saves the result to disk
@@ -114,14 +118,15 @@ func Ping(target string) {
 	if c_net.ping_roof == "" {
 		Ping_set_roof("5")
 	}
-	out, err := exec.Command("ping", target, "-c "+c_net.ping_roof).Output()
+	out, err := exec.Command("ping", target, fmt.Sprintf("-c %s", c_net.ping_roof)).Output()
 	if err != nil {
 		c_net.ping_success = 0
 		notify.Error(err.Error(), "network.Ping()")
-		return
+	} else {
+		c_net.ping_success = 1
+		user.Set_variable(string(out)) // Save the result
 	}
-	c_net.ping_success = 1
-	user.Set_variable(string(out)) // Save the result
+
 }
 
 func Ping_set_roof(new_roof string) {

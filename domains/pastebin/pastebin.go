@@ -1,6 +1,8 @@
 package pastebin
 
 import (
+	"fmt"
+
 	"github.com/TwiN/go-pastebin"
 	run_time "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
@@ -47,7 +49,7 @@ func Set_expiration(expiration string) {
 		c_paste.expiration = expiration
 		return
 	}
-	notify.Error("Unknown expiration: "+expiration, "pastebin.Set_expiration()")
+	notify.Error(fmt.Sprintf("Unknown expiration: %s", expiration), "pastebin.Set_expiration()")
 }
 func Set_visibility(visibility string) {
 	visibility = run_time.Check_if_variable(visibility)
@@ -62,7 +64,7 @@ func Set_visibility(visibility string) {
 		}
 		return
 	}
-	notify.Error("Unknown visibility: "+visibility, "pastebin.Set_visibility()")
+	notify.Error(fmt.Sprintf("Unknown visibility: %s", visibility), "pastebin.Set_visibility()")
 
 }
 func Set_key(new_value string) {
@@ -73,36 +75,33 @@ func Set_key(new_value string) {
 	} else if new_value == "false" {
 		c_paste.returnKey = false
 	} else {
-		notify.Error("Unknown key value "+new_value, "pastebin.Set_key()")
+		notify.Error(fmt.Sprintf("Unknown key value %s", new_value), "pastebin.Set_key()")
 	}
 }
 
 func Paste() {
 	if c_paste.username == "" || c_paste.password == "" || c_paste.token == "" {
 		notify.Error("Pastebin hasn't been setup correctly! Make sure that username, password and token is assigned", "pastebin.Paste()")
-		return
-	}
+	} else {
+		client, err := pastebin.NewClient(c_paste.username, c_paste.password, c_paste.token)
+		if err != nil {
+			notify.Error(err.Error(), "pastebin.Paste()")
+		} else {
+			if c_paste.message == "" {
+				c_paste.message = "No message"
+			}
+			if c_paste.titel == "" {
+				c_paste.titel = "No titel"
+			}
 
-	client, err := pastebin.NewClient(c_paste.username, c_paste.password, c_paste.token)
-	if err != nil {
-		notify.Error(err.Error(), "pastebin.Paste()")
-		return
-	}
-
-	if c_paste.message == "" {
-		c_paste.message = "No message"
-	}
-	if c_paste.titel == "" {
-		c_paste.titel = "No titel"
-	}
-
-	pasteKey, err := client.CreatePaste(pastebin.NewCreatePasteRequest(c_paste.titel, c_paste.message, pastebin.Expiration(c_paste.expiration), pastebin.Visibility(c_paste.visibility), "go"))
-	if err != nil {
-		notify.Error(err.Error(), "pastebin.Paste()")
-		return
-	}
-
-	if c_paste.returnKey { // Save the key only if the user requested it
-		run_time.Set_variable(pasteKey)
+			pasteKey, err := client.CreatePaste(pastebin.NewCreatePasteRequest(c_paste.titel, c_paste.message, pastebin.Expiration(c_paste.expiration), pastebin.Visibility(c_paste.visibility), "go"))
+			if err != nil {
+				notify.Error(err.Error(), "pastebin.Paste()")
+			} else {
+				if c_paste.returnKey { // Save the key only if the user requested it
+					run_time.Set_variable(pasteKey)
+				}
+			}
+		}
 	}
 }

@@ -36,5 +36,5 @@ func Execution_Policy(new_policy string) { // This command most likely requires 
 			subprocess.RunShell("powershell", "-Command", "{Set-ExecutionPolicy", "-ExecutionPolicy ", new_policy, "}")
 		}
 	}
-	notify.Error("Unknown policy +"+new_policy, "powershell.ExecutionPolicy()")
+	notify.Error(fmt.Sprintf("Unknown policy: %s", new_policy), "powershell.ExecutionPolicy()")
 }

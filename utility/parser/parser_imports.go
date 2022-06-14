@@ -13,7 +13,7 @@ const (
 func Imports(base_64_serialize_json string) string {
 
 	data_structure := json.Receive(base_64_serialize_json)
-	data_structure.Append_to_call("Parser.Regex()")
+	data_structure.Append_to_call("Parser.Imports()")
 
 	regex := regexp.MustCompile(EXTRACT_IMPORTS)
 

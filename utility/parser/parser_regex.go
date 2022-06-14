@@ -8,7 +8,6 @@ import (
 
 const (
 	EXTRACT_DOMAIN = "([a-zA-Z#]+)\\." // Extracts the domain
-	//EXTRACT_IMPORTS = ""
 )
 
 func Regex(base_64_serialize_json string) string {
@@ -16,8 +15,8 @@ func Regex(base_64_serialize_json string) string {
 	data_structure := json.Receive(base_64_serialize_json)
 	data_structure.Append_to_call("Parser.Regex()")
 
+	// Extracts encountered domains
 	regex := regexp.MustCompile(EXTRACT_DOMAIN)
-
 	for _, line := range data_structure.File_gut {
 		result := regex.FindAllStringSubmatch(line, -1)
 
