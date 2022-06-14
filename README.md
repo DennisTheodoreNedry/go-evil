@@ -6,6 +6,15 @@ Go-evil is a red teams wet dream, a tool to beat all other tools of it's kind.<b
 What is go-evil, I hear you ask? Go-evil is a project all about the art of creating malware with a simpel language.<br>
 The programming language we utilize is called evil, which only purpose is to translate ideas like "Hey I want a backdoor" into working code without the malware artist needing to know every every nook and cranny.<br> 
 
+### Needed dependencies
+The project currently needs two packages that need to be installed by hand, these are
+1. webkit2gtk-4.0 
+2. gtk3 
+
+For the debian based systems, this should be a simple as the following.<br/>
+`sudo apt install libwebkit2gtk-4.0-dev`<br/>
+`sudo apt install libgtk-3-dev`
+
 ### Compiling
 Compiling the project is as simple as running `make` and run `make install_dependencies` if you get any dependency errors.<br>
 
@@ -18,7 +27,7 @@ main:{
     system.exit("0");
 }
 ```
-<b>Tip:</b> The compiler version is obtained through `gevil -v`
+<b>Tip:</b> The `major version` is obtained through `gevil -v`
 
 ### Example code
 Basic example showcasing how we can display a website.
