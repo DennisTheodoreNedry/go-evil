@@ -17,65 +17,66 @@ type aes_t struct {
 
 var c_aes aes_t
 
-func AES_generate_private_keys() {
+func Load_keys(key []byte) {
+	c_aes.key = key
+}
+
+func Generate_private_keys() {
 	b_key := make([]byte, 32)
 	_, err := rand.Read(b_key)
 	if err != nil {
-		notify.Error(err.Error(), "aes.AES_generate_private_keys()")
-		return
+		notify.Error(err.Error(), "aes.Generate_private_keys()")
+	} else {
+		c_aes.key = b_key
 	}
-	c_aes.key = b_key
 }
 
-func AES_encrypt(msg string) {
+func Encrypt(msg string) {
 	block, err := aes.NewCipher(c_aes.key)
 	if err != nil {
-		notify.Error(err.Error(), "aes.AES_encrypt()")
-		return
+		notify.Error(err.Error(), "aes.Encrypt()")
+	} else {
+		aes_gcm, err := cipher.NewGCM(block)
+		if err != nil {
+			notify.Error(err.Error(), "aes.Encrypt()")
+		} else {
+			nonce := make([]byte, aes_gcm.NonceSize())
+			if err != nil {
+				notify.Error(err.Error(), "aes.Encrypt()")
+			} else {
+				c_aes.encrypted_msg = base64.StdEncoding.EncodeToString(aes_gcm.Seal(nonce, nonce, []byte(msg), nil))
+			}
+		}
 	}
-	aes_gcm, err := cipher.NewGCM(block)
-	if err != nil {
-		notify.Error(err.Error(), "aes.AES_encrypt()")
-		return
-	}
-	nonce := make([]byte, aes_gcm.NonceSize())
-	if err != nil {
-		notify.Error(err.Error(), "aes.AES_encrypt()")
-		return
-	}
-	c_aes.encrypted_msg = base64.StdEncoding.EncodeToString(aes_gcm.Seal(nonce, nonce, []byte(msg), nil))
 }
 
-func AES_decrypt(msg string) {
+func Decrypt(msg string) {
 	block, err := aes.NewCipher(c_aes.key)
 	if err != nil {
-		notify.Error(err.Error(), "aes.AES_decrypt()")
-		return
+		notify.Error(err.Error(), "aes.Decrypt()")
+	} else {
+		aes_gcm, err := cipher.NewGCM(block)
+		if err != nil {
+			notify.Error(err.Error(), "aes.Decrypt()")
+		} else {
+			nonce_size := aes_gcm.NonceSize()
+			msg_b, _ := base64.StdEncoding.DecodeString(msg)
+			nonce, cipher := string(msg_b)[:nonce_size], string(msg_b)[nonce_size:]
+			plain, err := aes_gcm.Open(nil, []byte(nonce), []byte(cipher), nil)
+
+			if err != nil {
+				notify.Error(err.Error(), "aes.Decrypt()")
+			} else {
+				c_aes.decrypted_msg = string(plain)
+			}
+		}
 	}
-	aes_gcm, err := cipher.NewGCM(block)
-	if err != nil {
-		notify.Error(err.Error(), "aes.AES_decrypt()")
-		return
-	}
-	nonce_size := aes_gcm.NonceSize()
-
-	msg_b, _ := base64.StdEncoding.DecodeString(msg)
-
-	nonce, cipher := string(msg_b)[:nonce_size], string(msg_b)[nonce_size:]
-
-	plain, err := aes_gcm.Open(nil, []byte(nonce), []byte(cipher), nil)
-	if err != nil {
-		notify.Error(err.Error(), "aes.AES_decrypt()")
-		return
-	}
-
-	c_aes.decrypted_msg = string(plain)
 }
 
-func AES_get_encrypt() string {
+func Get_encrypted_msg() string {
 	return string(c_aes.encrypted_msg)
 }
 
-func AES_get_decrypted() string {
+func Get_decrypted_msg() string {
 	return string(c_aes.decrypted_msg)
 }

@@ -1,5 +1,6 @@
 @ Showcasing how to spread your malware to every available usb/harddrives
-
+use system;
+use infect;
 main:{
     infect.usb();
     system.exit("0");

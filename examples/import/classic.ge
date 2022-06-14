@@ -1,0 +1,12 @@
+@ This examples how an import system could be used to include the 'system' domain
+@ When using 'use' you must include all domains that you're gonna use
+@ Meaning that if you would include the line 'window.display("Hello, world!");' will end in an error
+
+[version 1.2]
+
+use system;
+
+main:{
+    system.io.out("$1"); @ This will print NULL as it doesn't contain anything
+    system.exit("1");
+}

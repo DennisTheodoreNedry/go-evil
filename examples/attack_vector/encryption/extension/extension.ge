@@ -1,6 +1,8 @@
 @ Showcasing how we can target certain files based on their extensions
 
-[version 1.0]
+[version 1.2]
+use attack;
+use system;
 main:{
     attack.set.extension(".xlsx");
     attack.set.extension(".very_important_extension"); @ You can even add multipile extensions to target

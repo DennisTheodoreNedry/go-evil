@@ -1,6 +1,8 @@
 @ Showcasing how you can combine the builtin webview with a runtime variable
 
-[version 1.1]
+[version 1.2]
+use system;
+use window;
 
 main:{
     system.io.out("Length on x-axis?");
