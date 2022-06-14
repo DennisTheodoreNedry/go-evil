@@ -18,7 +18,7 @@ For the debian based systems, this should be a simple as the following.<br/>
 ### Compiling
 Compiling the project is as simple as running `make` and run `make install_dependencies` if you get any dependency errors.<br>
 
-To check if the compiler is working correctly either run the following code section or run `make test/check`
+To check if the compiler is working correctly either run the following code section or run `make test`
 ```
 [version <major_version>]
 
