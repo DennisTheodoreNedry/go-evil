@@ -22,6 +22,8 @@ To check if the compiler is working correctly either run the following code sect
 ```
 [version <major_version>]
 
+use system;
+
 main:{
     system.io.out("Hello world");
     system.exit("0");
@@ -33,6 +35,9 @@ main:{
 Basic example showcasing how we can display a website.
 ```
 [version 1.0] @ Compiler version
+
+use window;
+use system;
 
 main:{
     window.set.x("600"); @ Set the size on the x axis
