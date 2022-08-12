@@ -1,8 +1,0 @@
-@ Showcasing how the malware can shutdown a computer
-
-[version 1.2]
-use system;
-
-main:{
-    system.command.shutdown();
-}

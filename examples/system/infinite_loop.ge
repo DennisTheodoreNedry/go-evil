@@ -1,8 +1,0 @@
-@ This showcases what happens when you dont include a system exit
-
-[version 1.2]
-use system;
-
-main:{
-    system.io.out("This is an infinite loop");
-}

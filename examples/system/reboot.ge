@@ -1,8 +1,0 @@
-@ Showcasing how the malware can reboot
-
-[version 1.2]
-use system;
-
-main:{
-    system.command.reboot();
-}
