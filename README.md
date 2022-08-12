@@ -1,6 +1,6 @@
 # Go evil
 
-<img src="https://github.com/s9rA16Bf4/go-evil/blob/unstable/pictures/logo.png" width="650"/>
+<img src="https://raw.githubusercontent.com/TeamPhoneix/go-evil/main/pictures/logo.png" width="650"/>
 
 Go-evil is a red teams wet dream, a tool to beat all other tools of it's kind.<br>
 What is go-evil, I hear you ask? Go-evil is a project all about the art of creating malware with a simpel language.<br>
