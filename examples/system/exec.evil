@@ -1,0 +1,15 @@
+@ Executes a command on the disk @
+
+use system
+
+[
+    version 2.0
+    output exec
+    os linux
+    arch amd64
+]
+
+l main {
+    system::exec("echo 'hello, world!'")
+    system::exit("0")
+}

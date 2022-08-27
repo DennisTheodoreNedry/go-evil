@@ -46,17 +46,26 @@ func Out(s_json string, msg string) (string, string) {
 }
 
 //
-// Executes a command on the OS and prints the result
+// Executes a command on the running OS and prints the result
 //
-func Exec(cmd string) []string {
-	return []string{
-		"out, err := exec.Command(cmd).Output()",
-		`
-		if err != nil {
-			notify.Warning(err.Error())
-		} else {
-			notify.Inform(string(out[:]))
-		}
-		`,
-	}
+func Exec(s_json string, cmd string) (string, string) {
+	data_object := structure.Receive(s_json)
+
+	data_object.Add_go_function([]string{
+		"func Exec(cmd string){",
+		"split_cmd := strings.Split(cmd, \" \")",
+		"cmd = strings.ReplaceAll(split_cmd[0], \"\\\"\", \"\")",
+		"args := strings.ReplaceAll(strings.Join(split_cmd[1:], \" \"), \"\\\"\", \"\")",
+		"out, err := exec.Command(cmd, args).Output()",
+		"if err != nil {",
+		"fmt.Println(err.Error())",
+		"}else{",
+		"fmt.Println(string(out[:]))",
+		"}}"})
+
+	data_object.Add_go_import("\"os/exec\"")
+	data_object.Add_go_import("\"fmt\"")
+	data_object.Add_go_import("\"strings\"")
+
+	return fmt.Sprintf("Exec(%s)", cmd), structure.Send(data_object)
 }

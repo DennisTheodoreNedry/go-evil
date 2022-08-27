@@ -127,7 +127,6 @@ func generate_sub_functions(s_json string) (string, []string, []string) {
 //
 func Parse(s_json string) string {
 	s_json = preface(s_json) // Handles every preface we could possibly want done before we start parsing
-	// s_json = Add_domains_to_malware(s_json) // Will add the 'import (...)' section to our source code
 
 	s_json, boot_func, loop_func := generate_sub_functions(s_json)
 

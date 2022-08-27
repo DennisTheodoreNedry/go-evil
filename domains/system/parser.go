@@ -21,8 +21,8 @@ func Parser(function string, value string, s_json string) (string, string) {
 	case "exit":
 		call, s_json = Exit(s_json, value)
 
-	// case "exec":
-	// 	to_return = append(to_return, Exec(value)...)
+	case "exec":
+		call, s_json = Exec(s_json, value)
 
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")
