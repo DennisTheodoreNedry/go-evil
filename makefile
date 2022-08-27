@@ -3,19 +3,19 @@ OPTION := build
 SRC := .
 BIN := gevil
 
-compile: mkdir
+compile:
 	$(CC) $(OPTION) -o $(BIN) $(SRC)
 
-mkdir:
-	mkdir -p output
-
-clean: clean_binary clean_docs
+clean: clean_binary clean_docs clean_dir
 
 clean_binary:
 	-rm $(BIN)
 
 clean_docs:
 	-rm -R docs
+
+clean_dir:
+	-rm -R output
 
 dependencies:
 	go get github.com/s9rA16Bf4/ArgumentParser

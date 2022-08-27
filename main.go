@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/cleanup"
-	"github.com/TeamPhoneix/go-evil/utility/json"
 	"github.com/TeamPhoneix/go-evil/utility/parsing"
+	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/version"
 
 	"github.com/TeamPhoneix/go-evil/utility/io"
@@ -25,7 +25,7 @@ func main() {
 	arg.Argument_add("--json", "-j", false, "Prints the finalized json structure after compiling a file")
 
 	parsed := arg.Argument_parse()
-	object := json.Create_object()
+	object := structure.Create_json_object()
 
 	if len(parsed) == 0 {
 		notify.Error("No argument was provided", "main.main()")
@@ -36,7 +36,6 @@ func main() {
 	} else {
 		if value, ok := parsed["-f"]; ok {
 			object.Set_file_path(value)
-			notify.Inform(fmt.Sprintf("Compiling file %s", value))
 		}
 
 		if value, ok := parsed["-p"]; ok {
@@ -49,6 +48,8 @@ func main() {
 
 		if value, ok := parsed["-vv"]; ok {
 			object.Set_verbose_lvl(value)
+		} else {
+			object.Set_verbose_lvl("0")
 		}
 
 		if value, ok := parsed["-d"]; ok {
@@ -67,14 +68,21 @@ func main() {
 			object.Set_dump_json()
 		}
 
+		notify.Log(fmt.Sprintf("Compiling file %s", object.File_path), object.Verbose_lvl, "1")
+
+		// Read the contents of the file
+		object = structure.Receive(io.Read_file(structure.Send(object)))
+
 		// Parse the file
-		object = json.Receive(parsing.Parse(io.Read_file(json.Send(object)))) // Reads the file content and sends the result to the parser
+		object = structure.Receive(parsing.Parse(structure.Send(object)))
+
+		// Write the file
+		io.Write_file(structure.Send(object))
 
 		// Compile file
-		object = json.Receive(io.Compile_file(json.Send(object)))
+		io.Compile_file(structure.Send(object))
 
 		// Cleanup
-		cleanup.Start(json.Send(object))
-
+		cleanup.Start(structure.Send(object))
 	}
 }

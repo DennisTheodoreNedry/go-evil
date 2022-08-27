@@ -1,15 +1,21 @@
 @ Showcases how you print a message @
 
-f init {
+use system
 
+[
+    version 2.0
+    output msg
+    os linux
+    arch amd64
+    extension txt
+]
+
+
+b boot {
+    system::out("Hello from boot!")
 }
 
-
-f infect {
-
-}
-
-
-f loop {
-
+l main {
+    system::out("Hello from main!")
+    system::exit("0")
 }

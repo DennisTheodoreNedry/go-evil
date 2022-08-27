@@ -1,0 +1,19 @@
+@ Showcases how boot functions work @
+
+use system
+
+[
+    version 2.0
+    output boot
+    os linux
+    arch amd64
+]
+
+b preface {
+    system::out("I will be called before any other function, and can therefore work as a preface before the actual malware")
+}
+
+l main {
+    @ Insert your code here @
+    system::exit("0")
+}

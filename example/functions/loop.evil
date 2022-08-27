@@ -1,0 +1,14 @@
+@ Showcases how loop functions work @
+
+use system
+
+[
+    version 2.0
+    output endless_loop
+    os linux
+    arch amd64
+]
+
+l main {
+    system::out("I'm stuck in an endless loop!!")
+}

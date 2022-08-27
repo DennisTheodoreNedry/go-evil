@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/thanhpk/randstr"
 )
 
 //
@@ -104,4 +106,20 @@ func Split_string(target string) []string {
 		to_return = append(to_return, string(chars[i]))
 	}
 	return to_return
+}
+
+//
+//
+// Generates a random string based on the length of the input
+//
+//
+func Generate_random_string(size int) string {
+	var toReturn string
+	for {
+		toReturn = randstr.String(size)
+		if _, err := strconv.Atoi(string(toReturn[0])); err != nil { // It can't start with a number
+			break
+		}
+	}
+	return toReturn
 }

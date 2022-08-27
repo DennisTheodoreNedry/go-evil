@@ -1,4 +1,4 @@
-package json
+package structure
 
 import (
 	"encoding/base64"
@@ -9,28 +9,14 @@ import (
 
 //
 //
-// Creates byte code from our json structure
-//
-//
-func Dump_json(json_object json_t) []byte {
-	serial_json, err := json.Marshal(json_object)
-
-	if err != nil {
-		notify.Error(err.Error(), "json.Convert_to_json()")
-	}
-
-	return serial_json
-}
-
-//
-//
 // Creates a json object and returns it
 //
 //
-func Create_object() json_t {
+func Create_json_object() json_t {
 	var new_json json_t
 	new_json.Malware_src_file = "malware.go"
 	new_json.Malware_path = "./output/"
+	new_json.Malware_gut = append(new_json.Malware_gut, "package main")
 	return new_json
 }
 

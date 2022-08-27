@@ -2,3 +2,5 @@ github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220813091344-897505c676f0 h1:F6hVYk
 github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220813091344-897505c676f0/go.mod h1:NRKlnWNTdhYI+whq5u0Dx+pH/iE+NMGg/31yuWPHwaU=
 github.com/s9rA16Bf4/notify_handler v0.0.0-20220414214026-7cbc65f663ea h1:ENRxm6DdCRYiq2xVM+RHA6IPzXaeaqRa86+3l8jfpUk=
 github.com/s9rA16Bf4/notify_handler v0.0.0-20220414214026-7cbc65f663ea/go.mod h1:QNjxlxplV4bgRq0hMkD/ssRExdUmsuqql+lRh9afWgA=
+github.com/thanhpk/randstr v1.0.4 h1:IN78qu/bR+My+gHCvMEXhR/i5oriVHcTB/BJJIRTsNo=
+github.com/thanhpk/randstr v1.0.4/go.mod h1:M/H2P1eNLZzlDwAzpkkkUvoyNNMbzRGhESZuEQk3r0U=
