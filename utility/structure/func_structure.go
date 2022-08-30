@@ -1,6 +1,8 @@
 package structure
 
-import "strings"
+import (
+	"strings"
+)
 
 type Func_t struct {
 	Name      string   // Function name
@@ -33,24 +35,24 @@ func (object *Func_t) Set_type(f_type string) {
 //
 func (object *Func_t) Add_line(line string) {
 
-	for _, delimiter := range []string{"\n", "\t"} { // Cleans up the data
-		line = strings.Split(line, delimiter)[0]
-	}
+	for _, line := range strings.Split(line, "\n") { // Split it up in newlines so that we don't lose content
 
-	found := true
+		found := true
 
-	for _, g_line := range object.Gut { // Check for duplicates
+		for _, g_line := range object.Gut { // Check for duplicates
 
-		if g_line == line {
-			found = false
-			break
+			if g_line == line {
+				found = false
+				break
+			}
+
 		}
 
+		if found {
+			object.Gut = append(object.Gut, line)
+		}
 	}
 
-	if found {
-		object.Gut = append(object.Gut, line)
-	}
 }
 
 //

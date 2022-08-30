@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
@@ -79,10 +78,36 @@ func Write_file(s_json string) {
 func Compile_file(s_json string) {
 	data_object := structure.Receive(s_json)
 
-	arg := fmt.Sprintf("build -o %s%s%s %s%s", data_object.Malware_path, data_object.Binary_name, data_object.Extension, data_object.Malware_path, data_object.Malware_src_file)
+	malware := fmt.Sprintf("%s%s%s", data_object.Malware_path, data_object.Binary_name, data_object.Extension)
+	src := fmt.Sprintf("%s%s", data_object.Malware_path, data_object.Malware_src_file)
 
-	cmd := exec.Command("go", strings.Split(arg, " ")...)
+	cmd := exec.Command("go", "build", "-o", malware, "-ldflags=-s -w", src)
 	notify.Log("Compiling malware", data_object.Verbose_lvl, "1")
+
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+
+	err := cmd.Run() // Starts the build
+
+	if err != nil {
+		notify.Error(fmt.Sprintf("Failed to compile file, %s", stderr.String()), "io.Compile_file()")
+	}
+
+}
+
+//
+//
+// Compresses the malware
+//
+//
+func Compress_malware(s_json string) {
+	data_object := structure.Receive(s_json)
+	malware := fmt.Sprintf("%s%s%s", data_object.Malware_path, data_object.Binary_name, data_object.Extension)
+
+	cmd := exec.Command("upx", malware)
+	notify.Log("Compressing the malware", data_object.Verbose_lvl, "2")
 
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -92,7 +117,6 @@ func Compile_file(s_json string) {
 	err := cmd.Run()
 
 	if err != nil {
-		notify.Error(fmt.Sprintf("Failed to compile file, %s", stderr.String()), "io.compile_file()")
+		notify.Error(fmt.Sprintf("Failed to compress the malware, %s", stderr.String()), "io.Compress_malware()")
 	}
-
 }

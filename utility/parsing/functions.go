@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/TeamPhoneix/go-evil/domains/system"
+	"github.com/TeamPhoneix/go-evil/domains/time"
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 )
 
@@ -70,6 +71,8 @@ func grab_code(domain string, function string, value string, s_json string) (str
 	case "system":
 		call_function, s_json = system.Parser(function, value, s_json)
 
+	case "time":
+		call_function, s_json = time.Parser(function, value, s_json)
 	}
 
 	return call_function, s_json

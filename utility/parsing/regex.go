@@ -23,4 +23,8 @@ const (
 	CONFIGURATION_ARCH      = "arch +(.*)"
 	CONFIGURATION_OS        = "os +(.*)"
 	CONFIGURATION_EXTENSION = "extension +(.*)"
+
+	// Time domain
+	GRAB_FULL_DATE = "([0-9]{0,4})/([0-9]{0,2})/([0-9]{0,2})-([0-9]{0,2}):([0-9]{0,2})" // YYYY/MM/DD-HH:NN
+	GRAB_HOUR_MIN  = "([0-9]{0,2}):([0-9]{0,2})"                                        // HH:NN
 )

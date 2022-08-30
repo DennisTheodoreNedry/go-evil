@@ -144,6 +144,7 @@ func (object *json_t) Add_function(name string, f_type string, gut []string) {
 
 	new_func.Set_name(fmt.Sprintf("%s_%s", name, tools.Generate_random_string(5)))
 	new_func.Set_type(f_type)
+
 	new_func.Add_lines(gut)
 
 	object.Functions = append(object.Functions, new_func)

