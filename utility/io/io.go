@@ -117,6 +117,6 @@ func Compress_malware(s_json string) {
 	err := cmd.Run()
 
 	if err != nil {
-		notify.Error(fmt.Sprintf("Failed to compress the malware, %s", stderr.String()), "io.Compress_malware()")
+		notify.Error(fmt.Sprintf("Failed to compress the malware, %s", err), "io.Compress_malware()")
 	}
 }

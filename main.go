@@ -23,6 +23,7 @@ func main() {
 	arg.Argument_add("--output", "-o", true, "Name of the binary malware")
 	arg.Argument_add("--extension", "-e", true, "Extension of the binary malware")
 	arg.Argument_add("--json", "-j", false, "Prints the finalized json structure after compiling a file")
+	arg.Argument_add("--obfuscate", "-ob", false, "Changes the names of all functions and variables to a obfuscated state")
 
 	parsed := arg.Argument_parse()
 	object := structure.Create_json_object()
@@ -66,6 +67,10 @@ func main() {
 
 		if _, ok := parsed["-j"]; ok {
 			object.Set_dump_json()
+		}
+
+		if _, ok := parsed["-ob"]; ok {
+			object.Enable_obfuscate()
 		}
 
 		notify.Log(fmt.Sprintf("Compiling file %s", object.File_path), object.Verbose_lvl, "1")

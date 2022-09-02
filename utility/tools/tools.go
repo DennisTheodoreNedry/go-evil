@@ -2,11 +2,18 @@ package tools
 
 import (
 	"fmt"
+	"math/rand"
+	"regexp"
 	"strconv"
 	"strings"
+	"time"
 	"unicode/utf8"
 
 	"github.com/thanhpk/randstr"
+)
+
+const (
+	EXTRACT_VALUES_FROM_EVIL_ARRAY = "{(.*)}"
 )
 
 //
@@ -113,7 +120,7 @@ func Split_string(target string) []string {
 // Generates a random string based on the length of the input
 //
 //
-func Generate_random_string(size int) string {
+func Generate_random_n_string(size int) string {
 	var toReturn string
 	for {
 		toReturn = randstr.String(size)
@@ -122,4 +129,34 @@ func Generate_random_string(size int) string {
 		}
 	}
 	return toReturn
+}
+
+//
+//
+// Generates a random string between the lengthes of 1 and 128
+//
+//
+func Generate_random_string() string {
+	rand.Seed(time.Now().UnixNano())
+	max := 128
+	min := 1
+	return Generate_random_n_string(rand.Intn(max-min) + min)
+}
+
+//
+//
+// Extracts values from an "evil array" and returns a string array containing said contents
+//
+//
+func Extract_values_array(evil_array string) []string {
+	to_return := []string{}
+
+	regex := regexp.MustCompile(EXTRACT_VALUES_FROM_EVIL_ARRAY)
+	values := regex.FindAllStringSubmatch(evil_array, -1)
+
+	if len(values) > 0 {
+		to_return = append(to_return, values[0][1:]...)
+	}
+
+	return to_return
 }

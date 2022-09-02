@@ -7,6 +7,7 @@ use system
     output exec
     os linux
     arch amd64
+    obfuscate false
 ]
 
 l main {

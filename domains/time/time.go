@@ -2,8 +2,14 @@ package time
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+)
+
+const (
+	GRAB_FULL_DATE = "([0-9]{0,4})/([0-9]{0,2})/([0-9]{0,2})-([0-9]{0,2}):([0-9]{0,2})" // YYYY/MM/DD-hh:mm
+	GRAB_HOUR_MIN  = "([0-9]{0,2}):([0-9]{0,2})"                                        // hh:mm
 )
 
 //
@@ -12,10 +18,21 @@ import (
 //
 //
 func Until(s_json string, value string) (string, string) {
-	call_function := ""
 	data_object := structure.Receive(s_json)
 
-	return call_function, structure.Send(data_object)
+	regex := regexp.MustCompile(GRAB_FULL_DATE)
+	result := regex.FindAllStringSubmatch(value, -1)
+
+	if len(result) > 0 {
+		fmt.Println(result)
+	}
+
+	data_object.Add_go_function([]string{
+		"func Until(value string){",
+		"}",
+	})
+
+	return fmt.Sprintf("Until(%s)", value), structure.Send(data_object)
 }
 
 //
@@ -24,7 +41,6 @@ func Until(s_json string, value string) (string, string) {
 //
 //
 func Sleep(s_json string, value string) (string, string) {
-	call_function := fmt.Sprintf("Sleep(%s)", value)
 	data_object := structure.Receive(s_json)
 
 	data_object.Add_go_function([]string{
@@ -37,5 +53,5 @@ func Sleep(s_json string, value string) (string, string) {
 	data_object.Add_go_import("\"time\"")
 	data_object.Add_go_import("\"github.com/TeamPhoneix/go-evil/utility/tools\"")
 
-	return call_function, structure.Send(data_object)
+	return fmt.Sprintf("Sleep(%s)", value), structure.Send(data_object)
 }

@@ -5,6 +5,7 @@ import (
 	"os"
 	"regexp"
 	"runtime"
+	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
@@ -33,11 +34,18 @@ func Check_configuration(s_json string) string {
 	data_object = structure.Receive(check_architecture(line, structure.Send(data_object)))
 	data_object = structure.Receive(check_os(line, structure.Send(data_object)))
 	data_object = structure.Receive(check_extension(line, structure.Send(data_object)))
+	data_object = structure.Receive(check_obfuscate(line, structure.Send(data_object)))
 
-	notify.Log(fmt.Sprintf("The malware will be called `%s`", data_object.Binary_name), data_object.Verbose_lvl, "1")
-	notify.Log(fmt.Sprintf("The malware will be compiled for `%s`", data_object.Target_os), data_object.Verbose_lvl, "1")
-	notify.Log(fmt.Sprintf("The malware will be for a/n `%s` based processor", data_object.Target_arch), data_object.Verbose_lvl, "1")
-	notify.Log(fmt.Sprintf("The malware will have the extension `%s`", data_object.Extension), data_object.Verbose_lvl, "1")
+	notify.Log(fmt.Sprintf("The malware will be called `%s`", data_object.Binary_name), data_object.Verbose_lvl, "2")
+	notify.Log(fmt.Sprintf("The malware will be compiled for `%s`", data_object.Target_os), data_object.Verbose_lvl, "2")
+	notify.Log(fmt.Sprintf("The malware will be for a/n `%s` based processor", data_object.Target_arch), data_object.Verbose_lvl, "2")
+	notify.Log(fmt.Sprintf("The malware will have the extension `%s`", data_object.Extension), data_object.Verbose_lvl, "2")
+
+	if data_object.Obfuscate {
+		notify.Log("The source code will be obfuscated", data_object.Verbose_lvl, "2")
+	} else {
+		notify.Log("The source code will not be obfuscated", data_object.Verbose_lvl, "2")
+	}
 
 	return structure.Send(data_object)
 }
@@ -140,6 +148,29 @@ func check_extension(line string, s_json string) string {
 		}
 
 		data_object.Set_extension(ext)
+	}
+
+	return structure.Send(data_object)
+}
+
+//
+//
+// Checks if the user specificed the output to be obfuscated or not
+//
+//
+func check_obfuscate(line string, s_json string) string {
+	data_object := structure.Receive(s_json)
+
+	if !data_object.Obfuscate { // No point in checking if the user already has enabled it
+		regex := regexp.MustCompile(CONFIGURATION_OBFUSCATE)
+		result := regex.FindAllStringSubmatch(line, -1)
+
+		if len(result) > 0 {
+			option := strings.ToLower(result[0][1])
+			if option == "true" {
+				data_object.Enable_obfuscate()
+			}
+		}
 	}
 
 	return structure.Send(data_object)

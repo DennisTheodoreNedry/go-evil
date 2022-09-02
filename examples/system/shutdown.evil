@@ -1,0 +1,21 @@
+@ Shutdowns the computer @
+
+use system
+
+[
+    version 2.0
+    output disabled
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+b reboot {
+    system::shutdown()
+}
+
+@ These function will never be called @
+l main {
+    system::out("hello, world!")
+    system::exit("0")
+}

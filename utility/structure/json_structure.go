@@ -26,12 +26,13 @@ type json_t struct {
 	Binary_name string `json:"binary_name"`
 	Extension   string `json:"extension"`
 
-	Debug_mode bool `json:"debug_mode"` // Debug mode
+	Debug_mode bool `json:"debug_mode"`
 	Dump_json  bool `json:"dump_json"`
+	Obfuscate  bool `json:"obfuscate"`
 
 	Verbose_lvl string `json:"verbose_lvl"`
 
-	Functions []Func_t `json:"file_functions"`
+	Functions []Func_t `json:"file_functions"` // A structure containing all function strucs gathered
 }
 
 //
@@ -142,7 +143,12 @@ func (object *json_t) Dump() []byte {
 func (object *json_t) Add_function(name string, f_type string, gut []string) {
 	var new_func Func_t
 
-	new_func.Set_name(fmt.Sprintf("%s_%s", name, tools.Generate_random_string(5)))
+	if object.Obfuscate {
+		new_func.Set_name(tools.Generate_random_string())
+	} else {
+		new_func.Set_name(fmt.Sprintf("%s_%s", name, tools.Generate_random_n_string(5))) // This is added so that we don't have a collision with built in functions
+	}
+
 	new_func.Set_type(f_type)
 
 	new_func.Add_lines(gut)
@@ -201,6 +207,7 @@ func (object *json_t) Add_go_function(lines []string) {
 //
 func (object *json_t) Add_go_import(new_import string) {
 
+	new_import = fmt.Sprintf("\"%s\"", new_import)
 	for _, old_import := range object.GO_imports {
 		if old_import == new_import { // Check if the import already have been imported
 			return
@@ -208,4 +215,13 @@ func (object *json_t) Add_go_import(new_import string) {
 	}
 
 	object.GO_imports = append(object.GO_imports, new_import)
+}
+
+//
+//
+// Obfuscates the program
+//
+//
+func (object *json_t) Enable_obfuscate() {
+	object.Obfuscate = true
 }

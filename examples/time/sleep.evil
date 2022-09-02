@@ -8,6 +8,7 @@ use time
     output sleep
     os linux
     arch amd64
+    obfuscate false
 ]
 
 l main {

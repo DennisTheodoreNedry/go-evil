@@ -7,6 +7,7 @@ use system
     output msg
     os linux
     arch amd64
+    obfuscate false
 ]
 
 

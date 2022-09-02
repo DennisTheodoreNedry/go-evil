@@ -8,7 +8,7 @@ package parsing
 
 const (
 	FUNC              = "([bl]) ([a-z0-9_]+) *{\n* *((.*|\n*)*?)\n*}" // Extracts all functions
-	DOMAIN_FUNC_VALUE = "([a-z]+)::([a-z]+)\\((.*)\\)"                // Extracts the domain, function being called and if a value was sent with it
+	DOMAIN_FUNC_VALUE = "([a-z_]+)::([a-z_]+)\\((.*)\\)"              // Extracts the domain, function being called and if a value was sent with it
 
 	IMPORT = "use ([a-z]+)" // Finds imports
 
@@ -23,8 +23,5 @@ const (
 	CONFIGURATION_ARCH      = "arch +(.*)"
 	CONFIGURATION_OS        = "os +(.*)"
 	CONFIGURATION_EXTENSION = "extension +(.*)"
-
-	// Time domain
-	GRAB_FULL_DATE = "([0-9]{0,4})/([0-9]{0,2})/([0-9]{0,2})-([0-9]{0,2}):([0-9]{0,2})" // YYYY/MM/DD-HH:NN
-	GRAB_HOUR_MIN  = "([0-9]{0,2}):([0-9]{0,2})"                                        // HH:NN
+	CONFIGURATION_OBFUSCATE = "obfuscate +(.*)"
 )

