@@ -21,6 +21,7 @@ dependencies:
 	go get github.com/s9rA16Bf4/ArgumentParser
 	go get github.com/s9rA16Bf4/notify_handler
 	go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
+	go get github.com/webview/webview
 
 docs: clean_docs
 	bash tools/generate_documentation.sh

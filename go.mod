@@ -7,4 +7,5 @@ require (
 	github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220813091344-897505c676f0 // indirect
 	github.com/s9rA16Bf4/notify_handler v0.0.0-20220414214026-7cbc65f663ea // indirect
 	github.com/thanhpk/randstr v1.0.4 // indirect
+	github.com/webview/webview v0.0.0-20220816141928-2ee04ccd0530 // indirect
 )

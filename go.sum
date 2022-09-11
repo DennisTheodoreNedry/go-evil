@@ -6,3 +6,5 @@ github.com/s9rA16Bf4/notify_handler v0.0.0-20220414214026-7cbc65f663ea h1:ENRxm6
 github.com/s9rA16Bf4/notify_handler v0.0.0-20220414214026-7cbc65f663ea/go.mod h1:QNjxlxplV4bgRq0hMkD/ssRExdUmsuqql+lRh9afWgA=
 github.com/thanhpk/randstr v1.0.4 h1:IN78qu/bR+My+gHCvMEXhR/i5oriVHcTB/BJJIRTsNo=
 github.com/thanhpk/randstr v1.0.4/go.mod h1:M/H2P1eNLZzlDwAzpkkkUvoyNNMbzRGhESZuEQk3r0U=
+github.com/webview/webview v0.0.0-20220816141928-2ee04ccd0530 h1:diPvLFzNaRG1c1Qh8s8jWQt/+l8HQs9iQgHvAV4N8q8=
+github.com/webview/webview v0.0.0-20220816141928-2ee04ccd0530/go.mod h1:rpXAuuHgyEJb6kXcXldlkOjU6y4x+YcASKKXJNUhh0Y=

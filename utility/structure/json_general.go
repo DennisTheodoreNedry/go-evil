@@ -17,6 +17,11 @@ func Create_json_object() json_t {
 	new_json.Malware_src_file = "malware.go"
 	new_json.Malware_path = "./output/"
 	new_json.Malware_gut = append(new_json.Malware_gut, "package main")
+
+	// Settings for the text editor
+	new_json.Width = 600
+	new_json.Height = 800
+
 	return new_json
 }
 

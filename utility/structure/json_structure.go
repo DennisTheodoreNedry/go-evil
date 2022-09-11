@@ -33,6 +33,10 @@ type json_t struct {
 	Verbose_lvl string `json:"verbose_lvl"`
 
 	Functions []Func_t `json:"file_functions"` // A structure containing all function strucs gathered
+
+	// Text editor
+	Width  int `json:"width"`  // The width of the text editor
+	Height int `json:"height"` // The height of the text editor
 }
 
 //
@@ -86,6 +90,13 @@ func (object *json_t) Set_binary_name(name string) {
 //
 //
 func (object *json_t) Set_extension(ext string) {
+
+	result := tools.Contains(ext, []string{"."}) // Checks if the extension contains a dot
+
+	if status := result["."]; !status {
+		ext = fmt.Sprintf(".%s", ext)
+	}
+
 	object.Extension = ext
 }
 
@@ -224,4 +235,39 @@ func (object *json_t) Add_go_import(new_import string) {
 //
 func (object *json_t) Enable_obfuscate() {
 	object.Obfuscate = true
+}
+
+//
+//
+// Makes the source code readable
+//
+//
+func (object *json_t) Disable_obfuscate() {
+	object.Obfuscate = false
+}
+
+//
+//
+// Sets the width of the text editor
+//
+//
+func (object *json_t) Set_width(value string) {
+	if i_value := tools.String_to_int(value); i_value != -1 {
+		object.Width = i_value
+	} else {
+		object.Width = 600
+	}
+}
+
+//
+//
+// Sets the height of the text editor
+//
+//
+func (object *json_t) Set_height(value string) {
+	if i_value := tools.String_to_int(value); i_value != -1 {
+		object.Height = i_value
+	} else {
+		object.Height = 800
+	}
 }

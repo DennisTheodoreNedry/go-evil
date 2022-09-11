@@ -3,12 +3,11 @@ package main
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/cleanup"
-	"github.com/TeamPhoneix/go-evil/utility/parsing"
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/text_editor"
 	"github.com/TeamPhoneix/go-evil/utility/version"
+	"github.com/TeamPhoneix/go-evil/utility/wrapper"
 
-	"github.com/TeamPhoneix/go-evil/utility/io"
 	arg "github.com/s9rA16Bf4/ArgumentParser/go/arguments"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -24,6 +23,7 @@ func main() {
 	arg.Argument_add("--extension", "-e", true, "Extension of the binary malware")
 	arg.Argument_add("--json", "-j", false, "Prints the finalized json structure after compiling a file")
 	arg.Argument_add("--obfuscate", "-ob", false, "Changes the names of all functions and variables to a obfuscated state")
+	arg.Argument_add("--text_editor", "-t", true, "Starts the builtin text editor, needs a file to work")
 
 	parsed := arg.Argument_parse()
 	object := structure.Create_json_object()
@@ -33,6 +33,10 @@ func main() {
 
 	} else if _, ok := parsed["-v"]; ok {
 		version.Version()
+
+	} else if file, ok := parsed["-t"]; ok {
+		object.Set_file_path(file)
+		text_editor.Spawn_window(structure.Send(object))
 
 	} else {
 		if value, ok := parsed["-f"]; ok {
@@ -75,22 +79,6 @@ func main() {
 
 		notify.Log(fmt.Sprintf("Compiling file %s", object.File_path), object.Verbose_lvl, "1")
 
-		// Read the contents of the file
-		object = structure.Receive(io.Read_file(structure.Send(object)))
-
-		// Parse the file
-		object = structure.Receive(parsing.Parse(structure.Send(object)))
-
-		// Write the file
-		io.Write_file(structure.Send(object))
-
-		// Compile file
-		io.Compile_file(structure.Send(object))
-
-		// Compresses the malware
-		io.Compress_malware(structure.Send(object))
-
-		// Cleanup
-		cleanup.Start(structure.Send(object))
+		wrapper.Parse_and_compile(structure.Send(object))
 	}
 }
