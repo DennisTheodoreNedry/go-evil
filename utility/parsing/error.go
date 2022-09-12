@@ -9,11 +9,17 @@ import (
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
+//
+//
+// Wrapper function which calls all our error checking functions
+//
+//
 func Check_for_errors(s_json string) {
-
 	comments(s_json)
 	detect_functions(s_json)
 	check_imports(s_json)
+	check_strings(s_json)
+	check_evil_arrays(s_json)
 }
 
 //
@@ -25,19 +31,12 @@ func comments(s_json string) {
 	data_object := structure.Receive(s_json)
 
 	gut := strings.Split(data_object.File_gut, "\n")
-	regex_pattern := []string{COMMENT_WRONG_LHS, COMMENT_WRONG_RHS}
 
 	for i, line := range gut {
-		line = strings.Replace(line, " ", "", -1)  // Remove every space
-		line = strings.Replace(line, "\t", "", -1) // and remove every tab, this to ensure that we our regex is gonna work correctly
+		result := strings.Count(line, "@")
 
-		for _, pattern := range regex_pattern {
-			regex := regexp.MustCompile(pattern)
-			result := regex.FindAllStringSubmatch(line, -1)
-
-			if len(result) != 0 {
-				notify.Error(fmt.Sprintf("Found a wrongly formatted comment on line %d,", i+1), "error.comments()")
-			}
+		if result%2 != 0 {
+			notify.Error(fmt.Sprintf("Found a wrongly formatted comment on line %d", i+1), "error.check_strings()")
 		}
 
 	}
@@ -83,5 +82,46 @@ func check_imports(s_json string) {
 		if !found_domain {
 			notify.Error(fmt.Sprintf("The domain '%s' was used but were never imported!", call[1]), "error.check_imports()")
 		}
+	}
+}
+
+//
+//
+// Checks for strings that have not been terminated
+//
+//
+func check_strings(s_json string) {
+	data_object := structure.Receive(s_json)
+
+	gut := strings.Split(data_object.File_gut, "\n")
+
+	for i, line := range gut {
+		result := strings.Count(line, "\"")
+
+		if result%2 != 0 {
+			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d", i+1), "error.check_strings()")
+		}
+
+	}
+}
+
+//
+//
+// Checks for arrays that have not been terminated
+//
+//
+func check_evil_arrays(s_json string) {
+	data_object := structure.Receive(s_json)
+
+	gut := strings.Split(data_object.File_gut, "\n")
+
+	for i, line := range gut {
+		l_wing := strings.Count(line, "${")
+		r_wing := strings.Count(line, "}$")
+
+		if l_wing != r_wing {
+			notify.Error(fmt.Sprintf("Found a wrongly formatted evil array on line %d", i+1), "error.check_evil_arrays()")
+		}
+
 	}
 }

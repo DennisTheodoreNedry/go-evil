@@ -15,7 +15,7 @@ b boot {
     system::out("Hello from boot!")
 }
 
-l main {
+l main_func {
     system::out("Hello from main!")
     system::exit("0")
 }

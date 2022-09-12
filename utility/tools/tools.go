@@ -9,11 +9,12 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 	"github.com/thanhpk/randstr"
 )
 
 const (
-	EXTRACT_VALUES_FROM_EVIL_ARRAY = "{(.*)}"
+	EXTRACT_VALUES_FROM_EVIL_ARRAY = "\\${(.*)}\\$"
 )
 
 //
@@ -155,8 +156,25 @@ func Extract_values_array(evil_array string) []string {
 	values := regex.FindAllStringSubmatch(evil_array, -1)
 
 	if len(values) > 0 {
-		to_return = append(to_return, values[0][1:]...)
+		to_return = append(to_return, strings.Split(values[0][1], ",")...)
 	}
 
 	return to_return
+}
+
+//
+//
+// Erases all occurences of the delimiter in the string
+//
+//
+func Erase_delimiter(line string, delimiter string) string {
+	regex, err := regexp.Compile(delimiter)
+
+	if err != nil {
+		notify.Error(err.Error(), "tools.Erase_delimiter()")
+	}
+
+	line = regex.ReplaceAllString(line, "")
+
+	return line
 }

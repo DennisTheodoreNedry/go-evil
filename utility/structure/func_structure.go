@@ -1,21 +1,36 @@
 package structure
 
 import (
+	"fmt"
 	"strings"
+
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 type Func_t struct {
-	Name      string   // Function name
-	Func_type string   // Which sort of type this function is
-	Gut       []string // The contents of the function
+	Name       string   // Obfuscated function name or the real function name
+	Prev_names []string // A array containing all old function names
+	Func_type  string   // Which sort of type this function is
+	Gut        []string // The contents of the function
 }
 
 //
 //
-// Gives the function a name
+// Gives the function a obfuscated name
 //
 //
 func (object *Func_t) Set_name(name string) {
+
+	for _, illegal_name := range []string{"main"} {
+		if illegal_name == name {
+			notify.Error(fmt.Sprintf("Illegal name '%s' was found!", name), "func_structure.Set_name()")
+		}
+	}
+
+	if object.Name != "" {
+		object.Prev_names = append(object.Prev_names, object.Name)
+	}
+
 	object.Name = name
 }
 
@@ -91,4 +106,32 @@ func (object *Func_t) Get_type() string {
 //
 func (object *Func_t) Get_gut() []string {
 	return object.Gut
+}
+
+//
+//
+// Returns the functions old names
+//
+//
+func (object *Func_t) Get_prev_names() []string {
+	return object.Prev_names
+}
+
+//
+//
+// Checks if the provied name is the name that this function has held before
+//
+//
+func (object *Func_t) Check_previous_names(name string) bool {
+	to_return := false
+	name = strings.Trim(name, " ")
+
+	for _, old_name := range object.Prev_names {
+		if name == old_name {
+			to_return = true
+			break
+		}
+	}
+
+	return to_return
 }

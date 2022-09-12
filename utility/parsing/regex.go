@@ -7,14 +7,12 @@ package parsing
 //
 
 const (
-	FUNC              = "([bl]) ([a-z0-9_]+) *{\n* *((.*|\n*)*?)\n*}" // Extracts all functions
-	DOMAIN_FUNC_VALUE = "([a-z_]+)::([a-z_]+)\\((.*)\\)"              // Extracts the domain, function being called and if a value was sent with it
+	FUNC              = "([blc]) ([a-z0-9_]+) *{\n* *((.*|\n*)*?)\n*}" // Extracts all functions
+	DOMAIN_FUNC_VALUE = "([a-z_]+)::([a-z_]+)\\((.*)\\)"               // Extracts the domain, function being called and if a value was sent with it
 
 	IMPORT = "use ([a-z]+)" // Finds imports
 
-	COMMENT           = "@.+@"      // Identifies a comment
-	COMMENT_WRONG_RHS = "^[^@].+@$" // Identifies wrongly formatted comment
-	COMMENT_WRONG_LHS = "^@.+[^@]$" // Identifies wrongly formatted comment
+	COMMENT = "@.+@" // Identifies a comment
 
 	// Configurations //
 	COMPILER_CONFIGURATION  = "\\[\n*(?s)(.*)\n*\\]"       // Grabs the configuration secton

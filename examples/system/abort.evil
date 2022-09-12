@@ -11,10 +11,10 @@ use system
 ]
 
 b disable {
-    system::abort({"sg", "us"})
+    system::abort(${"sg", "us"}$) @ ${}$ are known as an evil array @
 }
 
-l main {
+l main_func {
     system::out("hello, world!")
     system::exit("0")
 }

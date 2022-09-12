@@ -18,9 +18,11 @@ func Create_json_object() json_t {
 	new_json.Malware_path = "./output/"
 	new_json.Malware_gut = append(new_json.Malware_gut, "package main")
 
-	// Settings for the text editor
-	new_json.Width = 600
-	new_json.Height = 800
+	// Settings for all the webview instances
+	new_json.Width = 800
+	new_json.Height = 600
+
+	new_json.Bind_gut = make(map[string]string)
 
 	return new_json
 }

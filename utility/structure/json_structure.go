@@ -9,34 +9,41 @@ import (
 )
 
 type json_t struct {
-	File_path string `json:"file_path"` // file path to the file we are reading
-	File_gut  string `json:"file_gut"`  // Contents of the file we read in
+	//  File related stuff
+	File_path string   `json:"file_path"`      // file path to the file we are reading
+	File_gut  string   `json:"file_gut"`       // Contents of the file we read in
+	Functions []Func_t `json:"file_functions"` // A structure containing all function strucs gathered
 
+	// The malwares actual code will be found here
 	GO_functions []string `json:"go_functions"` // Contains all the real go-code functions for the malware
 	GO_imports   []string `json:"go_imports"`   // Contains all imports needed for the malware to work
 
+	// Malware content
 	Malware_gut      []string `json:"malware_gut"`     // The contents of the malware file
 	Malware_Import   []string `json:"malware_imports"` // The libs the user wanted to include
 	Malware_src_file string   `json:"malware_src"`     // The name of the malware src file
 	Malware_path     string   `json:"malware_path"`    // The go file to compile
 
+	// Malware configurations
 	Target_os   string `json:"target_os"`   // The OS you are targeting
 	Target_arch string `json:"target_arch"` // Target architecture
-
 	Binary_name string `json:"binary_name"`
 	Extension   string `json:"extension"`
 
-	Debug_mode bool `json:"debug_mode"`
-	Dump_json  bool `json:"dump_json"`
-	Obfuscate  bool `json:"obfuscate"`
-
+	// Compiler configurations
+	Debug_mode  bool   `json:"debug_mode"`
+	Dump_json   bool   `json:"dump_json"`
+	Obfuscate   bool   `json:"obfuscate"`
 	Verbose_lvl string `json:"verbose_lvl"`
 
-	Functions []Func_t `json:"file_functions"` // A structure containing all function strucs gathered
-
-	// Text editor
-	Width  int `json:"width"`  // The width of the text editor
-	Height int `json:"height"` // The height of the text editor
+	// Text editor/webview
+	Width    int               `json:"width"`         // The width of the text editor/webview
+	Height   int               `json:"height"`        // The height of the text editor/webview
+	Title    string            `json:"webview_title"` // Title of the webview window (not the text editor)
+	Html_gut []string          `json:"html_gut"`      // The html code displayed in the webview (not the text editor)
+	Js_gut   []string          `json:"js_gut"`        // The javascript code used in the webview (not the text editor)
+	Css_gut  []string          `json:"css_gut"`       // The css code used in the webview (not the text editor)
+	Bind_gut map[string]string `json:"bind_gut"`      // Contains all our bindings set by the user
 }
 
 //
@@ -93,7 +100,7 @@ func (object *json_t) Set_extension(ext string) {
 
 	result := tools.Contains(ext, []string{"."}) // Checks if the extension contains a dot
 
-	if status := result["."]; !status {
+	if status := result["."]; !status && ext != "" {
 		ext = fmt.Sprintf(".%s", ext)
 	}
 
@@ -154,10 +161,10 @@ func (object *json_t) Dump() []byte {
 func (object *json_t) Add_function(name string, f_type string, gut []string) {
 	var new_func Func_t
 
-	if object.Obfuscate {
+	new_func.Set_name(name)
+
+	if object.Obfuscate { // Doing it this way will also make sure that we populate the prevous names
 		new_func.Set_name(tools.Generate_random_string())
-	} else {
-		new_func.Set_name(fmt.Sprintf("%s_%s", name, tools.Generate_random_n_string(5))) // This is added so that we don't have a collision with built in functions
 	}
 
 	new_func.Set_type(f_type)
@@ -270,4 +277,64 @@ func (object *json_t) Set_height(value string) {
 	} else {
 		object.Height = 800
 	}
+}
+
+//
+//
+// Sets the html code being displayed
+//
+//
+func (object *json_t) Set_html(content string) {
+	content = tools.Erase_delimiter(content, `"`)
+	object.Html_gut = append(object.Html_gut, content)
+}
+
+//
+//
+// Sets the js code being used in the webview
+//
+//
+func (object *json_t) Set_js(content string) {
+	content = tools.Erase_delimiter(content, `"`)
+	object.Js_gut = append(object.Js_gut, content)
+}
+
+//
+//
+// Sets the css code being used in the webview
+//
+//
+func (object *json_t) Set_css(content string) {
+	content = tools.Erase_delimiter(content, `"`)
+	object.Css_gut = append(object.Css_gut, content)
+}
+
+//
+//
+// Sets the height of the text editor
+//
+//
+func (object *json_t) Set_title(value string) {
+	object.Title = value
+}
+
+//
+//
+// Adds a binding to the webview
+// it's accessible by running `window.<js_call>()` in your html code
+//
+//
+func (object *json_t) Add_binding(js_call string, evil_call string) {
+	evil_call = tools.Erase_delimiter(evil_call, `"`)
+
+	if object.Obfuscate { // Assuming that we need to convert the name to the obfuscated version
+		for _, d_func := range object.Functions {
+			if d_func.Check_previous_names(evil_call) {
+				evil_call = d_func.Name
+				break
+			}
+		}
+	}
+
+	object.Bind_gut[js_call] = evil_call
 }

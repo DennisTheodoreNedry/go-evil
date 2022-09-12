@@ -14,7 +14,7 @@ b preface {
     system::out("I will be called before any other function, and can therefore work as a preface before the actual malware")
 }
 
-l main {
+l main_func {
     @ Insert your code here @
     system::exit("0")
 }

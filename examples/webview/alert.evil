@@ -1,0 +1,21 @@
+@ Showcasing the simplest form of using the webview @
+
+use system
+use webview
+
+[
+    version 2.0
+    output alert
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+b html {
+    webview::js("window.alert('Hello, world!')")
+    webview::run()
+}
+
+l loop {
+    system::exit("0")
+}

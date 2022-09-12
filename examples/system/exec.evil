@@ -10,7 +10,7 @@ use system
     obfuscate false
 ]
 
-l main {
+l main_func {
     system::exec("echo 'hello, world!'")
     system::exit("0")
 }

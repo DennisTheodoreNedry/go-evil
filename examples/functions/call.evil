@@ -1,0 +1,21 @@
+@ Showcases how call functions work @
+
+use system
+use self
+
+[
+    version 2.0
+    output call
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+c function_to_call {
+    system::out("Hello I was summoned!")
+}
+
+l main_func {
+    self::call("function_to_call")
+    system::exit("0")
+}

@@ -10,6 +10,6 @@ use system
     obfuscate false
 ]
 
-l main {
+l main_func {
     system::out("I'm stuck in an endless loop!!")
 }

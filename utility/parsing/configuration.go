@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -130,20 +129,9 @@ func check_extension(line string, s_json string) string {
 	data_object := structure.Receive(s_json)
 
 	if data_object.Extension == "" { // Don't override if the user already have provided a extension
-		regex := regexp.MustCompile(CONFIGURATION_EXTENSION)
-		result := regex.FindAllStringSubmatch(line, -1)
 		ext := ""
 
-		if len(result) > 0 {
-			ext = result[0][1]
-
-			check := tools.Starts_with(ext, []string{"."}) // Checks if the extension starts with a dot
-
-			if status := check["."]; !status { // It doesn't
-				ext = fmt.Sprintf(".%s", ext)
-			}
-
-		} else if os.Getenv("GOOS") == "windows" {
+		if os.Getenv("GOOS") == "windows" {
 			ext = ".exe"
 		}
 

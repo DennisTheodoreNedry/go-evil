@@ -50,8 +50,8 @@ func Sleep(s_json string, value string) (string, string) {
 		"}",
 	})
 
-	data_object.Add_go_import("\"time\"")
-	data_object.Add_go_import("\"github.com/TeamPhoneix/go-evil/utility/tools\"")
+	data_object.Add_go_import("time")
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 
 	return fmt.Sprintf("Sleep(%s)", value), structure.Send(data_object)
 }

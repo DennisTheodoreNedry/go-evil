@@ -65,6 +65,7 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 	for _, loop_name := range loop_functions {
 		main_functions = append(main_functions, (fmt.Sprintf("%s()", loop_name)))
 	}
+
 	main_functions = append(main_functions, "}", "}")
 
 	data_object.Add_go_function(main_functions)
@@ -78,7 +79,7 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 // Identify sub function type and populates two string arrays
 //
 //
-func identify_sub_function(d_funcs []structure.Func_t) ([]string, []string) {
+func identify_sub_func(d_funcs []structure.Func_t) ([]string, []string) {
 	boot_functions := []string{}
 	loop_functions := []string{}
 
@@ -87,8 +88,10 @@ func identify_sub_function(d_funcs []structure.Func_t) ([]string, []string) {
 		// Identify the function type
 		if d_func.Func_type == "b" {
 			boot_functions = append(boot_functions, d_func.Name)
+
 		} else if d_func.Func_type == "l" {
 			loop_functions = append(loop_functions, d_func.Name)
+
 		}
 	}
 
@@ -103,7 +106,7 @@ func identify_sub_function(d_funcs []structure.Func_t) ([]string, []string) {
 func generate_sub_functions(s_json string) (string, []string, []string) {
 	data_object := structure.Receive(s_json)
 
-	boot_func, loop_func := identify_sub_function(data_object.Functions)
+	boot_func, loop_func := identify_sub_func(data_object.Functions)
 
 	for _, d_func := range data_object.Functions {
 

@@ -3,8 +3,10 @@ package parsing
 import (
 	"regexp"
 
+	"github.com/TeamPhoneix/go-evil/domains/self"
 	"github.com/TeamPhoneix/go-evil/domains/system"
 	"github.com/TeamPhoneix/go-evil/domains/time"
+	"github.com/TeamPhoneix/go-evil/domains/webview"
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 )
 
@@ -25,6 +27,7 @@ func Build_functions(s_json string) string {
 			gut := function[3:]
 
 			data_object.Add_function(name, f_type, gut)
+
 		}
 	}
 	return structure.Send(data_object)
@@ -73,6 +76,13 @@ func grab_code(domain string, function string, value string, s_json string) (str
 
 	case "time":
 		call_function, s_json = time.Parser(function, value, s_json)
+
+	case "webview":
+		call_function, s_json = webview.Parser(function, value, s_json)
+
+	case "self":
+		call_function, s_json = self.Parser(function, value, s_json)
+
 	}
 
 	return call_function, s_json

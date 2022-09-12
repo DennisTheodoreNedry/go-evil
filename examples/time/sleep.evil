@@ -11,7 +11,7 @@ use time
     obfuscate false
 ]
 
-l main {
+l main_func {
     time::sleep("10")
     system::out("It's gone 10s since I was launched!")
     system::exit("0")

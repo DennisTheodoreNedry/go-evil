@@ -1,0 +1,34 @@
+@ Showcasing a bit more "advance" way of using the builtin webview @
+@ This example utilizes a combination of html, css and javascript to make it possible to take an input @
+@ from the user and validate it. It also shows how we can align text and change the background color @ 
+
+use system
+use webview
+
+[
+    version 2.0
+    output web_input
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+b multishow_example {
+    webview::html("<h2>Example</h2>")
+    webview::html("<label for='passcode'>Enter the secret password for encryption</label>")
+    webview::html("<input type='text' id='passcode'>")
+    webview::html("<input type='submit' name='Submit' onclick='validate()'>")
+
+    @ We can split a javascript function over multiple lines, but we could also write it as a one-liner @
+    webview::js("function validate(){ pass = document.getElementById('passcode').value;")
+    webview::js("if (pass === 'abc'){window.alert('Decrypting files!');}")
+    webview::js("else{window.alert('Wrong passcode, try abc');}}")
+
+    webview::css("h2{text-align:center;} body{background-color:#d3d3d3}")
+
+    webview::run()
+}
+
+l loop {
+    system::exit("0")
+}
