@@ -1,5 +1,9 @@
 # Go evil
 
+### Note
+As of Halloween 2022 this version of go-evil will no longer receive any more updates/fixes.<br/>
+Instead check out [version 2](https://github.com/TeamPhoneix/go-evil/tree/v2).
+
 <img src="https://raw.githubusercontent.com/TeamPhoneix/go-evil/main/pictures/logo.png" width="650"/>
 
 Go-evil is a red teams wet dream, a tool to beat all other tools of it's kind.<br>
