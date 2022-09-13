@@ -1,5 +1,6 @@
-# go-evil
-Customizing evil has never been so easy
+# Go-evil - Customizing evil has never been so easy
+
+<pic>
 
 Go-evil is a red teams wet dream, a tool to beat all other tools of it's kind.<br>
 What is go-evil, I hear you ask? Go-evil is a project all about the art of creating malware with a simpel language.<br>
