@@ -1,0 +1,19 @@
+@ This example shows you can set one of the internal compile variables to a certain value @
+
+use system
+use self
+
+[
+    version 2.0
+    output set
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+
+l main_func {
+    self::set("Hello world!") @ Assigns the first compile variable a value @
+    system::out("$1$")
+    system::exit("0")
+}

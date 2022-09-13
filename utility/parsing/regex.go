@@ -14,6 +14,10 @@ const (
 
 	COMMENT = "@.+@" // Identifies a comment
 
+	// Variables //
+	GET_VAR      = "(([\\$])([0-9]+)[\\$])" // Grabs the variable type and id
+	GET_USER_VAR = "\\$666\\$"              // Grabs what the user is called
+
 	// Configurations //
 	COMPILER_CONFIGURATION  = "\\[\n*(?s)(.*)\n*\\]"       // Grabs the configuration secton
 	COMPILER_VERSION        = "version +([0-9]+\\.[0-9]+)" // Grabs the compiler that the scrip was meant for

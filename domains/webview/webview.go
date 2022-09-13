@@ -15,7 +15,7 @@ import (
 //
 func run(s_json string) (string, string) {
 	data_object := structure.Receive(s_json)
-	call := "run()"
+	call := "Run()"
 	obj := "w"
 
 	if data_object.Obfuscate {
@@ -161,7 +161,7 @@ func bind(values string, s_json string) string {
 //
 func navigate(website string, s_json string) (string, string) {
 	data_object := structure.Receive(s_json)
-	call := "navigate"
+	call := "Navigate"
 	obj := "w"
 
 	if data_object.Obfuscate {

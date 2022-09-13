@@ -1,0 +1,19 @@
+@ This example shows how the so-called compile time variables work @
+
+use system
+use self
+
+[
+    version 2.0
+    output compile
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+l main_func {
+    system::out("$1$") @ This will print NULL @
+    self::set("My god!")
+    system::out("$1$") @ This will now print "My god!" @
+    system::exit("0")
+}

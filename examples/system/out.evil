@@ -4,7 +4,7 @@ use system
 
 [
     version 2.0
-    output msg
+    output out
     os linux
     arch amd64
     obfuscate false

@@ -3,6 +3,7 @@ package tools
 import (
 	"fmt"
 	"math/rand"
+	"os/user"
 	"regexp"
 	"strconv"
 	"strings"
@@ -177,4 +178,19 @@ func Erase_delimiter(line string, delimiter string) string {
 	line = regex.ReplaceAllString(line, "")
 
 	return line
+}
+
+//
+//
+// Returns the username of the current user
+//
+//
+func Grab_username() string {
+	user, err := user.Current()
+
+	if err != nil {
+		notify.Error(err.Error(), "tools.Grab_username()")
+	}
+
+	return user.Username
 }

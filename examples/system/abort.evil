@@ -4,7 +4,7 @@ use system
 
 [
     version 2.0
-    output disabled
+    output abort
     os linux
     arch amd64
     obfuscate true

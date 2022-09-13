@@ -22,7 +22,16 @@ func Create_json_object() json_t {
 	new_json.Width = 800
 	new_json.Height = 600
 
+	// Used when we are doing a 1:1 mapping of our js function to a evil one
 	new_json.Bind_gut = make(map[string]string)
+
+	new_json.Var_max = 5
+
+	for id := 0; id < new_json.Var_max; id++ {
+		var new_var Var_t
+		new_var.Set_value("NULL") // Default value
+		new_json.Comp_var = append(new_json.Comp_var, new_var)
+	}
 
 	return new_json
 }

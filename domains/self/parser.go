@@ -18,6 +18,12 @@ func Parser(function string, value string, s_json string) (string, string) {
 	case "call":
 		call, s_json = Call_function(value, s_json)
 
+	case "include":
+		s_json = Include(value, s_json)
+
+	case "set":
+		s_json = Set(value, s_json)
+
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")
 

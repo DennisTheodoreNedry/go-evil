@@ -1,0 +1,22 @@
+@ This example shows you the process of including a file/picture/whatever into your malware @
+
+use system
+use self
+
+[
+    version 2.0
+    output include
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+b include {
+    @ The line below assumes that you have the git project in the location  @
+    self::include("/home/$666$/go-evil/main.go")
+}
+
+l main_func {
+    system::out("The variable name containing the data is $1$")
+    system::exit("0")
+}

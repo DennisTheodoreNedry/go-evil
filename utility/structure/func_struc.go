@@ -16,7 +16,7 @@ type Func_t struct {
 
 //
 //
-// Gives the function a obfuscated name
+// Gives the function a name
 //
 //
 func (object *Func_t) Set_name(name string) {

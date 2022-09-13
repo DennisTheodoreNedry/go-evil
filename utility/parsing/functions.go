@@ -2,6 +2,7 @@ package parsing
 
 import (
 	"regexp"
+	"strings"
 
 	"github.com/TeamPhoneix/go-evil/domains/self"
 	"github.com/TeamPhoneix/go-evil/domains/system"
@@ -69,6 +70,22 @@ func convert_code(gut []string, s_json string) ([]string, string) {
 //
 func grab_code(domain string, function string, value string, s_json string) (string, string) {
 	call_function := ""
+
+	// Translating variables
+	regex := regexp.MustCompile(GET_VAR)
+	result := regex.FindAllStringSubmatch(value, -1)
+
+	if len(result) > 0 {
+		data_object := structure.Receive(s_json)
+		var_call := result[0][1]
+		Var_type := result[0][2]
+		var_id := result[0][3]
+
+		var_value := data_object.Get_variable_value(Var_type, var_id)
+		value = strings.ReplaceAll(value, var_call, var_value)
+
+		s_json = structure.Send(data_object)
+	}
 
 	switch domain {
 	case "system":

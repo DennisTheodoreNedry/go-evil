@@ -35,6 +35,18 @@ func fill_malware_gut(s_json string) string {
 	}
 	data_object.Add_malware_line(")")
 
+	// Link const
+	data_object.Add_malware_line("const (")
+	for _, new_const := range data_object.GO_const {
+		data_object.Add_malware_line(new_const)
+	}
+	data_object.Add_malware_line(")")
+
+	// Link globals
+	for _, new_global := range data_object.GO_global {
+		data_object.Add_malware_line(new_global)
+	}
+
 	// Link functions
 	for _, new_func := range data_object.GO_functions {
 		data_object.Add_malware_line(new_func)
@@ -126,7 +138,9 @@ func generate_sub_functions(s_json string) (string, []string, []string) {
 }
 
 //
+//
 // Parses the contents of the provided file
+//
 //
 func Parse(s_json string) string {
 	s_json = preface(s_json) // Handles every preface we could possibly want done before we start parsing
@@ -135,8 +149,7 @@ func Parse(s_json string) string {
 
 	s_json = generate_main_function(s_json, boot_func, loop_func)
 
-	data_object := structure.Receive(s_json)
-	s_json = fill_malware_gut(structure.Send(data_object))
+	s_json = fill_malware_gut(s_json)
 
 	return s_json
 }
