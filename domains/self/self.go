@@ -63,13 +63,13 @@ func Include(file_path string, s_json string) string {
 		notify.Error(err.Error(), "self.Include()")
 	}
 	new_const := tools.Generate_random_string()
-	final_line := fmt.Sprintf("var %s = [...]string{", new_const)
+	final_line := fmt.Sprintf("var %s = \"[HEX];,", new_const)
 
 	for _, line := range file_gut {
-		final_line += fmt.Sprintf("\"%s\",", hex.EncodeToString([]byte{line}))
+		final_line += fmt.Sprintf("%s,", hex.EncodeToString([]byte{line}))
 	}
 
-	final_line += "}"
+	final_line += "\""
 
 	data_object.Add_go_global(final_line)
 

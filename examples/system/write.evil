@@ -1,0 +1,19 @@
+@ Creates a file on the disk containing 'hello, world!' @
+
+use system
+
+[
+    version 2.0
+    output write
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+l main_func {
+    @ The parameters for the write function are @
+    @ 1. File path @
+    @ 2. Content to write @ 
+    system::write(${"./test.txt", "hello, world!\n"}$)
+    system::exit("0")
+}

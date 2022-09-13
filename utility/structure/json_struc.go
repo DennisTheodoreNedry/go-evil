@@ -3,6 +3,7 @@ package structure
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
@@ -366,7 +367,7 @@ func (object *json_t) Add_binding(js_call string, evil_call string) {
 
 //
 //
-//
+// Sets the value of a variable
 //
 //
 func (object *json_t) Set_variable_value(Var_type string, value string) {
@@ -382,7 +383,7 @@ func (object *json_t) Set_variable_value(Var_type string, value string) {
 
 //
 //
-//
+// Grabs the value of the variable
 //
 //
 func (object *json_t) Get_variable_value(Var_type string, var_id string) string {
@@ -401,6 +402,26 @@ func (object *json_t) Get_variable_value(Var_type string, var_id string) string 
 
 		if Var_type == "$" {
 			to_return = object.Comp_var[id].Get_value()
+		}
+	}
+
+	return to_return
+}
+
+//
+//
+// Checks if the provided string is a global variabel
+//
+//
+func (object *json_t) Check_global_name(var_name string) bool {
+	to_return := false
+
+	var_name = tools.Erase_delimiter(var_name, "\"")
+
+	for _, global := range object.GO_global {
+		if strings.Contains(global, var_name) {
+			to_return = true
+			break
 		}
 	}
 

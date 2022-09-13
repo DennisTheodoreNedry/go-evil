@@ -36,6 +36,9 @@ func Parser(function string, value string, s_json string) (string, string) {
 	case "add_to_startup":
 		call, s_json = Add_to_startup(s_json)
 
+	case "write":
+		call, s_json = write(s_json, value)
+
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")
 

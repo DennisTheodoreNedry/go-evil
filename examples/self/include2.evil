@@ -1,0 +1,21 @@
+@ This example shows you the process of including a file into your malware and how you can write a file to the disk containng the data @
+
+use system
+use self
+
+[
+    version 2.0
+    output include2
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+b include {
+    self::include("/home/$666$/go-evil/main.go") @ The result is placed into $1$ @
+}
+
+l main_func {
+    system::write(${"/tmp/main.go", "$1$"}$)
+    system::exit("0")
+}
