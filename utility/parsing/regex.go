@@ -7,16 +7,22 @@ package parsing
 //
 
 const (
+	// Functions //
 	FUNC              = "([blc]) ([a-z0-9_]+) *{\n* *((.*|\n*)*?)\n*}" // Extracts all functions
 	DOMAIN_FUNC_VALUE = "([a-z_]+)::([a-z_]+)\\((.*)\\)"               // Extracts the domain, function being called and if a value was sent with it
 
+	// Imports //
 	IMPORT = "use ([a-z]+)" // Finds imports
 
+	// Comments //
 	COMMENT = "@.+@" // Identifies a comment
 
 	// Variables //
 	GET_VAR      = "(([\\$])([0-9]+)[\\$])" // Grabs the variable type and id
 	GET_USER_VAR = "\\$666\\$"              // Grabs what the user is called
+
+	// Foreach loops //
+	GET_FOREACH = "foreach *\\((.+)\\) *:\n+ *((.*|\n*)*?)\n*end foreach"
 
 	// Configurations //
 	COMPILER_CONFIGURATION  = "\\[\n*(?s)(.*)\n*\\]"       // Grabs the configuration secton

@@ -1,0 +1,20 @@
+@ Showcases how a for-loop/foreach-loop works @
+
+use system
+
+[
+    version 2.0
+    output foreach
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+
+l main_func {
+    foreach(${"1", "2", "3", "4", "5"}$):
+        system::out("€6€")
+    end foreach
+    
+    system::exit("0")
+}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 //
@@ -126,6 +127,9 @@ func generate_sub_functions(s_json string) (string, []string, []string) {
 
 		converted_code, s_json := convert_code(d_func.Gut, structure.Send(data_object))
 
+		if data_object.Obfuscate {
+			notify.Log("Obfuscating source code", data_object.Verbose_lvl, "2")
+		}
 		data = append(data, converted_code...)
 
 		data = append(data, "}")

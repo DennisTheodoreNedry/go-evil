@@ -55,7 +55,7 @@ func Out(s_json string, msg string) (string, string) {
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(%s string){", function_call, var1),
 
-		fmt.Sprintf("fmt.Println(%s)", var1),
+		fmt.Sprintf("fmt.Print(%s)", var1),
 
 		"}"})
 
