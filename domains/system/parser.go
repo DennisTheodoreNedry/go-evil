@@ -18,6 +18,9 @@ func Parser(function string, value string, s_json string) (string, string) {
 	case "out":
 		call, s_json = Out(s_json, value)
 
+	case "outln":
+		call, s_json = Outln(s_json, value)
+
 	case "exit":
 		call, s_json = Exit(s_json, value)
 

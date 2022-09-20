@@ -11,11 +11,9 @@ use system
 ]
 
 
-b boot {
-    system::out("Hello from boot!")
-}
 
 l main_func {
-    system::out("Hello from main!")
+    system::outln("Hello with a newline!") @ Adds a new line at the end @
+    system::out("Hello without a newline!") 
     system::exit("0")
 }

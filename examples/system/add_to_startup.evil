@@ -15,6 +15,6 @@ b start_up {
 }
 
 l main_func {
-    system::out("I have auto-booted!")
+    system::outln("I have auto-booted!")
     system::exit("0")
 }

@@ -16,6 +16,6 @@ b reboot {
 
 @ These function will never be called @
 l main_func {
-    system::out("hello, world!")
+    system::outln("hello, world!")
     system::exit("0")
 }

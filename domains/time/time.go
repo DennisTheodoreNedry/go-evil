@@ -5,7 +5,6 @@ import (
 	"regexp"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
 const (
@@ -44,19 +43,11 @@ func Until(s_json string, value string) (string, string) {
 func Sleep(s_json string, value string) (string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Sleep"
-	param := "value"
-	int_value := "i_value"
-
-	if data_object.Obfuscate {
-		function_call = tools.Generate_random_string()
-		value = tools.Generate_random_string()
-		int_value = tools.Generate_random_string()
-	}
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(%s string){", function_call, param),
-		fmt.Sprintf("%s := tools.String_to_int(%s)", int_value, param),
-		fmt.Sprintf("time.Sleep(time.Duration(%s) * time.Second)", int_value),
+		fmt.Sprintf("func %s(value string){", function_call),
+		"i_value := tools.String_to_int(value)",
+		"time.Sleep(time.Duration(i_value) * time.Second)",
 		"}",
 	})
 

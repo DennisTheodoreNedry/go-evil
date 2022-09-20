@@ -12,7 +12,7 @@ use self
 ]
 
 c function_to_call {
-    system::out("Hello I was summoned!")
+    system::outln("Hello I was summoned!")
 }
 
 l main_func {

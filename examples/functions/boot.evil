@@ -11,7 +11,7 @@ use system
 ]
 
 b preface {
-    system::out("I will be called before any other function, and can therefore work as a preface before the actual malware")
+    system::outln("I will be called before any other function, and can therefore work as a preface before the actual malware")
 }
 
 l main_func {

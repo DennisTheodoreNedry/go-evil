@@ -1,0 +1,18 @@
+@ During compile time you can access the username of the current running user @
+@ This example shows you how @
+
+use system
+use self
+
+[
+    version 2.0
+    output run_username
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+l main_func {
+    system::outln("Hello €666€!") @ As you can see €666€ is reserved for when you want a username @
+    system::exit("0")
+}

@@ -11,5 +11,5 @@ use system
 ]
 
 l main_func {
-    system::out("I'm stuck in an endless loop!!")
+    system::outln("I'm stuck in an endless loop!!")
 }

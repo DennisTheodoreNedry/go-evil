@@ -16,12 +16,6 @@ import (
 func run(s_json string) (string, string) {
 	data_object := structure.Receive(s_json)
 	call := "Run()"
-	obj := "w"
-
-	if data_object.Obfuscate {
-		call = fmt.Sprintf("%s()", tools.Generate_random_string())
-		obj = tools.Generate_random_string()
-	}
 
 	html_content := strings.Join(data_object.Html_gut, "\n")
 	js_content := strings.Join(data_object.Js_gut, "\n")
@@ -39,18 +33,18 @@ func run(s_json string) (string, string) {
 
 	binding := ""
 	for key := range data_object.Bind_gut {
-		binding += fmt.Sprintf("%s.Bind(%s, %s)\n", obj, key, data_object.Bind_gut[key])
+		binding += fmt.Sprintf("w.Bind(%s, %s)\n", key, data_object.Bind_gut[key])
 	}
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(){", call),
-		fmt.Sprintf("%s := webview.New(false)", obj),
-		fmt.Sprintf("defer %s.Destroy()", obj),
-		fmt.Sprintf("%s.SetHtml(`%s`)", obj, final_content),
-		fmt.Sprintf("%s.SetSize(%d, %d, webview.HintNone)", obj, data_object.Width, data_object.Height),
-		fmt.Sprintf("%s.SetTitle(\"%s\")", obj, data_object.Title),
+		"w := webview.New(false)",
+		"defer w.Destroy()",
+		fmt.Sprintf("w.SetHtml(`%s`)", final_content),
+		fmt.Sprintf("w.SetSize(%d, %d, webview.HintNone)", data_object.Width, data_object.Height),
+		fmt.Sprintf("w.SetTitle(\"%s\")", data_object.Title),
 		binding,
-		fmt.Sprintf("%s.Run()", obj),
+		"w.Run()",
 		"}",
 	})
 
@@ -162,25 +156,19 @@ func bind(values string, s_json string) string {
 func navigate(website string, s_json string) (string, string) {
 	data_object := structure.Receive(s_json)
 	call := "Navigate"
-	obj := "w"
-
-	if data_object.Obfuscate {
-		call = fmt.Sprintf("%s()", tools.Generate_random_string())
-		obj = tools.Generate_random_string()
-	}
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", call),
-		fmt.Sprintf("%s := webview.New(false)", obj),
-		fmt.Sprintf("defer %s.Destroy()", obj),
-		fmt.Sprintf("%s.SetSize(%d, %d, webview.HintNone)", obj, data_object.Width, data_object.Height),
-		fmt.Sprintf("%s.SetTitle(\"%s\")", obj, data_object.Title),
-		fmt.Sprintf("%s.Navigate(%s)", obj, website),
-		fmt.Sprintf("%s.Run()", obj),
+		fmt.Sprintf("func %s(website string){", call),
+		"w := webview.New(false)",
+		"defer w.Destroy()",
+		fmt.Sprintf("w.SetSize(%d, %d, webview.HintNone)", data_object.Width, data_object.Height),
+		fmt.Sprintf("w.SetTitle(\"%s\")", data_object.Title),
+		"w.Navigate(website)",
+		"w.Run()",
 		"}",
 	})
 
 	data_object.Add_go_import("github.com/webview/webview")
 
-	return call, structure.Send(data_object)
+	return fmt.Sprintf("%s(%s)", call, website), structure.Send(data_object)
 }

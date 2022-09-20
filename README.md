@@ -87,11 +87,11 @@ use system
 
 
 b boot {
-    system::out("Hello from boot!")
+    system::outln("Hello from boot!")
 }
 
 l main_func {
-    system::out("Hello from main!")
+    system::outln("Hello from main!")
     system::exit("0")
 }
 ```
@@ -112,7 +112,7 @@ use webview
 ]
 
 c test1 {
-    system::out("I've been summoned!")
+    system::outln("I've been summoned!")
 }
 
 b bind {

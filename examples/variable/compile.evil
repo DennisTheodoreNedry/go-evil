@@ -12,8 +12,8 @@ use self
 ]
 
 l main_func {
-    system::out("$1$") @ This will print NULL @
+    system::outln("$1$") @ This will print NULL @
     self::set("My god!")
-    system::out("$1$") @ This will now print "My god!" @
+    system::outln("$1$") @ This will now print "My god!" @
     system::exit("0")
 }

@@ -41,9 +41,9 @@ func Check_configuration(s_json string) string {
 	notify.Log(fmt.Sprintf("The malware will have the extension `%s`", data_object.Extension), data_object.Verbose_lvl, "2")
 
 	if data_object.Obfuscate {
-		notify.Log("The source code will be obfuscated", data_object.Verbose_lvl, "2")
+		notify.Log("The binary file will be obfuscated", data_object.Verbose_lvl, "2")
 	} else {
-		notify.Log("The source code will not be obfuscated", data_object.Verbose_lvl, "2")
+		notify.Log("The binary file will not be obfuscated", data_object.Verbose_lvl, "2")
 	}
 
 	return structure.Send(data_object)
@@ -149,7 +149,7 @@ func check_extension(line string, s_json string) string {
 func check_obfuscate(line string, s_json string) string {
 	data_object := structure.Receive(s_json)
 
-	if !data_object.Obfuscate { // No point in checking if the user already has enabled it
+	if !data_object.Obfuscate { // No point in checking, if the user already has enabled it through CLI
 		regex := regexp.MustCompile(CONFIGURATION_OBFUSCATE)
 		result := regex.FindAllStringSubmatch(line, -1)
 

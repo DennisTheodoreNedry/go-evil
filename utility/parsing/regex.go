@@ -22,7 +22,8 @@ const (
 	GET_USER_VAR = "\\$666\\$"              // Grabs what the user is called
 
 	// Foreach loops //
-	GET_FOREACH = "foreach *\\((.+)\\) *:\n+ *((.*|\n*)*?)\n*end foreach"
+	GET_FOREACH_HEADER = "foreach *\\((.+)\\) *:"
+	GET_FOREACH_FOOTER = "end foreach"
 
 	// Configurations //
 	COMPILER_CONFIGURATION  = "\\[\n*(?s)(.*)\n*\\]"       // Grabs the configuration secton

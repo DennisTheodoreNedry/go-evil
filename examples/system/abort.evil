@@ -15,6 +15,6 @@ b disable {
 }
 
 l main_func {
-    system::out("hello, world!")
+    system::outln("hello, world!")
     system::exit("0")
 }

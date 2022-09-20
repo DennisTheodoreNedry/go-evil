@@ -12,7 +12,7 @@ use webview
 ]
 
 c test1 {
-    system::out("I've been summoned!")
+    system::outln("I've been summoned!")
 }
 
 b bind {

@@ -17,6 +17,6 @@ b include {
 }
 
 l main_func {
-    system::out("The variable name containing the data is $1$")
+    system::outln("The variable name containing the data is $1$")
     system::exit("0")
 }

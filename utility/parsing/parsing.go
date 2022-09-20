@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 //
@@ -36,16 +35,27 @@ func fill_malware_gut(s_json string) string {
 	}
 	data_object.Add_malware_line(")")
 
-	// Link const
-	data_object.Add_malware_line("const (")
-	for _, new_const := range data_object.GO_const {
-		data_object.Add_malware_line(new_const)
+	// Link structs
+	if len(data_object.GO_struct) > 0 {
+		for _, new_struct := range data_object.GO_struct {
+			data_object.Add_malware_line(new_struct)
+		}
 	}
-	data_object.Add_malware_line(")")
+
+	// Link const
+	if len(data_object.GO_const) > 0 {
+		data_object.Add_malware_line("const (")
+		for _, new_const := range data_object.GO_const {
+			data_object.Add_malware_line(new_const)
+		}
+		data_object.Add_malware_line(")")
+	}
 
 	// Link globals
-	for _, new_global := range data_object.GO_global {
-		data_object.Add_malware_line(new_global)
+	if len(data_object.GO_global) > 0 {
+		for _, new_global := range data_object.GO_global {
+			data_object.Add_malware_line(new_global)
+		}
 	}
 
 	// Link functions
@@ -67,6 +77,13 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 	// Create the main function here
 	main_functions := []string{"func main(){"}
 
+	main_functions = append(main_functions, fmt.Sprintf("runtime_var.roof = %d", data_object.Var_max), "runtime_var.pointer = 0")
+	main_functions = append(main_functions, "runtime_var.values = make([]string, runtime_var.roof)")
+
+	for i := 0; i < data_object.Var_max; i++ { // Add default value for each entry
+		main_functions = append(main_functions, fmt.Sprintf("runtime_var.values[%d] = \"\"", i))
+	}
+
 	// Add boot functions
 	for _, boot_name := range boot_functions {
 		main_functions = append(main_functions, fmt.Sprintf("%s()", boot_name))
@@ -79,7 +96,7 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 		main_functions = append(main_functions, (fmt.Sprintf("%s()", loop_name)))
 	}
 
-	main_functions = append(main_functions, "}", "}")
+	main_functions = append(main_functions, "}}")
 
 	data_object.Add_go_function(main_functions)
 
@@ -127,9 +144,6 @@ func generate_sub_functions(s_json string) (string, []string, []string) {
 
 		converted_code, s_json := convert_code(d_func.Gut, structure.Send(data_object))
 
-		if data_object.Obfuscate {
-			notify.Log("Obfuscating source code", data_object.Verbose_lvl, "2")
-		}
 		data = append(data, converted_code...)
 
 		data = append(data, "}")
@@ -143,11 +157,74 @@ func generate_sub_functions(s_json string) (string, []string, []string) {
 
 //
 //
+// Generates the runtime variable structs
+//
+//
+func generate_runtime_variable_struct(s_json string) string {
+	data_object := structure.Receive(s_json)
+
+	data_object.Add_go_struct([]string{
+		"type var_t struct {",
+		"values  []string",
+		"foreach string",
+		"roof int",
+		"pointer int",
+		"}"})
+
+	data_object.Add_go_function([]string{
+		"func (obj *var_t) set(value string) {",
+		"obj.values[obj.pointer] = value",
+		"obj.pointer++",
+		"if obj.pointer >= obj.roof {",
+		"obj.pointer = 0",
+		"}}"})
+
+	data_object.Add_go_function([]string{
+		"func (obj *var_t) get(line string) string {",
+		"regex := regexp.MustCompile(GRAB_VAR)",
+		"result := regex.FindAllStringSubmatch(line, -1)",
+		"toReturn := line",
+
+		"if len(result) > 0 {",
+
+		"i_number := tools.String_to_int(result[0][1])",
+		"if i_number != -1 {",
+		"if i_number > 0 && i_number < 5 {",
+		"toReturn = obj.get(line)",
+		"}else if i_number == 666 { toReturn = tools.Grab_username()",
+		"} else if i_number == 42 { toReturn = obj.foreach",
+		"} else { toReturn = \"NULL\" }}}",
+		"return toReturn }"})
+
+	data_object.Add_go_global("var runtime_var var_t")
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
+	data_object.Add_go_import("regexp")
+
+	data_object.Add_go_const("GRAB_VAR = \"€([0-9]+)€\"")
+
+	return structure.Send(data_object)
+}
+
+//
+//
+// Generate structs
+//
+//
+func generate_structs(s_json string) string {
+	s_json = generate_runtime_variable_struct(s_json)
+
+	return s_json
+}
+
+//
+//
 // Parses the contents of the provided file
 //
 //
 func Parse(s_json string) string {
 	s_json = preface(s_json) // Handles every preface we could possibly want done before we start parsing
+
+	s_json = generate_structs(s_json)
 
 	s_json, boot_func, loop_func := generate_sub_functions(s_json)
 

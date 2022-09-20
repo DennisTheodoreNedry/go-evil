@@ -13,6 +13,6 @@ use time
 
 l main_func {
     time::sleep("10")
-    system::out("It's gone 10s since I was launched!")
+    system::outln("It's gone 10s since I was launched!")
     system::exit("0")
 }

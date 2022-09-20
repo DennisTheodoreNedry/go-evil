@@ -6,13 +6,13 @@ use self
 
 [
     version 2.0
-    output username
+    output compile_username
     os linux
     arch amd64
     obfuscate false
 ]
 
 l main_func {
-    system::out("Hello $666$!") @ As you can see $666$ is reserved for when you want a username @
+    system::outln("Hello $666$!") @ As you can see $666$ is reserved for when you want a username @
     system::exit("0")
 }

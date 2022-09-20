@@ -20,6 +20,7 @@ type json_t struct {
 	GO_imports   []string `json:"go_imports"`   // Contains all imports needed for the malware to work
 	GO_const     []string `json:"go_const"`     // Contains all consts needed for the malware to work
 	GO_global    []string `json:"go_global"`    // Contains all globals needed for the malware to work
+	GO_struct    []string `json:"go_struct"`    // Contains all structs
 
 	// Malware content
 	Malware_gut      []string `json:"malware_gut"`     // The contents of the malware file
@@ -49,7 +50,7 @@ type json_t struct {
 	Bind_gut map[string]string `json:"bind_gut"`      // Contains all our bindings set by the user
 
 	// Variables
-	Var_max  int     // The max amount of allowed variables
+	Var_max  int     `json:"Variable_max"`      // The max amount of allowed variables
 	Comp_var []Var_t `json:"Compile_variables"` // All the compile time variables
 	Comp_id  int     `json:"Compile_ID"`        // The current index for the compile variable
 }
@@ -171,10 +172,6 @@ func (object *json_t) Add_function(name string, f_type string, gut []string) {
 
 	new_func.Set_name(name)
 
-	if object.Obfuscate { // Doing it this way will also make sure that we populate the prevous names
-		new_func.Set_name(tools.Generate_random_string())
-	}
-
 	new_func.Set_type(f_type)
 
 	new_func.Add_lines(gut)
@@ -249,6 +246,12 @@ func (object *json_t) Add_go_import(new_import string) {
 //
 //
 func (object *json_t) Add_go_const(new_const string) {
+	for _, old := range object.GO_const {
+		if old == new_const { // Check if the const already has been definied
+			return
+		}
+	}
+
 	object.GO_const = append(object.GO_const, new_const)
 }
 
@@ -258,7 +261,31 @@ func (object *json_t) Add_go_const(new_const string) {
 //
 //
 func (object *json_t) Add_go_global(new_global string) {
+
+	for _, old := range object.GO_global {
+		if old == new_global { // Check if the global already has been definied
+			return
+		}
+	}
+
 	object.GO_global = append(object.GO_global, new_global)
+}
+
+//
+//
+// Adds a structure to the final code
+//
+//
+func (object *json_t) Add_go_struct(new_struct []string) {
+	struct_header := new_struct[0]
+
+	for _, old_header := range object.GO_struct {
+		if old_header == struct_header { // Check if the struct already has been definied
+			return
+		}
+	}
+
+	object.GO_struct = append(object.GO_struct, new_struct...)
 }
 
 //
@@ -352,15 +379,6 @@ func (object *json_t) Set_title(value string) {
 //
 func (object *json_t) Add_binding(js_call string, evil_call string) {
 	evil_call = tools.Erase_delimiter(evil_call, `"`)
-
-	if object.Obfuscate { // Assuming that we need to convert the name to it's obfuscated version
-		for _, d_func := range object.Functions {
-			if d_func.Check_previous_names(evil_call) {
-				evil_call = d_func.Name
-				break
-			}
-		}
-	}
 
 	object.Bind_gut[js_call] = evil_call
 }

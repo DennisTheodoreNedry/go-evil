@@ -80,9 +80,20 @@ func Compile_file(s_json string) {
 
 	malware := fmt.Sprintf("%s%s%s", data_object.Malware_path, data_object.Binary_name, data_object.Extension)
 	src := fmt.Sprintf("%s%s", data_object.Malware_path, data_object.Malware_src_file)
+	build_args := []string{}
+	compiler := ""
 
-	cmd := exec.Command("go", "build", "-o", malware, "-ldflags=-s -w", src)
-	notify.Log("Compiling malware", data_object.Verbose_lvl, "1")
+	if data_object.Obfuscate {
+		compiler = "garble"
+		build_args = append(build_args, "-literals", "-tiny", "-seed=random", "build", "-o", malware, src)
+		notify.Log("Compiling malware and obfuscating it, this might take a while", data_object.Verbose_lvl, "1")
+	} else {
+		compiler = "go"
+		build_args = append(build_args, "build", "-o", malware, "-ldflags=-s -w", src)
+		notify.Log("Compiling malware", data_object.Verbose_lvl, "1")
+	}
+
+	cmd := exec.Command(compiler, build_args...)
 
 	var out bytes.Buffer
 	var stderr bytes.Buffer

@@ -1,6 +1,7 @@
 package parsing
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/TeamPhoneix/go-evil/domains/time"
 	"github.com/TeamPhoneix/go-evil/domains/webview"
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
 //
@@ -42,20 +44,47 @@ func Build_functions(s_json string) string {
 func convert_code(gut []string, s_json string) ([]string, string) {
 	calls := []string{}
 
-	for _, line := range gut {
+	for i := 0; i < len(gut); i++ {
+		line := gut[i]
+		call_function := ""
+
 		// Identify which domain to call on
 		regex := regexp.MustCompile(DOMAIN_FUNC_VALUE)
-		call := regex.FindAllStringSubmatch(line, -1)
+		data := regex.FindAllStringSubmatch(line, -1)
 
-		if len(call) > 0 {
+		if len(data) > 0 {
 			// This makes it easier to figure out what is what
-			domain := call[0][1]
-			function := call[0][2]
-			value := call[0][3]
-			call_function := ""
+			domain := data[0][1]
+			function := data[0][2]
+			value := data[0][3]
 
 			call_function, s_json = grab_code(domain, function, value, s_json)
 
+		} else {
+			regex = regexp.MustCompile(GET_FOREACH_HEADER)
+			data = regex.FindAllStringSubmatch(line, -1)
+
+			if len(data) > 0 {
+				body := []string{}
+				i++ // Skips the header
+
+				for ; i < len(gut); i++ { // Grabs all data between the header and footer, but also fast forwards the index
+					result := tools.Contains(gut[i], []string{GET_FOREACH_FOOTER})
+					status := result[GET_FOREACH_FOOTER]
+
+					if !status {
+						body = append(body, gut[i])
+
+					} else { // Footer reached
+						break
+					}
+				}
+				call_function, s_json = construct_foreach_loop(data[0][1], body, s_json)
+
+			}
+		}
+
+		if call_function != "" { // Don't want any empty lines
 			calls = append(calls, call_function)
 		}
 	}
@@ -103,4 +132,32 @@ func grab_code(domain string, function string, value string, s_json string) (str
 	}
 
 	return call_function, s_json
+}
+
+//
+//
+// Construcs the code needed for a "foreach" loop
+//
+//
+func construct_foreach_loop(condition string, body []string, s_json string) (string, string) {
+	call := "foreach"
+
+	body_calls, s_json := convert_code(body, s_json) // Converts the code for the foreach body
+	data_object := structure.Receive(s_json)
+
+	array := tools.Extract_values_array(condition)
+
+	final_body := []string{fmt.Sprintf("func %s(values []string){", call), "for _, value := range values{", "runtime_var.foreach = value"}
+	final_body = append(final_body, body_calls...)
+	final_body = append(final_body, "}}")
+
+	data_object.Add_go_function(final_body)
+
+	value := ""
+
+	for _, val := range array {
+		value += fmt.Sprintf("%s,", strings.ToUpper(val))
+	}
+
+	return fmt.Sprintf("%s([]string{%s})", call, value), structure.Send(data_object)
 }
