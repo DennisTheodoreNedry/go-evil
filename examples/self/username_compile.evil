@@ -10,6 +10,7 @@ use self
     os linux
     arch amd64
     obfuscate false
+    debugger_behavior stop
 ]
 
 l main_func {

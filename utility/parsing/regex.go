@@ -26,11 +26,12 @@ const (
 	GET_FOREACH_FOOTER = "end foreach"
 
 	// Configurations //
-	COMPILER_CONFIGURATION  = "\\[\n*(?s)(.*)\n*\\]"       // Grabs the configuration secton
-	COMPILER_VERSION        = "version +([0-9]+\\.[0-9]+)" // Grabs the compiler that the scrip was meant for
-	CONFIGURATION_NAME      = "output +(.*)"
-	CONFIGURATION_ARCH      = "arch +(.*)"
-	CONFIGURATION_OS        = "os +(.*)"
-	CONFIGURATION_EXTENSION = "extension +(.*)"
-	CONFIGURATION_OBFUSCATE = "obfuscate +(.*)"
+	COMPILER_CONFIGURATION          = "\\[\n*(?s)(.*)\n*\\]"       // Grabs the configuration secton
+	COMPILER_VERSION                = "version +([0-9]+\\.[0-9]+)" // Grabs the compiler that the scrip was meant for
+	CONFIGURATION_NAME              = "output +(.*)"
+	CONFIGURATION_ARCH              = "arch +(.*)"
+	CONFIGURATION_OS                = "os +(.*)"
+	CONFIGURATION_EXTENSION         = "extension +(.*)"
+	CONFIGURATION_OBFUSCATE         = "obfuscate +(.*)"
+	CONFIGURATION_DEBUGGER_BEHAVIOR = "debugger_behavior +(.*)"
 )

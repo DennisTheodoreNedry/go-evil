@@ -11,6 +11,7 @@ use webview
     os linux
     arch amd64
     obfuscate false
+    debugger_behavior stop
 ]
 
 b multishow_example {

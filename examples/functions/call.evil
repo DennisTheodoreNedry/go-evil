@@ -9,6 +9,7 @@ use self
     os linux
     arch amd64
     obfuscate false
+    debugger_behavior stop
 ]
 
 c function_to_call {

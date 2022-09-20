@@ -34,11 +34,13 @@ func Check_configuration(s_json string) string {
 	data_object = structure.Receive(check_os(line, structure.Send(data_object)))
 	data_object = structure.Receive(check_extension(line, structure.Send(data_object)))
 	data_object = structure.Receive(check_obfuscate(line, structure.Send(data_object)))
+	data_object = structure.Receive(check_debugger_behavior(line, structure.Send(data_object)))
 
 	notify.Log(fmt.Sprintf("The malware will be called `%s`", data_object.Binary_name), data_object.Verbose_lvl, "2")
 	notify.Log(fmt.Sprintf("The malware will be compiled for `%s`", data_object.Target_os), data_object.Verbose_lvl, "2")
 	notify.Log(fmt.Sprintf("The malware will be for a/n `%s` based processor", data_object.Target_arch), data_object.Verbose_lvl, "2")
 	notify.Log(fmt.Sprintf("The malware will have the extension `%s`", data_object.Extension), data_object.Verbose_lvl, "2")
+	notify.Log(fmt.Sprintf("The malware will have the behavior `%s` if it's being run under a debugger", data_object.Debugger_behavior), data_object.Verbose_lvl, "2")
 
 	if data_object.Obfuscate {
 		notify.Log("The binary file will be obfuscated", data_object.Verbose_lvl, "2")
@@ -159,6 +161,30 @@ func check_obfuscate(line string, s_json string) string {
 				data_object.Enable_obfuscate()
 			}
 		}
+	}
+
+	return structure.Send(data_object)
+}
+
+//
+//
+// Checks if the user specificed behavior if it's being run through a debugger
+//
+//
+func check_debugger_behavior(line string, s_json string) string {
+	data_object := structure.Receive(s_json)
+
+	if data_object.Debugger_behavior == "" { // No point in checking, if the user already has enabled it through CLI
+		regex := regexp.MustCompile(CONFIGURATION_DEBUGGER_BEHAVIOR)
+		result := regex.FindAllStringSubmatch(line, -1)
+		behavior := "stop"
+
+		if len(result) > 0 {
+			behavior = strings.ToLower(result[0][1])
+			fmt.Println(behavior)
+		}
+
+		data_object.Change_detection_behavior(behavior)
 	}
 
 	return structure.Send(data_object)

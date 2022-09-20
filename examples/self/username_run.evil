@@ -1,4 +1,4 @@
-@ During compile time you can access the username of the current running user @
+@ During runtime you can access the username of the current running user @
 @ This example shows you how @
 
 use system
@@ -10,6 +10,7 @@ use self
     os linux
     arch amd64
     obfuscate false
+    debugger_behavior stop
 ]
 
 l main_func {

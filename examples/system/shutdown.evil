@@ -8,6 +8,7 @@ use system
     os linux
     arch amd64
     obfuscate false
+    debugger_behavior stop
 ]
 
 b reboot {
