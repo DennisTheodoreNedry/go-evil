@@ -1,11 +1,12 @@
-@ This example shows you the process of including a file into your malware and how you can write a file to the disk containng the data @
+@ This example shows you the process of including a file into your malware and how you can @
+@ write a file to the disk containng the data @
 
 use system
 use self
 
 [
     version 2.0
-    output include2
+    output include_n_write
     os linux
     arch amd64
     obfuscate false

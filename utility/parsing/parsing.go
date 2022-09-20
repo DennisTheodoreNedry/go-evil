@@ -90,16 +90,14 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 	}
 
 	// Decide the header of the foor loop
-	if data_object.Debugger_behavior == "stop" {
+	switch data_object.Debugger_behavior {
+	case "stop":
 		main_functions = append(main_functions, "for !stop_behavior() {")
-
-	} else if data_object.Debugger_behavior == "remove" {
+	case "remove":
 		main_functions = append(main_functions, "for !remove_behavior() {")
-
-	} else if data_object.Debugger_behavior == "none" {
+	case "none":
 		main_functions = append(main_functions, "for {")
-
-	} else if data_object.Debugger_behavior == "loop" {
+	case "loop":
 		main_functions = append(main_functions, "for !loop_behavior() {")
 	}
 
@@ -290,7 +288,7 @@ func stop_behavior(s_json string) string {
 	data_object := structure.Receive(s_json)
 	body := []string{"func stop_behavior() bool {",
 		"toReturn := false",
-		"toReturn = identify_debugger()",
+		"toReturn = detect_debugger()",
 		"if toReturn {",
 		"os.Exit(42)",
 		"}"}
@@ -312,10 +310,11 @@ func remove_behavior(s_json string) string {
 	data_object := structure.Receive(s_json)
 	body := []string{"func remove_behavior() bool {",
 		"toReturn := false",
-		"toReturn = identify_debugger()",
+		"toReturn = detect_debugger()",
 		"if toReturn {",
 		"path := tools.Grab_executable_path()",
 		"os.Remove(path)",
+		"os.Exit(42)",
 		"}"}
 
 	body = append(body, "return toReturn", "}")

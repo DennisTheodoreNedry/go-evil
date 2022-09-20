@@ -14,7 +14,7 @@ use self
 
 
 l main_func {
-    self::set("Hello world!") @ Assigns the first compile variable a value @
+    self::set_comp("Hello world!") @ Assigns the first compile variable a value @
     system::outln("$1$")
     system::exit("0")
 }

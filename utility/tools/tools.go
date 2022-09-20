@@ -148,6 +148,36 @@ func Generate_random_string() string {
 
 //
 //
+// Generates a random number between min and max
+//
+//
+func Generate_random_int_between(min int, max int) int {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(max-min) + min
+}
+
+//
+//
+// Generates a random number between 1 and 128
+//
+//
+func Generate_random_int() int {
+	return Generate_random_int_between(1, 128)
+}
+
+//
+//
+// Generates a random bool
+//
+//
+func Generate_random_bool() bool {
+	value := Generate_random_int_between(1, 2)
+
+	return value == 1
+}
+
+//
+//
 // Extracts values from an "evil array" and returns a string array containing said contents
 //
 //

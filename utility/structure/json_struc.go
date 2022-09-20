@@ -388,26 +388,24 @@ func (object *json_t) Add_binding(js_call string, evil_call string) {
 
 //
 //
-// Sets the value of a variable
+// Sets the value of a compiletime variable
 //
 //
-func (object *json_t) Set_variable_value(Var_type string, value string) {
-	if Var_type == "$" {
-		object.Comp_var[object.Comp_id].Set_value(value)
-		object.Comp_id++
+func (object *json_t) Set_variable_value(value string) {
+	object.Comp_var[object.Comp_id].Set_value(value)
+	object.Comp_id++
 
-		if object.Comp_id >= object.Var_max { // Reset
-			object.Comp_id = 0
-		}
+	if object.Comp_id >= object.Var_max { // Reset
+		object.Comp_id = 0
 	}
 }
 
 //
 //
-// Grabs the value of the variable
+// Grabs the value of a compiletime variable
 //
 //
-func (object *json_t) Get_variable_value(Var_type string, var_id string) string {
+func (object *json_t) Get_var_value(var_id string) string {
 	to_return := ""
 
 	id := tools.String_to_int(var_id) - 1
@@ -421,9 +419,7 @@ func (object *json_t) Get_variable_value(Var_type string, var_id string) string 
 			notify.Error(fmt.Sprintf("Invalid index %d", id), "json_struc.Get_variable_value()")
 		}
 
-		if Var_type == "$" {
-			to_return = object.Comp_var[id].Get_value()
-		}
+		to_return = object.Comp_var[id].Get_value()
 	}
 
 	return to_return

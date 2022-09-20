@@ -46,7 +46,7 @@ func convert_code(gut []string, s_json string) ([]string, string) {
 
 	for i := 0; i < len(gut); i++ {
 		line := gut[i]
-		call_function := ""
+		call_functions := []string{}
 
 		// Identify which domain to call on
 		regex := regexp.MustCompile(DOMAIN_FUNC_VALUE)
@@ -58,7 +58,7 @@ func convert_code(gut []string, s_json string) ([]string, string) {
 			function := data[0][2]
 			value := data[0][3]
 
-			call_function, s_json = grab_code(domain, function, value, s_json)
+			call_functions, s_json = grab_code(domain, function, value, s_json)
 
 		} else {
 			regex = regexp.MustCompile(GET_FOREACH_HEADER)
@@ -79,13 +79,15 @@ func convert_code(gut []string, s_json string) ([]string, string) {
 						break
 					}
 				}
-				call_function, s_json = construct_foreach_loop(data[0][1], body, s_json)
+				call_functions, s_json = construct_foreach_loop(data[0][1], body, s_json)
 
 			}
 		}
 
-		if call_function != "" { // Don't want any empty lines
-			calls = append(calls, call_function)
+		if len(call_functions) > 0 { // Don't want any empty lines
+			for _, func_call := range call_functions {
+				calls = append(calls, func_call)
+			}
 		}
 	}
 
@@ -97,8 +99,8 @@ func convert_code(gut []string, s_json string) ([]string, string) {
 // Grab the contents from each domains parser
 //
 //
-func grab_code(domain string, function string, value string, s_json string) (string, string) {
-	call_function := ""
+func grab_code(domain string, function string, value string, s_json string) ([]string, string) {
+	call_functions := []string{}
 
 	// Translating variables
 	regex := regexp.MustCompile(GET_VAR)
@@ -110,28 +112,30 @@ func grab_code(domain string, function string, value string, s_json string) (str
 		Var_type := result[0][2]
 		var_id := result[0][3]
 
-		var_value := data_object.Get_variable_value(Var_type, var_id)
-		value = strings.ReplaceAll(value, var_call, var_value)
+		if Var_type == "$" {
+			var_value := data_object.Get_var_value(var_id)
+			value = strings.ReplaceAll(value, var_call, var_value)
+		}
 
 		s_json = structure.Send(data_object)
 	}
 
 	switch domain {
 	case "system":
-		call_function, s_json = system.Parser(function, value, s_json)
+		call_functions, s_json = system.Parser(function, value, s_json)
 
 	case "time":
-		call_function, s_json = time.Parser(function, value, s_json)
+		call_functions, s_json = time.Parser(function, value, s_json)
 
 	case "webview":
-		call_function, s_json = webview.Parser(function, value, s_json)
+		call_functions, s_json = webview.Parser(function, value, s_json)
 
 	case "self":
-		call_function, s_json = self.Parser(function, value, s_json)
+		call_functions, s_json = self.Parser(function, value, s_json)
 
 	}
 
-	return call_function, s_json
+	return call_functions, s_json
 }
 
 //
@@ -139,8 +143,8 @@ func grab_code(domain string, function string, value string, s_json string) (str
 // Construcs the code needed for a "foreach" loop
 //
 //
-func construct_foreach_loop(condition string, body []string, s_json string) (string, string) {
-	call := "foreach"
+func construct_foreach_loop(condition string, body []string, s_json string) ([]string, string) {
+	call := []string{"foreach"}
 
 	body_calls, s_json := convert_code(body, s_json) // Converts the code for the foreach body
 	data_object := structure.Receive(s_json)
@@ -148,7 +152,7 @@ func construct_foreach_loop(condition string, body []string, s_json string) (str
 	condition = tools.Erase_delimiter(condition, "\"") // Removes all found "
 
 	final_body := []string{fmt.Sprintf(
-		"func %s(values string){", call),
+		"func %s(values string){", call[0]),
 		"values = runtime_var.get(values)",
 		"array := tools.Extract_values_array(values)",
 		"for _, value := range array{",
@@ -159,5 +163,7 @@ func construct_foreach_loop(condition string, body []string, s_json string) (str
 
 	data_object.Add_go_function(final_body)
 
-	return fmt.Sprintf("%s(\"%s\")", call, condition), structure.Send(data_object)
+	call[0] = fmt.Sprintf("%s(\"%s\")", call[0], condition)
+
+	return call, structure.Send(data_object)
 }

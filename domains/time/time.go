@@ -17,7 +17,7 @@ const (
 // Makes the malware wait until the yyyy-mm-dd-hh-mm has been reached
 //
 //
-func Until(s_json string, value string) (string, string) {
+func Until(s_json string, value string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 
 	regex := regexp.MustCompile(GRAB_FULL_DATE)
@@ -32,7 +32,7 @@ func Until(s_json string, value string) (string, string) {
 		"}",
 	})
 
-	return fmt.Sprintf("Until(%s)", value), structure.Send(data_object)
+	return []string{fmt.Sprintf("Until(%s)", value)}, structure.Send(data_object)
 }
 
 //
@@ -40,7 +40,7 @@ func Until(s_json string, value string) (string, string) {
 // Makes the malware sleep for an n amount of seconds
 //
 //
-func Sleep(s_json string, value string) (string, string) {
+func Sleep(s_json string, value string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Sleep"
 
@@ -54,5 +54,5 @@ func Sleep(s_json string, value string) (string, string) {
 	data_object.Add_go_import("time")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 
-	return fmt.Sprintf("%s(%s)", function_call, value), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, value)}, structure.Send(data_object)
 }

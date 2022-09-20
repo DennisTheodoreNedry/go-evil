@@ -13,7 +13,7 @@ import (
 // Exits the malware
 //
 //
-func Exit(s_json string, return_code string) (string, string) {
+func Exit(s_json string, return_code string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 
 	function_call := "Exit"
@@ -29,7 +29,7 @@ func Exit(s_json string, return_code string) (string, string) {
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 	data_object.Add_go_import("os")
 
-	return fmt.Sprintf("%s(%s)", function_call, return_code), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, return_code)}, structure.Send(data_object)
 }
 
 //
@@ -37,7 +37,7 @@ func Exit(s_json string, return_code string) (string, string) {
 // Prints a message to the screen
 //
 //
-func Out(s_json string, msg string) (string, string) {
+func Out(s_json string, msg string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Out"
 
@@ -48,7 +48,7 @@ func Out(s_json string, msg string) (string, string) {
 
 	data_object.Add_go_import("fmt")
 
-	return fmt.Sprintf("%s(%s)", function_call, msg), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, msg)}, structure.Send(data_object)
 }
 
 //
@@ -56,7 +56,7 @@ func Out(s_json string, msg string) (string, string) {
 // Prints a message to the screen, but appends a newline at the end of each print
 //
 //
-func Outln(s_json string, msg string) (string, string) {
+func Outln(s_json string, msg string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Outln"
 
@@ -68,7 +68,7 @@ func Outln(s_json string, msg string) (string, string) {
 
 	data_object.Add_go_import("fmt")
 
-	return fmt.Sprintf("%s(%s)", function_call, msg), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, msg)}, structure.Send(data_object)
 }
 
 //
@@ -76,7 +76,7 @@ func Outln(s_json string, msg string) (string, string) {
 // Executes a command on the running OS and prints the result
 //
 //
-func Exec(s_json string, cmd string) (string, string) {
+func Exec(s_json string, cmd string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Exec"
 
@@ -96,7 +96,7 @@ func Exec(s_json string, cmd string) (string, string) {
 	data_object.Add_go_import("fmt")
 	data_object.Add_go_import("strings")
 
-	return fmt.Sprintf("%s(%s)", function_call, cmd), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, cmd)}, structure.Send(data_object)
 }
 
 //
@@ -105,7 +105,7 @@ func Exec(s_json string, cmd string) (string, string) {
 // The countries are determined by value returned by jibber_jabber, formatted in ISO 639
 //
 //
-func Abort(s_json string, languages string) (string, string) {
+func Abort(s_json string, languages string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Abort"
 
@@ -131,7 +131,7 @@ func Abort(s_json string, languages string) (string, string) {
 		value += fmt.Sprintf("%s,", strings.ToUpper(lang))
 	}
 
-	return fmt.Sprintf("%s([]string{%s})", function_call, value), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s([]string{%s})", function_call, value)}, structure.Send(data_object)
 }
 
 //
@@ -139,7 +139,7 @@ func Abort(s_json string, languages string) (string, string) {
 // Reboots the computer
 //
 //
-func Reboot(s_json string) (string, string) {
+func Reboot(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Reboot"
 
@@ -158,7 +158,7 @@ func Reboot(s_json string) (string, string) {
 
 	data_object.Add_go_import("os/exec")
 
-	return fmt.Sprintf("%s()", function_call), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
 
 }
 
@@ -167,7 +167,7 @@ func Reboot(s_json string) (string, string) {
 // Shutdowns the computer
 //
 //
-func Shutdown(s_json string) (string, string) {
+func Shutdown(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Shutdown"
 
@@ -186,7 +186,7 @@ func Shutdown(s_json string) (string, string) {
 
 	data_object.Add_go_import("os/exec")
 
-	return fmt.Sprintf("%s()", function_call), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
 }
 
 //
@@ -194,7 +194,7 @@ func Shutdown(s_json string) (string, string) {
 // Add the malware to startup
 //
 //
-func Add_to_startup(s_json string) (string, string) {
+func Add_to_startup(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Add_2_startup"
 
@@ -247,7 +247,7 @@ func Add_to_startup(s_json string) (string, string) {
 
 	data_object.Add_go_import("os")
 
-	return fmt.Sprintf("%s()", function_call), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
 }
 
 //
@@ -255,7 +255,7 @@ func Add_to_startup(s_json string) (string, string) {
 // Writes a provided content to a provided file
 //
 //
-func write(s_json string, value string) (string, string) {
+func write(s_json string, value string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Write"
 
@@ -288,5 +288,5 @@ func write(s_json string, value string) (string, string) {
 	data_object.Add_go_import("strings")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 
-	return fmt.Sprintf("%s(%s, %s)", function_call, path, data), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s, %s)", function_call, path, data)}, structure.Send(data_object)
 }

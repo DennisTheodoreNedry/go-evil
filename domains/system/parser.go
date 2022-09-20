@@ -11,8 +11,8 @@ import (
 // The main parser for the system domain
 //
 //
-func Parser(function string, value string, s_json string) (string, string) {
-	call := ""
+func Parser(function string, value string, s_json string) ([]string, string) {
+	call := []string{}
 
 	switch function {
 	case "out":

@@ -13,7 +13,7 @@ import (
 // Drops all the needed code from the json strucutre into one function
 //
 //
-func run(s_json string) (string, string) {
+func run(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	call := "Run()"
 
@@ -50,7 +50,7 @@ func run(s_json string) (string, string) {
 
 	data_object.Add_go_import("github.com/webview/webview")
 
-	return call, structure.Send(data_object)
+	return []string{call}, structure.Send(data_object)
 }
 
 //
@@ -153,7 +153,7 @@ func bind(values string, s_json string) string {
 // Makes the webview enter a website of your choice
 //
 //
-func navigate(website string, s_json string) (string, string) {
+func navigate(website string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	call := "Navigate"
 
@@ -170,5 +170,5 @@ func navigate(website string, s_json string) (string, string) {
 
 	data_object.Add_go_import("github.com/webview/webview")
 
-	return fmt.Sprintf("%s(%s)", call, website), structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", call, website)}, structure.Send(data_object)
 }

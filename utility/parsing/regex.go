@@ -18,8 +18,8 @@ const (
 	COMMENT = "@.+@" // Identifies a comment
 
 	// Variables //
-	GET_VAR      = "(([\\$])([0-9]+)[\\$])" // Grabs the variable type and id
-	GET_USER_VAR = "\\$666\\$"              // Grabs what the user is called
+	GET_VAR      = "(([\\$|€])([0-9]+)[\\$|€])" // Grabs the variable type and id
+	GET_USER_VAR = "\\$666\\$"                  // Grabs what the user is called
 
 	// Foreach loops //
 	GET_FOREACH_HEADER = "foreach *\\((.+)\\) *:"
@@ -33,5 +33,5 @@ const (
 	CONFIGURATION_OS                = "os +(.*)"
 	CONFIGURATION_EXTENSION         = "extension +(.*)"
 	CONFIGURATION_OBFUSCATE         = "obfuscate +(.*)"
-	CONFIGURATION_DEBUGGER_BEHAVIOR = "debugger_behavior +([none|stop|remove|loop])"
+	CONFIGURATION_DEBUGGER_BEHAVIOR = "debugger_behavior +(.*)"
 )
