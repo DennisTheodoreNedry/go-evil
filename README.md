@@ -36,6 +36,7 @@ Some notable features arriving in v2 are,
 7. Comments must now be terminated, i.e. `@ this is a comment @`.
 8. Variables must now be terminated, i.e. `$1$`.
 9. The malware now contains a behavior option when it detects an active debugger, this allows you to kill the malware, remove it from the disk or loop indefinitely.
+10. You can add an `n` amount of randomly definied variables and functions to your source code through `self::add_random_var` and `self::add_random_func`
 
 ### Structure of a go-evil malware
 We have currently three different functions, these are marked by a one character long string preceding the functions name.<br/>
