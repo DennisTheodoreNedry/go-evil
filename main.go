@@ -22,8 +22,8 @@ func main() {
 	arg.Argument_add("--output", "-o", true, "Name of the binary malware")
 	arg.Argument_add("--extension", "-e", true, "Extension of the binary malware")
 	arg.Argument_add("--json", "-j", false, "Prints the finalized json structure after compiling a file")
-	arg.Argument_add("--obfuscate", "-ob", false, "Changes the names of all functions and variables to a obfuscated state")
-	arg.Argument_add_with_options("--debugger_behavior", "-db", true, "How should the malware behave after detection of a debugger", []string{"none", "stop", "remove"})
+	arg.Argument_add("--obfuscate", "-ob", false, "Obfuscates the source code at compile time")
+	arg.Argument_add_with_options("--debugger_behavior", "-db", true, "Changes the behavior of the malware after detecting a debugger", []string{"none", "stop", "remove"})
 	arg.Argument_add("--text_editor", "-t", true, "Starts the builtin text editor, needs a file to work")
 
 	parsed := arg.Argument_parse()

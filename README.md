@@ -29,12 +29,13 @@ There are many changes in v2, some are directly related to the syntaxes but the 
 Some notable features arriving in v2 are,
 1. Evil arrays `${...}`, i.e. `${"value1", "value"}$`.
 2. Functions! Which have different meanings depending on their function type.
-2. A fully integrated `webview` into the source code.
-3. You can now customize your malware by using a `compiler configuration section` aka `[]` in your code.
-4. Obfuscating the source code is now a built in option.
-5. The line terminator `;` is no longer needed.
-6. Comments must now be terminated, i.e. `@ this is a comment @`.
-7. Variables must now be terminated, i.e. `$1$`.
+3. A fully integrated `webview` into the source code.
+4. You can now customize your malware by using a `compiler configuration section` aka `[]` in your code.
+5. Obfuscating the source code is now a built in option.
+6. The line terminator `;` is no longer needed.
+7. Comments must now be terminated, i.e. `@ this is a comment @`.
+8. Variables must now be terminated, i.e. `$1$`.
+9. The malware now contains a behavior option when it detects an active debugger, this allows you to kill the malware or remove it from the disk.
 
 ### Structure of a go-evil malware
 We have currently three different functions, these are marked by a one character long string preceding the functions name.<br/>
@@ -52,6 +53,10 @@ import(
     ...
     )
 
+// Structs
+
+// Consts
+
 // Global variables
 ...
 
@@ -62,7 +67,7 @@ func main(){
     // Calling `boot` functions
     ...
 
-    for {
+    for <behavior pattern> {
         // Calling `loop` functions
         ...
     }
