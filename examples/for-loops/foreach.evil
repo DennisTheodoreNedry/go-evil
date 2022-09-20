@@ -12,7 +12,7 @@ use system
 
 
 l main_func {
-    foreach(${"1", "2", "3", "4", "5"}$):
+    foreach(${"1","2","3","4","5"}$):
         system::outln("€42€") @ The index €42€ is configured to only be used by foreach loops @
     end foreach
     

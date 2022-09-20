@@ -145,19 +145,19 @@ func construct_foreach_loop(condition string, body []string, s_json string) (str
 	body_calls, s_json := convert_code(body, s_json) // Converts the code for the foreach body
 	data_object := structure.Receive(s_json)
 
-	array := tools.Extract_values_array(condition)
+	condition = tools.Erase_delimiter(condition, "\"") // Removes all found "
 
-	final_body := []string{fmt.Sprintf("func %s(values []string){", call), "for _, value := range values{", "runtime_var.foreach = value"}
+	final_body := []string{fmt.Sprintf(
+		"func %s(values string){", call),
+		"values = runtime_var.get(values)",
+		"array := tools.Extract_values_array(values)",
+		"for _, value := range array{",
+		"runtime_var.foreach = value"}
+
 	final_body = append(final_body, body_calls...)
 	final_body = append(final_body, "}}")
 
 	data_object.Add_go_function(final_body)
 
-	value := ""
-
-	for _, val := range array {
-		value += fmt.Sprintf("%s,", strings.ToUpper(val))
-	}
-
-	return fmt.Sprintf("%s([]string{%s})", call, value), structure.Send(data_object)
+	return fmt.Sprintf("%s(\"%s\")", call, condition), structure.Send(data_object)
 }
