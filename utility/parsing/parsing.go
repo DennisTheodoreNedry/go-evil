@@ -89,7 +89,7 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 		main_functions = append(main_functions, fmt.Sprintf("%s()", boot_name))
 	}
 
-	main_functions = append(main_functions, "for {")
+	main_functions = append(main_functions, "for !detect_debugger() {")
 
 	// Add loop function
 	for _, loop_name := range loop_functions {
@@ -218,6 +218,57 @@ func generate_structs(s_json string) string {
 
 //
 //
+// Generate the debugger detection function
+//
+//
+func generate_debugger_detection(s_json string) string {
+	data_object := structure.Receive(s_json)
+	body := []string{"func detect_debugger() bool {", "toReturn := false"}
+
+	if data_object.Target_os == "windows" {
+		body = append(body,
+			"gopsOut, err := exec.Command(\"gops\", strconv.Itoa(os.Getppid())).Output()",
+			"if err == nil && strings.Contains(string(gopsOut), \"dlv.exe\") {",
+			"toReturn = true",
+			"}")
+
+		data_object.Add_go_import("os/exec")
+		data_object.Add_go_import("strings")
+		data_object.Add_go_import("strconv")
+
+	} else {
+		body = append(body,
+			"file, err := os.Open(\"/proc/self/status\")",
+			"if err == nil {",
+			"defer file.Close()",
+
+			"for {",
+			"var tpid int",
+			"num, err := fmt.Fscanf(file, \"TracerPid: %d\\n\", &tpid)",
+			"if err == io.EOF {",
+			"break",
+			"}",
+
+			"if num != 0{",
+			"if tpid != 0{",
+			"toReturn = true",
+			"}",
+			"break",
+			"}",
+
+			"}}")
+
+		data_object.Add_go_import("io")
+	}
+
+	body = append(body, "return toReturn", "}")
+	data_object.Add_go_function(body)
+
+	return structure.Send(data_object)
+}
+
+//
+//
 // Parses the contents of the provided file
 //
 //
@@ -225,6 +276,8 @@ func Parse(s_json string) string {
 	s_json = preface(s_json) // Handles every preface we could possibly want done before we start parsing
 
 	s_json = generate_structs(s_json)
+
+	s_json = generate_debugger_detection(s_json)
 
 	s_json, boot_func, loop_func := generate_sub_functions(s_json)
 

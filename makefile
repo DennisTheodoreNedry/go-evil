@@ -24,6 +24,7 @@ dependencies:
 	github.com/cloudfoundry/jibber_jabber
 	go get github.com/webview/webview
 	go install mvdan.cc/garble@latest
+	go get github.com/google/gops
 
 docs: clean_docs
 	bash tools/generate_documentation.sh
