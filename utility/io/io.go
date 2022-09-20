@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
@@ -83,6 +84,24 @@ func Compile_file(s_json string) {
 	build_args := []string{}
 	compiler := ""
 
+	// Grabs the location of the go enviroment
+	env, err := exec.Command("go", "env", "GOPATH").Output()
+
+	if err != nil {
+		notify.Error(err.Error(), "io.Compile_file()")
+	}
+
+	go_env := strings.TrimRight(string(env), "\n") // Removes any newline
+
+	// Updates the path variable
+	updated_path_env := os.ExpandEnv(fmt.Sprintf("${PATH}:%s/bin", go_env)) // Apparently only provides a formatted string
+
+	err = os.Setenv("PATH", updated_path_env) // So this is needed to *actually* update the path
+
+	if err != nil {
+		notify.Error(err.Error(), "io.Compile_file()")
+	}
+
 	if data_object.Obfuscate {
 		compiler = "garble"
 		build_args = append(build_args, "-literals", "-tiny", "-seed=random", "build", "-o", malware, src)
@@ -100,10 +119,10 @@ func Compile_file(s_json string) {
 	cmd.Stdout = &out
 	cmd.Stderr = &stderr
 
-	err := cmd.Run() // Starts the build
+	err = cmd.Run() // Starts the build
 
 	if err != nil {
-		notify.Error(fmt.Sprintf("Failed to compile file, %s", stderr.String()), "io.Compile_file()")
+		notify.Error(fmt.Sprintf("Failed to compile file, %s\n%s", stderr.String(), err.Error()), "io.Compile_file()")
 	}
 
 }
