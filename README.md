@@ -35,7 +35,7 @@ Some notable features arriving in v2 are,
 6. The line terminator `;` is no longer needed.
 7. Comments must now be terminated, i.e. `@ this is a comment @`.
 8. Variables must now be terminated, i.e. `$1$`.
-9. The malware now contains a behavior option when it detects an active debugger, this allows you to kill the malware or remove it from the disk.
+9. The malware now contains a behavior option when it detects an active debugger, this allows you to kill the malware, remove it from the disk or loop indefinitely.
 
 ### Structure of a go-evil malware
 We have currently three different functions, these are marked by a one character long string preceding the functions name.<br/>

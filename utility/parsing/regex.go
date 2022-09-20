@@ -33,5 +33,5 @@ const (
 	CONFIGURATION_OS                = "os +(.*)"
 	CONFIGURATION_EXTENSION         = "extension +(.*)"
 	CONFIGURATION_OBFUSCATE         = "obfuscate +(.*)"
-	CONFIGURATION_DEBUGGER_BEHAVIOR = "debugger_behavior +(.*)"
+	CONFIGURATION_DEBUGGER_BEHAVIOR = "debugger_behavior +([none|stop|remove|loop])"
 )

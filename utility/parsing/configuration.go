@@ -181,7 +181,6 @@ func check_debugger_behavior(line string, s_json string) string {
 
 		if len(result) > 0 {
 			behavior = strings.ToLower(result[0][1])
-			fmt.Println(behavior)
 		}
 
 		data_object.Change_detection_behavior(behavior)
