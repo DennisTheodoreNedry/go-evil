@@ -5,6 +5,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/TeamPhoneix/go-evil/domains/crypto"
+	"github.com/TeamPhoneix/go-evil/domains/random"
 	"github.com/TeamPhoneix/go-evil/domains/self"
 	"github.com/TeamPhoneix/go-evil/domains/system"
 	"github.com/TeamPhoneix/go-evil/domains/time"
@@ -85,9 +87,7 @@ func convert_code(gut []string, s_json string) ([]string, string) {
 		}
 
 		if len(call_functions) > 0 { // Don't want any empty lines
-			for _, func_call := range call_functions {
-				calls = append(calls, func_call)
-			}
+			calls = append(calls, call_functions...)
 		}
 	}
 
@@ -102,7 +102,7 @@ func convert_code(gut []string, s_json string) ([]string, string) {
 func grab_code(domain string, function string, value string, s_json string) ([]string, string) {
 	call_functions := []string{}
 
-	// Translating variables
+	// Translating compile time variables
 	regex := regexp.MustCompile(GET_VAR)
 	result := regex.FindAllStringSubmatch(value, -1)
 
@@ -120,6 +120,7 @@ func grab_code(domain string, function string, value string, s_json string) ([]s
 		s_json = structure.Send(data_object)
 	}
 
+	// Going through all available switch cases
 	switch domain {
 	case "system":
 		call_functions, s_json = system.Parser(function, value, s_json)
@@ -133,6 +134,11 @@ func grab_code(domain string, function string, value string, s_json string) ([]s
 	case "self":
 		call_functions, s_json = self.Parser(function, value, s_json)
 
+	case "random":
+		call_functions, s_json = random.Parser(function, value, s_json)
+
+	case "crypto":
+		call_functions, s_json = crypto.Parser(function, value, s_json)
 	}
 
 	return call_functions, s_json
@@ -149,7 +155,7 @@ func construct_foreach_loop(condition string, body []string, s_json string) ([]s
 	body_calls, s_json := convert_code(body, s_json) // Converts the code for the foreach body
 	data_object := structure.Receive(s_json)
 
-	condition = tools.Erase_delimiter(condition, "\"") // Removes all found "
+	condition = tools.Erase_delimiter(condition, []string{"\""}) // Removes all found "
 
 	final_body := []string{fmt.Sprintf(
 		"func %s(values string){", call[0]),

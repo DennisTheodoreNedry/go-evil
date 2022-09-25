@@ -1,0 +1,21 @@
+@ Showcasing how you can generate a random integer value @
+
+
+use system
+use random
+
+[
+    version 2.0
+    output random_int
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    random::int(${"0", "2048"}$)
+    system::outln("$1$")
+    system::exit("0")
+}

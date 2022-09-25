@@ -199,14 +199,17 @@ func Extract_values_array(evil_array string) []string {
 // Erases all occurences of the delimiter in the string
 //
 //
-func Erase_delimiter(line string, delimiter string) string {
-	regex, err := regexp.Compile(delimiter)
+func Erase_delimiter(line string, delimiters []string) string {
 
-	if err != nil {
-		notify.Error(err.Error(), "tools.Erase_delimiter()")
+	for _, delimiter := range delimiters {
+		regex, err := regexp.Compile(delimiter)
+
+		if err != nil {
+			notify.Error(err.Error(), "tools.Erase_delimiter()")
+		}
+
+		line = regex.ReplaceAllString(line, "")
 	}
-
-	line = regex.ReplaceAllString(line, "")
 
 	return line
 }

@@ -19,7 +19,7 @@ func Call_function(func_name string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	call := []string{"call()"}
 
-	func_name = tools.Erase_delimiter(func_name, `"`) // Removes all " from the string
+	func_name = tools.Erase_delimiter(func_name, []string{"\""}) // Removes all " from the string
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(){", call[0]),
@@ -37,7 +37,7 @@ func Call_function(func_name string, s_json string) ([]string, string) {
 //
 func Include(file_path string, s_json string) string {
 	data_object := structure.Receive(s_json)
-	file_path = tools.Erase_delimiter(file_path, "\"")
+	file_path = tools.Erase_delimiter(file_path, []string{"\""})
 
 	file_gut, err := ioutil.ReadFile(file_path)
 	if err != nil {
@@ -66,7 +66,7 @@ func Include(file_path string, s_json string) string {
 //
 func Set(var_type string, value string, s_json string) string {
 	data_object := structure.Receive(s_json)
-	value = tools.Erase_delimiter(value, "\"")
+	value = tools.Erase_delimiter(value, []string{"\""})
 
 	switch var_type {
 	case "$":
@@ -89,7 +89,7 @@ func Set(var_type string, value string, s_json string) string {
 func Add_random_variable(amount string, s_json string) string {
 	data_object := structure.Receive(s_json)
 
-	amount = tools.Erase_delimiter(amount, "\"")
+	amount = tools.Erase_delimiter(amount, []string{"\""})
 
 	i_value := tools.String_to_int(amount)
 	if i_value == -1 {
@@ -113,7 +113,7 @@ func Add_random_variable(amount string, s_json string) string {
 //
 func Add_random_function(amount string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	amount = tools.Erase_delimiter(amount, "\"")
+	amount = tools.Erase_delimiter(amount, []string{"\""})
 	calls := []string{}
 
 	i_value := tools.String_to_int(amount)

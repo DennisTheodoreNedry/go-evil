@@ -264,7 +264,7 @@ func write(s_json string, value string) ([]string, string) {
 	data := strings.Join(arr[1:], " ")
 
 	if data_object.Check_global_name(data) { // Checks if what we got is a global variable
-		data = tools.Erase_delimiter(data, "\"")
+		data = tools.Erase_delimiter(data, []string{"\""})
 	}
 
 	data_object.Add_go_function([]string{
