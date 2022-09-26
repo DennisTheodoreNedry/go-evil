@@ -101,11 +101,12 @@ func Compile_file(s_json string) {
 		notify.Error(err.Error(), "io.Compile_file()")
 	}
 
-	// Update the goenv and/or the goarch enviroment variable
+	// Update the GOOS variable
 	if err = os.Setenv("GOOS", data_object.Target_os); err != nil {
 		notify.Error(err.Error(), "io.Compile_file()")
 	}
 
+	// Update the GOARCH variable
 	if err = os.Setenv("GOARCH", data_object.Target_arch); err != nil {
 		notify.Error(err.Error(), "io.Compile_file()")
 	}
