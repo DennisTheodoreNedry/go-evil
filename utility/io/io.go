@@ -96,9 +96,17 @@ func Compile_file(s_json string) {
 	// Updates the path variable
 	updated_path_env := os.ExpandEnv(fmt.Sprintf("${PATH}:%s/bin", go_env)) // Apparently only provides a formatted string
 
-	err = os.Setenv("PATH", updated_path_env) // So this is needed to *actually* update the path
+	if err = os.Setenv("PATH", updated_path_env); err != nil { // So this is needed to *actually* update the path
 
-	if err != nil {
+		notify.Error(err.Error(), "io.Compile_file()")
+	}
+
+	// Update the goenv and/or the goarch enviroment variable
+	if err = os.Setenv("GOOS", data_object.Target_os); err != nil {
+		notify.Error(err.Error(), "io.Compile_file()")
+	}
+
+	if err = os.Setenv("GOARCH", data_object.Target_arch); err != nil {
 		notify.Error(err.Error(), "io.Compile_file()")
 	}
 

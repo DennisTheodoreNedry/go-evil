@@ -82,6 +82,9 @@ func (object *json_t) Add_file_gut(content string) {
 //
 //
 func (object *json_t) Set_target_os(os string) {
+	if os == "windows" {
+		object.Set_extension(".exe")
+	}
 	object.Target_os = os
 }
 
