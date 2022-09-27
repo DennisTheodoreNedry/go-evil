@@ -28,7 +28,7 @@ func Create_json_object() json_t {
 	new_json.Var_max = 5
 
 	for id := 0; id < new_json.Var_max; id++ {
-		var new_var Var_t
+		var new_var Compile_var_t
 		new_var.Set_value("NULL") // Default value
 		new_json.Comp_var = append(new_json.Comp_var, new_var)
 	}
@@ -38,7 +38,7 @@ func Create_json_object() json_t {
 
 //
 //
-// Used when you want to send the data structure
+// Serializes the json structure into a base64 string which is ready to be sent
 //
 //
 func Send(object json_t) string {
@@ -53,7 +53,7 @@ func Send(object json_t) string {
 
 //
 //
-// Used to convert the received data into workable data
+// Used to convert the received serialized json structure into workable data
 //
 //
 func Receive(object string) json_t {

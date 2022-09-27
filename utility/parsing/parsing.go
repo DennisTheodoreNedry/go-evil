@@ -174,7 +174,7 @@ func generate_runtime_variable_struct(s_json string) string {
 	data_object := structure.Receive(s_json)
 
 	data_object.Add_go_struct([]string{
-		"type var_t struct {",
+		"type Compile_var_t struct {",
 		"values  []string",
 		"foreach string",
 		"roof int",
@@ -182,7 +182,7 @@ func generate_runtime_variable_struct(s_json string) string {
 		"}"})
 
 	data_object.Add_go_function([]string{
-		"func (obj *var_t) set(value string) {",
+		"func (obj *Compile_var_t) set(value string) {",
 		"obj.values[obj.pointer] = value",
 		"obj.pointer++",
 		"if obj.pointer >= obj.roof {",
@@ -190,7 +190,7 @@ func generate_runtime_variable_struct(s_json string) string {
 		"}}"})
 
 	data_object.Add_go_function([]string{
-		"func (obj *var_t) get(line string) string {",
+		"func (obj *Compile_var_t) get(line string) string {",
 		"regex := regexp.MustCompile(GRAB_VAR)",
 		"result := regex.FindAllStringSubmatch(line, -1)",
 		"toReturn := line",
@@ -206,7 +206,7 @@ func generate_runtime_variable_struct(s_json string) string {
 		"} else { toReturn = \"NULL\" }}}",
 		"return toReturn }"})
 
-	data_object.Add_go_global("var runtime_var var_t")
+	data_object.Add_go_global("var runtime_var Compile_var_t")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 	data_object.Add_go_import("regexp")
 

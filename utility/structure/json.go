@@ -50,9 +50,9 @@ type json_t struct {
 	Bind_gut map[string]string `json:"bind_gut"`      // Contains all our bindings set by the user
 
 	// Variables
-	Var_max  int     `json:"variable_max"`      // The max amount of allowed variables
-	Comp_var []Var_t `json:"compile_variables"` // All the compile time variables
-	Comp_id  int     `json:"compile_ID"`        // The current index for the compile variable
+	Var_max  int             `json:"variable_max"`      // The max amount of allowed variables
+	Comp_var []Compile_var_t `json:"compile_variables"` // All the compile time variables
+	Comp_id  int             `json:"compile_ID"`        // The current index for the compile variable
 
 	// Debugger behavior
 	Debugger_behavior string `json:"debugger_behavior"` // How should the malware behave after detecting a debugger being used?
