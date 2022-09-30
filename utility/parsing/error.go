@@ -21,6 +21,7 @@ func Check_for_errors(s_json string) {
 	check_strings(s_json)
 	check_evil_arrays(s_json)
 	check_compile_variable(s_json)
+	check_runtime_variable(s_json)
 }
 
 //
@@ -142,6 +143,26 @@ func check_compile_variable(s_json string) {
 
 		if count%2 != 0 {
 			notify.Error(fmt.Sprintf("Found a wrongly formatted compile time variable on line %d", i+1), "error.check_evil_arrays()")
+		}
+
+	}
+}
+
+//
+//
+// Checks for runtime variables that have not been terminated
+//
+//
+func check_runtime_variable(s_json string) {
+	data_object := structure.Receive(s_json)
+
+	gut := strings.Split(data_object.File_gut, "\n")
+
+	for i, line := range gut {
+		count := strings.Count(line, "€")
+
+		if count%2 != 0 {
+			notify.Error(fmt.Sprintf("Found a wrongly formatted runtime time variable on line %d", i+1), "error.check_evil_arrays()")
 		}
 
 	}
