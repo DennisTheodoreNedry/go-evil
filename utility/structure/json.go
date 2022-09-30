@@ -344,7 +344,7 @@ func (object *json_t) Set_height(value string) {
 //
 //
 func (object *json_t) Set_html(content string) {
-	content = tools.Erase_delimiter(content, []string{"\""})
+	content = tools.Erase_delimiter(content, []string{"\""}, -1)
 	object.Html_gut = append(object.Html_gut, content)
 }
 
@@ -354,7 +354,7 @@ func (object *json_t) Set_html(content string) {
 //
 //
 func (object *json_t) Set_js(content string) {
-	content = tools.Erase_delimiter(content, []string{"\""})
+	content = tools.Erase_delimiter(content, []string{"\""}, -1)
 	object.Js_gut = append(object.Js_gut, content)
 }
 
@@ -364,7 +364,7 @@ func (object *json_t) Set_js(content string) {
 //
 //
 func (object *json_t) Set_css(content string) {
-	content = tools.Erase_delimiter(content, []string{"\""})
+	content = tools.Erase_delimiter(content, []string{"\""}, -1)
 	object.Css_gut = append(object.Css_gut, content)
 }
 
@@ -384,9 +384,9 @@ func (object *json_t) Set_title(value string) {
 //
 //
 func (object *json_t) Add_binding(js_call string, evil_call string) {
-	evil_call = tools.Erase_delimiter(evil_call, []string{"\""})
+	evil_call = tools.Erase_delimiter(evil_call, []string{"\""}, -1)
 
-	object.Bind_gut[js_call] = evil_call
+	object.Bind_gut[fmt.Sprintf("\"%s\"", js_call)] = evil_call
 }
 
 //
@@ -436,7 +436,7 @@ func (object *json_t) Get_var_value(var_id string) string {
 func (object *json_t) Check_global_name(var_name string) bool {
 	to_return := false
 
-	var_name = tools.Erase_delimiter(var_name, []string{"\""})
+	var_name = tools.Erase_delimiter(var_name, []string{"\""}, -1)
 
 	for _, global := range object.GO_global {
 		if strings.Contains(global, var_name) {

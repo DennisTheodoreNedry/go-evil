@@ -31,15 +31,16 @@ def compile_file(file_path:str) -> int:
         - file_path (str) The path to the file you want to compile
     Return: -1 if it failed to compile or 1 if it succeeded to compile
     """
-    toReturn = 1
+    toReturn = 0
 
     try:
         print(f"[!] Trying to compile {file_path}...", end='')
         subprocess.check_output(["./gevil", "-f", file_path])
         print(" Successful!")
+        toReturn = 1
+        
     except subprocess.CalledProcessError as err:
         print(f" Failed {err}")
-        toReturn = -1
 
     return toReturn
     

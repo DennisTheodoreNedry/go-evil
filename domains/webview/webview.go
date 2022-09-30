@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
 //
@@ -138,10 +137,10 @@ func set_height(new_height string, s_json string) string {
 //
 func bind(values string, s_json string) string {
 	data_structure := structure.Receive(s_json)
-	split_arr := tools.Extract_values_array(values)
+	arr := structure.Create_evil_object(values)
 
-	js_call := split_arr[0]
-	evil_func := split_arr[1]
+	js_call := arr.Get(0)
+	evil_func := arr.Get(1)
 
 	data_structure.Add_binding(js_call, evil_func)
 

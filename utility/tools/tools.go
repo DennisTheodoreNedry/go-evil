@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"os"
 	"os/user"
-	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -13,10 +12,6 @@ import (
 
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 	"github.com/thanhpk/randstr"
-)
-
-const (
-	EXTRACT_VALUES_FROM_EVIL_ARRAY = "\\${(.*)}\\$"
 )
 
 //
@@ -178,37 +173,13 @@ func Generate_random_bool() bool {
 
 //
 //
-// Extracts values from an "evil array" and returns a string array containing said contents
-//
-//
-func Extract_values_array(evil_array string) []string {
-	to_return := []string{}
-
-	regex := regexp.MustCompile(EXTRACT_VALUES_FROM_EVIL_ARRAY)
-	values := regex.FindAllStringSubmatch(evil_array, -1)
-
-	if len(values) > 0 {
-		to_return = append(to_return, strings.Split(values[0][1], ",")...)
-	}
-
-	return to_return
-}
-
-//
-//
 // Erases all occurences of the delimiter in the string
 //
 //
-func Erase_delimiter(line string, delimiters []string) string {
+func Erase_delimiter(line string, delimiters []string, count int) string {
 
 	for _, delimiter := range delimiters {
-		regex, err := regexp.Compile(delimiter)
-
-		if err != nil {
-			notify.Error(err.Error(), "tools.Erase_delimiter()")
-		}
-
-		line = regex.ReplaceAllString(line, "")
+		line = strings.Replace(line, delimiter, "", count)
 	}
 
 	return line

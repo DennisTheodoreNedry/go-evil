@@ -109,7 +109,10 @@ func Abort(s_json string, languages string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Abort"
 
-	language_array := tools.Extract_values_array(languages)
+	arr := structure.Create_evil_object(languages)
+
+	arr.Uppercase()                          // Makes the contents of the array to uppercase
+	language_array := arr.To_string("array") // Returns []string{<content>}
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(languages []string){", function_call),
@@ -125,13 +128,7 @@ func Abort(s_json string, languages string) ([]string, string) {
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("github.com/cloudfoundry/jibber_jabber")
 
-	value := ""
-
-	for _, lang := range language_array {
-		value += fmt.Sprintf("%s,", strings.ToUpper(lang))
-	}
-
-	return []string{fmt.Sprintf("%s([]string{%s})", function_call, value)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, language_array)}, structure.Send(data_object)
 }
 
 //
@@ -259,12 +256,12 @@ func write(s_json string, value string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Write"
 
-	arr := tools.Extract_values_array(value)
-	path := arr[0]
-	data := strings.Join(arr[1:], " ")
+	arr := structure.Create_evil_object(value)
+	path := arr.Get(0)
+	data := strings.Join(arr.Get_between(1, arr.Length()), " ")
 
 	if data_object.Check_global_name(data) { // Checks if what we got is a global variable
-		data = tools.Erase_delimiter(data, []string{"\""})
+		data = tools.Erase_delimiter(data, []string{"\""}, -1)
 	}
 
 	data_object.Add_go_function([]string{
@@ -288,5 +285,5 @@ func write(s_json string, value string) ([]string, string) {
 	data_object.Add_go_import("strings")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 
-	return []string{fmt.Sprintf("%s(%s, %s)", function_call, path, data)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(\"%s\", \"%s\")", function_call, path, data)}, structure.Send(data_object)
 }

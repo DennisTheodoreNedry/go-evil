@@ -17,24 +17,24 @@ import (
 //
 func generate_int(value string, s_json string) string {
 	data_object := structure.Receive(s_json)
-	arr := tools.Extract_values_array(value)
+	arr := structure.Create_evil_object(value)
 
-	if len(arr) != 2 {
-		notify.Error(fmt.Sprintf("Expected an array with two positions, got %d", len(arr)), "random.generate_int()")
+	if arr.Length() != 2 {
+		notify.Error(fmt.Sprintf("Expected an array with two positions, got %d", arr.Length()), "random.generate_int()")
 	}
 
-	min := tools.Erase_delimiter(arr[0], []string{"\"", " "})
+	min := arr.Get(0)
 	i_min := tools.String_to_int(min)
 
 	if i_min == -1 {
-		notify.Error(fmt.Sprintf("Failed to convert value %s to an integer!", min), "random.generate_int()")
+		notify.Error(fmt.Sprintf("Failed to convert min value %s to an integer!", min), "random.generate_int()")
 	}
 
-	max := tools.Erase_delimiter(arr[1], []string{"\"", " "})
+	max := arr.Get(1)
 	i_max := tools.String_to_int(max)
 
 	if i_max == -1 {
-		notify.Error(fmt.Sprintf("Failed to convert value %s to an integer!", max), "random.generate_int()")
+		notify.Error(fmt.Sprintf("Failed to convert max value %s to an integer!", max), "random.generate_int()")
 	}
 
 	generated_value := tools.Generate_random_int_between(i_min, i_max)
@@ -53,7 +53,7 @@ func generate_int(value string, s_json string) string {
 func generate_string(value string, s_json string) string {
 	data_object := structure.Receive(s_json)
 
-	roof := tools.Erase_delimiter(value, []string{"\""})
+	roof := tools.Erase_delimiter(value, []string{"\""}, -1)
 	length := tools.String_to_int(roof)
 
 	if length == -1 {

@@ -38,6 +38,21 @@ func Create_json_object() json_t {
 
 //
 //
+// Creates an evil array object and returns it
+//
+//
+func Create_evil_object(arr_content string) Evil_array_t {
+	var new_arr Evil_array_t
+	new_arr.length = 0
+	new_arr.gut = []string{}
+
+	new_arr.Parse(arr_content) // Will populate the array with the provided gut
+
+	return new_arr
+}
+
+//
+//
 // Serializes the json structure into a base64 string which is ready to be sent
 //
 //
