@@ -40,46 +40,31 @@ func main() {
 		text_editor.Spawn_window(structure.Send(object))
 
 	} else {
-		if value, ok := parsed["-f"]; ok {
-			object.Set_file_path(value)
-		}
+		object.Set_verbose_lvl("0") // Default value
 
-		if value, ok := parsed["-p"]; ok {
-			object.Set_target_os(value)
-		}
-
-		if value, ok := parsed["-a"]; ok {
-			object.Set_target_arch(value)
-		}
-
-		if value, ok := parsed["-vv"]; ok {
-			object.Set_verbose_lvl(value)
-		} else {
-			object.Set_verbose_lvl("0")
-		}
-
-		if value, ok := parsed["-d"]; ok {
-			object.Set_debug_mode(value)
-		}
-
-		if value, ok := parsed["-o"]; ok {
-			object.Set_binary_name(value)
-		}
-
-		if value, ok := parsed["-e"]; ok {
-			object.Set_extension(value)
-		}
-
-		if _, ok := parsed["-j"]; ok {
-			object.Set_dump_json()
-		}
-
-		if _, ok := parsed["-ob"]; ok {
-			object.Enable_obfuscate()
-		}
-
-		if value, ok := parsed["-db"]; ok {
-			object.Change_detection_behavior(value)
+		for key, value := range parsed {
+			switch key {
+			case "-f":
+				object.Set_file_path(value)
+			case "-p":
+				object.Set_target_os(value)
+			case "-a":
+				object.Set_target_arch(value)
+			case "-vv":
+				object.Set_verbose_lvl(value)
+			case "-d":
+				object.Set_debug_mode(value)
+			case "-o":
+				object.Set_binary_name(value)
+			case "-e":
+				object.Set_extension(value)
+			case "-j":
+				object.Set_dump_json()
+			case "-ob":
+				object.Enable_obfuscate()
+			case "-db":
+				object.Change_detection_behavior(value)
+			}
 		}
 
 		notify.Log(fmt.Sprintf("Compiling file %s", object.File_path), object.Verbose_lvl, "1")
