@@ -130,7 +130,7 @@ func check_evil_arrays(s_json string) {
 
 //
 //
-// Checks for compile that have not been terminated
+// Checks for compile variables that have not been terminated
 //
 //
 func check_compile_variable(s_json string) {
