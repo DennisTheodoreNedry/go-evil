@@ -14,7 +14,7 @@ use self
 ]
 
 b include {
-    self::include("/home/$666$/go-evil/main.go") @ The result is placed into $1$ @
+    self::include("$39$/main.go") @ The result is placed into $1$ @
 }
 
 l main_func {

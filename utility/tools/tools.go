@@ -210,3 +210,16 @@ func Grab_executable_path() string {
 	path := os.Args[0]
 	return path
 }
+
+//
+//
+// Grabs the current working path
+//
+//
+func Grab_CWD() string {
+	path, err := os.Getwd()
+	if err != nil {
+		notify.Error(err.Error(), "tools.Grab_CWD()")
+	}
+	return path
+}

@@ -62,7 +62,7 @@ func Outln(s_json string, msg string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(msg string){", function_call),
-		"msg = runtime_var.get(msg)",
+		"msg = spine.variable.get(msg)",
 		"fmt.Println(msg)",
 		"}"})
 

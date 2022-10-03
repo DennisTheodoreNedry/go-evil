@@ -87,8 +87,7 @@ func remove_behavior(s_json string) string {
 		"toReturn := false",
 		"toReturn = detect_debugger()",
 		"if toReturn {",
-		"path := tools.Grab_executable_path()",
-		"os.Remove(path)",
+		"os.Remove(spine.path)",
 		"os.Exit(42)",
 		"}"}
 

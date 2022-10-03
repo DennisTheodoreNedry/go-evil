@@ -21,8 +21,8 @@ func construct_foreach_loop(condition string, body []string, s_json string) ([]s
 	final_body := []string{fmt.Sprintf(
 		"func %s(values []string){", call[0]),
 		"for _, value := range values{",
-		"value = runtime_var.get(value)",
-		"runtime_var.foreach = value"}
+		"value = spine.variable.get(value)",
+		"spine.variable.foreach = value"}
 
 	final_body = append(final_body, body_calls...)
 	final_body = append(final_body, "}}")

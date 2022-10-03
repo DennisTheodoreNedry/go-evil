@@ -14,7 +14,7 @@ use system
 
 l main_func {
     foreach(${"1","2","3","4","5"}$):
-        system::outln("€42€") @ The index €42€ is configured to only be used by foreach loops @
+        system::outln("€13€") @ The index €13€ is configured to only be used by foreach loops @
     end foreach
     
     system::exit("0")

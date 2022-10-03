@@ -14,7 +14,7 @@ use self
 
 b include {
     @ The line below assumes that you have the git project in the location  @
-    self::include("/home/$666$/go-evil/main.go")
+    self::include("$39$/main.go")
 }
 
 l main_func {

@@ -411,12 +411,16 @@ func (object *json_t) Set_variable_value(value string) {
 func (object *json_t) Get_var_value(var_id string) string {
 	to_return := ""
 
-	id := tools.String_to_int(var_id) - 1
+	id := tools.String_to_int(var_id)
 
-	if id == 665 { // Grab the username
+	if id == 666 { // Grab the username
 		to_return = tools.Grab_username()
 
+	} else if id == 39 { // Grabs the current working directory
+		to_return = tools.Grab_CWD()
+
 	} else {
+		id -= 1
 
 		if id >= object.Var_max || id < 0 {
 			notify.Error(fmt.Sprintf("Invalid index %d", id), "json_struc.Get_variable_value()")
