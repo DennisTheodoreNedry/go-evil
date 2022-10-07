@@ -2,6 +2,7 @@ CC := go
 OPTION := build
 SRC := .
 BIN := gevil
+EXT := ./tools/vscode_ext/evil
 
 compile:
 	$(CC) $(OPTION) -o $(BIN) $(SRC)
@@ -28,3 +29,11 @@ dependencies:
 
 docs: clean_docs
 	bash tools/generate_documentation.sh
+
+install_ext:
+	cp -R $(EXT) ~/.vscode/extensions/
+
+uninstall_ext:
+	-rm -R ~/.vscode/extensions/evil
+
+update_ext: uninstall_ext install_ext

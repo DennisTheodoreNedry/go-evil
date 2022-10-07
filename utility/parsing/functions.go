@@ -119,21 +119,21 @@ func grab_code(domain string, function string, value string, s_json string) ([]s
 		s_json = structure.Send(data_object)
 	}
 
-	// Going through all available switch cases
+	// Going through all available domains
 	switch domain {
-	case "system":
+	case "system", "#sys":
 		call_functions, s_json = system.Parser(function, value, s_json)
 
 	case "time":
 		call_functions, s_json = time.Parser(function, value, s_json)
 
-	case "webview":
+	case "webview", "#web":
 		call_functions, s_json = webview.Parser(function, value, s_json)
 
-	case "self":
+	case "self", "#me", "#this":
 		call_functions, s_json = self.Parser(function, value, s_json)
 
-	case "random":
+	case "random", "#rand":
 		call_functions, s_json = random.Parser(function, value, s_json)
 
 	case "crypto":

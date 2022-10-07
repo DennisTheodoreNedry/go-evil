@@ -1,0 +1,134 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Evil",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#functions"
+		},
+		{
+			"include": "#domain"
+		},
+		{
+			"include": "#imports"
+		},
+		{
+			"include": "#compiler_config"
+		},
+		{
+			"include": "#boolean"
+		},
+		{
+			"include": "#domain_function"
+		}
+	],
+	
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.evil",
+				"match": "\\b(foreach|end foreach)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.evil",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.evil",
+					"match": "\\\\."
+				}
+			]
+		},
+		"comments": {
+			"name": "comment.block",
+			"begin": "@",
+			"end": "@",
+			"patterns": [
+				{
+					"name": "comment.block",
+					"match": "\\\\."
+				}
+			]
+		},"functions": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "[blc]{1,1} [a-z0-9_]+ *{"
+				}
+			]
+		},
+
+		"domain": {
+			"patterns": [
+				{
+					"name": "entity.name.class",
+					"match": "([a-z_#]+)::"
+				}
+			]
+		},
+		"domain_function": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "([a-z_]+)\\((.*)\\)"
+				}
+			]
+		},
+		"imports": {
+			"patterns": [
+				{
+					"name": "markup.bold",
+					"match": "use"
+				}
+			]
+		},
+		"compiler_config": {
+			"patterns": [
+				{
+					"name": "constant.character",
+					"match": "version"
+				},
+				{
+					"name": "constant.character",
+					"match": "os"
+				},
+				{
+					"name": "constant.character",
+					"match": "output"
+				},
+				{
+					"name": "constant.character",
+					"match": "arch"
+				},
+				{
+					"name":"constant.character",
+					"match": "obfuscate"
+				},
+				{
+					"name": "constant.character",
+					"match": "debugger_behavior"
+				}
+			]
+		},
+		"boolean":{
+			"patterns": [
+				{
+					"name": "entity.other",
+					"match": "\\b(false|true)\\b"
+				}
+			]
+		}
+
+	},
+	"scopeName": "source.evil"
+}

@@ -19,7 +19,7 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		s_json = encrypt(value, s_json)
 
 	case "set_method":
-		s_json = set_method(value, s_json)
+		call, s_json = set_crypto(value, s_json)
 
 	case "set_key":
 		s_json = set_key(value, s_json)

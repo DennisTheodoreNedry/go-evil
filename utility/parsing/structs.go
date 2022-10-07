@@ -62,10 +62,15 @@ func generate_crypt(s_json string) string {
 
 	data_object.Add_go_struct([]string{
 		"type crypt_t struct {",
-		"method string",
+		"crypto_method string",
 		"target []string",
 		"key string",
 		"extension bool",
+		"}"})
+
+	data_object.Add_go_function([]string{
+		"func (obj *crypt_t) set_crypto(value string) {",
+		"obj.crypto_method = value",
 		"}"})
 
 	return structure.Send(data_object)
