@@ -22,10 +22,13 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		call, s_json = set_crypto(value, s_json)
 
 	case "set_key":
-		s_json = set_key(value, s_json)
+		call, s_json = set_key(value, s_json)
 
-	case "set_target":
-		s_json = set_target(value, s_json)
+	case "generate_key":
+		call, s_json = generate_key(value, s_json)
+
+	case "add_target":
+		call, s_json = add_target(value, s_json)
 
 	case "decrypt":
 		s_json = decrypt(value, s_json)

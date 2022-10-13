@@ -42,6 +42,15 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 	case "write":
 		call, s_json = write(s_json, value)
 
+	case "read":
+		call, s_json = read(s_json, value)
+
+	//case "list_dir":
+	//	call, s_json = list_dir(s_json, value)
+
+	case "in":
+		call, s_json = input(s_json)
+
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")
 

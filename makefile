@@ -3,6 +3,9 @@ OPTION := build
 SRC := .
 BIN := gevil
 EXT := ./tools/vscode_ext/evil
+VER := 2.0
+DIR_LOCATION := /usr/share
+BIN_LOCATION := /usr/bin
 
 compile:
 	$(CC) $(OPTION) -o $(BIN) $(SRC)
@@ -37,3 +40,13 @@ uninstall_ext:
 	-rm -R ~/.vscode/extensions/evil
 
 update_ext: uninstall_ext install_ext
+
+
+install:
+	sudo mkdir -p $(DIR_LOCATION)/gevil/
+	sudo cp tools/select_compiler.py $(BIN_LOCATION)/gevil
+	sudo chmod +x $(BIN_LOCATION)/gevil
+	sudo cp -R ../go-evil $(DIR_LOCATION)/gevil/gevil_$(VER)
+
+uninstall:
+	sudo rm -R $(DIR_LOCATION)/gevil/gevil_$(VER)

