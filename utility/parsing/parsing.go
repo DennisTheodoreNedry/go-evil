@@ -94,13 +94,13 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 	// Decide the header of the foor loop
 	switch data_object.Debugger_behavior {
 	case "stop":
-		main_functions = append(main_functions, "for !stop_behavior() {")
+		main_functions = append(main_functions, "for !stop_behavior() && !detect_debugger_time() {")
 	case "remove":
-		main_functions = append(main_functions, "for !remove_behavior() {")
+		main_functions = append(main_functions, "for !remove_behavior() && !detect_debugger_time() {")
 	case "none":
 		main_functions = append(main_functions, "for {")
 	case "loop":
-		main_functions = append(main_functions, "for !loop_behavior() {")
+		main_functions = append(main_functions, "for !loop_behavior() && !detect_debugger_time() {")
 	}
 
 	// Add loop function
@@ -187,15 +187,19 @@ func generate_structs(s_json string) string {
 //
 func generate_behavior_debugging(s_json string) string {
 	data_object := structure.Receive(s_json)
-	s_json = identify_debugger(s_json) // Adds neccessary code to identify a debugger
 
-	switch data_object.Debugger_behavior {
-	case "stop":
-		s_json = stop_behavior(s_json)
-	case "remove":
-		s_json = remove_behavior(s_json)
-	case "loop":
-		s_json = loop_behavior(s_json)
+	if data_object.Debugger_behavior != "none" {
+		s_json = identify_debugger(s_json) // Adds neccessary code to identify a debugger
+		s_json = identify_debugger_with_time(s_json)
+
+		switch data_object.Debugger_behavior {
+		case "stop":
+			s_json = stop_behavior(s_json)
+		case "remove":
+			s_json = remove_behavior(s_json)
+		case "loop":
+			s_json = loop_behavior(s_json)
+		}
 	}
 
 	return s_json
