@@ -29,7 +29,10 @@ func (object *Evil_array_t) Length() int {
 
 //
 //
-// Returns the contents of the array in a string with the following format ${...}$
+// Returns the contents of the array as a string
+// Possible formats are:
+//	* evil - Format ${...}$
+//  * array - Format []string{...}
 //
 //
 func (object *Evil_array_t) To_string(format string) string {
