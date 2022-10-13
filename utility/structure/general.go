@@ -15,7 +15,7 @@ import (
 func Create_json_object() json_t {
 	var new_json json_t
 	new_json.Malware_src_file = "malware.go"
-	new_json.Malware_path = "./output/"
+	//new_json.Malware_path = "./output/"
 	new_json.Malware_gut = append(new_json.Malware_gut, "package main")
 
 	// Settings for all the webview instances

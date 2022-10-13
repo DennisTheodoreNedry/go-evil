@@ -20,6 +20,7 @@ func main() {
 	arg.Argument_add_with_options("--verbose", "-vv", true, "How verbose should the program be", []string{"0", "1", "2", "3"})
 	arg.Argument_add_with_options("--debug", "-d", true, "Debug options, will not delete the src file after compilation", []string{"false", "true"})
 	arg.Argument_add("--output", "-o", true, "Name of the binary malware")
+	arg.Argument_add("--output_directory", "-od", true, "Directory where the binary file will be placed")
 	arg.Argument_add("--extension", "-e", true, "Extension of the binary malware")
 	arg.Argument_add("--json", "-j", false, "Prints the finalized json structure after compiling a file")
 	arg.Argument_add("--obfuscate", "-ob", false, "Obfuscates the source code at compile time")
@@ -64,6 +65,8 @@ func main() {
 				object.Enable_obfuscate()
 			case "-db":
 				object.Change_detection_behavior(value)
+			case "-od":
+				object.Set_output_directory(value)
 			}
 		}
 

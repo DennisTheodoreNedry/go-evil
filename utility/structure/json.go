@@ -461,3 +461,17 @@ func (object *json_t) Check_global_name(var_name string) bool {
 func (object *json_t) Change_detection_behavior(tactic string) {
 	object.Debugger_behavior = tactic
 }
+
+//
+//
+// This will be the directory where the final malware binary exe will be placed
+//
+//
+func (object *json_t) Set_output_directory(path string) {
+	result := tools.Ends_with(path, []string{"/"})
+	if ok := result["/"]; !ok { // The path doesn't end with a /
+		path = fmt.Sprintf("%s/", path)
+	}
+
+	object.Malware_path = path
+}

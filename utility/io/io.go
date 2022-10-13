@@ -40,16 +40,18 @@ func Read_file(s_json string) string {
 func Write_file(s_json string) {
 	data_object := structure.Receive(s_json)
 
-	_, err := os.Stat(data_object.Malware_path)
-	if err != nil {
-		if os.IsNotExist(err) {
+	if data_object.Malware_path != "" {
+		_, err := os.Stat(data_object.Malware_path)
+		if err != nil {
+			if os.IsNotExist(err) {
 
-			if err := os.Mkdir(data_object.Malware_path, 0777); err != nil {
-				notify.Error(fmt.Sprintf("Failed to create directory '%s', '%s'", data_object.Malware_path, err.Error()), "io.Write_file")
+				if err := os.Mkdir(data_object.Malware_path, 0777); err != nil {
+					notify.Error(fmt.Sprintf("Failed to create directory '%s', '%s'", data_object.Malware_path, err.Error()), "io.Write_file")
+				}
+
+			} else {
+				notify.Error(fmt.Sprintf("Unknown error, %s", err.Error()), "io.Write_file()")
 			}
-
-		} else {
-			notify.Error(fmt.Sprintf("Unknown error, %s", err.Error()), "io.Write_file()")
 		}
 	}
 
