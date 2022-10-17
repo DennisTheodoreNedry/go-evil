@@ -1,5 +1,5 @@
-from os import listdir
-from os.path import isdir, exists
+from os import listdir, mkdir
+from os.path import isdir, exists, basename
 import subprocess
 from sys import exit
 
@@ -35,7 +35,7 @@ def compile_file(file_path:str) -> int:
 
     try:
         print(f"[!] Trying to compile {file_path}...", end='')
-        subprocess.check_output(["./gevil", "-f", file_path])
+        subprocess.check_output(["./gevil", "-f", file_path, "-o", f"./output/{basename(file_path).split('.')[0]}"])
         print(" Successful!")
         toReturn = 1
         
@@ -53,6 +53,9 @@ def main() -> None:
     """
     if not exists("./gevil"):
         exit("Failed to find the compiler 'gevil' in the root directory of this project")
+
+    if not exists("./output"):
+        mkdir("./output")
 
     files = gather_files("./examples")
     status = 0
