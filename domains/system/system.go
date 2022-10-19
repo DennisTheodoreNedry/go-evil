@@ -42,14 +42,20 @@ func Out(s_json string, msg string) ([]string, string) {
 	function_call := "Out"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(msg string){", function_call),
-		"msg = spine.variable.get(msg)",
-		"fmt.Print(msg)",
+		fmt.Sprintf("func %s(msg []int){", function_call),
+		"s_msg := spine.alpha.construct_string(msg)",
+		"s_msg = spine.variable.get(s_msg)",
+		"fmt.Print(s_msg)",
 		"}"})
 
 	data_object.Add_go_import("fmt")
+	parameter := "[]int{"
+	for _, value := range tools.Generate_int_from_string(msg) {
+		parameter += fmt.Sprintf("%d,", value)
+	}
+	parameter += "}"
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, msg)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
 
 //
@@ -62,14 +68,21 @@ func Outln(s_json string, msg string) ([]string, string) {
 	function_call := "Outln"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(msg string){", function_call),
-		"msg = spine.variable.get(msg)",
-		"fmt.Println(msg)",
+		fmt.Sprintf("func %s(msg []int){", function_call),
+		"s_msg := spine.alpha.construct_string(msg)",
+		"s_msg = spine.variable.get(s_msg)",
+		"fmt.Println(s_msg)",
 		"}"})
 
 	data_object.Add_go_import("fmt")
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, msg)}, structure.Send(data_object)
+	parameter := "[]int{"
+	for _, value := range tools.Generate_int_from_string(msg) {
+		parameter += fmt.Sprintf("%d,", value)
+	}
+	parameter += "}"
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
 
 //

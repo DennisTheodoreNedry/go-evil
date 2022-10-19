@@ -77,7 +77,11 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 	// Create the main function here
 	main_functions := []string{"func main(){"}
 
-	main_functions = append(main_functions, fmt.Sprintf("spine.variable.roof = %d", data_object.Var_max), "spine.variable.pointer = 0")
+	main_functions = append(main_functions, "spine.alpha.alphabet = []string{\"0\", \"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", \"8\", \"9\", \"a\", \"b\", \"c\", \"d\", \"e\", \"f\", \"g\", \"h\", \"i\", \"j\", \"k\", \"l\", \"m\", \"n\", \"o\", \"p\", \"q\", \"r\", \"s\", \"t\", \"u\", \"v\", \"w\", \"x\", \"y\", \"z\", \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\", \"J\", \"K\", \"L\", \"M\", \"N\", \"O\", \"P\", \"Q\", \"R\", \"S\", \"T\", \"U\", \"V\", \"W\", \"X\", \"Y\", \"Z\", \"!\", \"#\", \"$\", \"%\", \"&\", \"\\\"\", \"(\", \")\", \"*\", \"+\", \",\", \"-\", \".\", \"/\", \":\", \";\", \"<\", \"=\", \">\", \"?\", \"@\", \"[\", \"\\\\\", \"]\", \"^\", \"_\", \"`\", \"{\", \"|\", \"}\", \"~\", \" \", \"\\t\", \"\\n\", \"\\r\", \"\\x0b\", \"\\x0c\"}")
+
+	main_functions = append(main_functions, fmt.Sprintf("spine.variable.roof = %d", data_object.Var_max))
+	main_functions = append(main_functions, "spine.variable.pointer = 0")
+
 	main_functions = append(main_functions, "spine.variable.values = make([]string, spine.variable.roof)")
 
 	for i := 0; i < data_object.Var_max; i++ { // Add default value for each entry
@@ -91,7 +95,7 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 		main_functions = append(main_functions, fmt.Sprintf("%s()", boot_name))
 	}
 
-	// Decide the header of the foor loop
+	// Decide the header of the for loop
 	switch data_object.Debugger_behavior {
 	case "stop":
 		main_functions = append(main_functions, "for !stop_behavior() && !detect_debugger_time() {")
@@ -175,6 +179,8 @@ func generate_sub_functions(s_json string) (string, []string, []string) {
 func generate_structs(s_json string) string {
 	s_json = generate_runtime_variable(s_json)
 	s_json = generate_crypt(s_json)
+	s_json = generate_alpha(s_json)
+
 	s_json = generate_spine(s_json)
 
 	return s_json

