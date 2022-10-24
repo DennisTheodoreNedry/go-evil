@@ -8,7 +8,7 @@ import (
 
 //
 //
-// The main parser for the random domain
+// The main parser for the crypto domain
 //
 //
 func Parser(function string, value string, s_json string) ([]string, string) {

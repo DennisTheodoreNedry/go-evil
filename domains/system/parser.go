@@ -45,8 +45,8 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 	case "read":
 		call, s_json = read(s_json, value)
 
-	//case "list_dir":
-	//	call, s_json = list_dir(s_json, value)
+	case "list_dir":
+		call, s_json = list_dir(s_json, value)
 
 	case "in":
 		call, s_json = input(s_json)

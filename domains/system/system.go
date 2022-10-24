@@ -346,13 +346,18 @@ func list_dir(s_json string, value string) ([]string, string) {
 		"path = spine.variable.get(path)",
 		"result, err := ioutil.ReadDir(path)",
 		"if err == nil{",
-		"contents := []string{}",
+		"evil_array := \"${\"",
 		"for _, file := range result{",
-		"contents = append(contents, file.Name())",
-		"}}}"})
-	data_object.Add_go_import("io/ioutil")
+		"evil_array += fmt.Sprintf(\"\\\"%s/%s\\\",\", path, file.Name())",
+		"}",
+		"evil_array += \"}$\"",
+		"spine.variable.set(evil_array)",
+		"}}"})
 
-	return []string{fmt.Sprintf("%s(\"%s\")", function_call, value)}, structure.Send(data_object)
+	data_object.Add_go_import("io/ioutil")
+	data_object.Add_go_import("fmt")
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, value)}, structure.Send(data_object)
 
 }
 

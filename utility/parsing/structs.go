@@ -100,6 +100,8 @@ func generate_crypt(s_json string) string {
 		"obj.target = append(obj.target, value)",
 		"}"})
 
+	data_object.Add_go_import("crypto/rsa")
+
 	return structure.Send(data_object)
 }
 

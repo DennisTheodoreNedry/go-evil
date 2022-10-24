@@ -64,6 +64,15 @@ func (object *Evil_array_t) To_string(format string) string {
 
 //
 //
+// Returns the inner gut which is where all the arrays contents is located
+//
+//
+func (object *Evil_array_t) Dump() []string {
+	return object.gut
+}
+
+//
+//
 // Appends data to the array
 //
 //
