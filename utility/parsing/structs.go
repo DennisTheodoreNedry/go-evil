@@ -66,22 +66,33 @@ func generate_crypt(s_json string) string {
 
 	data_object.Add_go_struct([]string{
 		"type crypt_t struct {",
-		"crypto_method string",
+		"method string",
 		"target []string",
-		"key string",
-		"key_length int",
-		"extension bool",
+		"aes_key string",
+		"aes_key_length int",
+		"rsa_public rsa.PublicKey",
+		"rsa_private *rsa.PrivateKey",
+		"rsa_key_length int",
+		"target_extension bool",
+		"extension string",
 		"}"})
 
 	data_object.Add_go_function([]string{
 		"func (obj *crypt_t) set_crypto(value string) {",
-		"obj.crypto_method = value",
+		"obj.method = value",
 		"}"})
 
 	data_object.Add_go_function([]string{
-		"func (obj *crypt_t) set_key(value string) {",
-		"obj.key = value",
-		"obj.key_length = len(value)",
+		"func (obj *crypt_t) set_aes_key(value string) {",
+		"obj.aes_key = value",
+		"obj.aes_key_length = len(value)",
+		"}"})
+
+	data_object.Add_go_function([]string{
+		"func (obj *crypt_t) set_rsa_key(private_key *rsa.PrivateKey, key_length int) {",
+		"obj.rsa_private = private_key",
+		"obj.rsa_public = private_key.PublicKey",
+		"obj.rsa_key_length = key_length",
 		"}"})
 
 	data_object.Add_go_function([]string{

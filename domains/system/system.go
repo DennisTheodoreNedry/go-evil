@@ -49,9 +49,11 @@ func Out(s_json string, msg string) ([]string, string) {
 		"}"})
 
 	data_object.Add_go_import("fmt")
+
+	// Construct our int array
 	parameter := "[]int{"
-	for _, value := range tools.Generate_int_from_string(msg) {
-		parameter += fmt.Sprintf("%d,", value)
+	for _, repr := range tools.Generate_int_array(msg) {
+		parameter += fmt.Sprintf("%d,", repr)
 	}
 	parameter += "}"
 
@@ -76,9 +78,10 @@ func Outln(s_json string, msg string) ([]string, string) {
 
 	data_object.Add_go_import("fmt")
 
+	// Construct our int array
 	parameter := "[]int{"
-	for _, value := range tools.Generate_int_from_string(msg) {
-		parameter += fmt.Sprintf("%d,", value)
+	for _, repr := range tools.Generate_int_array(msg) {
+		parameter += fmt.Sprintf("%d,", repr)
 	}
 	parameter += "}"
 

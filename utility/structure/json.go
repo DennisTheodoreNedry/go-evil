@@ -3,6 +3,7 @@ package structure
 import (
 	"encoding/json"
 	"fmt"
+	"path"
 	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/tools"
@@ -103,7 +104,8 @@ func (object *json_t) Set_target_arch(arch string) {
 //
 //
 func (object *json_t) Set_binary_name(name string) {
-	object.Binary_name = name
+	object.Malware_path = fmt.Sprintf("%s/", path.Dir(name))
+	object.Binary_name = path.Base(name)
 }
 
 //
