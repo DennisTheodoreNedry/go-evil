@@ -37,7 +37,10 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		call, s_json = set_after_extension(value, s_json)
 
 	case "decrypt":
-		s_json = decrypt(value, s_json)
+		call, s_json = decrypt(value, s_json)
+
+	case "clean_targets":
+		call, s_json = clean_targets(value, s_json)
 
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "crypto.Parser()")
