@@ -379,3 +379,23 @@ func input(s_json string) ([]string, string) {
 	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
 
 }
+
+//
+//
+// Removes the target file and folder if they are empty
+//
+//
+func remove(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "remove"
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(target string){", function_call),
+		"target = spine.variable.get(target)",
+		"os.Remove(target)",
+		"}"})
+
+	data_object.Add_go_import("os")
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, value)}, structure.Send(data_object)
+
+}

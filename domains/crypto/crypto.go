@@ -60,6 +60,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"spine.crypt.extension = \".encrypted\"",
 		"}",
 		"ioutil.WriteFile(fmt.Sprintf(\"%s%s\", target, spine.crypt.extension), []byte(enc), 0644)",
+		"os.Remove(target)",
 		"}",
 
 		"}"})
@@ -205,6 +206,7 @@ func add_target(value string, s_json string) ([]string, string) {
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(repr []int){", system_call),
 		"target := spine.alpha.construct_string(repr)",
+		"target = spine.variable.get(target)",
 		"spine.crypt.add_target(target)",
 		"}"})
 

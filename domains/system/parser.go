@@ -51,6 +51,9 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 	case "in":
 		call, s_json = input(s_json)
 
+	case "remove":
+		call, s_json = remove(value, s_json)
+
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")
 
