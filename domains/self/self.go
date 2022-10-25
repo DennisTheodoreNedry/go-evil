@@ -72,8 +72,6 @@ func Set(var_type string, value string, s_json string) string {
 	case "$":
 		data_object.Set_variable_value(value)
 
-	case "€":
-
 	default:
 		notify.Error(fmt.Sprintf("Unknown variable type '%s'", var_type), "self.Set()")
 	}

