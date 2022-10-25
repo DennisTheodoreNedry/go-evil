@@ -21,21 +21,21 @@ func construct_foreach_loop(condition string, body []string, s_json string) ([]s
 	final_body := []string{fmt.Sprintf(
 		"func %s(values []string){", call[0]),
 
-		"for _, value := range values{",
+		"for i, value := range values{",
 		"value = spine.variable.get(value)",
 		"arr := structure.Create_evil_object(value)",
 		"if arr.Length() > 0 {",
-		"for _, sub_value := range arr.Dump(){",
-		"spine.variable.foreach = sub_value",
+		"result := arr.Dump()",
+		"values[i] = result[0]",
+		"values = append(values, result[1:]...)",
+		"}}",
 	}
 
-	final_body = append(final_body, body_calls...)
-	final_body = append(final_body, "}")
-
-	final_body = append(final_body, "}else{", "spine.variable.foreach = value")
+	final_body = append(final_body, "for _, value := range values{")
+	final_body = append(final_body, "spine.variable.foreach = value")
 
 	final_body = append(final_body, body_calls...)
-	final_body = append(final_body, "}}}")
+	final_body = append(final_body, "}}")
 
 	data_object.Add_go_function(final_body)
 

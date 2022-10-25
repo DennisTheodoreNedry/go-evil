@@ -364,6 +364,7 @@ func list_dir(s_json string, value string) ([]string, string) {
 
 	data_object.Add_go_import("io/ioutil")
 	data_object.Add_go_import("fmt")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, arr.To_string("array"))}, structure.Send(data_object)
 
