@@ -55,10 +55,17 @@ l webview_run {
 
     webview::css("body{ background-image:url('https://raw.githubusercontent.com/TeamPhoneix/go-evil/v2/examples/ransomware/Alien/background.jpg'); background-repeat: no-repeat;  background-size: cover; background-position: center center; }")
     webview::css("label{color: #555;}")
+    webview::css("#input_box {position: absolute; bottom: 0; left: 50%; background-color: #DBF9FC;}")
 
+    webview::html("<div id='input_box'>")
     webview::html("<label for='in'>Input</label>")
     webview::html("<input id='in' type='input'>")
     webview::html("<input type='submit' onclick='checking()'>")
+    webview::html("</div>")
+
+    webview::width("934")
+    webview::height("580")
+    webview::title("You just got hived")
 
     webview::run()
     system::exit("0")
