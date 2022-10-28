@@ -1,0 +1,21 @@
+@ Adds links to the disk so that the malware will auto boot @
+
+use system
+
+[
+    version 2.0
+    output startup
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+b start_up {
+    system::add_to_startup()
+}
+
+l main_func {
+    system::outln("I have auto-booted!")
+    system::exit("0")
+}

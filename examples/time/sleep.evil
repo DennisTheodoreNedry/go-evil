@@ -1,0 +1,19 @@
+@ Shows the sleep function in the time domain @
+
+use system
+use time
+
+[
+    version 2.0
+    output sleep
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+l main_func {
+    time::sleep("10")
+    system::outln("It's gone 10s since I was launched!")
+    system::exit("0")
+}

@@ -2,44 +2,48 @@ CC := go
 OPTION := build
 SRC := .
 BIN := gevil
+EXT := ./tools/vscode_ext/evil
+VER := 2.0
+DIR_LOCATION := /usr/share
+BIN_LOCATION := /usr/bin
 
-compile: create_directory
-	@-echo "## Compiling"
+compile:
 	$(CC) $(OPTION) -o $(BIN) $(SRC)
 
-create_directory:
-	mkdir -p output
-
-clean: clean_output clean_binary clean_examples_list
-
-clean_output:
-	-rm -R output/*
+clean: clean_binary clean_docs
 
 clean_binary:
 	-rm $(BIN)
 
-clean_examples_list:
-	-rm examples/examples.txt
+clean_docs:
+	-rm -R docs
 
-update_examples: compile
-	python3 examples/update_compiler_version.py
-
-test:
-	@-echo "## Checking if builtin functionallity is working as expected"
-	cd ./utility/contains/ && go test
-	cd ./utility/converter/ && go test
-	cd ./utility/algorithm/encryption/aes/ && go test
-	cd ./utility/algorithm/encryption/rsa/ && go test
-	cd ./utility/algorithm/path/ && go test
-
-install_dependencies:
-	go get github.com/thanhpk/randstr
-	go get github.com/webview/webview
+dependencies:
 	go get github.com/s9rA16Bf4/ArgumentParser
 	go get github.com/s9rA16Bf4/notify_handler
-	go get golang.org/x/crypto
-	go get golang.org/x/sys
-	go get gopkg.in/go-rillas/subprocess.v1
-	go get github.com/TwiN/go-pastebin
-	go get github.com/cloudfoundry/jibber_jabber
-	go mod download golang.org/x/net
+	go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
+	github.com/cloudfoundry/jibber_jabber
+	go get github.com/webview/webview
+	go install mvdan.cc/garble@latest
+	go get github.com/google/gops
+
+docs: clean_docs
+	bash tools/generate_documentation.sh
+
+install_ext:
+	cp -R $(EXT) ~/.vscode/extensions/
+
+uninstall_ext:
+	-rm -R ~/.vscode/extensions/evil
+
+update_ext: uninstall_ext install_ext
+
+
+install:
+	sudo mkdir -p $(DIR_LOCATION)/gevil/
+	sudo cp tools/select_compiler.py $(BIN_LOCATION)/gevil
+	sudo chmod +x $(BIN_LOCATION)/gevil
+	sudo cp -R ../go-evil $(DIR_LOCATION)/gevil/gevil_$(VER)
+
+uninstall:
+	sudo rm -R $(DIR_LOCATION)/gevil/gevil_$(VER)

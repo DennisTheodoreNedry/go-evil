@@ -1,0 +1,28 @@
+{
+  "name": "evil",
+  "displayName": "Evil",
+  "description": "The official language extension for the evil language utilized by the goevil compiler.",
+  "icon": "images/icon.png",
+  "publisher": "Team Phoneix",
+  "version": "6.6.6",
+  "engines": {
+    "vscode": "^1.71.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "evil",
+      "aliases": ["Evil", "evil", "go-evil"],
+      "extensions": [".evil"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "evil",
+      "scopeName": "source.evil",
+      "path": "./syntaxes/evil.tmLanguage.json"
+    }]
+  },
+  "keywords": ["go-evil", "golang", "evil"]
+}

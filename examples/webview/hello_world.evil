@@ -1,0 +1,22 @@
+@ Showcasing the simplest form of using the webview @
+
+use system
+use webview
+
+[
+    version 2.0
+    output hello_world
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+b html {
+    webview::html("<p>Hello, world!</p>")
+    webview::run()
+}
+
+l loop {
+    system::exit("0")
+}

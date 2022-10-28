@@ -1,0 +1,33 @@
+@ Showcasing how you can bind an evil function to a javascript call @
+
+use system
+use webview
+
+[
+    version 2.0
+    output bind
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+c test1 {
+    system::outln("I've been summoned!")
+}
+
+b bind {
+    @ Essentially saying that when the js function button is called, call test1 @
+    webview::bind(${"button", "test1"}$) @ The ${...}$ is known as an evil array @ 
+
+    webview::js("function testing() {window.button();}")
+
+    webview::html("<p>Watch the console after pressing the button!</p>")
+    webview::html("<input type='submit' onclick='testing()'>")
+
+    webview::run()
+}
+
+l loop {
+    system::exit("0")
+}

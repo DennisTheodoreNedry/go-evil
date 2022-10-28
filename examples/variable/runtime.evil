@@ -1,0 +1,18 @@
+@ This example shows how runtime variables work @
+
+use system
+use self
+
+[
+    version 2.0
+    output runtime
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+l main_func {
+    system::outln("€666€") @ This will print the name of the current running user @
+    system::exit("0")
+}

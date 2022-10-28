@@ -1,0 +1,21 @@
+@ Grabs the current working directory when compiling and during runtime @
+@ To best showcase this, move to the output directory after compiling @
+
+use system
+use self
+
+[
+    version 2.0
+    output cwd
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+l main_func {
+    system::outln("$39$") @ Grabs the CWD when compiling @
+    system::outln("€39€") @ Grabs the CWD when running @
+
+    system::exit("0")
+}

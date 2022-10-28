@@ -1,0 +1,21 @@
+@ Shows how you can disable the malware in regions determined by the computers language settings @
+
+use system
+
+[
+    version 2.0
+    output abort
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+b disable {
+    system::abort(${"sg", "us"}$) @ ${}$ are known as an evil array @
+}
+
+l main_func {
+    system::outln("hello, world!")
+    system::exit("0")
+}
