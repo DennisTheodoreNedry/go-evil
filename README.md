@@ -10,8 +10,11 @@ The programming language we utilize is called evil, which only purpose is to tra
 The project needs a couple of packages and modules to work
 
 Those that must be installed by hand are,
-1. webkit2gtk-4.0, `sudo apt install libwebkit2gtk-4.0-dev`
-2. gtk3, `sudo apt install libgtk-3-dev`
+1. webkit2gtk-4.0-dev, `sudo apt install libwebkit2gtk-4.0-dev`
+2. webkit2gtk-4.0 `sudo apt install libgtk-3-0 libwebkit2gtk-4.0-37`
+3. gtk3, `sudo apt install libgtk-3-dev`
+4. g++-mingw-w64, `sudo apt install g++-mingw-w64`
+5. g++-mingw-w64, `sudo apt install g++-mingw-w64`
 
 The rest of them can be installed by running `make dependencies`
 

