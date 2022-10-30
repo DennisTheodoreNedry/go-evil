@@ -9,4 +9,7 @@ require (
 	github.com/zserge/lorca v0.1.10
 )
 
-require golang.org/x/net v0.0.0-20200222125558-5a598a2470a0 // indirect
+require (
+	github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21 // indirect
+	golang.org/x/net v0.0.0-20200222125558-5a598a2470a0 // indirect
+)

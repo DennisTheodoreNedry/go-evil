@@ -170,7 +170,7 @@ func navigate(website string, s_json string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(website string){", call),
-		fmt.Sprintf("win, err := lorca.New(website, %s, %d, %d)", data_object.Title, data_object.Height, data_object.Width),
+		fmt.Sprintf("win, err := lorca.New(website, \"\",%d, %d)", data_object.Width, data_object.Height),
 		"if err != nil{",
 		"notify.Log(err.Error(), \"3\", spine.logging)",
 		"return",
