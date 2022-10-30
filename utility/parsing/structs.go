@@ -38,10 +38,25 @@ func generate_runtime_variable(s_json string) string {
 		"if i_number != -1 {",
 		"if i_number > 0 && i_number < 5 {",
 		"toReturn = obj.values[i_number-1]",
-		"}else if i_number == 666 { toReturn = tools.Grab_username()",
-		"} else if i_number == 39 { toReturn = tools.Grab_CWD()",
-		"} else if i_number == 13 { toReturn = obj.foreach",
-		"} else { toReturn = \"NULL\" }",
+		"} else {",
+		"switch (i_number){",
+
+		"case 13:",
+		"toReturn = obj.foreach",
+
+		"case 666:",
+		"toReturn = tools.Grab_username()",
+
+		"case 39:",
+		"toReturn = tools.Grab_CWD()",
+
+		"case 40:",
+		"toReturn = tools.Grab_home_dir()",
+
+		"default:",
+		"toReturn = \"NULL\"",
+
+		"}}",
 
 		"toReturn = strings.ReplaceAll(line, result[0][1], toReturn)",
 		"}}",

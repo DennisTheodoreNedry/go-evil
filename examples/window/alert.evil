@@ -1,11 +1,11 @@
-@ Showcasing the simplest form of using the webview @
+@ Showcasing the simplest form of using the window @
 
 use system
-use webview
+use window
 
 [
     version 2.0
-    output hello_world
+    output alert
     os linux
     arch amd64
     obfuscate false
@@ -13,8 +13,8 @@ use webview
 ]
 
 b html {
-    webview::html("<p>Hello, world!</p>")
-    webview::run()
+    window::js("window.alert('Hello, world!')")
+    window::run()
 }
 
 l loop {

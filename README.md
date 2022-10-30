@@ -32,7 +32,7 @@ There are many changes in v2, some are directly related to the syntaxes but the 
 Some notable features arriving in v2 are,
 1. Evil arrays `${...}`, i.e. `${"value1", "value"}$`.
 2. Functions! Which have different meanings depending on their function type.
-3. A fully integrated `webview` into the source code.
+3. A fully integrated `window` into the source code.
 4. You can now customize your malware by using a `compiler configuration section` aka `[]` in your code.
 5. Obfuscating the source code is now a built in option.
 6. The line terminator `;` is no longer needed.
@@ -112,7 +112,7 @@ This example shows how you can bind evil functions to javascript functions
 @ Showcasing how you can bind an evil function to a javascript call @
 
 use system
-use webview
+use window
 
 [
     version 2.0
@@ -128,14 +128,14 @@ c test1 {
 
 b bind {
     @ Essentially saying that when the js function button is called, call test1 @
-    webview::bind(${"button", "test1"}$) @ The ${...}$ is known as an evil array @ 
+    window::bind(${"button", "test1"}$) @ The ${...}$ is known as an evil array @ 
 
-    webview::js("function testing() {window.button();}")
+    window::js("function testing() {window.button();}")
 
-    webview::html("<p>Watch the console after pressing the button!</p>")
-    webview::html("<input type='submit' onclick='testing()'>")
+    window::html("<p>Watch the console after pressing the button!</p>")
+    window::html("<input type='submit' onclick='testing()'>")
 
-    webview::run()
+    window::run()
 }
 
 l loop {

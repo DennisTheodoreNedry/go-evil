@@ -7,11 +7,9 @@ import (
 )
 
 const (
-	EVIL_VERSION = "2.0.0"
-	TEXT_EDITOR  = "1.0.0"
+	EVIL_VERSION = "2.0.1"
 )
 
 func Version() {
 	notify.Inform(fmt.Sprintf("Compiler version: %s", EVIL_VERSION))
-	notify.Inform(fmt.Sprintf("Text editor version: %s", TEXT_EDITOR))
 }

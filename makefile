@@ -23,7 +23,7 @@ dependencies:
 	go get github.com/s9rA16Bf4/notify_handler
 	go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
 	go get github.com/cloudfoundry/jibber_jabber
-	go get github.com/webview/webview
+	go get github.com/window/window
 	go install mvdan.cc/garble@latest
 	go get github.com/google/gops
 	go get github.com/thanhpk/randstr

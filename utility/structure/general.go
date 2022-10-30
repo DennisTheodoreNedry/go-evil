@@ -17,7 +17,7 @@ func Create_json_object() json_t {
 	new_json.Malware_src_file = "malware.go"
 	new_json.Malware_gut = append(new_json.Malware_gut, "package main")
 
-	// Default settings for all the webview instances
+	// Default settings for all the window instances
 	new_json.Width = 800
 	new_json.Height = 600
 	new_json.Title = "me_no_virus"

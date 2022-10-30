@@ -10,7 +10,7 @@ import (
 	"github.com/TeamPhoneix/go-evil/domains/self"
 	"github.com/TeamPhoneix/go-evil/domains/system"
 	"github.com/TeamPhoneix/go-evil/domains/time"
-	"github.com/TeamPhoneix/go-evil/domains/webview"
+	"github.com/TeamPhoneix/go-evil/domains/window"
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
@@ -129,8 +129,8 @@ func grab_code(domain string, function string, value string, s_json string) ([]s
 	case "time":
 		call_functions, s_json = time.Parser(function, value, s_json)
 
-	case "webview", "#web":
-		call_functions, s_json = webview.Parser(function, value, s_json)
+	case "window":
+		call_functions, s_json = window.Parser(function, value, s_json)
 
 	case "self", "#me", "#this":
 		call_functions, s_json = self.Parser(function, value, s_json)

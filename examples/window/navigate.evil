@@ -1,7 +1,7 @@
 @ Showcasing how you can navigate to a website @
 
 use system
-use webview
+use window
 
 [
     version 2.0
@@ -13,7 +13,7 @@ use webview
 ]
 
 b navigate {
-    webview::navigate("https://google.com/")
+    window::navigate("https://google.com/")
 }
 
 l loop {

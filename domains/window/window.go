@@ -1,4 +1,4 @@
-package webview
+package window
 
 import (
 	"fmt"
@@ -36,19 +36,27 @@ func run(s_json string) ([]string, string) {
 		binding += fmt.Sprintf("w.Bind(%s, %s)\n", key, data_object.Bind_gut[key])
 	}
 
-	data_object.Add_go_function([]string{
+	body := []string{
 		fmt.Sprintf("func %s(){", call),
-		"w := webview.New(false)",
-		"defer w.Destroy()",
-		fmt.Sprintf("w.SetHtml(`%s`)", final_content),
-		fmt.Sprintf("w.SetSize(%d, %d, webview.HintNone)", data_object.Width, data_object.Height),
-		fmt.Sprintf("w.SetTitle(\"%s\")", data_object.Title),
-		binding,
-		"w.Run()",
+		fmt.Sprintf("win, err := lorca.New(fmt.Sprintf(\"data:text/html,%%s\", url.PathEscape(`%s`)), \"\", %d, %d)", final_content, data_object.Width, data_object.Height),
+		"if err != nil{",
+		"notify.Log(err.Error(), \"3\", spine.logging)",
+		"return",
 		"}",
-	})
+	}
 
-	data_object.Add_go_import("github.com/webview/webview")
+	for key := range data_object.Bind_gut {
+		body = append(body, fmt.Sprintf("win.Bind(%s, %s)\n", key, data_object.Bind_gut[key]))
+	}
+
+	body = append(body, "defer win.Close()", "<-win.Done()", "}")
+
+	data_object.Add_go_function(body)
+
+	data_object.Add_go_import("github.com/zserge/lorca")
+	data_object.Add_go_import("net/url")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
+	data_object.Add_go_import("fmt")
 
 	return []string{call}, structure.Send(data_object)
 }
@@ -153,7 +161,7 @@ func bind(values string, s_json string) string {
 
 //
 //
-// Makes the webview enter a website of your choice
+// Makes the window enter a website of your choice
 //
 //
 func navigate(website string, s_json string) ([]string, string) {
@@ -162,16 +170,18 @@ func navigate(website string, s_json string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(website string){", call),
-		"w := webview.New(false)",
-		"defer w.Destroy()",
-		fmt.Sprintf("w.SetSize(%d, %d, webview.HintNone)", data_object.Width, data_object.Height),
-		fmt.Sprintf("w.SetTitle(\"%s\")", data_object.Title),
-		"w.Navigate(website)",
-		"w.Run()",
+		fmt.Sprintf("win, err := lorca.New(website, %s, %d, %d)", data_object.Title, data_object.Height, data_object.Width),
+		"if err != nil{",
+		"notify.Log(err.Error(), \"3\", spine.logging)",
+		"return",
+		"}",
+		"defer win.Close()",
+		"<-win.Done()",
 		"}",
 	})
 
-	data_object.Add_go_import("github.com/webview/webview")
+	data_object.Add_go_import("github.com/zserge/lorca")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
 	return []string{fmt.Sprintf("%s(%s)", call, website)}, structure.Send(data_object)
 }

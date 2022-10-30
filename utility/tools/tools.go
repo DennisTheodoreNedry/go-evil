@@ -226,6 +226,21 @@ func Grab_CWD() string {
 
 //
 //
+// Grabs the current users home directory
+//
+//
+func Grab_home_dir() string {
+	path, err := user.Current()
+
+	if err != nil {
+		notify.Error(err.Error(), "tools.Grab_home_dir()")
+	}
+
+	return path.HomeDir
+}
+
+//
+//
 // Generates an int array representing the provided string
 //
 //

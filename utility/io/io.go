@@ -100,31 +100,6 @@ func Compile_file(s_json string) {
 
 	ldflags := "-ldflags=-s -w"
 
-	// This following if section contains all the changes needed for when you want to target windows
-	if data_object.Target_os == "windows" {
-		ldflags += " -H windowsgui"
-		if err = os.Setenv("CGO_ENABLED", "1"); err != nil {
-			notify.Error(err.Error(), "io.Compile_file()")
-		}
-
-		cc_env := "i686-w64-mingw32-g++"
-		cxx_env := "i686-w64-mingw32-gcc"
-
-		if data_object.Target_arch == "amd64" {
-			cc_env = "x86_64-w64-mingw32-gcc"
-			cxx_env = "x86_64-w64-mingw32-g++"
-		}
-
-		if err = os.Setenv("CC", cc_env); err != nil {
-			notify.Error(err.Error(), "io.Compile_file()")
-		}
-
-		if err = os.Setenv("CXX", cxx_env); err != nil {
-			notify.Error(err.Error(), "io.Compile_file()")
-		}
-
-	}
-
 	if data_object.Obfuscate {
 		compiler = "garble"
 		build_args = append(build_args, "-literals", "-tiny", "-seed=random", "build", ldflags, "-o", malware, src)
