@@ -1,6 +1,7 @@
 package parsing
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -12,6 +13,7 @@ import (
 	"github.com/TeamPhoneix/go-evil/domains/webview"
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 //
@@ -138,6 +140,9 @@ func grab_code(domain string, function string, value string, s_json string) ([]s
 
 	case "crypto":
 		call_functions, s_json = crypto.Parser(function, value, s_json)
+
+	default:
+		notify.Error(fmt.Sprintf("Unknown domain '%s'", domain), "functions.grab_code()")
 	}
 
 	return call_functions, s_json

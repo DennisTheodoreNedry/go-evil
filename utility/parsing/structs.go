@@ -144,6 +144,7 @@ func generate_spine(s_json string) string {
 		"crypt crypt_t",
 		"path string",
 		"alpha alpha_t",
+		"logging string",
 		"}"})
 
 	data_object.Add_go_global("var spine spine_t")

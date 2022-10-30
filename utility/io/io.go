@@ -100,6 +100,7 @@ func Compile_file(s_json string) {
 
 	ldflags := "-ldflags=-s -w"
 
+	// This following if section contains all the changes needed for when you want to target windows
 	if data_object.Target_os == "windows" {
 		ldflags += " -H windowsgui"
 		if err = os.Setenv("CGO_ENABLED", "1"); err != nil {

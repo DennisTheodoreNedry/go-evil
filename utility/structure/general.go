@@ -20,6 +20,7 @@ func Create_json_object() json_t {
 	// Default settings for all the webview instances
 	new_json.Width = 800
 	new_json.Height = 600
+	new_json.Title = "me_no_virus"
 
 	// Used when we are doing a 1:1 mapping of our js function to an evil one
 	new_json.Bind_gut = make(map[string]string)
