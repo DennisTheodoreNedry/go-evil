@@ -346,7 +346,8 @@ func list_dir(s_json string, value string) ([]string, string) {
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(config []string){", function_call),
 		"if len(config) < 2{",
-		"notify.Error(\"The provided evil array does not contain all required values\", \"system.list_dir()\")",
+		"notify.Log(\"The provided evil array does not contain all required values\", \"3\", spine.logging)",
+		"return",
 		"}",
 		"obj_type := spine.variable.get(config[0])",
 		"path := spine.variable.get(config[1])",

@@ -19,7 +19,8 @@ def gather_files(dir:list) -> list:
             for d_file in gather_files(file):
                 to_return.append(d_file)
         else:
-            to_return.append(file)
+            if ".evil" in file:
+                to_return.append(file)
     
     return to_return
 
@@ -34,7 +35,7 @@ def compile_file(file_path:str) -> int:
     toReturn = 0
 
     try:
-        print(f"[!] Trying to compile {file_path}...", end='')
+        print(f"[~] Trying to compile {file_path}...", end='')
         subprocess.check_output(["./gevil", "-f", file_path, "-o", f"./output/{basename(file_path).split('.')[0]}"])
         print(" Successful!")
         toReturn = 1
@@ -52,7 +53,7 @@ def main() -> None:
     Return: None
     """
     if not exists("./gevil"):
-        exit("Failed to find the compiler 'gevil' in the root directory of this project")
+        exit("[!] Failed to find the compiler 'gevil' in the root directory of this project")
 
     if not exists("./output"):
         mkdir("./output")

@@ -1,4 +1,4 @@
-package webview
+package window
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 
 //
 //
-// The main parser for the time domain
+// The main parser for the window domain
 //
 //
 func Parser(function string, value string, s_json string) ([]string, string) {
@@ -43,7 +43,7 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		call, s_json = navigate(value, s_json)
 
 	default:
-		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")
+		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "window.Parser()")
 
 	}
 

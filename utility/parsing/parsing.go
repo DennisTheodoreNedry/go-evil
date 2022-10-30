@@ -77,6 +77,10 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 	// Create the main function here
 	main_functions := []string{"func main(){"}
 
+	main_functions = append(main_functions, "arguments.Argument_add(\"--verbose\", \"-v\", false, \"Show all generated logs during runtime\")", "parsed := arguments.Argument_parse()")
+
+	main_functions = append(main_functions, "if _, ok := parsed[\"-v\"]; ok{", "spine.logging = \"3\"", "}")
+
 	main_functions = append(main_functions, "spine.alpha.alphabet = []string{\"0\", \"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", \"8\", \"9\", \"a\", \"b\", \"c\", \"d\", \"e\", \"f\", \"g\", \"h\", \"i\", \"j\", \"k\", \"l\", \"m\", \"n\", \"o\", \"p\", \"q\", \"r\", \"s\", \"t\", \"u\", \"v\", \"w\", \"x\", \"y\", \"z\", \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\", \"J\", \"K\", \"L\", \"M\", \"N\", \"O\", \"P\", \"Q\", \"R\", \"S\", \"T\", \"U\", \"V\", \"W\", \"X\", \"Y\", \"Z\", \"!\", \"#\", \"$\", \"€\", \"%\", \"&\", \"\\\"\", \"(\", \")\", \"*\", \"+\", \",\", \"-\", \".\", \"/\", \":\", \";\", \"<\", \"=\", \">\", \"?\", \"@\", \"[\", \"\\\\\", \"]\", \"^\", \"_\", \"`\", \"{\", \"|\", \"}\", \"~\", \" \", \"\\t\", \"\\n\", \"\\r\", \"\\x0b\", \"\\x0c\"}")
 
 	main_functions = append(main_functions, fmt.Sprintf("spine.variable.roof = %d", data_object.Var_max))
@@ -115,6 +119,8 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 	main_functions = append(main_functions, "}}")
 
 	data_object.Add_go_function(main_functions)
+
+	data_object.Add_go_import("github.com/s9rA16Bf4/ArgumentParser/go/arguments")
 
 	return structure.Send(data_object)
 

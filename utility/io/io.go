@@ -98,13 +98,15 @@ func Compile_file(s_json string) {
 		notify.Error(err.Error(), "io.Compile_file()")
 	}
 
+	ldflags := "-ldflags=-s -w"
+
 	if data_object.Obfuscate {
 		compiler = "garble"
-		build_args = append(build_args, "-literals", "-tiny", "-seed=random", "build", "-o", malware, src)
+		build_args = append(build_args, "-literals", "-tiny", "-seed=random", "build", ldflags, "-o", malware, src)
 		notify.Log("Compiling malware and obfuscating it, this might take a while", data_object.Verbose_lvl, "1")
 	} else {
 		compiler = "go"
-		build_args = append(build_args, "build", "-o", malware, "-ldflags=-s -w", src)
+		build_args = append(build_args, "build", "-o", malware, ldflags, src)
 		notify.Log("Compiling malware", data_object.Verbose_lvl, "1")
 	}
 

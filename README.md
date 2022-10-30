@@ -10,8 +10,11 @@ The programming language we utilize is called evil, which only purpose is to tra
 The project needs a couple of packages and modules to work
 
 Those that must be installed by hand are,
-1. webkit2gtk-4.0, `sudo apt install libwebkit2gtk-4.0-dev`
-2. gtk3, `sudo apt install libgtk-3-dev`
+1. webkit2gtk-4.0-dev, `sudo apt install libwebkit2gtk-4.0-dev`
+2. webkit2gtk-4.0 `sudo apt install libgtk-3-0 libwebkit2gtk-4.0-37`
+3. gtk3, `sudo apt install libgtk-3-dev`
+4. g++-mingw-w64, `sudo apt install g++-mingw-w64`
+5. g++-mingw-w64, `sudo apt install g++-mingw-w64`
 
 The rest of them can be installed by running `make dependencies`
 
@@ -29,7 +32,7 @@ There are many changes in v2, some are directly related to the syntaxes but the 
 Some notable features arriving in v2 are,
 1. Evil arrays `${...}`, i.e. `${"value1", "value"}$`.
 2. Functions! Which have different meanings depending on their function type.
-3. A fully integrated `webview` into the source code.
+3. A fully integrated `window` into the source code.
 4. You can now customize your malware by using a `compiler configuration section` aka `[]` in your code.
 5. Obfuscating the source code is now a built in option.
 6. The line terminator `;` is no longer needed.
@@ -109,7 +112,7 @@ This example shows how you can bind evil functions to javascript functions
 @ Showcasing how you can bind an evil function to a javascript call @
 
 use system
-use webview
+use window
 
 [
     version 2.0
@@ -125,14 +128,14 @@ c test1 {
 
 b bind {
     @ Essentially saying that when the js function button is called, call test1 @
-    webview::bind(${"button", "test1"}$) @ The ${...}$ is known as an evil array @ 
+    window::bind(${"button", "test1"}$) @ The ${...}$ is known as an evil array @ 
 
-    webview::js("function testing() {window.button();}")
+    window::js("function testing() {window.button();}")
 
-    webview::html("<p>Watch the console after pressing the button!</p>")
-    webview::html("<input type='submit' onclick='testing()'>")
+    window::html("<p>Watch the console after pressing the button!</p>")
+    window::html("<input type='submit' onclick='testing()'>")
 
-    webview::run()
+    window::run()
 }
 
 l loop {

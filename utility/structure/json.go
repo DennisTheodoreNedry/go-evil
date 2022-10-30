@@ -41,14 +41,14 @@ type json_t struct {
 	Obfuscate   bool   `json:"obfuscate"`
 	Verbose_lvl string `json:"verbose_lvl"`
 
-	// Text editor/webview
-	Width    int               `json:"width"`         // The width of the text editor/webview
-	Height   int               `json:"height"`        // The height of the text editor/webview
-	Title    string            `json:"webview_title"` // Title of the webview window (not the text editor)
-	Html_gut []string          `json:"html_gut"`      // The html code displayed in the webview (not the text editor)
-	Js_gut   []string          `json:"js_gut"`        // The javascript code used in the webview (not the text editor)
-	Css_gut  []string          `json:"css_gut"`       // The css code used in the webview (not the text editor)
-	Bind_gut map[string]string `json:"bind_gut"`      // Contains all our bindings set by the user
+	// Text editor/window
+	Width    int               `json:"width"`        // The width of the text editor/window
+	Height   int               `json:"height"`       // The height of the text editor/window
+	Title    string            `json:"window_title"` // Title of the window window (not the text editor)
+	Html_gut []string          `json:"html_gut"`     // The html code displayed in the window (not the text editor)
+	Js_gut   []string          `json:"js_gut"`       // The javascript code used in the window (not the text editor)
+	Css_gut  []string          `json:"css_gut"`      // The css code used in the window (not the text editor)
+	Bind_gut map[string]string `json:"bind_gut"`     // Contains all our bindings set by the user
 
 	// Variables
 	Var_max  int             `json:"variable_max"`      // The max amount of allowed variables
@@ -352,7 +352,7 @@ func (object *json_t) Set_html(content string) {
 
 //
 //
-// Sets the js code being used in the webview
+// Sets the js code being used in the window
 //
 //
 func (object *json_t) Set_js(content string) {
@@ -362,7 +362,7 @@ func (object *json_t) Set_js(content string) {
 
 //
 //
-// Sets the css code being used in the webview
+// Sets the css code being used in the window
 //
 //
 func (object *json_t) Set_css(content string) {
@@ -381,7 +381,7 @@ func (object *json_t) Set_title(value string) {
 
 //
 //
-// Adds a binding to the webview
+// Adds a binding to the window
 // it's accessible by running `window.<js_call>()` in your html code
 //
 //
@@ -414,14 +414,14 @@ func (object *json_t) Get_var_value(var_id string) string {
 	to_return := ""
 
 	id := tools.String_to_int(var_id)
-
-	if id == 666 { // Grab the username
+	switch id {
+	case 666:
 		to_return = tools.Grab_username()
-
-	} else if id == 39 { // Grabs the current working directory
+	case 39:
 		to_return = tools.Grab_CWD()
-
-	} else {
+	case 40:
+		to_return = tools.Grab_home_dir()
+	default:
 		id -= 1
 
 		if id >= object.Var_max || id < 0 {
@@ -429,6 +429,7 @@ func (object *json_t) Get_var_value(var_id string) string {
 		}
 
 		to_return = object.Comp_var[id].Get_value()
+
 	}
 
 	return to_return

@@ -15,12 +15,16 @@ func identify_debugger(s_json string) string {
 	body := []string{"func detect_debugger() bool {", "toReturn := false"}
 
 	if data_object.Target_os == "windows" {
-		body = append(body,
-			"driver = windows.NewLazyDLL(\"kernel32.dll\")",
-			"toReturn = driver.NewProc(\"IsDebuggerPresent\")",
-			"}")
+		// Need to figure this section out, but this section will be disabled until further
+		// body = append(body,
+		// 	"driver := windows.NewLazyDLL(\"kernel32.dll\")",
+		// 	"IsDebuggerPresent := driver.NewProc(\"IsDebuggerPresent\")",
+		// 	"a,b,c := IsDebuggerPresent.Call()",
+		// 	"fmt.Println(a,b,c)")
 
-		data_object.Add_go_import("golang.org/x/sys/windows")
+		// data_object.Add_go_import("golang.org/x/sys/windows")
+		// data_object.Add_go_import("fmt")
+
 	} else {
 		body = append(body,
 			"file, err := os.Open(\"/proc/self/status\")",
