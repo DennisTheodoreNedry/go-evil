@@ -3,7 +3,7 @@ OPTION := build
 SRC := .
 BIN := gevil
 EXT := ./tools/vscode_ext/evil
-VER := 2.0
+VER := 2.1
 DIR_LOCATION := /usr/share
 BIN_LOCATION := /usr/bin
 
@@ -23,7 +23,7 @@ dependencies:
 	go get github.com/s9rA16Bf4/notify_handler
 	go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
 	go get github.com/cloudfoundry/jibber_jabber
-	go get github.com/window/window
+	go get github.com/webview/webview
 	go install mvdan.cc/garble@latest
 	go get github.com/google/gops
 	go get github.com/thanhpk/randstr
@@ -41,10 +41,10 @@ update_ext: uninstall_ext install_ext
 
 
 install:
-	sudo mkdir -p $(DIR_LOCATION)/gevil/
+	go install
+	mv ~/go/bin/go-evil $(GOBIN)gevil_$(VER)
 	sudo cp tools/select_compiler.py $(BIN_LOCATION)/gevil
 	sudo chmod +x $(BIN_LOCATION)/gevil
-	sudo cp -R ../go-evil $(DIR_LOCATION)/gevil/gevil_$(VER)
 
 uninstall:
-	sudo rm -R $(DIR_LOCATION)/gevil/gevil_$(VER)
+	sudo rm -R $(GOBIN)gevil_$(VER)
