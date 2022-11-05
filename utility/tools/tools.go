@@ -197,7 +197,14 @@ func Grab_username() string {
 		notify.Error(err.Error(), "tools.Grab_username()")
 	}
 
-	return user.Username
+	to_return := user.Username
+
+	if strings.Contains(to_return, "\\") { // Only occurs on windows so far
+		split := strings.Split(to_return, "\\")
+		to_return = split[1]
+	}
+
+	return to_return
 }
 
 //

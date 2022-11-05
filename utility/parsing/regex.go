@@ -12,14 +12,14 @@ const (
 	DOMAIN_FUNC_VALUE = "([a-z_#]+)::([a-z_]+)\\((.*)\\)"              // Extracts the domain, function being called and if a value was sent with it
 
 	// Imports //
-	IMPORT = "use ([a-z]+)" // Finds imports
+	IMPORT = "use (.*)" // Finds imports
 
 	// Comments //
 	COMMENT = "@.+@" // Identifies a comment
 
 	// Variables //
-	GET_VAR      = "(([\\$|€])([0-9]+)[\\$|€])" // Grabs the variable type and id
-	GET_USER_VAR = "\\$666\\$"                  // Grabs what the user is called
+	GET_VAR      = "(\\$([0-9]+)\\$)" // Grabs the variable type and id
+	GET_USER_VAR = "\\$666\\$"        // Grabs what the user is called
 
 	// Foreach loops //
 	GET_FOREACH_HEADER = "foreach *\\((.+)\\) *:"
@@ -28,10 +28,10 @@ const (
 	// Configurations //
 	COMPILER_CONFIGURATION          = "\\[\n*(?s)(.*)\n*\\]"       // Grabs the configuration secton
 	COMPILER_VERSION                = "version +([0-9]+\\.[0-9]+)" // Grabs the compiler that the scrip was meant for
-	CONFIGURATION_NAME              = "output +(.*)"
-	CONFIGURATION_ARCH              = "arch +(.*)"
-	CONFIGURATION_OS                = "os +(.*)"
-	CONFIGURATION_EXTENSION         = "extension +(.*)"
-	CONFIGURATION_OBFUSCATE         = "obfuscate +(.*)"
-	CONFIGURATION_DEBUGGER_BEHAVIOR = "debugger_behavior +(.*)"
+	CONFIGURATION_NAME              = "output +(.*)"               // The output name of the binary file
+	CONFIGURATION_ARCH              = "arch +(.*)"                 // Target architecture
+	CONFIGURATION_OS                = "os +(.*)"                   // Target operating system
+	CONFIGURATION_EXTENSION         = "extension +(.*)"            // Extension of the binary file
+	CONFIGURATION_OBFUSCATE         = "obfuscate +(.*)"            // Obfuscating the binary file
+	CONFIGURATION_DEBUGGER_BEHAVIOR = "debugger_behavior +(.*)"    // Decides how the malware will act if it detects a debugger
 )

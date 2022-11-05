@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -15,6 +16,7 @@ import (
 //
 //
 func Check_for_errors(s_json string) {
+
 	comments(s_json)
 	detect_functions(s_json)
 	check_imports(s_json)
@@ -22,6 +24,7 @@ func Check_for_errors(s_json string) {
 	check_evil_arrays(s_json)
 	check_compile_variable(s_json)
 	check_runtime_variable(s_json)
+
 }
 
 //
@@ -38,7 +41,7 @@ func comments(s_json string) {
 		result := strings.Count(line, "@")
 
 		if result%2 != 0 {
-			notify.Error(fmt.Sprintf("Found a wrongly formatted comment on line %d", i+1), "error.check_strings()")
+			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_strings()")
 		}
 
 	}
@@ -98,10 +101,13 @@ func check_strings(s_json string) {
 	gut := strings.Split(data_object.File_gut, "\n")
 
 	for i, line := range gut {
-		result := strings.Count(line, "\"")
+		// We need to check so that the line doesn't start with a comment
+		comment_status := tools.Starts_with(line, []string{"@"})
+		ok := comment_status["@"]
 
-		if result%2 != 0 {
-			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d", i+1), "error.check_strings()")
+		bunny_ears := strings.Count(line, "\"")
+		if bunny_ears%2 != 0 && !ok {
+			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_strings()")
 		}
 
 	}
@@ -122,7 +128,7 @@ func check_evil_arrays(s_json string) {
 		r_wing := strings.Count(line, "}$")
 
 		if l_wing != r_wing {
-			notify.Error(fmt.Sprintf("Found a wrongly formatted evil array on line %d", i+1), "error.check_evil_arrays()")
+			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()")
 		}
 
 	}
@@ -142,7 +148,7 @@ func check_compile_variable(s_json string) {
 		count := strings.Count(line, "$")
 
 		if count%2 != 0 {
-			notify.Error(fmt.Sprintf("Found a wrongly formatted compile time variable on line %d", i+1), "error.check_evil_arrays()")
+			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()")
 		}
 
 	}
@@ -162,7 +168,7 @@ func check_runtime_variable(s_json string) {
 		count := strings.Count(line, "€")
 
 		if count%2 != 0 {
-			notify.Error(fmt.Sprintf("Found a wrongly formatted runtime time variable on line %d", i+1), "error.check_evil_arrays()")
+			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()")
 		}
 
 	}

@@ -1,6 +1,10 @@
 package parsing
 
-import "github.com/TeamPhoneix/go-evil/utility/structure"
+import (
+	"regexp"
+
+	"github.com/TeamPhoneix/go-evil/utility/structure"
+)
 
 //
 //
@@ -165,4 +169,42 @@ func generate_spine(s_json string) string {
 	data_object.Add_go_global("var spine spine_t")
 	return structure.Send(data_object)
 
+}
+
+//
+//
+// Parses the data from the target file and generates function structures from it
+//
+//
+func Build_functions_structs(s_json string) string {
+	data_object := structure.Receive(s_json)
+	regex := regexp.MustCompile(FUNC)
+	functions := regex.FindAllStringSubmatch(data_object.File_gut, -1)
+
+	if len(functions) > 0 {
+		for _, function := range functions {
+			f_type := function[1]
+			name := function[2]
+			gut := function[3:]
+
+			data_object.Add_function(name, f_type, gut)
+
+		}
+	}
+	return structure.Send(data_object)
+}
+
+//
+//
+// Generate differebnt structs
+//
+//
+func generate_structs(s_json string) string {
+	s_json = generate_runtime_variable(s_json)
+	s_json = generate_crypt(s_json)
+	s_json = generate_alpha(s_json)
+
+	s_json = generate_spine(s_json)
+
+	return s_json
 }

@@ -14,7 +14,7 @@ import (
 func construct_foreach_loop(condition string, body []string, s_json string) ([]string, string) {
 	call := []string{"foreach"}
 
-	body_calls, s_json := convert_code(body, s_json) // Converts the code for the foreach body
+	body_calls, s_json := generate_body_code(body, s_json) // Converts the code for the foreach body
 	data_object := structure.Receive(s_json)
 	arr := structure.Create_evil_object(condition)
 
