@@ -21,8 +21,7 @@ Compiling the ide is as simple as running `make` in the root directory of the pr
 
 So what can you now do? Well.. you can either compile a file containing evil code or launching the text editor.
 
-Run the following if you want to compile a file, `./gevil -f <path/to/file>` and if you would like to open the text editor run,
-<br/>`./gevil -f <path/to/file> -t`
+Run the following if you to compile a file, `./gevil -f <path/to/file>`
 
 ### Changes in version 2
 There are many changes in v2, some are directly related to the syntaxes but the majority is how the internals work.
