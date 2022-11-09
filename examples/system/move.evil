@@ -1,0 +1,19 @@
+@ Creates a file on the disk, and moves it @
+
+use system
+
+[
+    version 2.0
+    output copy
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    system::write(${"./test.txt", "hello, world!\n"}$)
+    system::move(${"./test.txt", "./test_2.txt"}$)
+    system::exit("0")
+}

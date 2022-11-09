@@ -6,6 +6,7 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 //
@@ -325,9 +326,11 @@ func read(s_json string, value string) ([]string, string) {
 		fmt.Sprintf("func %s(path string){", function_call),
 		"path = spine.variable.get(path)",
 		"gut, err := ioutil.ReadFile(path)",
-		"if err == nil{",
+		"if err != nil{",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"}",
 		"spine.variable.set(string(gut))",
-		"}}"})
+		"}"})
 
 	data_object.Add_go_import("io/ioutil")
 
@@ -403,12 +406,101 @@ func remove(value string, s_json string) ([]string, string) {
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(target string){", function_call),
 		"target = spine.variable.get(target)",
-		"os.Remove(target)",
+		"err := os.Remove(target)",
+		"if err != nil{",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"}",
 		"}"})
 
 	data_object.Add_go_import("os")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, value)}, structure.Send(data_object)
+
+}
+
+//
+//
+// Moves the target file to it's new location
+//
+//
+func move(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "move"
+
+	arr := structure.Create_evil_object(value)
+
+	if arr.Length() != 2 {
+		notify.Error(fmt.Sprintf("Obtained evil array had size %d, but 2 was requested", arr.Length()), "system.move()")
+	}
+
+	old_path := arr.Get(0)
+	new_path := arr.Get(1)
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(old_path string, new_path string){", function_call),
+		"old_path = spine.variable.get(old_path)",
+		"new_path = spine.variable.get(new_path)",
+
+		"err := os.Rename(old_path, new_path)",
+
+		"if err != nil{",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"}",
+		"}"})
+
+	data_object.Add_go_import("os")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
+
+	return []string{fmt.Sprintf("%s(\"%s\", \"%s\")", function_call, old_path, new_path)}, structure.Send(data_object)
+
+}
+
+//
+//
+// Copies the target file to the new provided location
+//
+//
+func copy(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "copy"
+
+	arr := structure.Create_evil_object(value)
+
+	if arr.Length() != 2 {
+		notify.Error(fmt.Sprintf("Obtained evil array had size %d, but 2 was requested", arr.Length()), "system.move()")
+	}
+
+	old_path := arr.Get(0)
+	new_path := arr.Get(1)
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(old_path string, new_path string){", function_call),
+		"old_path = spine.variable.get(old_path)",
+		"new_path = spine.variable.get(new_path)",
+
+		"src, err := os.Open(old_path)",
+		"if err != nil{",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"}",
+
+		"dst, err := os.Create(new_path)",
+		"if err != nil{",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"}",
+
+		"_, err = io.Copy(dst, src)",
+
+		"if err != nil{",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"}",
+
+		"}"})
+
+	data_object.Add_go_import("os")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
+
+	return []string{fmt.Sprintf("%s(\"%s\", \"%s\")", function_call, old_path, new_path)}, structure.Send(data_object)
 
 }
 
