@@ -37,34 +37,38 @@ func generate_runtime_variable(s_json string) string {
 		"toReturn := line",
 
 		"if len(result) > 0 {",
-
-		"i_number := tools.String_to_int(result[0][2])",
+		"for _, value := range result {",
+		"i_number := tools.String_to_int(value[2])",
+		"grabbed_value := \"NULL\"",
 		"if i_number != -1 {",
 		"if i_number > 0 && i_number < 5 {",
-		"toReturn = obj.values[i_number-1]",
+		"grabbed_value = obj.values[i_number-1]",
 		"} else {",
-		"switch (i_number){",
+		"switch i_number {",
 
 		"case 13:",
-		"toReturn = obj.foreach",
+		"grabbed_value = obj.foreach",
 
-		"case 666:",
-		"toReturn = tools.Grab_username()",
+		"case 23:",
+		"grabbed_value = tools.Grab_executable_name()",
 
 		"case 39:",
-		"toReturn = tools.Grab_CWD()",
+		"grabbed_value = tools.Grab_CWD()",
 
 		"case 40:",
-		"toReturn = tools.Grab_home_dir()",
+		"grabbed_value = tools.Grab_home_dir()",
 
-		"default:",
-		"toReturn = \"NULL\"",
-
-		"}}",
-
-		"toReturn = strings.ReplaceAll(line, result[0][1], toReturn)",
-		"}}",
-		"return toReturn }"})
+		"case 666:",
+		"grabbed_value = tools.Grab_username()",
+		"}",
+		"}",
+		"line = strings.ReplaceAll(line, value[1], grabbed_value)",
+		"}",
+		"}",
+		"toReturn = line",
+		"}",
+		"return toReturn",
+		"}"})
 
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 	data_object.Add_go_import("regexp")

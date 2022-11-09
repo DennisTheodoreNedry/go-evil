@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"os"
 	"os/user"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -220,6 +221,18 @@ func Grab_executable_path() string {
 
 //
 //
+// Returns the executable name
+//
+//
+func Grab_executable_name() string {
+	path := Grab_executable_path()
+	exe_name := filepath.Base(path)
+
+	return exe_name
+}
+
+//
+//
 // Grabs the current working path
 //
 //
@@ -263,6 +276,25 @@ func Generate_int_array(message string) []int {
 				to_return = append(to_return, id)
 			}
 		}
+	}
+
+	return to_return
+}
+
+//
+//
+// Converts the provided string to into a boolean
+//
+//
+func String_to_boolean(value string) bool {
+	to_return := false
+
+	if value != "true" && value != "false" {
+		notify.Error(fmt.Sprintf("Needed true/false, recieved %s", value), "tools.String_to_boolean()")
+	}
+
+	if value == "true" {
+		to_return = true
 	}
 
 	return to_return
