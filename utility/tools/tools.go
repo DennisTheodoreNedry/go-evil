@@ -283,6 +283,21 @@ func Generate_int_array(message string) []int {
 
 //
 //
+// Generates a string which in turn represents an int array based on the input message
+//
+//
+func Generate_int_array_parameter(message string) string {
+	to_return := "[]int{"
+	for _, repr := range Generate_int_array(message) {
+		to_return += fmt.Sprintf("%d,", repr)
+	}
+	to_return += "}"
+
+	return to_return
+}
+
+//
+//
 // Converts the provided string to into a boolean
 //
 //

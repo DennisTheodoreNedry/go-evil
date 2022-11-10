@@ -112,11 +112,7 @@ func set_crypto(value string, s_json string) ([]string, string) {
 		"}"})
 
 	// Construct our int array
-	parameter := "[]int{"
-	for _, repr := range tools.Generate_int_array(value) {
-		parameter += fmt.Sprintf("%d,", repr)
-	}
-	parameter += "}"
+	parameter := tools.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", system_call, parameter)}, structure.Send(data_object)
 }
@@ -139,11 +135,7 @@ func set_aes_key(value string, s_json string) ([]string, string) {
 		"}"})
 
 	// Construct our int array
-	parameter := "[]int{"
-	for _, repr := range tools.Generate_int_array(value) {
-		parameter += fmt.Sprintf("%d,", repr)
-	}
-	parameter += "}"
+	parameter := tools.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", system_call, parameter)}, structure.Send(data_object)
 }
@@ -216,11 +208,7 @@ func add_target(value string, s_json string) ([]string, string) {
 		"}"})
 
 	// Construct our int array
-	parameter := "[]int{"
-	for _, repr := range tools.Generate_int_array(value) {
-		parameter += fmt.Sprintf("%d,", repr)
-	}
-	parameter += "}"
+	parameter := tools.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", system_call, parameter)}, structure.Send(data_object)
 }
@@ -243,11 +231,7 @@ func set_after_extension(value string, s_json string) ([]string, string) {
 		"}"})
 
 	// Construct our int array
-	parameter := "[]int{"
-	for _, repr := range tools.Generate_int_array(value) {
-		parameter += fmt.Sprintf("%d,", repr)
-	}
-	parameter += "}"
+	parameter := tools.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", system_call, parameter)}, structure.Send(data_object)
 }

