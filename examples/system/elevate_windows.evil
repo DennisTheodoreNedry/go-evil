@@ -1,0 +1,23 @@
+@ Tries to obtain elevation on the running system @
+
+use system
+
+[
+    version 2.0
+    output elevate
+    os windows
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+b elevation {
+    system::elevate()  @ The result from running elevate will be placed into €1€ @
+}
+
+l main_func {
+    system::outln("€666€")
+    system::outln("€1€")
+
+    system::exit("0")
+}

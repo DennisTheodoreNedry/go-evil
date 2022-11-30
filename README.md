@@ -13,8 +13,6 @@ Those that must be installed by hand are,
 1. webkit2gtk-4.0-dev, `sudo apt install libwebkit2gtk-4.0-dev`
 2. webkit2gtk-4.0 `sudo apt install libgtk-3-0 libwebkit2gtk-4.0-37`
 3. gtk3, `sudo apt install libgtk-3-dev`
-4. g++-mingw-w64, `sudo apt install g++-mingw-w64`
-5. g++-mingw-w64, `sudo apt install g++-mingw-w64`
 
 The rest of them can be installed by running `make dependencies`
 
@@ -23,8 +21,7 @@ Compiling the ide is as simple as running `make` in the root directory of the pr
 
 So what can you now do? Well.. you can either compile a file containing evil code or launching the text editor.
 
-Run the following if you want to compile a file, `./gevil -f <path/to/file>` and if you would like to open the text editor run,
-<br/>`./gevil -f <path/to/file> -t`
+Run the following if you to compile a file, `./gevil -f <path/to/file>`
 
 ### Changes in version 2
 There are many changes in v2, some are directly related to the syntaxes but the majority is how the internals work.
@@ -145,6 +142,9 @@ l loop {
 Running the code above will result in the following
 ![image](https://user-images.githubusercontent.com/14398606/189844664-0d870f9a-4a27-401f-a6ec-619fb8556cd4.png)
 
+### Examples
+There is no wiki page as each function/object have a corresponding example file under `examples/<domain>/`. <br/>
+We strive to have an example for each new implementation, but we are also working on a so-called "cook-book" which will go into a further detail on how everything works.
 
 ### Legal notice
 I take no responsibility for what you create and do with this project. But do share your art as it's fun to see!

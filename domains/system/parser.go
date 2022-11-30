@@ -21,6 +21,9 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 	case "outln":
 		call, s_json = Outln(s_json, value)
 
+	case "in":
+		call, s_json = input(s_json)
+
 	case "exit":
 		call, s_json = Exit(s_json, value)
 
@@ -39,20 +42,29 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 	case "add_to_startup":
 		call, s_json = Add_to_startup(s_json)
 
+	case "list_dir":
+		call, s_json = list_dir(s_json, value)
+
 	case "write":
 		call, s_json = write(s_json, value)
 
 	case "read":
 		call, s_json = read(s_json, value)
 
-	case "list_dir":
-		call, s_json = list_dir(s_json, value)
-
-	case "in":
-		call, s_json = input(s_json)
-
 	case "remove":
 		call, s_json = remove(value, s_json)
+
+	case "move":
+		call, s_json = move(value, s_json)
+
+	case "copy":
+		call, s_json = copy(value, s_json)
+
+	case "change_background":
+		call, s_json = change_background(value, s_json)
+
+	case "elevate":
+		call, s_json = elevate(value, s_json)
 
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")

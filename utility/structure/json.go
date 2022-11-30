@@ -83,7 +83,7 @@ func (object *json_t) Add_file_gut(content string) {
 //
 //
 func (object *json_t) Set_target_os(os string) {
-	if os == "windows" {
+	if os == "windows" && object.Extension == "" {
 		object.Set_extension(".exe")
 	}
 	object.Target_os = os
@@ -104,8 +104,19 @@ func (object *json_t) Set_target_arch(arch string) {
 //
 //
 func (object *json_t) Set_binary_name(name string) {
+
 	object.Malware_path = fmt.Sprintf("%s/", path.Dir(name))
-	object.Binary_name = path.Base(name)
+
+	name = path.Base(name)
+	result := tools.Contains(name, []string{"."})
+
+	if ok := result["."]; ok { // It contains a dot which we are gonna interpreted as an extension
+		split := strings.Split(name, ".")
+		name = split[0]
+		object.Set_extension(split[1])
+	}
+
+	object.Binary_name = name
 }
 
 //
@@ -115,13 +126,16 @@ func (object *json_t) Set_binary_name(name string) {
 //
 func (object *json_t) Set_extension(ext string) {
 
-	result := tools.Contains(ext, []string{"."}) // Checks if the extension contains a dot
+	if object.Extension == "" { // Update only if it doesn't contain anything
+		result := tools.Contains(ext, []string{"."}) // Checks if the extension contains a dot
 
-	if status := result["."]; !status && ext != "" {
-		ext = fmt.Sprintf(".%s", ext)
+		if status := result["."]; !status && ext != "" {
+			ext = fmt.Sprintf(".%s", ext)
+		}
+
+		object.Extension = ext
 	}
 
-	object.Extension = ext
 }
 
 //
