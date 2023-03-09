@@ -13,6 +13,7 @@ Those that must be installed by hand are,
 1. webkit2gtk-4.0-dev, `sudo apt install libwebkit2gtk-4.0-dev`
 2. webkit2gtk-4.0 `sudo apt install libgtk-3-0 libwebkit2gtk-4.0-37`
 3. gtk3, `sudo apt install libgtk-3-dev`
+4. upx, `sudo apt install upx`
 
 The rest of them can be installed by running `make dependencies`
 
