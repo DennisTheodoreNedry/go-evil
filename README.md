@@ -6,23 +6,19 @@ Go-evil is a red teams wet dream, a tool to beat all other tools of it's kind.<b
 What is go-evil, I hear you ask? Go-evil is a project all about the art of creating malware with a simpel language.<br>
 The programming language we utilize is called evil, which only purpose is to translate ideas like "Hey I want a backdoor" into working code without the malware artist needing to know every every nook and cranny.<br> 
 
-### Needed dependencies
-The project needs a couple of packages and modules to work
 
-Those that must be installed by hand are,
-1. webkit2gtk-4.0-dev, `sudo apt install libwebkit2gtk-4.0-dev`
-2. webkit2gtk-4.0 `sudo apt install libgtk-3-0 libwebkit2gtk-4.0-37`
-3. gtk3, `sudo apt install libgtk-3-dev`
-4. upx, `sudo apt install upx`
 
-The rest of them can be installed by running `make dependencies`
+### How to run
+You can run the compiler through docker and by executing the statements shown below!
 
-### Compiling
-Compiling the ide is as simple as running `make` in the root directory of the project <br>
+Run `make docker` to build the docker image.
 
-So what can you now do? Well.. you can either compile a file containing evil code or launching the text editor.
+Create a folder labeled `builds` in your local directory, this will be the directory where you want to place all your files to compile.
 
-Run the following if you to compile a file, `./gevil -f <path/to/file>`
+Run the following command `docker run -v $(pwd)/builds:/app/builds --rm goevil/gevil-2.1 <commands>`
+
+An example of this can be `docker run -v $(pwd)/builds:/app/builds --rm goevil/gevil-2.1 -f builds/out.evil` which will compile the `out.evil` file and create the binary `builds/out`.
+
 
 ### Changes in version 2
 There are many changes in v2, some are directly related to the syntaxes but the majority is how the internals work.
@@ -145,10 +141,11 @@ Running the code above will result in the following
 
 ### Examples
 There is no wiki page as each function/object have a corresponding example file under `examples/<domain>/`. <br/>
-We strive to have an example for each new implementation, but we are also working on a so-called "cook-book" which will go into a further detail on how everything works.
+We strive to have an example for each new implementation, but we are also working on a so-called "cookbook" which will go into a further detail on how everything works.
 
 ### Legal notice
-I take no responsibility for what you create and do with this project. But do share your art as it's fun to see!
+I take no responsibility for what you create and do with this project. And any mischief that you cause and happen to fall into is on yourself!
+But do share your art, as it's fun to see!
 
 
 

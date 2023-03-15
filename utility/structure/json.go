@@ -105,7 +105,7 @@ func (object *json_t) Set_target_arch(arch string) {
 //
 func (object *json_t) Set_binary_name(name string) {
 
-	object.Malware_path = fmt.Sprintf("%s/", path.Dir(name))
+	object.Malware_path = fmt.Sprintf("builds/%s/", path.Dir(name))
 
 	name = path.Base(name)
 	result := tools.Contains(name, []string{"."})
