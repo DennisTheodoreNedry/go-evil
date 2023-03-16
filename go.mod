@@ -10,6 +10,8 @@ require (
 )
 
 require (
+	github.com/ARaChn3/gfb v1.0.0 // indirect
+	github.com/ARaChn3/puffgo v1.1.0 // indirect
 	github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/google/gops v0.3.27 // indirect

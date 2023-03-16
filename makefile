@@ -25,6 +25,8 @@ dependencies:
 	go get github.com/google/gops
 	go get github.com/thanhpk/randstr
 	go get github.com/tatsushid/go-fastping
+	go get github.com/ARaChn3/gfb
+	go get github.com/ARaChn3/puffgo
 
 docs: clean_docs
 	bash tools/generate_documentation.sh

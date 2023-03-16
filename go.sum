@@ -1,3 +1,7 @@
+github.com/ARaChn3/gfb v1.0.0 h1:aYvGAZ9Dk8JDF/r3npGwjE9ijKfl7u1W+Y9+wgc+dkM=
+github.com/ARaChn3/gfb v1.0.0/go.mod h1:RDVhXvGcq7edyrSkxd0f+z3gVM/Zjd6Gx8KUXg5w6aY=
+github.com/ARaChn3/puffgo v1.1.0 h1:XkQ8MaEa+QMlKwFXmucJSKrNMM4iydkuJwSk3dqcNjw=
+github.com/ARaChn3/puffgo v1.1.0/go.mod h1:DAP/dNo41UYy3BRdciKb0UHwLFsVFxZyoqBKwJQfljQ=
 github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21 h1:tuijfIjZyjZaHq9xDUh0tNitwXshJpbLkqMOJv4H3do=
 github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21/go.mod h1:po7NpZ/QiTKzBKyrsEAxwnTamCoh8uDk/egRpQ7siIc=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=

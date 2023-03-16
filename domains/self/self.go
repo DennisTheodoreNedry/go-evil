@@ -64,19 +64,25 @@ func Include(file_path string, s_json string) string {
 // Sets a compiletime/runtime variable with a value
 //
 //
-func Set(var_type string, value string, s_json string) string {
+func Set(compile_time bool, value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	value = tools.Erase_delimiter(value, []string{"\""}, -1)
 
-	switch var_type {
-	case "$":
+	if compile_time {
 		data_object.Set_variable_value(value)
+		return []string{}, structure.Send(data_object)
 
-	default:
-		notify.Error(fmt.Sprintf("Unknown variable type '%s'", var_type), "self.Set()")
+	} else {
+		function_call := "set_runtime"
+
+		data_object.Add_go_function([]string{
+			fmt.Sprintf("func %s(value string){", function_call),
+			"spine.variable.set(value)",
+			"}",
+		})
+
+		return []string{fmt.Sprintf("%s(\"%s\")", function_call, value)}, structure.Send(data_object)
 	}
-
-	return structure.Send(data_object)
 }
 
 //

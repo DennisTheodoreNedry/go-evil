@@ -19,6 +19,11 @@ func ping(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "ping_target"
 	arr := structure.Create_evil_object(value)
+
+	if arr.Length() != 3 {
+		notify.Error(fmt.Sprintf("Expected three values, but recieved %d", arr.Length()), "network.ping()")
+	}
+
 	target := arr.Get(0)
 
 	count := tools.String_to_int(arr.Get(1))
@@ -27,10 +32,6 @@ func ping(value string, s_json string) ([]string, string) {
 	}
 
 	protocol := strings.ToLower(arr.Get(2))
-
-	if arr.Length() != 3 {
-		notify.Error(fmt.Sprintf("Expected three values, but recieved %d", arr.Length()), "network.ping()")
-	}
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(repr_1 []int, count int, repr_2 []int){", function_call),
