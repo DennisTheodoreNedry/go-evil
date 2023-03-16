@@ -2,6 +2,7 @@
 
 use system
 use bombs
+use time
 
 [
     version 2.0
@@ -12,8 +13,9 @@ use bombs
     debugger_behavior stop
 ]
 
-c executioner {
-
+c executioner -> boolean { @ When this function returns, the bomb is executed @
+    system::outln("I'm the bomb!")
+    time::sleep("600") @ Sleep for 10 minutes before returning @
 }
 
 l main_func {
