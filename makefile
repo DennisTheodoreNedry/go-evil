@@ -3,7 +3,6 @@ OPTION := build
 SRC := .
 BIN := gevil
 EXT := ./tools/vscode_ext/evil
-VER := 2.1
 
 compile:
 	$(CC) $(OPTION) -o $(BIN) $(SRC)
@@ -25,6 +24,9 @@ dependencies:
 	go install mvdan.cc/garble@latest
 	go get github.com/google/gops
 	go get github.com/thanhpk/randstr
+	go get github.com/tatsushid/go-fastping
+	go get github.com/ARaChn3/gfb
+	go get github.com/ARaChn3/puffgo
 
 docs: clean_docs
 	bash tools/generate_documentation.sh
@@ -38,4 +40,4 @@ uninstall_ext:
 update_ext: uninstall_ext install_ext
 
 docker:
-	docker build -t goevil/gevil-$(VER) .
+	docker build -t goevil/gevil .

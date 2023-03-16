@@ -6,6 +6,7 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 //
@@ -146,7 +147,7 @@ func filter_function_types(d_funcs []structure.Func_t) ([]string, []string) {
 //
 //
 // Converts each sub function into a corresponding set of golang code
-//
+// Creates all functions, loop, boot and call
 //
 func generate_go_functions(s_json string) (string, []string, []string) {
 	data_object := structure.Receive(s_json)
@@ -155,12 +156,45 @@ func generate_go_functions(s_json string) (string, []string, []string) {
 
 	// For each of our functions
 	for _, d_func := range data_object.Functions {
+		data := []string{}
 
-		data := []string{fmt.Sprintf("func %s(){", d_func.Name)} // Define the header
+		// Define the header
+		if d_func.Func_type == "c" { // it's a call function
+
+			switch d_func.Return_type {
+			case "string":
+				data = append(data, fmt.Sprintf("func %s() string {", d_func.Name))
+
+			case "boolean":
+				data = append(data, fmt.Sprintf("func %s() bool {", d_func.Name))
+
+			case "integer":
+				data = append(data, fmt.Sprintf("func %s() int {", d_func.Name))
+
+			case "null":
+				data = append(data, fmt.Sprintf("func %s(){", d_func.Name)) // There is nothing special about this type
+
+			default:
+				notify.Error(fmt.Sprintf("Unknown return type '%s'", d_func.Return_type), "function_construction.generate_go_functions()")
+			}
+		} else {
+			data = append(data, fmt.Sprintf("func %s(){", d_func.Name))
+		}
 
 		converted_code, s_json := generate_body_code(d_func.Gut, structure.Send(data_object)) // Generate the body code
 
 		data = append(data, converted_code...)
+
+		switch d_func.Return_type {
+		case "string":
+			data = append(data, "return \"\"")
+		case "boolean":
+			data = append(data, "return true")
+		case "integer":
+			data = append(data, "return 0")
+
+		default: // Do nothing
+		}
 
 		data = append(data, "}") // And add the footer
 

