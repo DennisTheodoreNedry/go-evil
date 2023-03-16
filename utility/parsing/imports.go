@@ -6,6 +6,7 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/domains/crypto"
 	"github.com/TeamPhoneix/go-evil/domains/infect"
+	"github.com/TeamPhoneix/go-evil/domains/network"
 	"github.com/TeamPhoneix/go-evil/domains/powershell"
 	"github.com/TeamPhoneix/go-evil/domains/random"
 	"github.com/TeamPhoneix/go-evil/domains/self"
@@ -71,6 +72,9 @@ func construct_domain_code(domain string, function string, value string, s_json 
 
 	case "infect":
 		call_functions, s_json = infect.Parser(function, value, s_json)
+
+	case "network":
+		call_functions, s_json = network.Parser(function, value, s_json)
 
 	default:
 		notify.Error(fmt.Sprintf("Unknown domain '%s'", domain), "functions.construct_domain_code()")
