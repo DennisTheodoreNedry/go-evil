@@ -189,12 +189,14 @@ func (object *json_t) Dump() []byte {
 // Adds a function to the structure
 //
 //
-func (object *json_t) Add_function(name string, f_type string, gut []string) {
+func (object *json_t) Add_function(name string, f_type string, return_type string, gut []string) {
 	var new_func Func_t
 
 	new_func.Set_name(name)
 
 	new_func.Set_type(f_type)
+
+	new_func.Set_return_type(return_type)
 
 	new_func.Add_lines(gut)
 
