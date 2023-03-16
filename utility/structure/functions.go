@@ -8,9 +8,10 @@ import (
 )
 
 type Func_t struct {
-	Name      string   // Obfuscated function name or the real function name
-	Func_type string   // Which sort of type this function is
-	Gut       []string // The contents of the function
+	Name        string   // Obfuscated function name or the real function name
+	Func_type   string   // Which sort of type this function is
+	Return_type string   // What kind of value can we expect to be returned
+	Gut         []string // The contents of the function
 }
 
 //
@@ -101,4 +102,13 @@ func (object *Func_t) Get_type() string {
 //
 func (object *Func_t) Get_gut() []string {
 	return object.Gut
+}
+
+//
+//
+// Sets the return value
+//
+//
+func (object *Func_t) Set_return_type(value string) {
+	object.Return_type = value
 }

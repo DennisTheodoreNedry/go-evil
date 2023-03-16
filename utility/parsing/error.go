@@ -24,7 +24,7 @@ func Check_for_errors(s_json string) {
 	check_evil_arrays(s_json)
 	check_compile_variable(s_json)
 	check_runtime_variable(s_json)
-
+	check_call_function_format(s_json)
 }
 
 //
@@ -171,5 +171,22 @@ func check_runtime_variable(s_json string) {
 			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()")
 		}
 
+	}
+}
+
+//
+//
+// Checks if potential call functions are wrongly formatted
+//
+//
+func check_call_function_format(s_json string) {
+	data_object := structure.Receive(s_json)
+	regex := regexp.MustCompile(FUNC)
+	functions := regex.FindAllStringSubmatch(data_object.File_gut, -1)
+
+	for _, d_func := range functions {
+		if d_func[1] == "c" && !strings.Contains(d_func[3], "->") {
+			notify.Error(fmt.Sprintf("Found a wrongly formatted function with the name '%s'", d_func[2]), "error.check_call_function_format()")
+		}
 	}
 }
