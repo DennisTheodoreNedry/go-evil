@@ -22,10 +22,10 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		s_json = Include(value, s_json)
 
 	case "set_run":
-		s_json = Set("€", value, s_json)
+		call, s_json = Set(false, value, s_json)
 
 	case "set_comp":
-		s_json = Set("$", value, s_json)
+		call, s_json = Set(true, value, s_json)
 
 	case "add_random_var":
 		s_json = Add_random_variable(value, s_json)

