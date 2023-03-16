@@ -19,6 +19,7 @@ Run the following command `docker run -v $(pwd)/builds:/app/builds --rm goevil/g
 
 An example of this can be `docker run -v $(pwd)/builds:/app/builds --rm goevil/gevil-2.1 -f builds/out.evil` which will compile the `out.evil` file and create the binary `builds/out`.
 
+But if you're lazy you can also utilize the script labeled `gevil` under the `tools` directory `bash tools/gevil <commands>` which will do all work for you.
 
 ### Changes in version 2
 There are many changes in v2, some are directly related to the syntaxes but the majority is how the internals work.
