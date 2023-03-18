@@ -5,7 +5,6 @@ import (
 	"regexp"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -231,26 +230,21 @@ func generate_body_code(gut []string, s_json string) ([]string, string) {
 
 		} else {
 			regex = regexp.MustCompile(GET_FOREACH_HEADER)
-			data = regex.FindAllStringSubmatch(line, -1)
+			foreach_identified := regex.FindAllStringSubmatch(line, -1)
+			regex = regexp.MustCompile(GET_IF_HEADER)
+			if_identified := regex.FindAllStringSubmatch(line, -1)
 
-			if len(data) > 0 {
-				body := []string{}
-				i++ // Skips the header
+			//fmt.Println(line)
 
-				for ; i < len(gut); i++ { // Grabs all data between the header and footer, but also fast forwards the index
-					result := tools.Contains(gut[i], []string{GET_FOREACH_FOOTER})
-					status := result[GET_FOREACH_FOOTER]
+			if len(foreach_identified) > 0 { // foreach loop
+				body := get_foreach_body(&i, gut)
+				call_functions, s_json = construct_foreach_loop(foreach_identified[0][1], body, s_json)
 
-					if !status {
-						body = append(body, gut[i])
-
-					} else { // Footer reached
-						break
-					}
-				}
-				call_functions, s_json = construct_foreach_loop(data[0][1], body, s_json)
-
+			} else if len(if_identified) > 0 { // if/else statement
+				true_body, false_body := get_if_else_body(&i, gut)
+				call_functions, s_json = construct_if_else(if_identified[0][1], true_body, false_body, s_json)
 			}
+
 		}
 
 		if len(call_functions) > 0 { // Don't want any empty lines

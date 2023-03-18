@@ -205,18 +205,18 @@ func Build_functions_structs(s_json string) string {
 
 	if len(functions) > 0 {
 		for _, function := range functions {
-			gut := []string{}
+			index := 3
 
 			return_type := "null"
 			f_type := function[1]
 			name := function[2]
+
 			if f_type == "c" {
 				return_type = function[4]
-				gut = function[5:]
-
-			} else {
-				gut = function[3:]
+				index = 5
 			}
+
+			gut := function[index:]
 
 			data_object.Add_function(name, f_type, return_type, gut)
 

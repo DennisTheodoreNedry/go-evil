@@ -45,25 +45,7 @@ func (object *Func_t) Set_type(f_type string) {
 //
 //
 func (object *Func_t) Add_line(line string) {
-
-	for _, line := range strings.Split(line, "\n") { // Split it up in newlines so that we don't lose content
-
-		found := true
-
-		for _, g_line := range object.Gut { // Check for duplicates
-
-			if g_line == line {
-				found = false
-				break
-			}
-
-		}
-
-		if found {
-			object.Gut = append(object.Gut, line)
-		}
-	}
-
+	object.Gut = append(object.Gut, strings.Split(line, "\n")...) // Split it up in newlines so that we don't lose content
 }
 
 //

@@ -25,6 +25,11 @@ const (
 	GET_FOREACH_HEADER = "foreach *\\((.+)\\) *:"
 	GET_FOREACH_FOOTER = "end foreach"
 
+	// If/else statements //
+	GET_IF_HEADER      = "if *\\((.+)\\) *:"
+	GET_ELSE_HEADER    = "else:"
+	GET_IF_ELSE_FOOTER = "end if"
+
 	// Configurations //
 	COMPILER_CONFIGURATION          = "\\[\n*(?s)(.*)\n*\\]"       // Grabs the configuration secton
 	COMPILER_VERSION                = "version +([0-9]+\\.[0-9]+)" // Grabs the compiler that the scrip was meant for
