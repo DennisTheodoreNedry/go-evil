@@ -38,7 +38,7 @@ func Check_configuration(s_json string) string {
 
 	notify.Log(fmt.Sprintf("The malware will be called `%s`", data_object.Binary_name), data_object.Verbose_lvl, "2")
 	notify.Log(fmt.Sprintf("The malware will be compiled for `%s`", data_object.Target_os), data_object.Verbose_lvl, "2")
-	notify.Log(fmt.Sprintf("The malware will be for a/n `%s` based processor", data_object.Target_arch), data_object.Verbose_lvl, "2")
+	notify.Log(fmt.Sprintf("The malware will be compiled for a/an `%s` based processor", data_object.Target_arch), data_object.Verbose_lvl, "2")
 	notify.Log(fmt.Sprintf("The malware will have the extension `%s`", data_object.Extension), data_object.Verbose_lvl, "2")
 	notify.Log(fmt.Sprintf("The malware will have the behavior `%s` if it's being run under a debugger", data_object.Debugger_behavior), data_object.Verbose_lvl, "2")
 

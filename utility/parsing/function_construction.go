@@ -48,13 +48,13 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 	// Decide the header of the for "infinite" loop
 	switch data_object.Debugger_behavior {
 	case "stop":
-		main_functions = append(main_functions, "for !stop_behavior() && !detect_debugger_time() {")
+		main_functions = append(main_functions, "for !stop_behavior() {")
 	case "remove":
-		main_functions = append(main_functions, "for !remove_behavior() && !detect_debugger_time() {")
+		main_functions = append(main_functions, "for !remove_behavior() {")
 	case "none":
 		main_functions = append(main_functions, "for {")
 	case "loop":
-		main_functions = append(main_functions, "for !loop_behavior() && !detect_debugger_time() {")
+		main_functions = append(main_functions, "for !loop_behavior() {")
 	}
 
 	// Add loop function
