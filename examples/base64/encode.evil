@@ -1,0 +1,20 @@
+@ Encodes a base64 string @
+
+use system
+use base64
+
+[
+    version 2.0
+    output encode
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    base64::encode("Fun with evil") @ The result is placed in a runtime variable @
+    system::outln("The result became, €1€")
+    system::exit("0")
+}
