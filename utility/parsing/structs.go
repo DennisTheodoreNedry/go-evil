@@ -62,7 +62,7 @@ func generate_runtime_variable(s_json string) string {
 		"grabbed_value = tools.Grab_username()",
 
 		"default:",
-		"notify.Log(fmt.Sprintf(\"Error, unknown value '%d'\", i_number), spine.logging, \"3\")",
+		"spine.log(fmt.Sprintf(\"Error, unknown value '%d'\", i_number))",
 
 		"}",
 		"}",
@@ -78,6 +78,7 @@ func generate_runtime_variable(s_json string) string {
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 	data_object.Add_go_import("regexp")
 	data_object.Add_go_import("strings")
+	data_object.Add_go_import("fmt")
 
 	data_object.Add_go_const("GRAB_VAR = \"(€([0-9]+)€)\"")
 
@@ -172,7 +173,7 @@ func generate_spine(s_json string) string {
 		"crypt crypt_t",
 		"path string",
 		"alpha alpha_t",
-		"logging string",
+		"logging_lvl string",
 		"is_admin bool",
 		"}"})
 
@@ -186,8 +187,10 @@ func generate_spine(s_json string) string {
 
 	body = append(body, "if err != nil{", "obj.is_admin = false", "}else{", "obj.is_admin = true", "}", "}")
 
-	data_object.Add_go_function(body)
+	body = append(body, "func (obj *spine_t) log(msg string){", "notify.Log(msg, spine.logging_lvl, \"3\")", "}")
 
+	data_object.Add_go_function(body)
+	data_object.Add_go_import("os")
 	data_object.Add_go_global("var spine spine_t")
 	return structure.Send(data_object)
 
@@ -205,18 +208,18 @@ func Build_functions_structs(s_json string) string {
 
 	if len(functions) > 0 {
 		for _, function := range functions {
-			gut := []string{}
+			index := 3
 
 			return_type := "null"
 			f_type := function[1]
 			name := function[2]
+
 			if f_type == "c" {
 				return_type = function[4]
-				gut = function[5:]
-
-			} else {
-				gut = function[3:]
+				index = 5
 			}
+
+			gut := function[index : len(function)-1]
 
 			data_object.Add_function(name, f_type, return_type, gut)
 

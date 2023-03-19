@@ -1,0 +1,24 @@
+@ Tries to kill the processes based on it's pid @
+@ This script has not been tried, make sure to report it if it doesn't work @
+
+use system
+
+[
+    version 2.0
+    output kill_id
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+b elevate {
+    system::elevate()
+}
+
+l main_func {
+    system::outln("## Warning don't run this script on your own machine ##")
+    system::kill_process_id("1337")
+
+    system::exit("0")
+}

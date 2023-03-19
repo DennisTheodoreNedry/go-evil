@@ -27,7 +27,9 @@ dependencies:
 	go get github.com/tatsushid/go-fastping
 	go get github.com/ARaChn3/gfb
 	go get github.com/ARaChn3/puffgo
+	go get github.com/redcode-labs/Coldfire
 
+	
 docs: clean_docs
 	bash tools/generate_documentation.sh
 

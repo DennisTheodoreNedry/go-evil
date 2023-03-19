@@ -1,0 +1,27 @@
+@ Grabs the current interface and all other interfaces @
+
+use system
+use network
+
+[
+    version 2.0
+    output interface
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    network::get_interface()
+    system::outln("Current interface: €1€ , €2€")
+
+    system::outln("Found the following interfaces:")
+    network::get_interfaces()
+    foreach("€3€"): @ Loop through each interface @
+        system::outln("* €13€") @ The index €13€ is configured to only be used by foreach loops @
+    end foreach
+
+    system::exit("0")
+}

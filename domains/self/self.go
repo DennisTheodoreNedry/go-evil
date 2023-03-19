@@ -12,22 +12,22 @@ import (
 
 //
 //
-// Adds a function call to the src code
+// Adds a function function_call to the src code
 // Calls function of the type 'c'
 //
 func Call_function(func_name string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := []string{"call()"}
+	function_call := []string{"function_call()"}
 
 	func_name = tools.Erase_delimiter(func_name, []string{"\""}, -1) // Removes all " from the string
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", call[0]),
+		fmt.Sprintf("func %s(){", function_call[0]),
 		fmt.Sprintf("%s()", func_name),
 		"}",
 	})
 
-	return call, structure.Send(data_object)
+	return function_call, structure.Send(data_object)
 }
 
 //
@@ -76,12 +76,15 @@ func Set(compile_time bool, value string, s_json string) ([]string, string) {
 		function_call := "set_runtime"
 
 		data_object.Add_go_function([]string{
-			fmt.Sprintf("func %s(value string){", function_call),
+			fmt.Sprintf("func %s(repr_1 []int){", function_call),
+			"value := spine.variable.get(spine.alpha.construct_string(repr_1))",
 			"spine.variable.set(value)",
 			"}",
 		})
 
-		return []string{fmt.Sprintf("%s(\"%s\")", function_call, value)}, structure.Send(data_object)
+		parameter_1 := tools.Generate_int_array_parameter(value)
+
+		return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 	}
 }
 

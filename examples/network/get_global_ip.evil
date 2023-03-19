@@ -1,0 +1,21 @@
+@ Grabs the so-called global ip  @
+
+use system
+use network
+
+[
+    version 2.0
+    output global_ip
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    network::get_global_ip()
+    system::outln("€1€")
+
+    system::exit("0")
+}

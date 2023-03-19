@@ -5,6 +5,7 @@ import (
 	"regexp"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
 const (
@@ -19,6 +20,7 @@ const (
 //
 func Until(s_json string, value string) ([]string, string) {
 	data_object := structure.Receive(s_json)
+	function_call := "Until"
 
 	regex := regexp.MustCompile(GRAB_FULL_DATE)
 	result := regex.FindAllStringSubmatch(value, -1)
@@ -28,11 +30,14 @@ func Until(s_json string, value string) ([]string, string) {
 	}
 
 	data_object.Add_go_function([]string{
-		"func Until(value string){",
+		fmt.Sprintf("func %s(repr_1 []int){", function_call),
+		"i_value := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_1)))",
+
 		"}",
 	})
+	parameter_1 := tools.Generate_int_array_parameter(value)
 
-	return []string{fmt.Sprintf("Until(%s)", value)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
 
 //
@@ -45,8 +50,8 @@ func Sleep(s_json string, value string) ([]string, string) {
 	function_call := "Sleep"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(value string){", function_call),
-		"i_value := tools.String_to_int(value)",
+		fmt.Sprintf("func %s(repr_1 []int){", function_call),
+		"i_value := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_1)))",
 		"time.Sleep(time.Duration(i_value) * time.Second)",
 		"}",
 	})
@@ -54,5 +59,7 @@ func Sleep(s_json string, value string) ([]string, string) {
 	data_object.Add_go_import("time")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, value)}, structure.Send(data_object)
+	parameter_1 := tools.Generate_int_array_parameter(value)
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }

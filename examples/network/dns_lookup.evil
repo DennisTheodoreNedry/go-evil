@@ -1,0 +1,21 @@
+@ Peforms a dns lookup on the provided url  @
+
+use system
+use network
+
+[
+    version 2.0
+    output dns_lookup
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    network::dns_lookup("google.com") @ The result is placed in a runtime variable @
+    system::outln("€1€")
+    
+    system::exit("0")
+}

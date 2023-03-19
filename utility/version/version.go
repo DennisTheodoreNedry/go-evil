@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	EVIL_VERSION = "2.1.2"
+	EVIL_VERSION = "2.1.3"
 )
 
 func Version() {

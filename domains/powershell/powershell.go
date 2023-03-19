@@ -27,14 +27,16 @@ func set_execution_policy(value string, s_json string) ([]string, string) {
 	}
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(policy string){", system_call),
+		fmt.Sprintf("func %s(repr_1 []int){", system_call),
+		"policy := spine.variable.get(spine.alpha.construct_string(repr_1))",
 		"err := exec.Command(\"powershell\", \"Set-ExecutionPolicy\", policy).Run()",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"}",
 		"}"})
 
 	data_object.Add_go_import("os/exec")
+	parameter_1 := tools.Generate_int_array_parameter(value)
 
-	return []string{fmt.Sprintf("%s(\"%s\")", system_call, value)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", system_call, parameter_1)}, structure.Send(data_object)
 }

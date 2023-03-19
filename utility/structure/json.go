@@ -11,6 +11,9 @@ import (
 )
 
 type json_t struct {
+	// Build directory
+	Build_directory string `json:"build_directory"` // The directory where everything will be placed
+
 	//  File related stuff
 	File_path string   `json:"file_path"`      // file path to the file we are reading
 	File_gut  string   `json:"file_gut"`       // Contents of the file we read in
@@ -61,6 +64,19 @@ type json_t struct {
 
 //
 //
+// Set the build directory
+//
+//
+func (object *json_t) Set_build_directory(new_bd string) {
+	if ok := tools.Ends_with(new_bd, []string{"/"})[new_bd]; !ok {
+		new_bd += "/"
+	}
+
+	object.Build_directory = new_bd
+}
+
+//
+//
 // Updates the internal file path
 //
 //
@@ -105,7 +121,7 @@ func (object *json_t) Set_target_arch(arch string) {
 //
 func (object *json_t) Set_binary_name(name string) {
 
-	object.Malware_path = fmt.Sprintf("builds/%s/", path.Dir(name))
+	object.Malware_path = fmt.Sprintf("%s%s/", object.Build_directory, path.Dir(name))
 
 	name = path.Base(name)
 	result := tools.Contains(name, []string{"."})

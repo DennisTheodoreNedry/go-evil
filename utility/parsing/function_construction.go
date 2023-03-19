@@ -5,7 +5,6 @@ import (
 	"regexp"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -22,7 +21,7 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 
 	// Adds all arguments
 	main_functions = append(main_functions, "arguments.Argument_add(\"--verbose\", \"-v\", false, \"Show all generated logs during runtime\")", "parsed := arguments.Argument_parse()")
-	main_functions = append(main_functions, "if _, ok := parsed[\"-v\"]; ok{", "spine.logging = \"3\"", "}")
+	main_functions = append(main_functions, "if _, ok := parsed[\"-v\"]; ok{", "spine.logging_lvl = \"3\"", "}")
 
 	main_functions = append(main_functions, "spine.alpha.alphabet = []string{\"0\", \"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", \"8\", \"9\", \"a\", \"b\", \"c\", \"d\", \"e\", \"f\", \"g\", \"h\", \"i\", \"j\", \"k\", \"l\", \"m\", \"n\", \"o\", \"p\", \"q\", \"r\", \"s\", \"t\", \"u\", \"v\", \"w\", \"x\", \"y\", \"z\", \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\", \"J\", \"K\", \"L\", \"M\", \"N\", \"O\", \"P\", \"Q\", \"R\", \"S\", \"T\", \"U\", \"V\", \"W\", \"X\", \"Y\", \"Z\", \"!\", \"#\", \"$\", \"€\", \"%\", \"&\", \"\\\"\", \"(\", \")\", \"*\", \"+\", \",\", \"-\", \".\", \"/\", \":\", \";\", \"<\", \"=\", \">\", \"?\", \"@\", \"[\", \"\\\\\", \"]\", \"^\", \"_\", \"`\", \"{\", \"|\", \"}\", \"~\", \" \", \"\\t\", \"\\n\", \"\\r\", \"\\x0b\", \"\\x0c\"}")
 
@@ -49,13 +48,13 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 	// Decide the header of the for "infinite" loop
 	switch data_object.Debugger_behavior {
 	case "stop":
-		main_functions = append(main_functions, "for !stop_behavior() && !detect_debugger_time() {")
+		main_functions = append(main_functions, "for !stop_behavior() {")
 	case "remove":
-		main_functions = append(main_functions, "for !remove_behavior() && !detect_debugger_time() {")
+		main_functions = append(main_functions, "for !remove_behavior() {")
 	case "none":
 		main_functions = append(main_functions, "for {")
 	case "loop":
-		main_functions = append(main_functions, "for !loop_behavior() && !detect_debugger_time() {")
+		main_functions = append(main_functions, "for !loop_behavior() {")
 	}
 
 	// Add loop function
@@ -161,7 +160,7 @@ func generate_go_functions(s_json string) (string, []string, []string) {
 		// Define the header
 		if d_func.Func_type == "c" { // it's a call function
 
-			switch d_func.Return_type {
+			switch d_func.Return_type { // Let's check the return type
 			case "string":
 				data = append(data, fmt.Sprintf("func %s() string {", d_func.Name))
 
@@ -231,26 +230,19 @@ func generate_body_code(gut []string, s_json string) ([]string, string) {
 
 		} else {
 			regex = regexp.MustCompile(GET_FOREACH_HEADER)
-			data = regex.FindAllStringSubmatch(line, -1)
+			foreach_identified := regex.FindAllStringSubmatch(line, -1)
+			regex = regexp.MustCompile(GET_IF_HEADER)
+			if_identified := regex.FindAllStringSubmatch(line, -1)
 
-			if len(data) > 0 {
-				body := []string{}
-				i++ // Skips the header
+			if len(foreach_identified) > 0 { // foreach loop
+				body := get_foreach_body(&i, gut)
+				call_functions, s_json = construct_foreach_loop(foreach_identified[0][1], body, s_json)
 
-				for ; i < len(gut); i++ { // Grabs all data between the header and footer, but also fast forwards the index
-					result := tools.Contains(gut[i], []string{GET_FOREACH_FOOTER})
-					status := result[GET_FOREACH_FOOTER]
-
-					if !status {
-						body = append(body, gut[i])
-
-					} else { // Footer reached
-						break
-					}
-				}
-				call_functions, s_json = construct_foreach_loop(data[0][1], body, s_json)
-
+			} else if len(if_identified) > 0 { // if/else statement
+				true_body, false_body := get_if_else_body(&i, gut)
+				call_functions, s_json = construct_if_else(if_identified[0][1], true_body, false_body, s_json)
 			}
+
 		}
 
 		if len(call_functions) > 0 { // Don't want any empty lines

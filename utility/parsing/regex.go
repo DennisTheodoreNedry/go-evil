@@ -9,7 +9,7 @@ package parsing
 const (
 	// Functions //
 	FUNC              = "([blc]) ([a-z0-9_]+) *(-> (string|boolean|integer|null))? *{\n* *((.*|\n*)*?)\n*}" // Extracts all functions
-	DOMAIN_FUNC_VALUE = "([a-z_#]+)::([a-z_]+)\\((.*)\\)"                                                   // Extracts the domain, function being called and if a value was sent with it
+	DOMAIN_FUNC_VALUE = "([a-z_#0-9]+)::([a-z_0-9]+)\\((.*)\\)"                                             // Extracts the domain, function being called and if a value was sent with it
 
 	// Imports //
 	IMPORT = "use (.*)" // Finds imports
@@ -24,6 +24,11 @@ const (
 	// Foreach loops //
 	GET_FOREACH_HEADER = "foreach *\\((.+)\\) *:"
 	GET_FOREACH_FOOTER = "end foreach"
+
+	// If/else statements //
+	GET_IF_HEADER      = "if *\\((.+)\\) *:"
+	GET_ELSE_HEADER    = "else:"
+	GET_IF_ELSE_FOOTER = "end if"
 
 	// Configurations //
 	COMPILER_CONFIGURATION          = "\\[\n*(?s)(.*)\n*\\]"       // Grabs the configuration secton

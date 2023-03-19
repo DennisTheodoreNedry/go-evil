@@ -9,6 +9,7 @@ The programming language we utilize is called evil, which only purpose is to tra
 
 
 ### How to run
+##### Docker
 You can run the compiler through docker and by executing the statements shown below!
 
 Run `make docker` to build the docker image.
@@ -17,9 +18,12 @@ Create a folder labeled `builds` in your local directory, this will be the direc
 
 Run the following command `docker run -v $(pwd)/builds:/app/builds --rm goevil/gevil-2.1 <commands>`
 
-An example of this can be `docker run -v $(pwd)/builds:/app/builds --rm goevil/gevil-2.1 -f builds/out.evil` which will compile the `out.evil` file and create the binary `builds/out`.
+An example of this can be `docker run -v $(pwd)/builds:/app/builds --rm goevil/gevil-2.1 -f builds/out.evil -bd builds` which will compile the `out.evil` file and create the binary `builds/out`.
 
 But if you're lazy you can also utilize the script labeled `gevil` under the `tools` directory `bash tools/gevil <commands>` which will do all work for you.
+
+##### Locally
+If you still want to compile the project locally, just run `make dependencies` and `make` to compile the project. After this you can utilize the compiler as intended.
 
 ### Changes in version 2
 There are many changes in v2, some are directly related to the syntaxes but the majority is how the internals work.
@@ -117,7 +121,7 @@ use window
     obfuscate false
 ]
 
-c test1 {
+c test1 -> null {
     system::outln("I've been summoned!")
 }
 
