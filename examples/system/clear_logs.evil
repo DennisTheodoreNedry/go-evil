@@ -1,0 +1,20 @@
+@ Clear know logs @
+@ This script has not been tried, make sure to report it if it doesn't work @
+
+use system
+
+[
+    version 2.0
+    output clear_logs
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+l main_func {
+    system::outln("## Warning don't run this script on your own machine ##")
+    system::clear_logs()
+
+    system::exit("0")
+}

