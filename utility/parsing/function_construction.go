@@ -160,7 +160,7 @@ func generate_go_functions(s_json string) (string, []string, []string) {
 		// Define the header
 		if d_func.Func_type == "c" { // it's a call function
 
-			switch d_func.Return_type {
+			switch d_func.Return_type { // Let's check the return type
 			case "string":
 				data = append(data, fmt.Sprintf("func %s() string {", d_func.Name))
 
@@ -233,8 +233,6 @@ func generate_body_code(gut []string, s_json string) ([]string, string) {
 			foreach_identified := regex.FindAllStringSubmatch(line, -1)
 			regex = regexp.MustCompile(GET_IF_HEADER)
 			if_identified := regex.FindAllStringSubmatch(line, -1)
-
-			//fmt.Println(line)
 
 			if len(foreach_identified) > 0 { // foreach loop
 				body := get_foreach_body(&i, gut)
