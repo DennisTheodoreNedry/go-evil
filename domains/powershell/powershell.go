@@ -30,7 +30,7 @@ func set_execution_policy(value string, s_json string) ([]string, string) {
 		fmt.Sprintf("func %s(policy string){", system_call),
 		"err := exec.Command(\"powershell\", \"Set-ExecutionPolicy\", policy).Run()",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"}",
 		"}"})
 

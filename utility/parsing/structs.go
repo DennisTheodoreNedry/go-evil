@@ -62,7 +62,7 @@ func generate_runtime_variable(s_json string) string {
 		"grabbed_value = tools.Grab_username()",
 
 		"default:",
-		"notify.Log(fmt.Sprintf(\"Error, unknown value '%d'\", i_number), spine.logging, \"3\")",
+		"spine.log(fmt.Sprintf(\"Error, unknown value '%d'\", i_number))",
 
 		"}",
 		"}",
@@ -173,7 +173,7 @@ func generate_spine(s_json string) string {
 		"crypt crypt_t",
 		"path string",
 		"alpha alpha_t",
-		"logging string",
+		"logging_lvl string",
 		"is_admin bool",
 		"}"})
 
@@ -186,6 +186,8 @@ func generate_spine(s_json string) string {
 	}
 
 	body = append(body, "if err != nil{", "obj.is_admin = false", "}else{", "obj.is_admin = true", "}", "}")
+
+	body = append(body, "func (obj *spine_t) log(msg string){", "notify.Log(msg, spine.logging_lvl, \"3\")", "}")
 
 	data_object.Add_go_function(body)
 	data_object.Add_go_import("os")

