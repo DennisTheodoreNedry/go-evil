@@ -14,10 +14,10 @@ import (
 //
 func encode(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := "base64_encode"
+	function_call := "base64_encode"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr_1 []int){", call),
+		fmt.Sprintf("func %s(repr_1 []int){", function_call),
 		"value1 := spine.variable.get(spine.alpha.construct_string(repr_1))",
 		"spine.variable.set(coldfire.B64E(value1))",
 		"}"})
@@ -26,7 +26,7 @@ func encode(value string, s_json string) ([]string, string) {
 
 	parameter_1 := tools.Generate_int_array_parameter(value)
 
-	return []string{fmt.Sprintf("%s(%s)", call, parameter_1)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
 
 //
@@ -36,10 +36,10 @@ func encode(value string, s_json string) ([]string, string) {
 //
 func decode(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := "base64_decode"
+	function_call := "base64_decode"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr_1 []int){", call),
+		fmt.Sprintf("func %s(repr_1 []int){", function_call),
 		"value1 := spine.variable.get(spine.alpha.construct_string(repr_1))",
 		"spine.variable.set(coldfire.B64D(value1))",
 		"}"})
@@ -48,5 +48,5 @@ func decode(value string, s_json string) ([]string, string) {
 
 	parameter_1 := tools.Generate_int_array_parameter(value)
 
-	return []string{fmt.Sprintf("%s(%s)", call, parameter_1)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }

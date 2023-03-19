@@ -12,22 +12,22 @@ import (
 
 //
 //
-// Adds a function call to the src code
+// Adds a function function_call to the src code
 // Calls function of the type 'c'
 //
 func Call_function(func_name string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := []string{"call()"}
+	function_call := []string{"function_call()"}
 
 	func_name = tools.Erase_delimiter(func_name, []string{"\""}, -1) // Removes all " from the string
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", call[0]),
+		fmt.Sprintf("func %s(){", function_call[0]),
 		fmt.Sprintf("%s()", func_name),
 		"}",
 	})
 
-	return call, structure.Send(data_object)
+	return function_call, structure.Send(data_object)
 }
 
 //

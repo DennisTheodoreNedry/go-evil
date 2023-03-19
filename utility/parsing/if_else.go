@@ -16,7 +16,7 @@ var if_else_call = 0
 //
 //
 func construct_if_else(condition string, if_true_body []string, if_false_body []string, s_json string) ([]string, string) {
-	call := fmt.Sprintf("if_%d", if_else_call)
+	function_call := fmt.Sprintf("if_%d", if_else_call)
 	if_else_call++
 
 	if_true_body_calls, s_json := generate_body_code(if_true_body, s_json)   // Converts the if true code
@@ -37,7 +37,7 @@ func construct_if_else(condition string, if_true_body []string, if_false_body []
 	}
 
 	final_body := []string{fmt.Sprintf(
-		"func %s(repr_value1 []int, repr_value2 []int){", call),
+		"func %s(repr_value1 []int, repr_value2 []int){", function_call),
 		"value1 := spine.variable.get(spine.alpha.construct_string(repr_value1))",
 		"value2 := spine.variable.get(spine.alpha.construct_string(repr_value2))",
 		fmt.Sprintf("if (value1 %s value2){", compare_operator),
@@ -55,7 +55,7 @@ func construct_if_else(condition string, if_true_body []string, if_false_body []
 	parameter_1 := tools.Generate_int_array_parameter(arr.Get(0))
 	parameter_2 := tools.Generate_int_array_parameter(arr.Get(2))
 
-	return []string{fmt.Sprintf("%s(%s, %s)", call, parameter_1, parameter_2)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_1, parameter_2)}, structure.Send(data_object)
 }
 
 //

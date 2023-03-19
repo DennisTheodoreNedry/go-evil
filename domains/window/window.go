@@ -15,7 +15,7 @@ import (
 //
 func run(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := "Run()"
+	function_call := "Run()"
 
 	html_content := strings.Join(data_object.Html_gut, "\n")
 	js_content := strings.Join(data_object.Js_gut, "\n")
@@ -38,7 +38,7 @@ func run(s_json string) ([]string, string) {
 	}
 
 	body := []string{
-		fmt.Sprintf("func %s(){", call),
+		fmt.Sprintf("func %s(){", function_call),
 		fmt.Sprintf("win, err := lorca.New(fmt.Sprintf(\"data:text/html,%%s\", url.PathEscape(`%s`)), \"\", %d, %d)", final_content, data_object.Width, data_object.Height),
 		"if err != nil{",
 		"spine.log(err.Error())",
@@ -59,7 +59,7 @@ func run(s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 	data_object.Add_go_import("fmt")
 
-	return []string{call}, structure.Send(data_object)
+	return []string{function_call}, structure.Send(data_object)
 }
 
 //
@@ -167,10 +167,10 @@ func bind(values string, s_json string) string {
 //
 func navigate(website string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	call := "Navigate"
+	function_call := "Navigate"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr_1 []int){", call),
+		fmt.Sprintf("func %s(repr_1 []int){", function_call),
 		"website := spine.variable.get(spine.alpha.construct_string(repr_1))",
 		fmt.Sprintf("win, err := lorca.New(website, \"\",%d, %d)", data_object.Width, data_object.Height),
 		"if err != nil{",
@@ -187,5 +187,5 @@ func navigate(website string, s_json string) ([]string, string) {
 
 	parameter_1 := tools.Generate_int_array_parameter(website)
 
-	return []string{fmt.Sprintf("%s(%s)", call, parameter_1)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
