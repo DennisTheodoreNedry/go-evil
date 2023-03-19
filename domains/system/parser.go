@@ -66,6 +66,9 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 	case "elevate":
 		call, s_json = elevate(value, s_json)
 
+	case "create_user":
+		call, s_json = create_user(value, s_json)
+
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")
 
