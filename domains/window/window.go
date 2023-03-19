@@ -170,7 +170,8 @@ func navigate(website string, s_json string) ([]string, string) {
 	call := "Navigate"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(website string){", call),
+		fmt.Sprintf("func %s(repr_1 []int){", call),
+		"website := spine.variable.get(spine.alpha.construct_string(repr_1))",
 		fmt.Sprintf("win, err := lorca.New(website, \"\",%d, %d)", data_object.Width, data_object.Height),
 		"if err != nil{",
 		"spine.log(err.Error())",
@@ -184,5 +185,7 @@ func navigate(website string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/zserge/lorca")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	return []string{fmt.Sprintf("%s(%s)", call, website)}, structure.Send(data_object)
+	parameter_1 := tools.Generate_int_array_parameter(website)
+
+	return []string{fmt.Sprintf("%s(%s)", call, parameter_1)}, structure.Send(data_object)
 }

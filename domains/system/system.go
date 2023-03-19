@@ -20,8 +20,8 @@ func Exit(s_json string, return_code string) ([]string, string) {
 	function_call := "Exit"
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(lvl string){", function_call),
-		"lvl = spine.variable.get(lvl)",
+		fmt.Sprintf("func %s(repr_1 []int){", function_call),
+		"lvl := spine.variable.get(spine.alpha.construct_string(repr_1))",
 		"value := tools.String_to_int(lvl)",
 		"os.Exit(value)",
 
@@ -30,7 +30,9 @@ func Exit(s_json string, return_code string) ([]string, string) {
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 	data_object.Add_go_import("os")
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, return_code)}, structure.Send(data_object)
+	parameter_1 := tools.Generate_int_array_parameter(return_code)
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
 
 //
@@ -44,8 +46,7 @@ func Out(s_json string, msg string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(msg []int){", function_call),
-		"s_msg := spine.alpha.construct_string(msg)",
-		"s_msg = spine.variable.get(s_msg)",
+		"s_msg := spine.variable.get(spine.alpha.construct_string(msg))",
 		"fmt.Print(s_msg)",
 		"}"})
 
@@ -68,8 +69,7 @@ func Outln(s_json string, msg string) ([]string, string) {
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(msg []int){", function_call),
-		"s_msg := spine.alpha.construct_string(msg)",
-		"s_msg = spine.variable.get(s_msg)",
+		"s_msg := spine.variable.get(spine.alpha.construct_string(msg))",
 		"fmt.Println(s_msg)",
 		"}"})
 

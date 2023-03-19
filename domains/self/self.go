@@ -76,12 +76,15 @@ func Set(compile_time bool, value string, s_json string) ([]string, string) {
 		function_call := "set_runtime"
 
 		data_object.Add_go_function([]string{
-			fmt.Sprintf("func %s(value string){", function_call),
+			fmt.Sprintf("func %s(repr_1 []int){", function_call),
+			"value := spine.variable.get(spine.alpha.construct_string(repr_1))",
 			"spine.variable.set(value)",
 			"}",
 		})
 
-		return []string{fmt.Sprintf("%s(\"%s\")", function_call, value)}, structure.Send(data_object)
+		parameter_1 := tools.Generate_int_array_parameter(value)
+
+		return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 	}
 }
 
