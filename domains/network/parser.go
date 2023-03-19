@@ -42,6 +42,9 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 	case "dns_lookup":
 		call, s_json = dns_lookup(value, s_json)
 
+	case "wifi_disconnect":
+		call, s_json = wifi_disconnect(value, s_json)
+
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "network.Parser()")
 

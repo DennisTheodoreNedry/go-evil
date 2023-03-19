@@ -1,4 +1,4 @@
-@ Grabs all found networks @
+@ Performs a reverse shell back to the attacker @
 
 @ To check if the reverse shell works, run the following nc -l 8080 @
 
