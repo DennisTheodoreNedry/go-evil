@@ -39,6 +39,9 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 	case "download":
 		call, s_json = download(value, s_json)
 
+	case "dns_lookup":
+		call, s_json = dns_lookup(value, s_json)
+
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "network.Parser()")
 
