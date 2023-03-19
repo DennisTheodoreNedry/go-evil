@@ -23,7 +23,7 @@ An example of this can be `docker run -v $(pwd)/builds:/app/builds --rm goevil/g
 But if you're lazy you can also utilize the script labeled `gevil` under the `tools` directory `bash tools/gevil <commands>` which will do all work for you.
 
 ##### Locally
-If you still want to compile the project locally, just run `make dependencies` and `make` to compile the project.
+If you still want to compile the project locally, just run `make dependencies` and `make` to compile the project. After this you can utilize the compiler as intended.
 
 ### Changes in version 2
 There are many changes in v2, some are directly related to the syntaxes but the majority is how the internals work.
@@ -121,7 +121,7 @@ use window
     obfuscate false
 ]
 
-c test1 {
+c test1 -> null {
     system::outln("I've been summoned!")
 }
 

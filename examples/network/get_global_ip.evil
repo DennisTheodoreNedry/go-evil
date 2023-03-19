@@ -1,11 +1,11 @@
-@ Grabs the so-called local ip  @
+@ Grabs the so-called global ip  @
 
 use system
 use network
 
 [
     version 2.0
-    output local_ip
+    output global_ip
     os linux
     arch amd64
     obfuscate false
@@ -14,7 +14,7 @@ use network
 
 
 l main_func {
-    network::get_local_ip()
+    network::get_global_ip()
     system::outln("€1€")
 
     system::exit("0")

