@@ -7,11 +7,7 @@ import (
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-//
-//
 // Creates a json object and returns it
-//
-//
 func Create_json_object() json_t {
 	var new_json json_t
 	new_json.Malware_src_file = "malware.go"
@@ -33,16 +29,12 @@ func Create_json_object() json_t {
 		new_json.Comp_var = append(new_json.Comp_var, new_var)
 	}
 
-	new_json.Set_alphabet("0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,!,#,$,€,%,&,(,),*,+,,,-,.,/,:,;,<,=,>,?,@,[,],^,_,`,{,|,},~, ,%t,%n,%r,%x0b,%x0c")
+	new_json.Set_alphabet("0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,!,#,$,€,%,&,\",(,),*,+,,,-,.,/,:,;,<,=,>,?,@,[,\\,],^,_,`,{,|,},~, ,\t,\n,\r,\x0b,\x0c")
 
 	return new_json
 }
 
-//
-//
 // Creates an evil array object and returns it
-//
-//
 func Create_evil_object(arr_content string) Evil_array_t {
 	var new_arr Evil_array_t
 	new_arr.length = 0
@@ -53,11 +45,7 @@ func Create_evil_object(arr_content string) Evil_array_t {
 	return new_arr
 }
 
-//
-//
 // Serializes the json structure into a base64 string which is ready to be sent
-//
-//
 func Send(object json_t) string {
 	serial_json, err := json.Marshal(object)
 
@@ -68,11 +56,7 @@ func Send(object json_t) string {
 	return base64.StdEncoding.EncodeToString(serial_json)
 }
 
-//
-//
 // Used to convert the received serialized json structure into workable data
-//
-//
 func Receive(object string) json_t {
 	serialize_json, err := base64.StdEncoding.DecodeString(object)
 
