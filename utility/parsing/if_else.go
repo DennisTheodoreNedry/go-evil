@@ -52,8 +52,8 @@ func construct_if_else(condition string, if_true_body []string, if_false_body []
 
 	data_object.Add_go_import("fmt")
 
-	parameter_1 := tools.Generate_int_array_parameter(arr.Get(0))
-	parameter_2 := tools.Generate_int_array_parameter(arr.Get(2))
+	parameter_1 := data_object.Generate_int_array_parameter(arr.Get(0))
+	parameter_2 := data_object.Generate_int_array_parameter(arr.Get(2))
 
 	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_1, parameter_2)}, structure.Send(data_object)
 }

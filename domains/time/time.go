@@ -5,7 +5,6 @@ import (
 	"regexp"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
 const (
@@ -35,7 +34,7 @@ func Until(s_json string, value string) ([]string, string) {
 
 		"}",
 	})
-	parameter_1 := tools.Generate_int_array_parameter(value)
+	parameter_1 := data_object.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
@@ -59,7 +58,7 @@ func Sleep(s_json string, value string) ([]string, string) {
 	data_object.Add_go_import("time")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 
-	parameter_1 := tools.Generate_int_array_parameter(value)
+	parameter_1 := data_object.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
