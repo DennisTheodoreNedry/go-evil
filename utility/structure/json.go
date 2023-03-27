@@ -65,11 +65,7 @@ type json_t struct {
 	Alphabet []string `json:"alphabet"`
 }
 
-//
-//
 // Set the build directory
-//
-//
 func (object *json_t) Set_build_directory(new_bd string) {
 	if ok := tools.Ends_with(new_bd, []string{"/"})[new_bd]; !ok {
 		new_bd += "/"
@@ -78,29 +74,17 @@ func (object *json_t) Set_build_directory(new_bd string) {
 	object.Build_directory = new_bd
 }
 
-//
-//
 // Updates the internal file path
-//
-//
 func (object *json_t) Set_file_path(new_path string) {
 	object.File_path = new_path
 }
 
-//
-//
 // Adds all the contents of the read file
-//
-//
 func (object *json_t) Add_file_gut(content string) {
 	object.File_gut = content
 }
 
-//
-//
 // Sets the target os for the compiler
-//
-//
 func (object *json_t) Set_target_os(os string) {
 	if os == "windows" && object.Extension == "" {
 		object.Set_extension(".exe")
@@ -108,20 +92,12 @@ func (object *json_t) Set_target_os(os string) {
 	object.Target_os = os
 }
 
-//
-//
 // Sets the target arch for the compiler
-//
-//
 func (object *json_t) Set_target_arch(arch string) {
 	object.Target_arch = arch
 }
 
-//
-//
 // Sets the binaries name
-//
-//
 func (object *json_t) Set_binary_name(name string) {
 
 	object.Malware_path = fmt.Sprintf("%s%s/", object.Build_directory, path.Dir(name))
@@ -138,11 +114,7 @@ func (object *json_t) Set_binary_name(name string) {
 	object.Binary_name = name
 }
 
-//
-//
 // Sets the the extension
-//
-//
 func (object *json_t) Set_extension(ext string) {
 
 	if object.Extension == "" { // Update only if it doesn't contain anything
@@ -157,11 +129,7 @@ func (object *json_t) Set_extension(ext string) {
 
 }
 
-//
-//
 // Sets the debug mode that the compiler will obey
-//
-//
 func (object *json_t) Set_debug_mode(mode string) {
 	if mode == "false" {
 		object.Debug_mode = false
@@ -170,29 +138,17 @@ func (object *json_t) Set_debug_mode(mode string) {
 	}
 }
 
-//
-//
 // Print the json object after compilation
-//
-//
 func (object *json_t) Set_dump_json() {
 	object.Dump_json = true
 }
 
-//
-//
 // Sets how verbose the program should be
-//
-//
 func (object *json_t) Set_verbose_lvl(value string) {
 	object.Verbose_lvl = value
 }
 
-//
-//
 // Creates byte code from our json structure
-//
-//
 func (object *json_t) Dump() []byte {
 	serial_json, err := json.Marshal(object)
 
@@ -203,11 +159,7 @@ func (object *json_t) Dump() []byte {
 	return serial_json
 }
 
-//
-//
 // Adds a function to the structure
-//
-//
 func (object *json_t) Add_function(name string, f_type string, return_type string, gut []string) {
 	var new_func Func_t
 
@@ -222,38 +174,22 @@ func (object *json_t) Add_function(name string, f_type string, return_type strin
 	object.Functions = append(object.Functions, new_func)
 }
 
-//
-//
 // Adds a domain to the imports
-//
-//
 func (object *json_t) Add_domain(domain_name string) {
 	object.Malware_Import = append(object.Malware_Import, domain_name)
 }
 
-//
-//
 // Adds a single line to the malware gut
-//
-//
 func (object *json_t) Add_malware_line(line string) {
 	object.Malware_gut = append(object.Malware_gut, line)
 }
 
-//
-//
 // Adds multiple lines to the malware gut
-//
-//
 func (object *json_t) Add_malware_lines(lines []string) {
 	object.Malware_gut = append(object.Malware_gut, lines...)
 }
 
-//
-//
 // Adds a go based function to the final go code
-//
-//
 func (object *json_t) Add_go_function(lines []string) {
 	function_call := lines[0]
 
@@ -266,11 +202,7 @@ func (object *json_t) Add_go_function(lines []string) {
 	object.GO_functions = append(object.GO_functions, lines...)
 }
 
-//
-//
 // Adds a import line to the final go code
-//
-//
 func (object *json_t) Add_go_import(new_import string) {
 
 	new_import = fmt.Sprintf("\"%s\"", new_import)
@@ -283,11 +215,7 @@ func (object *json_t) Add_go_import(new_import string) {
 	object.GO_imports = append(object.GO_imports, new_import)
 }
 
-//
-//
 // Adds a const line to the final go code
-//
-//
 func (object *json_t) Add_go_const(new_const string) {
 	for _, old := range object.GO_const {
 		if old == new_const { // Check if the const already has been definied
@@ -298,11 +226,7 @@ func (object *json_t) Add_go_const(new_const string) {
 	object.GO_const = append(object.GO_const, new_const)
 }
 
-//
-//
 // Adds a global variable line to the final go code
-//
-//
 func (object *json_t) Add_go_global(new_global string) {
 
 	for _, old := range object.GO_global {
@@ -314,11 +238,7 @@ func (object *json_t) Add_go_global(new_global string) {
 	object.GO_global = append(object.GO_global, new_global)
 }
 
-//
-//
 // Adds a structure to the final code
-//
-//
 func (object *json_t) Add_go_struct(new_struct []string) {
 	struct_header := new_struct[0]
 
@@ -331,29 +251,17 @@ func (object *json_t) Add_go_struct(new_struct []string) {
 	object.GO_struct = append(object.GO_struct, new_struct...)
 }
 
-//
-//
 // Obfuscates the program
-//
-//
 func (object *json_t) Enable_obfuscate() {
 	object.Obfuscate = true
 }
 
-//
-//
 // Makes the source code readable
-//
-//
 func (object *json_t) Disable_obfuscate() {
 	object.Obfuscate = false
 }
 
-//
-//
 // Sets the width of the text editor
-//
-//
 func (object *json_t) Set_width(value string) {
 	if i_value := tools.String_to_int(value); i_value != -1 {
 		object.Width = i_value
@@ -362,11 +270,7 @@ func (object *json_t) Set_width(value string) {
 	}
 }
 
-//
-//
 // Sets the height of the text editor
-//
-//
 func (object *json_t) Set_height(value string) {
 	if i_value := tools.String_to_int(value); i_value != -1 {
 		object.Height = i_value
@@ -375,62 +279,38 @@ func (object *json_t) Set_height(value string) {
 	}
 }
 
-//
-//
 // Sets the html code being displayed
-//
-//
 func (object *json_t) Set_html(content string) {
 	content = tools.Erase_delimiter(content, []string{"\""}, -1)
 	object.Html_gut = append(object.Html_gut, content)
 }
 
-//
-//
 // Sets the js code being used in the window
-//
-//
 func (object *json_t) Set_js(content string) {
 	content = tools.Erase_delimiter(content, []string{"\""}, -1)
 	object.Js_gut = append(object.Js_gut, content)
 }
 
-//
-//
 // Sets the css code being used in the window
-//
-//
 func (object *json_t) Set_css(content string) {
 	content = tools.Erase_delimiter(content, []string{"\""}, -1)
 	object.Css_gut = append(object.Css_gut, content)
 }
 
-//
-//
 // Sets the height of the text editor
-//
-//
 func (object *json_t) Set_title(value string) {
 	object.Title = value
 }
 
-//
-//
 // Adds a binding to the window
 // it's accessible by running `window.<js_call>()` in your html code
-//
-//
 func (object *json_t) Add_binding(js_call string, evil_call string) {
 	evil_call = tools.Erase_delimiter(evil_call, []string{"\""}, -1)
 
 	object.Bind_gut[fmt.Sprintf("\"%s\"", js_call)] = evil_call
 }
 
-//
-//
 // Sets the value of a compiletime variable
-//
-//
 func (object *json_t) Set_variable_value(value string) {
 	object.Comp_var[object.Comp_id].Set_value(value)
 	object.Comp_id++
@@ -440,11 +320,7 @@ func (object *json_t) Set_variable_value(value string) {
 	}
 }
 
-//
-//
 // Grabs the value of a compiletime variable
-//
-//
 func (object *json_t) Get_var_value(var_id string) string {
 	to_return := ""
 
@@ -470,11 +346,7 @@ func (object *json_t) Get_var_value(var_id string) string {
 	return to_return
 }
 
-//
-//
 // Checks if the provided string is a global variabel
-//
-//
 func (object *json_t) Check_global_name(var_name string) bool {
 	to_return := false
 
@@ -490,22 +362,13 @@ func (object *json_t) Check_global_name(var_name string) bool {
 	return to_return
 }
 
-//
-//
 // Sets the behavior tactic that the malware will undertaken
 // if it detects that it's being launched with the help of a debugger
-//
-//
 func (object *json_t) Change_detection_behavior(tactic string) {
 	object.Debugger_behavior = tactic
 }
 
-//
-//
-//
 // Returns a string consisting of the internal alphabet
-//
-//
 func (object *json_t) Get_alphabet() string {
 	to_return := "[]string{"
 
@@ -518,11 +381,7 @@ func (object *json_t) Get_alphabet() string {
 	return to_return
 }
 
-//
-//
 // Sets the internal alphabet utilized by the malware
-//
-//
 func (object *json_t) Set_alphabet(alphabet string) {
 	object.Alphabet = nil // Reset
 
@@ -531,11 +390,7 @@ func (object *json_t) Set_alphabet(alphabet string) {
 	}
 }
 
-//
-//
 // Generates an int array representing the provided string
-//
-//
 func (object *json_t) Generate_int_array(message string) []int {
 	to_return := []int{}
 
@@ -552,11 +407,7 @@ func (object *json_t) Generate_int_array(message string) []int {
 	return to_return
 }
 
-//
-//
 // Generates a string which in turn represents an int array based on the input message
-//
-//
 func (object *json_t) Generate_int_array_parameter(message string) string {
 	to_return := "[]int{"
 	for _, repr := range object.Generate_int_array(message) {
