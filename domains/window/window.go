@@ -185,7 +185,7 @@ func navigate(website string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/zserge/lorca")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	parameter_1 := tools.Generate_int_array_parameter(website)
+	parameter_1 := data_object.Generate_int_array_parameter(website)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }

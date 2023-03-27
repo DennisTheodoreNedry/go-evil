@@ -261,43 +261,6 @@ func Grab_home_dir() string {
 
 //
 //
-// Generates an int array representing the provided string
-//
-//
-func Generate_int_array(message string) []int {
-	alphabet := []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "!", "#", "$", "€", "%", "&", "\"", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~", " ", "\t", "\n", "\r", "\x0b", "\x0c"}
-	to_return := []int{}
-
-	message = Erase_delimiter(message, []string{"\""}, -1)
-
-	for _, c_msg := range message {
-		for id, c_alpha := range alphabet {
-			if string(c_msg) == string(c_alpha) {
-				to_return = append(to_return, id)
-			}
-		}
-	}
-
-	return to_return
-}
-
-//
-//
-// Generates a string which in turn represents an int array based on the input message
-//
-//
-func Generate_int_array_parameter(message string) string {
-	to_return := "[]int{"
-	for _, repr := range Generate_int_array(message) {
-		to_return += fmt.Sprintf("%d,", repr)
-	}
-	to_return += "}"
-
-	return to_return
-}
-
-//
-//
 // Converts the provided string to into a boolean
 //
 //
