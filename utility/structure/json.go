@@ -527,7 +527,6 @@ func (object *json_t) Set_alphabet(alphabet string) {
 	object.Alphabet = nil // Reset
 
 	for _, char := range strings.Split(alphabet, ",") {
-		fmt.Println(char)
 		object.Alphabet = append(object.Alphabet, string(char))
 	}
 }
