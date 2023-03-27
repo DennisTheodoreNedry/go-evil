@@ -82,7 +82,7 @@ func Set(compile_time bool, value string, s_json string) ([]string, string) {
 			"}",
 		})
 
-		parameter_1 := tools.Generate_int_array_parameter(value)
+		parameter_1 := data_object.Generate_int_array_parameter(value)
 
 		return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 	}

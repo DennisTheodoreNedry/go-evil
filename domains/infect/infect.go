@@ -58,7 +58,7 @@ func path(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("os/exec")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	parameter_1 := tools.Generate_int_array_parameter(path)
+	parameter_1 := data_object.Generate_int_array_parameter(path)
 
 	return []string{fmt.Sprintf("%s(%s, %t)", function_call, parameter_1, boot)}, structure.Send(data_object)
 }
