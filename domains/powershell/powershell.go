@@ -36,7 +36,7 @@ func set_execution_policy(value string, s_json string) ([]string, string) {
 		"}"})
 
 	data_object.Add_go_import("os/exec")
-	parameter_1 := tools.Generate_int_array_parameter(value)
+	parameter_1 := data_object.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", system_call, parameter_1)}, structure.Send(data_object)
 }

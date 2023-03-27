@@ -76,8 +76,8 @@ func ping(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/tatsushid/go-fastping")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	int_target := tools.Generate_int_array_parameter(target)
-	int_protocol := tools.Generate_int_array_parameter(protocol)
+	int_target := data_object.Generate_int_array_parameter(target)
+	int_protocol := data_object.Generate_int_array_parameter(protocol)
 
 	return []string{fmt.Sprintf("%s(%s, %d, %s)", function_call, int_target, count, int_protocol)}, structure.Send(data_object)
 }
@@ -230,7 +230,7 @@ func reverse_shell(value string, s_json string) ([]string, string) {
 		notify.Error(fmt.Sprintf("Failed to convert '%s' to an integer", port), "network.reverse_shell()")
 	}
 
-	parameter_1 := tools.Generate_int_array_parameter(ip)
+	parameter_1 := data_object.Generate_int_array_parameter(ip)
 
 	return []string{fmt.Sprintf("%s(%s, %d)", function_call, parameter_1, i_port)}, structure.Send(data_object)
 }
@@ -254,7 +254,7 @@ func download(value string, s_json string) ([]string, string) {
 		"}"})
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 
-	parameter_1 := tools.Generate_int_array_parameter(value)
+	parameter_1 := data_object.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
@@ -280,7 +280,7 @@ func dns_lookup(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 	data_object.Add_go_import("strings")
 
-	parameter_1 := tools.Generate_int_array_parameter(value)
+	parameter_1 := data_object.Generate_int_array_parameter(value)
 
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }

@@ -24,6 +24,7 @@ func main() {
 	arg.Argument_add("--obfuscate", "-ob", false, "Obfuscates the source code at compile time")
 	arg.Argument_add_with_options("--debugger_behavior", "-db", true, "Changes the behavior of the malware after detecting a debugger", []string{"none", "stop", "remove", "loop"})
 	arg.Argument_add("--build_directory", "-bd", true, "Sets the directory where all compiled files, source code, etc will be placed")
+	arg.Argument_add("--alphabet", "-A", true, "Sets the internal alphabet utilized")
 
 	parsed := arg.Argument_parse()
 	object := structure.Create_json_object()
@@ -59,9 +60,11 @@ func main() {
 				object.Enable_obfuscate()
 			case "-db":
 				object.Change_detection_behavior(value)
-
 			case "-bd":
 				object.Set_build_directory(value)
+			case "-A":
+				object.Set_alphabet(value)
+
 			}
 		}
 

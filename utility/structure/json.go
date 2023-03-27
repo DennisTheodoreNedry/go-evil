@@ -60,6 +60,9 @@ type json_t struct {
 
 	// Debugger behavior
 	Debugger_behavior string `json:"debugger_behavior"` // How should the malware behave after detecting a debugger being used?
+
+	// Custom alphabet
+	Alphabet []string `json:"alphabet"`
 }
 
 //
@@ -495,4 +498,72 @@ func (object *json_t) Check_global_name(var_name string) bool {
 //
 func (object *json_t) Change_detection_behavior(tactic string) {
 	object.Debugger_behavior = tactic
+}
+
+//
+//
+//
+// Returns a string consisting of the internal alphabet
+//
+//
+func (object *json_t) Get_alphabet() string {
+	to_return := "[]string{"
+
+	for _, repr := range object.Alphabet {
+		to_return += fmt.Sprintf("\"%s\",", repr)
+	}
+
+	to_return += "}"
+
+	return to_return
+}
+
+//
+//
+// Sets the internal alphabet utilized by the malware
+//
+//
+func (object *json_t) Set_alphabet(alphabet string) {
+	object.Alphabet = nil // Reset
+
+	for _, char := range strings.Split(alphabet, ",") {
+		fmt.Println(char)
+		object.Alphabet = append(object.Alphabet, string(char))
+	}
+}
+
+//
+//
+// Generates an int array representing the provided string
+//
+//
+func (object *json_t) Generate_int_array(message string) []int {
+	to_return := []int{}
+
+	message = tools.Erase_delimiter(message, []string{"\""}, -1)
+
+	for _, c_msg := range message {
+		for id, c_alpha := range object.Alphabet {
+			if string(c_msg) == string(c_alpha) {
+				to_return = append(to_return, id)
+			}
+		}
+	}
+
+	return to_return
+}
+
+//
+//
+// Generates a string which in turn represents an int array based on the input message
+//
+//
+func (object *json_t) Generate_int_array_parameter(message string) string {
+	to_return := "[]int{"
+	for _, repr := range object.Generate_int_array(message) {
+		to_return += fmt.Sprintf("%d,", repr)
+	}
+	to_return += "}"
+
+	return to_return
 }
