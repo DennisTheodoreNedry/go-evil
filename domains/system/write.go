@@ -17,7 +17,7 @@ func write(s_json string, value string) ([]string, string) {
 	path := arr.Get(0)
 	data := strings.Join(arr.Get_between(1, arr.Length()), " ")
 
-	if data_object.Check_global_name(data) { // Checks if what we got is a global variable
+	if data_object.Check_global_var(data) { // Checks if what we got is a global variable
 		data = tools.Erase_delimiter(data, []string{"\""}, -1)
 	} else {
 		data = fmt.Sprintf("\"%s\"", data)
