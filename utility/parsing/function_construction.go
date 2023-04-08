@@ -5,14 +5,11 @@ import (
 	"regexp"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-//
-//
 // Generates the main function of the malware
-//
-//
 func generate_main_function(s_json string, boot_functions []string, loop_functions []string) string {
 	data_object := structure.Receive(s_json)
 
@@ -73,11 +70,7 @@ func generate_main_function(s_json string, boot_functions []string, loop_functio
 
 }
 
-//
-//
 // This functions binds everything togheter and will generate a complete go code in the structure
-//
-//
 func construct_final_malware(s_json string) string {
 	data_object := structure.Receive(s_json)
 
@@ -119,12 +112,8 @@ func construct_final_malware(s_json string) string {
 	return structure.Send(data_object)
 }
 
-//
-//
 // Filters each definied function into the two categories, boot and loop (call functions aren't handled here)
-//
-//
-func filter_function_types(d_funcs []structure.Func_t) ([]string, []string) {
+func filter_function_types(d_funcs []functions.Func_t) ([]string, []string) {
 	boot_functions := []string{}
 	loop_functions := []string{}
 
@@ -143,11 +132,8 @@ func filter_function_types(d_funcs []structure.Func_t) ([]string, []string) {
 	return boot_functions, loop_functions
 }
 
-//
-//
 // Converts each sub function into a corresponding set of golang code
 // Creates all functions, loop, boot and call
-//
 func generate_go_functions(s_json string) (string, []string, []string) {
 	data_object := structure.Receive(s_json)
 
@@ -204,11 +190,7 @@ func generate_go_functions(s_json string) (string, []string, []string) {
 	return structure.Send(data_object), boot_func, loop_func
 }
 
-//
-//
 // Converts evil code to golang code and returns it
-//
-//
 func generate_body_code(gut []string, s_json string) ([]string, string) {
 	calls := []string{}
 
