@@ -5,8 +5,7 @@ go 1.18
 require (
 	github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220910114610-98aa712211c5
 	github.com/s9rA16Bf4/notify_handler v0.0.0-20220414214026-7cbc65f663ea
-	github.com/thanhpk/randstr v1.0.4
-	golang.org/x/sys v0.6.0
+	github.com/thanhpk/randstr v1.0.5
 )
 
 require (
@@ -38,7 +37,7 @@ require (
 	github.com/webview/webview v0.0.0-20230210061304-7b40e46d97e9 // indirect
 	github.com/xlab/treeprint v1.1.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
-	github.com/zserge/lorca v0.1.10 // indirect
-	golang.org/x/net v0.8.0 // indirect
+	golang.org/x/net v0.9.0 // indirect
+	golang.org/x/sys v0.7.0 // indirect
 	rsc.io/goversion v1.2.0 // indirect
 )
