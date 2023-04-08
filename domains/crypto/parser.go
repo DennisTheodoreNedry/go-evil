@@ -6,11 +6,7 @@ import (
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-//
-//
 // The main parser for the crypto domain
-//
-//
 func Parser(function string, value string, s_json string) ([]string, string) {
 	call := []string{}
 
@@ -34,7 +30,7 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		call, s_json = add_target(value, s_json)
 
 	case "set_extension":
-		call, s_json = set_after_extension(value, s_json)
+		call, s_json = set_extension(value, s_json)
 
 	case "decrypt":
 		call, s_json = decrypt(value, s_json)

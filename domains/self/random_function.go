@@ -1,123 +1,14 @@
 package self
 
 import (
-	"encoding/hex"
 	"fmt"
-	"io/ioutil"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-//
-//
-// Adds a function function_call to the src code
-// Calls function of the type 'c'
-//
-func Call_function(func_name string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
-	function_call := []string{"function_call()"}
-
-	func_name = tools.Erase_delimiter(func_name, []string{"\""}, -1) // Removes all " from the string
-
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", function_call[0]),
-		fmt.Sprintf("%s()", func_name),
-		"}",
-	})
-
-	return function_call, structure.Send(data_object)
-}
-
-//
-//
-// Includes the provided file in the malware, the result can be found in one of the compiler time variables
-//
-//
-func Include(file_path string, s_json string) string {
-	data_object := structure.Receive(s_json)
-	file_path = tools.Erase_delimiter(file_path, []string{"\""}, -1)
-
-	file_gut, err := ioutil.ReadFile(file_path)
-	if err != nil {
-		notify.Error(err.Error(), "self.Include()")
-	}
-	new_const := tools.Generate_random_string()
-	final_line := fmt.Sprintf("var %s = \"[HEX];,", new_const)
-
-	for _, line := range file_gut {
-		final_line += fmt.Sprintf("%s,", hex.EncodeToString([]byte{line}))
-	}
-
-	final_line += "\""
-
-	data_object.Add_go_global(final_line)
-
-	data_object.Set_variable_value(new_const)
-
-	return structure.Send(data_object)
-}
-
-//
-//
-// Sets a compiletime/runtime variable with a value
-//
-//
-func Set(compile_time bool, value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
-	value = tools.Erase_delimiter(value, []string{"\""}, -1)
-
-	if compile_time {
-		data_object.Set_variable_value(value)
-		return []string{}, structure.Send(data_object)
-
-	} else {
-		function_call := "set_runtime"
-
-		data_object.Add_go_function([]string{
-			fmt.Sprintf("func %s(repr_1 []int){", function_call),
-			"value := spine.variable.get(spine.alpha.construct_string(repr_1))",
-			"spine.variable.set(value)",
-			"}",
-		})
-
-		parameter_1 := data_object.Generate_int_array_parameter(value)
-
-		return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
-	}
-}
-
-//
-//
-// Adds a random variable to the source code
-//
-//
-func Add_random_variable(amount string, s_json string) string {
-	data_object := structure.Receive(s_json)
-
-	amount = tools.Erase_delimiter(amount, []string{"\""}, -1)
-
-	i_value := tools.String_to_int(amount)
-	if i_value == -1 {
-		notify.Error(fmt.Sprintf("Unknown amount '%d'", i_value), "self.Add_random_variable()")
-	}
-
-	for i := 0; i < i_value; i++ {
-		variable_name := tools.Generate_random_string()
-		random_value := tools.Generate_random_string()
-
-		data_object.Add_go_global(fmt.Sprintf("var %s string = \"%s\"", variable_name, random_value))
-	}
-
-	return structure.Send(data_object)
-}
-
-//
-//
 // Adds a random function to the source code
-//
-//
 func Add_random_function(amount string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	amount = tools.Erase_delimiter(amount, []string{"\""}, -1)
