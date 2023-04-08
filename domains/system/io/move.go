@@ -1,4 +1,4 @@
-package system
+package io
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 )
 
 // Moves the target file to it's new location
-func move(value string, s_json string) ([]string, string) {
+func Move(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "move"
 

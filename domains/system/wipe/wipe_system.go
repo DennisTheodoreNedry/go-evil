@@ -1,4 +1,4 @@
-package system
+package wipe
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Tries to wipe the entire system
-func wipe_system(value string, s_json string) ([]string, string) {
+func System(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "wipe_system"
 

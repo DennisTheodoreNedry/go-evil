@@ -10,11 +10,7 @@ import (
 
 var if_else_call = 0
 
-//
-//
 // Construcs the code needed for a "if/else" statement
-//
-//
 func construct_if_else(condition string, if_true_body []string, if_false_body []string, s_json string) ([]string, string) {
 	function_call := fmt.Sprintf("if_%d", if_else_call)
 	if_else_call++
@@ -58,18 +54,13 @@ func construct_if_else(condition string, if_true_body []string, if_false_body []
 	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_1, parameter_2)}, structure.Send(data_object)
 }
 
-//
-//
 // Gathers all data needed for an if/else statement
-//
-//
 func get_if_else_body(index *int, gut []string) ([]string, []string) {
 	if_true_body := []string{}
 	if_false_body := []string{}
 
 	*index++ // Skips the header which is important as we otherwise get stuck in an endless loop
 
-	else_statement := map[string]bool{}
 	reached_else := false
 
 	// Grab the if true and if false body
@@ -78,7 +69,7 @@ func get_if_else_body(index *int, gut []string) ([]string, []string) {
 		footer_reached := footer[GET_IF_ELSE_FOOTER]
 
 		if !reached_else { // Only do this once
-			else_statement = tools.Contains(gut[*index], []string{GET_ELSE_HEADER})
+			else_statement := tools.Contains(gut[*index], []string{GET_ELSE_HEADER})
 			reached_else = else_statement[GET_ELSE_HEADER]
 		}
 

@@ -1,4 +1,4 @@
-package system
+package users
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 // Creates a user on the local machine
 // Input, an evil array in the following format ${"username", "password"}$
-func create_user(value string, s_json string) ([]string, string) {
+func Create(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "create_user"
 

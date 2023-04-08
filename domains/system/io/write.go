@@ -1,4 +1,4 @@
-package system
+package io
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 )
 
 // Writes a provided content to a provided file
-func write(s_json string, value string) ([]string, string) {
+func Write(s_json string, value string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Write"
 
