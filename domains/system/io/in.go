@@ -1,4 +1,4 @@
-package system
+package io
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Takes a user input and saves the result in a runtime variable
-func input(s_json string) ([]string, string) {
+func Input(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "input"
 	data_object.Add_go_function([]string{

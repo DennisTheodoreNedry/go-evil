@@ -1,4 +1,4 @@
-package system
+package io
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 )
 
 // Copies the target file to the new provided location
-func copy(value string, s_json string) ([]string, string) {
+func Copy(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "copy"
 
