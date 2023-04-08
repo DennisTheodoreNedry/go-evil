@@ -1,4 +1,4 @@
-package system
+package io
 
 import (
 	"fmt"
@@ -6,15 +6,15 @@ import (
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 )
 
-// Prints a message to the screen, but appends a newline at the end of each print
-func Outln(s_json string, msg string) ([]string, string) {
+// Prints a message to the screen
+func Out(s_json string, msg string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "Outln"
+	function_call := "Out"
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(msg []int){", function_call),
 		"s_msg := spine.variable.get(spine.alpha.construct_string(msg))",
-		"fmt.Println(s_msg)",
+		"fmt.Print(s_msg)",
 		"}"})
 
 	data_object.Add_go_import("fmt")

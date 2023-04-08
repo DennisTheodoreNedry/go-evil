@@ -1,4 +1,4 @@
-package system
+package io
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 )
 
 // Reads the contents of a file and places the result into a runtime variable
-func read(s_json string, value string) ([]string, string) {
+func Read(s_json string, value string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "read"
 	value = tools.Erase_delimiter(value, []string{"\""}, -1)

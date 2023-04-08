@@ -1,4 +1,4 @@
-package system
+package systemcommands
 
 import (
 	"fmt"
@@ -6,16 +6,16 @@ import (
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 )
 
-// Shutdowns the computer
-func Shutdown(s_json string) ([]string, string) {
+// Reboots the computer
+func Reboot(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "Shutdown"
+	function_call := "Reboot"
 
 	cmd := ""
 	if data_object.Target_os == "windows" {
-		cmd = "shutdown /s"
+		cmd = "shutdown /r"
 	} else {
-		cmd = "shutdown -h now"
+		cmd = "shutdown -r now"
 	}
 
 	data_object.Add_go_function([]string{
@@ -27,4 +27,5 @@ func Shutdown(s_json string) ([]string, string) {
 	data_object.Add_go_import("os/exec")
 
 	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+
 }

