@@ -1,4 +1,4 @@
-package window
+package navigate
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Makes the window enter a website of your choice
-func navigate(website string, s_json string) ([]string, string) {
+func Navigate(website string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Navigate"
 

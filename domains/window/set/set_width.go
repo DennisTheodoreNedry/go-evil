@@ -1,4 +1,4 @@
-package window
+package set
 
 import (
 	"github.com/TeamPhoneix/go-evil/utility/structure"
@@ -6,7 +6,7 @@ import (
 )
 
 // Sets the width of the window
-func set_width(new_width string, s_json string) string {
+func Width(new_width string, s_json string) string {
 	data_object := structure.Receive(s_json)
 	new_width = tools.Erase_delimiter(new_width, []string{"\""}, -1)
 
