@@ -1,4 +1,4 @@
-package random
+package string
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 
 // Generates a random string where the provded value is the length of the string
 // The generated value is placed in a compile-time variable
-func generate_string(value string, s_json string) string {
+func Generate(value string, s_json string) string {
 	data_object := structure.Receive(s_json)
 
 	roof := tools.Erase_delimiter(value, []string{"\""}, -1)
