@@ -1,4 +1,4 @@
-package self
+package random
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 )
 
 // Adds a random variable to the source code
-func Add_random_variable(amount string, s_json string) string {
+func Add_variable(amount string, s_json string) string {
 	data_object := structure.Receive(s_json)
 
 	amount = tools.Erase_delimiter(amount, []string{"\""}, -1)
