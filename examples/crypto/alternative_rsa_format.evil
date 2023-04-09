@@ -1,0 +1,28 @@
+@ Showcases how you encrypt/decrypt a file with the rsa crypto @
+@ The format here is an alternative format where you can set all values in one go @
+@ compared to having to call each function by themself @
+
+use crypto
+use system
+use time
+[
+    version 2.0
+    output alternative_rsa
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    crypto::encrypt(${"rsa", "2048", "", ".why_do_i_have_to_scream" , "€39€/examples/crypto/target_file.txt"}$)
+    
+    crypto::clean_targets() @ Removes every prevously added target @
+
+    time::sleep(10)
+
+    crypto::decrypt(${"rsa", "", ".castle_of_glass" , "€39€/examples/crypto/target_file.txt.why_do_i_have_to_scream"}$)
+
+    system::exit("0")
+}
