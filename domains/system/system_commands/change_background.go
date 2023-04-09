@@ -1,4 +1,4 @@
-package system
+package systemcommands
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Changes the background to what you want it to be
-func change_background(value string, s_json string) ([]string, string) {
+func Change_background(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "change_background"
 

