@@ -1,4 +1,4 @@
-package powershell
+package policy
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-func set_execution_policy(value string, s_json string) ([]string, string) {
+func Set_execution(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	value = tools.Erase_delimiter(value, []string{"\""}, -1)
 
