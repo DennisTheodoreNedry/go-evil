@@ -1,8 +1,7 @@
-package parsing
+package imports
 
 import (
 	"fmt"
-	"regexp"
 
 	"github.com/TeamPhoneix/go-evil/domains/base64"
 	"github.com/TeamPhoneix/go-evil/domains/bombs"
@@ -15,39 +14,16 @@ import (
 	"github.com/TeamPhoneix/go-evil/domains/system"
 	"github.com/TeamPhoneix/go-evil/domains/time"
 	"github.com/TeamPhoneix/go-evil/domains/window"
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	compile_time_var "github.com/TeamPhoneix/go-evil/utility/parsing/compile_time_var"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-//
-//
-// Adds all found imports
-//
-//
-func Find_imports(s_json string) string {
-	data_object := structure.Receive(s_json)
-	regex := regexp.MustCompile(IMPORT)
-	result := regex.FindAllStringSubmatch(data_object.File_gut, -1)
-
-	if len(result) > 0 {
-		for _, domain := range result {
-			data_object.Add_domain(domain[1])
-		}
-	}
-
-	return structure.Send(data_object)
-}
-
-//
-//
 // Construct function code for each of the used functions in the domains
-//
-//
-func construct_domain_code(domain string, function string, value string, s_json string) ([]string, string) {
+func Construct_domain_code(domain string, function string, value string, s_json string) ([]string, string) {
 	call_functions := []string{}
 
 	// Translating compile time variables
-	value, s_json = Parse_compile_time_vars(value, s_json)
+	value, s_json = compile_time_var.Parse_compile_time_vars(value, s_json)
 
 	// Going through all available domains
 	switch domain {
@@ -85,7 +61,7 @@ func construct_domain_code(domain string, function string, value string, s_json 
 		call_functions, s_json = base64.Parser(function, value, s_json)
 
 	default:
-		notify.Error(fmt.Sprintf("Unknown domain '%s'", domain), "functions.construct_domain_code()")
+		notify.Error(fmt.Sprintf("Unknown domain '%s'", domain), "functions.Construct_domain_code()")
 	}
 
 	return call_functions, s_json
