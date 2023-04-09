@@ -9,7 +9,7 @@ import (
 // Grabs all networks nearby
 // Input None
 // The return is an evil array containing all found networks which is placed in a runtime variable
-func get_networks(value string, s_json string) ([]string, string) {
+func Get(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "get_networks"
 

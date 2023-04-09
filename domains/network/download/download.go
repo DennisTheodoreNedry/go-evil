@@ -1,4 +1,4 @@
-package network
+package download
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Downloads a file from the provided url and saves it with the same name on the disk
-func download(value string, s_json string) ([]string, string) {
+func Download(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "download"
 
