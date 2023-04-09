@@ -1,4 +1,4 @@
-package random
+package int
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 // Generates a random int value in a range
 // The input is an evil array that should only contain two values, min and max
 // The generated value is placed in a compile-time variable
-func generate_int(value string, s_json string) string {
+func Generate(value string, s_json string) string {
 	data_object := structure.Receive(s_json)
 	arr := structure.Create_evil_object(value)
 
