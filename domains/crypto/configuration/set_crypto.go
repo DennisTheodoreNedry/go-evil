@@ -1,4 +1,4 @@
-package crypto
+package configuration
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 )
 
 // Sets the crypto system to use for encrypting and decrypting
-func set_crypto(value string, s_json string) ([]string, string) {
+func Set_crypto(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	available_systems := []string{"aes", "rsa"}
 	system_call := "set_crypto"

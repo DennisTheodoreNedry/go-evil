@@ -1,4 +1,4 @@
-package crypto
+package generate
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 )
 
 // Generates a rsa key used for encrypting/decrypting
-func generate_rsa_key(value string, s_json string) ([]string, string) {
+func RSA_key(value string, s_json string) ([]string, string) {
 	value = tools.Erase_delimiter(value, []string{"\""}, -1)
 	system_call := "generate_rsa_key"
 	data_object := structure.Receive(s_json)
