@@ -1,4 +1,4 @@
-package network
+package interfaces
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 // Grabs all interfaces
 // Input None
 // The return is an evil array containing all found interfaces which is placed in a runtime variable
-func get_interfaces(value string, s_json string) ([]string, string) {
+func Get_interfaces(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "get_interfaces"
 

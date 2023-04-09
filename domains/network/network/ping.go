@@ -15,7 +15,7 @@ import (
 // count - How many times to ping, 0 for indefinitely
 // udp/tcp - Which protocol do you want to use?
 
-func ping(value string, s_json string) ([]string, string) {
+func Ping(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "ping_target"
 	arr := structure.Create_evil_object(value)

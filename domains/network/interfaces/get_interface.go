@@ -1,4 +1,4 @@
-package network
+package interfaces
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 // Grabs the current wireless interface
 // Input None
 // The result will be the interface name and mac adress which are placed into seperate runtime variables
-func get_interface(value string, s_json string) ([]string, string) {
+func Get_interface(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "get_interface"
 
