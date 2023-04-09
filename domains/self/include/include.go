@@ -1,4 +1,4 @@
-package self
+package include
 
 import (
 	"encoding/hex"

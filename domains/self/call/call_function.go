@@ -1,4 +1,4 @@
-package self
+package call
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 // Adds a function function_call to the src code
 // Calls function of the type 'c'
-func Call_function(func_name string, s_json string) ([]string, string) {
+func Function(func_name string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := []string{"function_call()"}
 
