@@ -1,19 +1,17 @@
-package parsing
+package compiletimevar
 
 import (
 	"regexp"
 	"strings"
 
+	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
+
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 )
 
-//
-//
 // Checks the incoming line for compile time variable, and if detected parses it correctly
-//
-//
 func Parse_compile_time_vars(value string, s_json string) (string, string) {
-	regex := regexp.MustCompile(GET_VAR)
+	regex := regexp.MustCompile(evil_regex.GET_VAR)
 	result := regex.FindAllStringSubmatch(value, -1)
 
 	if len(result) > 0 {

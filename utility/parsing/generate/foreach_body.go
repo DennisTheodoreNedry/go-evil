@@ -1,24 +1,19 @@
-package parsing
+package generate
 
 import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
 var foreach_call = 0
 
-//
-//
 // Construcs the code needed for a "foreach" loop
-//
-//
-func construct_foreach_loop(condition string, body []string, s_json string) ([]string, string) {
+func Construct_foreach_loop(condition string, body []string, s_json string) ([]string, string) {
 	function_call := []string{fmt.Sprintf("foreach_%d", foreach_call)}
 	foreach_call++
 
-	body_calls, s_json := generate_body_code(body, s_json) // Converts the code for the foreach body
+	body_calls, s_json := Generate_golang_code(body, s_json) // Converts the code for the foreach body
 	data_object := structure.Receive(s_json)
 	arr := structure.Create_evil_object(condition)
 
@@ -53,27 +48,4 @@ func construct_foreach_loop(condition string, body []string, s_json string) ([]s
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
 
 	return function_call, structure.Send(data_object)
-}
-
-//
-//
-// Gathers all data needed for an foreach statement
-//
-//
-func get_foreach_body(index *int, gut []string) []string {
-	body := []string{}
-	*index++ // Skips the header which is important as we otherwise get stuck in an endless loop
-
-	for ; *index < len(gut); *index++ { // Grabs all data between the header and footer, but also fast forwards the index
-		footer := tools.Contains(gut[*index], []string{GET_FOREACH_FOOTER})
-		footer_reached := footer[GET_FOREACH_FOOTER]
-
-		if footer_reached {
-			break
-		} else {
-			body = append(body, gut[*index])
-		}
-	}
-
-	return body
 }
