@@ -1,4 +1,4 @@
-package bombs
+package logical
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 )
 
 // Input is an evil array, ${"time until detonation in ms", "execution function name"}$
-func logical_bomb(value string, s_json string) ([]string, string) {
+func Bomb(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "logical_bomb"
 	arr := structure.Create_evil_object(value)

@@ -7,13 +7,9 @@ import (
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 )
 
-//
-//
 // A simple wrapper which combines the process from reading the evil file
 // to compiling it. Used by the main process when running gevil from the cli
 // but also from when you compile the malware through the text editor
-//
-//
 func Parse_and_compile(s_json string) {
 	object := structure.Receive(io.Read_file(s_json))
 	// Parse the file
