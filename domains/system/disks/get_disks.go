@@ -1,4 +1,4 @@
-package system
+package disks
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 // Tries to grab all disks
 // Input None
 // The return is an evil array containing all found disks which is placed in a runtime variable
-func get_disks(value string, s_json string) ([]string, string) {
+func Get(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "get_disks"
 
