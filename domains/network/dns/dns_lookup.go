@@ -1,4 +1,4 @@
-package network
+package dns
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Peforms a dns lookup
-func dns_lookup(value string, s_json string) ([]string, string) {
+func Lookup(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "dns_lookup"
 

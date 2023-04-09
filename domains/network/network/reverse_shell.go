@@ -10,7 +10,7 @@ import (
 
 // Creates a reverse shell
 // Input, evil array, format ${"attacker ip", "attacker port"}$
-func reverse_shell(value string, s_json string) ([]string, string) {
+func Reverse_shell(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "reverse_shell"
 

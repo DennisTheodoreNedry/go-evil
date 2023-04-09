@@ -1,4 +1,4 @@
-package network
+package ip
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 
 // Get the local ip address
 // The result is placed in a runtime variable
-func get_local_ip(value string, s_json string) ([]string, string) {
+func Get_local(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "get_local_ip"
 
