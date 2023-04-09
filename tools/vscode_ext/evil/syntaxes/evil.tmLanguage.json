@@ -3,7 +3,10 @@
 	"name": "Evil",
 	"patterns": [
 		{
-			"include": "#keywords"
+			"include": "#foreach"
+		},
+		{
+			"include": "#ifelse"
 		},
 		{
 			"include": "#strings"
@@ -32,12 +35,24 @@
 	],
 	
 	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.evil",
-				"match": "\\b(foreach|end foreach)\\b"
-			}]
+		"foreach": {
+			"patterns": [
+				{
+					"name": "keyword.control.evil",
+					"match": "\\b(foreach|end foreach)\\b"
+				}
+			]
 		},
+		
+		"ifelse": {
+			"patterns": [
+				{
+					"name": "keyword.control.evil",
+					"match": "\\b(if|else|end if)\\b"
+				}
+			]
+		},
+
 		"strings": {
 			"name": "string.quoted.double.evil",
 			"begin": "\"",
