@@ -1,4 +1,4 @@
-package base64
+package encode
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Encodes the provided string and places the result in a runtime variable
-func encode(value string, s_json string) ([]string, string) {
+func Encode(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "base64_encode"
 

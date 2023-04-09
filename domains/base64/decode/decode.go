@@ -1,4 +1,4 @@
-package base64
+package decode
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Decodes the provided string and places the result in a runtime variable
-func decode(value string, s_json string) ([]string, string) {
+func Decode(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "base64_decode"
 
