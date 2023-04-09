@@ -1,4 +1,4 @@
-package crypto
+package target
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 )
 
 // Appends a target to focus on, you can also pass in a evil array with all your targets aswell
-func add_target(value string, s_json string) ([]string, string) {
+func Add(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 
 	system_call := "add_target"
