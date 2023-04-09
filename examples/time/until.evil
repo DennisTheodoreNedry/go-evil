@@ -1,0 +1,28 @@
+@ Shows the until function in the time domain @
+@ Supported formats @
+@ - YYYY/MM/DD-hh:mm @ 
+@ - hh:mm @
+
+use system
+use time
+
+[
+    version 2.0
+    output until
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+l main_func {
+    time::until("10:45")
+    system::outln("Hello I've launched!!")
+    
+    system::outln("Let us try this again!!")
+    
+    time::until("2023/04/09-10:50")
+    system::outln("Finishing up!")
+
+    system::exit("0")
+}

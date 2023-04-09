@@ -3,8 +3,11 @@ package until
 import (
 	"fmt"
 	"regexp"
+	"time"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/tools"
+	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 const (
@@ -18,19 +21,57 @@ func Until(s_json string, value string) ([]string, string) {
 	function_call := "Until"
 
 	regex := regexp.MustCompile(GRAB_FULL_DATE)
-	result := regex.FindAllStringSubmatch(value, -1)
+	result_full := regex.FindAllStringSubmatch(value, -1)
 
-	if len(result) > 0 {
-		fmt.Println(result)
+	regex2 := regexp.MustCompile(GRAB_HOUR_MIN)
+	result_hour_min := regex2.FindAllStringSubmatch(value, -1)
+
+	if len(result_full) == 0 && len(result_hour_min) == 0 {
+		notify.Error("Failed to find a valid time format!", "time.Until")
+	}
+
+	year, month, day := time.Now().Date()
+
+	parameters := []string{
+		tools.Int_to_string(year),
+		tools.Int_to_string(int(month)),
+		tools.Int_to_string(day),
+		// hour
+		// minute
+	}
+
+	if len(result_full) > 0 {
+		parameters = []string{result_full[0][1], result_full[0][2], result_full[0][3], result_full[0][4], result_full[0][5]}
+	} else {
+		parameters = append(parameters, result_hour_min[0][1], result_hour_min[0][2]) // Grab the hour and minute
 	}
 
 	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr_1 []int){", function_call),
-		"i_value := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_1)))",
-
+		fmt.Sprintf("func %s(repr_1 []int, repr_2 []int, repr_3 []int, repr_4 []int, repr_5 []int){", function_call),
+		"year := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_1)))",
+		"month := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_2)))",
+		"day := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_3)))",
+		"hour := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_4)))",
+		"minute := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_5)))",
+		"c_now := time.Now()",
+		"for year != c_now.Year() || month != int(c_now.Month()) || day != c_now.Day() || hour != c_now.Hour() || minute != c_now.Minute() {",
+		"time.Sleep(5 * (10 ^ 9))",
+		"c_now = time.Now()",
+		"}",
 		"}",
 	})
-	parameter_1 := data_object.Generate_int_array_parameter(value)
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
+	data_object.Add_go_import("time")
+
+	constructed_parameters := []string{
+		data_object.Generate_int_array_parameter(parameters[0]),
+		data_object.Generate_int_array_parameter(parameters[1]),
+		data_object.Generate_int_array_parameter(parameters[2]),
+		data_object.Generate_int_array_parameter(parameters[3]),
+		data_object.Generate_int_array_parameter(parameters[4]),
+	}
+
+	return []string{fmt.Sprintf("%s(%s, %s, %s, %s, %s)", function_call, constructed_parameters[0], constructed_parameters[1], constructed_parameters[2],
+			constructed_parameters[3], constructed_parameters[4])},
+		structure.Send(data_object)
 }
