@@ -1,4 +1,4 @@
-package window
+package set
 
 import (
 	"github.com/TeamPhoneix/go-evil/utility/structure"
@@ -6,7 +6,7 @@ import (
 )
 
 // Sets the height of the window
-func set_height(new_height string, s_json string) string {
+func Height(new_height string, s_json string) string {
 	data_object := structure.Receive(s_json)
 	new_height = tools.Erase_delimiter(new_height, []string{"\""}, -1)
 

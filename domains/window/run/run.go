@@ -1,4 +1,4 @@
-package window
+package run
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 )
 
 // Drops all the needed code from the json strucutre into one function
-func run(s_json string) ([]string, string) {
+func Run(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Run()"
 

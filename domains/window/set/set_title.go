@@ -1,4 +1,4 @@
-package window
+package set
 
 import (
 	"github.com/TeamPhoneix/go-evil/utility/structure"
@@ -6,7 +6,7 @@ import (
 )
 
 // Sets the title of the window that appears
-func set_title(new_title string, s_json string) string {
+func Title(new_title string, s_json string) string {
 	data_object := structure.Receive(s_json)
 	new_title = tools.Erase_delimiter(new_title, []string{"\""}, -1)
 

@@ -1,9 +1,9 @@
-package window
+package bind
 
 import "github.com/TeamPhoneix/go-evil/utility/structure"
 
 // Binds a go function to a corresponding javascript function
-func bind(values string, s_json string) string {
+func Bind(values string, s_json string) string {
 	data_structure := structure.Receive(s_json)
 	arr := structure.Create_evil_object(values)
 
