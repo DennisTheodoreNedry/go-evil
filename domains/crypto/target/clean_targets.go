@@ -1,4 +1,4 @@
-package crypto
+package target
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Removes every previously added target
-func clean_targets(value string, s_json string) ([]string, string) {
+func Clean(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 
 	system_call := "clean_targets"
