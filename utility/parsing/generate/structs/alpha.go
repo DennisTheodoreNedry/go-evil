@@ -13,7 +13,7 @@ func Generate_alpha(s_json string) string {
 	data_object.Add_go_struct(
 		structs.Go_struct_t{
 			Name:     "alpha_t",
-			Contents: []string{"[]string"},
+			Contents: []string{"alphabet []string"},
 		})
 
 	body := []string{
@@ -22,7 +22,6 @@ func Generate_alpha(s_json string) string {
 		"to_return += obj.alphabet[number]",
 		"}",
 		"return to_return",
-		"}",
 	}
 
 	data_object.Add_go_function(functions.Go_func_t{Name: "construct_string", Func_type: "", Part_of_struct: "alpha_t",
