@@ -17,12 +17,11 @@ func Exit(s_json string, return_code string) ([]string, string) {
 		Parameters: []string{"repr_1 []int"},
 		Gut: []string{
 			"lvl := spine.variable.get(spine.alpha.construct_string(repr_1))",
-			"value := tools.String_to_int(lvl)",
-			"os.Exit(value)",
+			"spine.return_code = tools.String_to_int(lvl)",
+			"spine.terminate = true",
 		}})
 
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
-	data_object.Add_go_import("os")
 
 	parameter_1 := data_object.Generate_int_array_parameter(return_code)
 

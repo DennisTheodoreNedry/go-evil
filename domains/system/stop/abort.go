@@ -28,7 +28,8 @@ func Abort(s_json string, languages string) ([]string, string) {
 			"}",
 			"for _, lang := range languages{",
 			"if lang == computer_lang{",
-			"os.Exit(0)",
+			"spine.return_code = 0",
+			"spine.terminate = true",
 			"}}",
 		}})
 

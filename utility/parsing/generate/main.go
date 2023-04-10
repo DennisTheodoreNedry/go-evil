@@ -19,6 +19,8 @@ func Generate_main(s_json string) string {
 	body = append(body, "if _, ok := parsed[\"-v\"]; ok{", "spine.logging_lvl = \"3\"", "}")
 
 	body = append(body, fmt.Sprintf("spine.alpha.alphabet = %s", data_object.Get_alphabet()))
+	body = append(body, "spine.terminate = false")
+	body = append(body, "spine.return_code = 0")
 
 	// Adds all the €1€ - €5€ to the final malware
 	body = append(body, fmt.Sprintf("spine.variable.roof = %d", data_object.Var_max))
@@ -43,13 +45,13 @@ func Generate_main(s_json string) string {
 	// Decide the header of the for "infinite" loop
 	switch data_object.Debugger_behavior {
 	case "stop":
-		body = append(body, "for !stop_behavior() {")
+		body = append(body, "for !spine.terminate && !stop_behavior() {")
 	case "remove":
-		body = append(body, "for !remove_behavior() {")
+		body = append(body, "for !spine.terminate && !remove_behavior() {")
 	case "none":
-		body = append(body, "for {")
+		body = append(body, "for !spine.terminate {")
 	case "loop":
-		body = append(body, "for !loop_behavior() {")
+		body = append(body, "for !spine.terminate && !loop_behavior() {")
 	}
 
 	// Add loop function
@@ -65,9 +67,13 @@ func Generate_main(s_json string) string {
 		body = append(body, fmt.Sprintf("%s()", end_name))
 	}
 
+	// Add exit call
+	body = append(body, "os.Exit(spine.return_code)")
+
 	data_object.Add_go_function(functions.Go_func_t{Name: "main", Func_type: "", Part_of_struct: "", Return_type: "", Parameters: []string{}, Gut: body})
 
 	data_object.Add_go_import("github.com/s9rA16Bf4/ArgumentParser/go/arguments")
+	data_object.Add_go_import("os")
 
 	return structure.Send(data_object)
 
