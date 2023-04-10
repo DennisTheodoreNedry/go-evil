@@ -4,14 +4,12 @@ import (
 	"regexp"
 
 	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Parses the data from the target file and generates function structures from it
 // The gut contains the evil code that later on will be parsed
-func Build_functions_structs(s_json string) string {
-	data_object := structure.Receive(s_json)
+func Build_functions_structs(data_object *json.Json_t) {
 	regex := regexp.MustCompile(evil_regex.FUNC)
 	functions := regex.FindAllStringSubmatch(data_object.File_gut, -1)
 
@@ -34,5 +32,4 @@ func Build_functions_structs(s_json string) string {
 
 		}
 	}
-	return structure.Send(data_object)
 }

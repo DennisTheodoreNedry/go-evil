@@ -3,13 +3,12 @@ package generate
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Generates the main function of the malware
-func Generate_main(s_json string) string {
-	data_object := structure.Receive(s_json)
+func Generate_main(data_object *json.Json_t) {
 
 	// Create the main function here
 	body := []string{}
@@ -74,7 +73,5 @@ func Generate_main(s_json string) string {
 
 	data_object.Add_go_import("github.com/s9rA16Bf4/ArgumentParser/go/arguments")
 	data_object.Add_go_import("os")
-
-	return structure.Send(data_object)
 
 }

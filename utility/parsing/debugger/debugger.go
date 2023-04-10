@@ -1,25 +1,23 @@
 package debugger
 
 import (
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Generate behavior function for debugging
-func Generate_behavior(s_json string) string {
-	data_object := structure.Receive(s_json)
+func Generate_behavior(data_object *json.Json_t) {
 
 	if data_object.Debugger_behavior != "none" {
-		s_json = identify(s_json) // Adds neccessary code to identify a debugger
+		identify(data_object) // Adds neccessary code to identify a debugger
 
 		switch data_object.Debugger_behavior {
 		case "stop":
-			s_json = stop_behavior(s_json)
+			stop_behavior(data_object)
 		case "remove":
-			s_json = remove_behavior(s_json)
+			remove_behavior(data_object)
 		case "loop":
-			s_json = loop_behavior(s_json)
+			loop_behavior(data_object)
 		}
 	}
 
-	return s_json
 }

@@ -5,13 +5,11 @@ import (
 	"runtime"
 
 	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Checks if the user specificed an architecture for the malware
-func check_architecture(line string, s_json string) string {
-	data_object := structure.Receive(s_json)
+func check_architecture(line string, data_object *json.Json_t) {
 
 	if data_object.Target_arch == "" { // Don't override if the user already have provided a name
 		regex := regexp.MustCompile(evil_regex.CONFIGURATION_ARCH)
@@ -26,5 +24,4 @@ func check_architecture(line string, s_json string) string {
 
 	}
 
-	return structure.Send(data_object)
 }

@@ -5,13 +5,14 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/parsing/foreach"
 	if_else "github.com/TeamPhoneix/go-evil/utility/parsing/if_else"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 
 	"github.com/TeamPhoneix/go-evil/utility/parsing/imports"
 	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
 )
 
 // Converts evil code to golang code and returns it
-func Generate_golang_code(gut []string, s_json string) ([]string, string) {
+func Generate_golang_code(gut []string, data_object *json.Json_t) []string {
 	calls := []string{}
 
 	for i := 0; i < len(gut); i++ {
@@ -28,7 +29,7 @@ func Generate_golang_code(gut []string, s_json string) ([]string, string) {
 			function := data[0][2]
 			value := data[0][3]
 
-			call_functions, s_json = imports.Construct_domain_code(domain, function, value, s_json)
+			call_functions = imports.Construct_domain_code(domain, function, value, data_object)
 
 		} else {
 			regex = regexp.MustCompile(evil_regex.GET_FOREACH_HEADER)
@@ -38,11 +39,11 @@ func Generate_golang_code(gut []string, s_json string) ([]string, string) {
 
 			if len(foreach_identified) > 0 { // foreach loop
 				body := foreach.Get_foreach_body(&i, gut)
-				call_functions, s_json = Construct_foreach_loop(foreach_identified[0][1], body, s_json)
+				call_functions = Construct_foreach_loop(foreach_identified[0][1], body, data_object)
 
 			} else if len(if_identified) > 0 { // if/else statement
 				true_body, false_body := if_else.Get_if_else_body(&i, gut)
-				call_functions, s_json = Construct_if_else(if_identified[0][1], true_body, false_body, s_json)
+				call_functions = Construct_if_else(if_identified[0][1], true_body, false_body, data_object)
 			}
 
 		}
@@ -52,5 +53,5 @@ func Generate_golang_code(gut []string, s_json string) ([]string, string) {
 		}
 	}
 
-	return calls, s_json
+	return calls
 }

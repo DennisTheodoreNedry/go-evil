@@ -5,17 +5,17 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 var foreach_call = 0
 
 // Construcs the code needed for a "foreach" loop
-func Construct_foreach_loop(condition string, body []string, s_json string) ([]string, string) {
+func Construct_foreach_loop(condition string, body []string, data_object *json.Json_t) []string {
 	function_call := []string{fmt.Sprintf("foreach_%d", foreach_call)}
 	foreach_call++
 
-	body_calls, s_json := Generate_golang_code(body, s_json) // Converts the code for the foreach body
-	data_object := structure.Receive(s_json)
+	body_calls := Generate_golang_code(body, data_object) // Converts the code for the foreach body
 	arr := structure.Create_evil_object(condition)
 
 	final_body := []string{
@@ -46,5 +46,5 @@ func Construct_foreach_loop(condition string, body []string, s_json string) ([]s
 	data_object.Add_go_import("fmt")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
 
-	return function_call, structure.Send(data_object)
+	return function_call
 }

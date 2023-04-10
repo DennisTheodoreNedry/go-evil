@@ -5,13 +5,11 @@ import (
 	"strings"
 
 	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Checks if the user specificed the output to be obfuscated or not
-func check_obfuscate(line string, s_json string) string {
-	data_object := structure.Receive(s_json)
+func check_obfuscate(line string, data_object *json.Json_t) {
 
 	if !data_object.Obfuscate { // No point in checking, if the user already has enabled it through CLI
 		regex := regexp.MustCompile(evil_regex.CONFIGURATION_OBFUSCATE)
@@ -25,5 +23,4 @@ func check_obfuscate(line string, s_json string) string {
 		}
 	}
 
-	return structure.Send(data_object)
 }

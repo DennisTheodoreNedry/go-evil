@@ -1,14 +1,16 @@
 package error
 
-// Wrapper function which calls all our error checking functions
-func Check_for_errors(s_json string) {
+import "github.com/TeamPhoneix/go-evil/utility/structure/json"
 
-	comments(s_json)
-	detect_functions(s_json)
-	check_imports(s_json)
-	check_strings(s_json)
-	check_evil_arrays(s_json)
-	check_compile_variable(s_json)
-	check_runtime_variable(s_json)
-	check_call_function_format(s_json)
+// Wrapper function which calls all our error checking functions
+func Check_for_errors(data_object *json.Json_t) {
+
+	comments(data_object)
+	detect_functions(data_object)
+	check_imports(data_object)
+	check_strings(data_object)
+	check_evil_arrays(data_object)
+	check_compile_variable(data_object)
+	check_runtime_variable(data_object)
+	check_call_function_format(data_object)
 }

@@ -4,14 +4,13 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Checks for strings that have not been terminated
-func check_strings(s_json string) {
-	data_object := structure.Receive(s_json)
+func check_strings(data_object *json.Json_t) {
 
 	gut := strings.Split(data_object.File_gut, "\n")
 
