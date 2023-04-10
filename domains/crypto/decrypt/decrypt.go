@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 )
 
 // Decrypts the provided target
@@ -13,71 +14,71 @@ import (
 func Decrypt(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	call_history := []string{}
-	system_call := "decrypt"
+	function_call := "decrypt"
 
 	if value != "" {
 		call_history, s_json = preface_configuration(value, s_json)
 		data_object = structure.Receive(s_json) // Update our structure
 	}
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", system_call),
-		"if spine.crypt.method == \"\" || len(spine.crypt.target) == 0 || (spine.crypt.aes_key_length == 0 && spine.crypt.rsa_key_length == 0) {",
-		"spine.log(\"Method, target or/and key has not been set for decryption\")",
-		"return",
-		"}",
-		"for _, target := range spine.crypt.target{",
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{},
+		Gut: []string{
+			"if spine.crypt.method == \"\" || len(spine.crypt.target) == 0 || (spine.crypt.aes_key_length == 0 && spine.crypt.rsa_key_length == 0) {",
+			"spine.log(\"Method, target or/and key has not been set for decryption\")",
+			"return",
+			"}",
+			"for _, target := range spine.crypt.target{",
 
-		"target = spine.variable.get(target)",
-		"gut, err := ioutil.ReadFile(target)",
+			"target = spine.variable.get(target)",
+			"gut, err := ioutil.ReadFile(target)",
 
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"return",
-		"}",
-		"dec := \"\"",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"return",
+			"}",
+			"dec := \"\"",
 
-		"switch (spine.crypt.method){",
+			"switch (spine.crypt.method){",
 
-		"\tcase \"aes\":",
-		"cipher, err := aes.NewCipher([]byte(spine.crypt.aes_key))",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"return",
-		"}",
-		"cipher_text, err := hex.DecodeString(string(gut[:]))",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"return",
-		"}",
-		"buffer := make([]byte, len(cipher_text))",
-		"cipher.Decrypt(buffer, []byte(cipher_text))",
-		"dec = string(buffer[:])",
+			"\tcase \"aes\":",
+			"cipher, err := aes.NewCipher([]byte(spine.crypt.aes_key))",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"return",
+			"}",
+			"cipher_text, err := hex.DecodeString(string(gut[:]))",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"return",
+			"}",
+			"buffer := make([]byte, len(cipher_text))",
+			"cipher.Decrypt(buffer, []byte(cipher_text))",
+			"dec = string(buffer[:])",
 
-		"\tcase \"rsa\":",
-		"buffer, err := hex.DecodeString(string(gut[:]))",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"return",
-		"}",
+			"\tcase \"rsa\":",
+			"buffer, err := hex.DecodeString(string(gut[:]))",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"return",
+			"}",
 
-		"buffer, err = spine.crypt.rsa_private.Decrypt(nil, buffer, &rsa.OAEPOptions{Hash: crypto.SHA256})",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"return",
-		"}",
+			"buffer, err = spine.crypt.rsa_private.Decrypt(nil, buffer, &rsa.OAEPOptions{Hash: crypto.SHA256})",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"return",
+			"}",
 
-		"dec = string(buffer[:])",
+			"dec = string(buffer[:])",
 
-		"}",
-		"if spine.crypt.extension == \"\"{",
-		"spine.crypt.extension = \".decrypted\"",
-		"}",
+			"}",
+			"if spine.crypt.extension == \"\"{",
+			"spine.crypt.extension = \".decrypted\"",
+			"}",
 
-		"ioutil.WriteFile(fmt.Sprintf(\"%s%s\", target, spine.crypt.extension), []byte(dec), 0644)",
-		"}",
-
-		"}"})
+			"ioutil.WriteFile(fmt.Sprintf(\"%s%s\", target, spine.crypt.extension), []byte(dec), 0644)",
+			"}",
+		}})
 
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("fmt")
@@ -90,7 +91,7 @@ func Decrypt(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("crypto/rand")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	call_history = append(call_history, fmt.Sprintf("%s()", system_call))
+	call_history = append(call_history, fmt.Sprintf("%s()", function_call))
 
 	return call_history, structure.Send(data_object)
 }
