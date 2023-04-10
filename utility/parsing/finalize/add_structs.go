@@ -13,10 +13,10 @@ func Add_structs(s_json string) string {
 		body := []string{}
 
 		// Construct header
-		header := fmt.Sprintf("type %s struct", new_struct.Name)
+		header := fmt.Sprintf("type %s struct {", new_struct.Name)
 
 		// Construct the body
-		body = append(body, header, "{")
+		body = append(body, header)
 		body = append(body, new_struct.Contents...)
 		body = append(body, "}")
 
