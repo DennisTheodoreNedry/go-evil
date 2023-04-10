@@ -14,9 +14,9 @@ func Parse(s_json string) string {
 
 	s_json = debugger.Generate_behavior(s_json)
 
-	s_json, boot_func, loop_func := evil_generate.Generate_go_functions(s_json)
+	s_json = evil_generate.Generate_go_functions(s_json)
 
-	s_json = evil_generate.Generate_main(s_json, boot_func, loop_func)
+	s_json = evil_generate.Generate_main(s_json)
 
 	s_json = evil_final.Construct_malware(s_json)
 

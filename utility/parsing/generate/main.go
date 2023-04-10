@@ -8,7 +8,7 @@ import (
 )
 
 // Generates the main function of the malware
-func Generate_main(s_json string, boot_functions []string, loop_functions []string) string {
+func Generate_main(s_json string) string {
 	data_object := structure.Receive(s_json)
 
 	// Create the main function here
@@ -36,7 +36,7 @@ func Generate_main(s_json string, boot_functions []string, loop_functions []stri
 	body = append(body, "spine.path = tools.Grab_executable_path()")
 
 	// Add boot functions
-	for _, boot_name := range boot_functions {
+	for _, boot_name := range data_object.Boot_functions {
 		body = append(body, fmt.Sprintf("%s()", boot_name))
 	}
 
@@ -53,14 +53,17 @@ func Generate_main(s_json string, boot_functions []string, loop_functions []stri
 	}
 
 	// Add loop function
-	for _, loop_name := range loop_functions {
-		body = append(body, (fmt.Sprintf("%s()", loop_name)))
+	for _, loop_name := range data_object.Loop_functions {
+		body = append(body, fmt.Sprintf("%s()", loop_name))
 	}
 
 	// Add the footer
 	body = append(body, "}")
 
 	// Add end functions
+	for _, end_name := range data_object.End_functions {
+		body = append(body, fmt.Sprintf("%s()", end_name))
+	}
 
 	data_object.Add_go_function(functions.Go_func_t{Name: "main", Func_type: "", Part_of_struct: "", Return_type: "", Parameters: []string{}, Gut: body})
 

@@ -58,5 +58,10 @@ type Json_t struct {
 	Debugger_behavior string `json:"debugger_behavior"` // How should the malware behave after detecting a debugger being used?
 
 	// Custom alphabet
-	Alphabet []string `json:"alphabet"`
+	Alphabet []string `json:"alphabet"` // Internal alphabet utilized
+
+	// Function call order
+	Boot_functions []string `json:"boot_function"`
+	Loop_functions []string `json:"loop_function"`
+	End_functions  []string `json:"end_function"`
 }
