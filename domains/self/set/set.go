@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
@@ -19,12 +20,13 @@ func Set(compile_time bool, value string, s_json string) ([]string, string) {
 	} else {
 		function_call := "set_runtime"
 
-		data_object.Add_go_function([]string{
-			fmt.Sprintf("func %s(repr_1 []int){", function_call),
-			"value := spine.variable.get(spine.alpha.construct_string(repr_1))",
-			"spine.variable.set(value)",
-			"}",
-		})
+		data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+			Parameters: []string{"repr_1 []int"},
+
+			Gut: []string{
+				"value := spine.variable.get(spine.alpha.construct_string(repr_1))",
+				"spine.variable.set(value)",
+			}})
 
 		parameter_1 := data_object.Generate_int_array_parameter(value)
 
