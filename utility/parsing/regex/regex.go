@@ -39,4 +39,8 @@ const (
 	CONFIGURATION_EXTENSION         = "extension +(.*)"            // Extension of the binary file
 	CONFIGURATION_OBFUSCATE         = "obfuscate +(.*)"            // Obfuscating the binary file
 	CONFIGURATION_DEBUGGER_BEHAVIOR = "debugger_behavior +(.*)"    // Decides how the malware will act if it detects a debugger
+
+	// Injections //
+	INJECTION_GO_CODE    = "% *([ble]) *{\n* *((.*|\n*)*?)\n*} *%" // Grab golang code to inject into your application
+	INJECTION_GO_HEADERS = "% *\\[\n* *((.*|\n*)*?)\n*\\] *%"      // Grab potential golang imports
 )

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 )
 
 var foreach_call = 0
@@ -17,9 +18,7 @@ func Construct_foreach_loop(condition string, body []string, s_json string) ([]s
 	data_object := structure.Receive(s_json)
 	arr := structure.Create_evil_object(condition)
 
-	final_body := []string{fmt.Sprintf(
-		"func %s(values []string){", function_call[0]),
-
+	final_body := []string{
 		"for i, value := range values{",
 		"value = spine.variable.get(value)",
 		"arr := structure.Create_evil_object(value)",
@@ -28,15 +27,15 @@ func Construct_foreach_loop(condition string, body []string, s_json string) ([]s
 		"values[i] = result[0]",
 		"values = append(values, result[1:]...)",
 		"}}",
+		"for _, value := range values{",
+		"spine.variable.foreach = value",
 	}
 
-	final_body = append(final_body, "for _, value := range values{")
-	final_body = append(final_body, "spine.variable.foreach = value")
-
 	final_body = append(final_body, body_calls...)
-	final_body = append(final_body, "}}")
+	final_body = append(final_body, "}")
 
-	data_object.Add_go_function(final_body)
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call[0], Func_type: "", Part_of_struct: "",
+		Return_type: "", Parameters: []string{"values []string"}, Gut: final_body})
 
 	if arr.Length() != 0 {
 		function_call[0] = fmt.Sprintf("%s(%s)", function_call[0], arr.To_string("array"))
