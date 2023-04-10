@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 )
 
 // Drops all the needed code from the json strucutre into one function
@@ -33,7 +34,6 @@ func Run(s_json string) ([]string, string) {
 	}
 
 	body := []string{
-		fmt.Sprintf("func %s(){", function_call),
 		fmt.Sprintf("win, err := lorca.New(fmt.Sprintf(\"data:text/html,%%s\", url.PathEscape(`%s`)), \"\", %d, %d)", final_content, data_object.Width, data_object.Height),
 		"if err != nil{",
 		"spine.log(err.Error())",
@@ -45,9 +45,9 @@ func Run(s_json string) ([]string, string) {
 		body = append(body, fmt.Sprintf("win.Bind(%s, %s)\n", key, data_object.Bind_gut[key]))
 	}
 
-	body = append(body, "defer win.Close()", "<-win.Done()", "}")
+	body = append(body, "defer win.Close()", "<-win.Done()")
 
-	data_object.Add_go_function(body)
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "", Parameters: []string{}, Gut: body})
 
 	data_object.Add_go_import("github.com/zserge/lorca")
 	data_object.Add_go_import("net/url")
