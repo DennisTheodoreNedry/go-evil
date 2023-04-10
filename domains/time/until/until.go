@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -46,20 +47,21 @@ func Until(s_json string, value string) ([]string, string) {
 		parameters = append(parameters, result_hour_min[0][1], result_hour_min[0][2]) // Grab the hour and minute
 	}
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr_1 []int, repr_2 []int, repr_3 []int, repr_4 []int, repr_5 []int){", function_call),
-		"year := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_1)))",
-		"month := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_2)))",
-		"day := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_3)))",
-		"hour := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_4)))",
-		"minute := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_5)))",
-		"c_now := time.Now()",
-		"for year != c_now.Year() || month != int(c_now.Month()) || day != c_now.Day() || hour != c_now.Hour() || minute != c_now.Minute() {",
-		"time.Sleep(5 * (10 ^ 9))",
-		"c_now = time.Now()",
-		"}",
-		"}",
-	})
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"repr_1 []int", "repr_2 []int", "repr_3 []int", "repr_4 []int", "repr_5 []int"},
+
+		Gut: []string{
+			"year := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_1)))",
+			"month := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_2)))",
+			"day := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_3)))",
+			"hour := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_4)))",
+			"minute := tools.String_to_int(spine.variable.get(spine.alpha.construct_string(repr_5)))",
+			"c_now := time.Now()",
+			"for year != c_now.Year() || month != int(c_now.Month()) || day != c_now.Day() || hour != c_now.Hour() || minute != c_now.Minute() {",
+			"time.Sleep(5 * (10 ^ 9))",
+			"c_now = time.Now()",
+			"}",
+		}})
 
 	data_object.Add_go_import("time")
 
