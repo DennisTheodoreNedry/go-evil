@@ -1,0 +1,31 @@
+@ With the upcoming changes in version 3.0 you will be able to inject code/headers into your malware  @
+
+use system
+use network
+
+[
+    version 2.0
+    output code_injection
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+%[
+    "time"
+]%
+
+% b {
+    time.Sleep(10)
+}%
+
+% l {
+    time.Sleep(10)
+}%
+
+l main_func {
+    system::outln("Test")
+    
+    system::exit("0")
+}
