@@ -29,10 +29,10 @@ func Add_functions(s_json string) string {
 		header += ")"
 
 		// Add the return type
-		header += fmt.Sprintf(" %s ", new_func.Return_type)
+		header += fmt.Sprintf(" %s {", new_func.Return_type)
 
 		// Construct the body
-		body = append(body, header, "{")
+		body = append(body, header)
 		body = append(body, new_func.Gut...)
 		body = append(body, "}")
 
