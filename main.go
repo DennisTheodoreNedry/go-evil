@@ -70,6 +70,6 @@ func main() {
 
 		notify.Log(fmt.Sprintf("Compiling file %s", object.File_path), object.Verbose_lvl, "1")
 
-		wrapper.Parse_and_compile(structure.Send(object))
+		wrapper.Parse_and_compile(&object)
 	}
 }

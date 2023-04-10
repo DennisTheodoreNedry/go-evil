@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Compresses the malware
-func Compress_malware(s_json string) {
-	data_object := structure.Receive(s_json)
+func Compress_malware(data_object *json.Json_t) {
 	malware := fmt.Sprintf("%s%s%s", data_object.Malware_path, data_object.Binary_name, data_object.Extension)
 
 	cmd := exec.Command("upx", malware)

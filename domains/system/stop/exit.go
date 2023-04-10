@@ -3,13 +3,12 @@ package stop
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Exits the malware
-func Exit(s_json string, return_code string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Exit(return_code string, data_object *json.Json_t) []string {
 
 	function_call := "Exit"
 
@@ -25,5 +24,5 @@ func Exit(s_json string, return_code string) ([]string, string) {
 
 	parameter_1 := data_object.Generate_int_array_parameter(return_code)
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}
 }

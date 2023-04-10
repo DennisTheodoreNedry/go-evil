@@ -3,12 +3,11 @@ package cleanup
 import (
 	"fmt"
 
-	struc "github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Prints the json file to the screen
-func dump_json(s_json string) {
-	data_object := struc.Receive(s_json)
+func dump_json(data_object *json.Json_t) {
 
 	if data_object.Dump_json {
 		fmt.Println(string(data_object.Dump()))

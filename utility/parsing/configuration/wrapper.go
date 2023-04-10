@@ -5,13 +5,12 @@ import (
 	"regexp"
 
 	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Checks for a configuration section in the structure
-func Check_configuration(s_json string) string {
-	data_object := structure.Receive(s_json)
+func Check_configuration(data_object *json.Json_t) {
 
 	regex := regexp.MustCompile(evil_regex.COMPILER_CONFIGURATION)
 	result := regex.FindAllStringSubmatch(data_object.File_gut, -1)
@@ -23,12 +22,14 @@ func Check_configuration(s_json string) string {
 		line = result[0][1]
 	}
 
-	data_object = structure.Receive(check_output(line, structure.Send(data_object)))
-	data_object = structure.Receive(check_architecture(line, structure.Send(data_object)))
-	data_object = structure.Receive(check_os(line, structure.Send(data_object)))
-	data_object = structure.Receive(check_extension(line, structure.Send(data_object)))
-	data_object = structure.Receive(check_obfuscate(line, structure.Send(data_object)))
-	data_object = structure.Receive(check_debugger_behavior(line, structure.Send(data_object)))
+	check_version(line) // Checks if this compiler can compile this version
+
+	check_output(line, data_object)
+	check_architecture(line, data_object)
+	check_os(line, data_object)
+	check_extension(line, data_object)
+	check_obfuscate(line, data_object)
+	check_debugger_behavior(line, data_object)
 
 	notify.Log(fmt.Sprintf("The malware will be called `%s`", data_object.Binary_name), data_object.Verbose_lvl, "2")
 	notify.Log(fmt.Sprintf("The malware will be compiled for `%s`", data_object.Target_os), data_object.Verbose_lvl, "2")
@@ -42,5 +43,4 @@ func Check_configuration(s_json string) string {
 		notify.Log("The binary file will not be obfuscated", data_object.Verbose_lvl, "2")
 	}
 
-	return structure.Send(data_object)
 }

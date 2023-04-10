@@ -5,13 +5,11 @@ import (
 	"strings"
 
 	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Finds all comments and removes them
-func remove_comments(s_json string) string {
-	data_object := structure.Receive(s_json)
+func remove_comments(data_object *json.Json_t) {
 	regex := regexp.MustCompile(evil_regex.COMMENT)
 	comments := regex.FindAllStringSubmatch(data_object.File_gut, -1)
 
@@ -21,5 +19,4 @@ func remove_comments(s_json string) string {
 		}
 	}
 
-	return structure.Send(data_object)
 }

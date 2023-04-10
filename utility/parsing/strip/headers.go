@@ -5,13 +5,12 @@ import (
 	"strings"
 
 	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Finds all comments and removes them
-func remove_injected_headers(s_json string) string {
-	data_object := structure.Receive(s_json)
+func remove_injected_headers(data_object *json.Json_t) {
+
 	regex := regexp.MustCompile(evil_regex.INJECTION_GO_HEADERS)
 	comments := regex.FindAllStringSubmatch(data_object.File_gut, -1)
 
@@ -21,5 +20,4 @@ func remove_injected_headers(s_json string) string {
 		}
 	}
 
-	return structure.Send(data_object)
 }

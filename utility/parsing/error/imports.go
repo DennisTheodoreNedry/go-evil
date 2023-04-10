@@ -5,13 +5,13 @@ import (
 	"regexp"
 
 	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Checks that a used domain has been imported
-func check_imports(s_json string) {
-	data_object := structure.Receive(s_json)
+func check_imports(data_object *json.Json_t) {
+
 	regex := regexp.MustCompile(evil_regex.IMPORT)
 	domains := regex.FindAllStringSubmatch(data_object.File_gut, -1)
 

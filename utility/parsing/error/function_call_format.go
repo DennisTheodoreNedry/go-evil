@@ -6,13 +6,13 @@ import (
 	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Checks if potential call functions are wrongly formatted
-func check_call_function_format(s_json string) {
-	data_object := structure.Receive(s_json)
+func check_call_function_format(data_object *json.Json_t) {
+
 	regex := regexp.MustCompile(regex.FUNC)
 	functions := regex.FindAllStringSubmatch(data_object.File_gut, -1)
 

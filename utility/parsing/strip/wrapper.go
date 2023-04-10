@@ -1,11 +1,12 @@
 package strip
 
-func Strip(s_json string) string {
-	s_json = remove_comments(s_json)
-	s_json = remove_configuration(s_json)
-	s_json = remove_imports(s_json)
-	s_json = remove_injected_headers(s_json)
-	s_json = remove_injected_code(s_json)
+import "github.com/TeamPhoneix/go-evil/utility/structure/json"
 
-	return s_json
+func Strip(data_object *json.Json_t) {
+	remove_comments(data_object)
+	remove_configuration(data_object)
+	remove_imports(data_object)
+	remove_injected_headers(data_object)
+	remove_injected_code(data_object)
+
 }
