@@ -1,14 +1,15 @@
 package json
 
+import "github.com/TeamPhoneix/go-evil/utility/structure/functions"
+
 // Adds a go based function to the final go code
-func (object *Json_t) Add_go_function(lines []string) {
-	function_call := lines[0]
+func (object *Json_t) Add_go_function(new_func functions.Go_func_t) {
 
 	for _, calls := range object.GO_functions {
-		if calls == function_call {
+		if calls.Name == new_func.Name {
 			return
 		}
 	}
 
-	object.GO_functions = append(object.GO_functions, lines...)
+	object.GO_functions = append(object.GO_functions, new_func)
 }

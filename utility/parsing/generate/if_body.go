@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -31,19 +32,19 @@ func Construct_if_else(condition string, if_true_body []string, if_false_body []
 		notify.Error(fmt.Sprintf("Unknown and/or illegal operator %s", compare_operator), "if_else.construct_if_else()")
 	}
 
-	final_body := []string{fmt.Sprintf(
-		"func %s(repr_value1 []int, repr_value2 []int){", function_call),
+	body := []string{
 		"value1 := spine.variable.get(spine.alpha.construct_string(repr_value1))",
 		"value2 := spine.variable.get(spine.alpha.construct_string(repr_value2))",
 		fmt.Sprintf("if (value1 %s value2){", compare_operator),
 	}
 
-	final_body = append(final_body, if_true_body_calls...)
-	final_body = append(final_body, "}else{")
-	final_body = append(final_body, if_false_body_calls...)
-	final_body = append(final_body, "}}")
+	body = append(body, if_true_body_calls...)
+	body = append(body, "}else{")
+	body = append(body, if_false_body_calls...)
+	body = append(body, "}")
 
-	data_object.Add_go_function(final_body)
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "",
+		Return_type: "", Parameters: []string{"repr_value1 []int", "repr_value2 []int"}, Gut: body})
 
 	data_object.Add_go_import("fmt")
 
