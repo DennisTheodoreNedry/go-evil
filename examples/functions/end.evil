@@ -1,0 +1,26 @@
+@ Showcases how end functions work @
+@ Utilizes some of the other functions to showcase how it works @
+
+use system
+
+[
+    version 2.0
+    output end_function
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+b boot_func {
+    system::outln("I am called at boot")
+}
+
+l main_func {
+    system::outln("I am called within a loop")
+    system::exit("0")
+}
+
+e exit_func {
+    system::outln("I am called before the program is terminated")
+}

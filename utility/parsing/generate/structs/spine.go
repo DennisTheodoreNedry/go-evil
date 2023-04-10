@@ -19,6 +19,8 @@ func Generate_spine(s_json string) string {
 			"alpha alpha_t",
 			"logging_lvl string",
 			"is_admin bool",
+			"terminate bool",
+			"return_code int",
 		},
 	})
 
