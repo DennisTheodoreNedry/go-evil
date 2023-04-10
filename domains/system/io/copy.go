@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -21,33 +22,30 @@ func Copy(value string, s_json string) ([]string, string) {
 	old_path := arr.Get(0)
 	new_path := arr.Get(1)
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(old_repr []int, new_repr []int){", function_call),
-		"old_path := spine.alpha.construct_string(old_repr)",
-		"old_path = spine.variable.get(old_path)",
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"repr_1 []int", "repr_2 []int"},
+		Gut: []string{
+			"old_path := spine.variable.get(spine.alpha.construct_string(repr_1))",
+			"new_path := spine.variable.get(spine.alpha.construct_string(repr_2))",
 
-		"new_path := spine.alpha.construct_string(new_repr)",
-		"new_path = spine.variable.get(new_path)",
+			"src, err := os.Open(old_path)",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"return",
+			"}",
 
-		"src, err := os.Open(old_path)",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"return",
-		"}",
+			"dst, err := os.Create(new_path)",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"return",
+			"}",
 
-		"dst, err := os.Create(new_path)",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"return",
-		"}",
+			"_, err = io.Copy(dst, src)",
 
-		"_, err = io.Copy(dst, src)",
-
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"}",
-
-		"}"})
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"}",
+		}})
 
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")

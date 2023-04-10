@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 )
 
 // Executes a command on the running OS and prints the result
@@ -11,19 +12,20 @@ func Exec(s_json string, cmd string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Exec"
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr []int){", function_call),
-		"cmd := spine.alpha.construct_string(repr)",
-		"cmd = spine.variable.get(cmd)",
-		"split_cmd := strings.Split(cmd, \" \")",
-		"cmd = strings.ReplaceAll(split_cmd[0], \"\\\"\", \"\")",
-		"args := strings.ReplaceAll(strings.Join(split_cmd[1:], \" \"), \"\\\"\", \"\")",
-		"out, err := exec.Command(cmd, args).Output()",
-		"if err != nil {",
-		"fmt.Println(err.Error())",
-		"}else{",
-		"fmt.Println(string(out[:]))",
-		"}}"})
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"repr []int"},
+		Gut: []string{
+			"cmd := spine.alpha.construct_string(repr)",
+			"cmd = spine.variable.get(cmd)",
+			"split_cmd := strings.Split(cmd, \" \")",
+			"cmd = strings.ReplaceAll(split_cmd[0], \"\\\"\", \"\")",
+			"args := strings.ReplaceAll(strings.Join(split_cmd[1:], \" \"), \"\\\"\", \"\")",
+			"out, err := exec.Command(cmd, args).Output()",
+			"if err != nil {",
+			"fmt.Println(err.Error())",
+			"}else{",
+			"fmt.Println(string(out[:]))",
+			"}"}})
 
 	data_object.Add_go_import("os/exec")
 	data_object.Add_go_import("fmt")
