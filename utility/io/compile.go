@@ -7,13 +7,12 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Compiles the go file into an executable
-func Compile_file(s_json string) {
-	data_object := structure.Receive(s_json)
+func Compile_file(data_object *json.Json_t) {
 
 	malware := fmt.Sprintf("%s%s%s", data_object.Malware_path, data_object.Binary_name, data_object.Extension)
 	src := fmt.Sprintf("%s%s", data_object.Malware_path, data_object.Malware_src_file)

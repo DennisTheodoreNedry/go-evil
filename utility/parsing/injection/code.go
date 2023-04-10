@@ -4,13 +4,12 @@ import (
 	"regexp"
 
 	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-func Grab_injected_code(s_json string) string {
-	data_object := structure.Receive(s_json)
+func Grab_injected_code(data_object *json.Json_t) {
 
 	regex := regexp.MustCompile(evil_regex.INJECTION_GO_CODE)
 	result := regex.FindAllStringSubmatch(data_object.File_gut, -1)
@@ -29,5 +28,4 @@ func Grab_injected_code(s_json string) string {
 		}
 	}
 
-	return structure.Send(data_object)
 }

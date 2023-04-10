@@ -3,11 +3,10 @@ package finalize
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
-func Add_functions(s_json string) string {
-	data_object := structure.Receive(s_json)
+func Add_functions(data_object *json.Json_t) {
 
 	for _, new_func := range data_object.GO_functions {
 		body := []string{}
@@ -39,5 +38,4 @@ func Add_functions(s_json string) string {
 		data_object.Add_malware_lines(body)
 	}
 
-	return structure.Send(data_object)
 }

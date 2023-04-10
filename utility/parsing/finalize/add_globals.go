@@ -1,9 +1,8 @@
 package finalize
 
-import "github.com/TeamPhoneix/go-evil/utility/structure"
+import "github.com/TeamPhoneix/go-evil/utility/structure/json"
 
-func Add_globals(s_json string) string {
-	data_object := structure.Receive(s_json)
+func Add_globals(data_object *json.Json_t) {
 
 	if len(data_object.GO_global) > 0 {
 		for _, new_global := range data_object.GO_global {
@@ -11,5 +10,4 @@ func Add_globals(s_json string) string {
 		}
 	}
 
-	return structure.Send(data_object)
 }

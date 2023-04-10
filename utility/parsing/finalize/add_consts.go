@@ -1,9 +1,8 @@
 package finalize
 
-import "github.com/TeamPhoneix/go-evil/utility/structure"
+import "github.com/TeamPhoneix/go-evil/utility/structure/json"
 
-func Add_consts(s_json string) string {
-	data_object := structure.Receive(s_json)
+func Add_consts(data_object *json.Json_t) {
 
 	if len(data_object.GO_const) > 0 {
 		data_object.Add_malware_line("const (")
@@ -13,5 +12,4 @@ func Add_consts(s_json string) string {
 		data_object.Add_malware_line(")")
 	}
 
-	return structure.Send(data_object)
 }

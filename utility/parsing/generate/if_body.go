@@ -5,20 +5,20 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 var if_else_call = 0
 
 // Construcs the code needed for a "if/else" statement
-func Construct_if_else(condition string, if_true_body []string, if_false_body []string, s_json string) ([]string, string) {
+func Construct_if_else(condition string, if_true_body []string, if_false_body []string, data_object *json.Json_t) []string {
 	function_call := fmt.Sprintf("if_%d", if_else_call)
 	if_else_call++
 
-	if_true_body_calls, s_json := Generate_golang_code(if_true_body, s_json)   // Converts the if true code
-	if_false_body_calls, s_json := Generate_golang_code(if_false_body, s_json) // Converts the else code
+	if_true_body_calls := Generate_golang_code(if_true_body, data_object)   // Converts the if true code
+	if_false_body_calls := Generate_golang_code(if_false_body, data_object) // Converts the else code
 
-	data_object := structure.Receive(s_json)
 	arr := structure.Create_evil_object(condition)
 
 	if arr.Length() != 3 {
@@ -51,5 +51,5 @@ func Construct_if_else(condition string, if_true_body []string, if_false_body []
 	parameter_1 := data_object.Generate_int_array_parameter(arr.Get(0))
 	parameter_2 := data_object.Generate_int_array_parameter(arr.Get(2))
 
-	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_1, parameter_2)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_1, parameter_2)}
 }
