@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -33,43 +34,44 @@ func Ping(value string, s_json string) ([]string, string) {
 
 	protocol := strings.ToLower(arr.Get(2))
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr_1 []int, count int, repr_2 []int){", function_call),
-		"target := spine.variable.get(spine.alpha.construct_string(repr_1))",
-		"protocol := spine.variable.get(spine.alpha.construct_string(repr_2))",
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"repr_1 []int", "count int", "repr_2 []int"},
+		Gut: []string{
+			"target := spine.variable.get(spine.alpha.construct_string(repr_1))",
+			"protocol := spine.variable.get(spine.alpha.construct_string(repr_2))",
 
-		"pinger := fastping.NewPinger()",
-		"ra, err := net.ResolveIPAddr(\"ip4:icmp\", target)",
-		"if err != nil {",
-		"spine.log(err.Error())",
-		"}",
-		"pinger.AddIPAddr(ra)",
-		"switch (protocol){",
-		"case \"tcp\":",
-		"pinger.Network(\"tcp\")",
-		"case \"udp\":",
-		"pinger.Network(\"udp\")",
-		"default:",
-		"spine.log(fmt.Sprintf(\"Unknown protocol %s\", protocol))",
-		"}",
-		"pinger.OnRecv = func(addr *net.IPAddr, rtt time.Duration) {",
-		"spine.variable.set(fmt.Sprintf(\"IP Addr: %s receive, RTT: %v\", addr.String(), rtt))",
-		"}",
-		"if count == 0{",
-		"for {",
-		"err = pinger.Run()",
-		"if err != nil {",
-		"spine.log(err.Error())",
-		"}",
-		"}",
-		"} else{",
-		"for i := 0; i < count; i++ {",
-		"err = pinger.Run()",
-		"if err != nil {",
-		"spine.log(err.Error())",
-		"}",
-		"}}",
-		"}"})
+			"pinger := fastping.NewPinger()",
+			"ra, err := net.ResolveIPAddr(\"ip4:icmp\", target)",
+			"if err != nil {",
+			"spine.log(err.Error())",
+			"}",
+			"pinger.AddIPAddr(ra)",
+			"switch (protocol){",
+			"case \"tcp\":",
+			"pinger.Network(\"tcp\")",
+			"case \"udp\":",
+			"pinger.Network(\"udp\")",
+			"default:",
+			"spine.log(fmt.Sprintf(\"Unknown protocol %s\", protocol))",
+			"}",
+			"pinger.OnRecv = func(addr *net.IPAddr, rtt time.Duration) {",
+			"spine.variable.set(fmt.Sprintf(\"IP Addr: %s receive, RTT: %v\", addr.String(), rtt))",
+			"}",
+			"if count == 0{",
+			"for {",
+			"err = pinger.Run()",
+			"if err != nil {",
+			"spine.log(err.Error())",
+			"}",
+			"}",
+			"} else{",
+			"for i := 0; i < count; i++ {",
+			"err = pinger.Run()",
+			"if err != nil {",
+			"spine.log(err.Error())",
+			"}",
+			"}}",
+		}})
 
 	data_object.Add_go_import("fmt")
 	data_object.Add_go_import("net")
