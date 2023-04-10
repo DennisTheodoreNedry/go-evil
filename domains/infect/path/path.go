@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -23,31 +24,31 @@ func Path(value string, s_json string) ([]string, string) {
 	}
 
 	path := arr.Get(0)
-
 	boot := tools.String_to_boolean(strings.ToLower(arr.Get(1)))
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr_1 []int, auto_boot bool){", function_call),
-		"path := spine.variable.get(spine.alpha.construct_string(repr_1))",
-		"src, err := os.Open(spine.path)",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"}",
-		"dst, err := os.Create(path)",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"}",
-		"_, err = io.Copy(dst, src)",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"}",
-		"if auto_boot{",
-		"err = exec.Command(fmt.Sprintf(\"%s\", path)).Run()",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"}",
-		"}",
-		"}"})
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"repr_1 []int", "auto_boot bool"},
+		Gut: []string{
+			"path := spine.variable.get(spine.alpha.construct_string(repr_1))",
+			"src, err := os.Open(spine.path)",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"}",
+			"dst, err := os.Create(path)",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"}",
+			"_, err = io.Copy(dst, src)",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"}",
+			"if auto_boot{",
+			"err = exec.Command(fmt.Sprintf(\"%s\", path)).Run()",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"}",
+			"}",
+		}})
 
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("io")
