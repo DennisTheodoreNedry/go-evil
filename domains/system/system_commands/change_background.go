@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 )
 
 // Changes the background to what you want it to be
@@ -11,7 +12,7 @@ func Change_background(value string, s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "change_background"
 
-	body := []string{fmt.Sprintf("func %s(repr_path []int){", function_call), "image_path := spine.alpha.construct_string(repr_path)", "image_path = spine.variable.get(image_path)"}
+	body := []string{"image_path := spine.alpha.construct_string(repr_path)", "image_path = spine.variable.get(image_path)"}
 
 	switch data_object.Target_os {
 	case "windows":
@@ -37,8 +38,11 @@ func Change_background(value string, s_json string) ([]string, string) {
 		data_object.Add_go_import("strings")
 
 	}
-	body = append(body, "}")
-	data_object.Add_go_function(body)
+
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"repr_path []int"},
+		Gut:        body})
+
 	data_object.Add_go_import("fmt")
 
 	data_object.Add_go_import("os/exec")

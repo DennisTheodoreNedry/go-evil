@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
@@ -13,16 +14,16 @@ func Read(s_json string, value string) ([]string, string) {
 	function_call := "read"
 	value = tools.Erase_delimiter(value, []string{"\""}, -1)
 
-	data_object.Add_go_function([]string{
-		fmt.Sprintf("func %s(repr []int){", function_call),
-		"path := spine.alpha.construct_string(repr)",
-		"path = spine.variable.get(path)",
-		"gut, err := ioutil.ReadFile(path)",
-		"if err != nil{",
-		"spine.log(err.Error())",
-		"}",
-		"spine.variable.set(string(gut))",
-		"}"})
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{"repr_1  []int"},
+		Gut: []string{
+			"path := spine.variable.get(spine.alpha.construct_string(repr_1))",
+			"gut, err := ioutil.ReadFile(path)",
+			"if err != nil{",
+			"spine.log(err.Error())",
+			"}",
+			"spine.variable.set(string(gut))",
+		}})
 
 	data_object.Add_go_import("io/ioutil")
 

