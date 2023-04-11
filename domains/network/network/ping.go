@@ -6,6 +6,7 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -16,8 +17,7 @@ import (
 // count - How many times to ping, 0 for indefinitely
 // udp/tcp - Which protocol do you want to use?
 
-func Ping(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Ping(value string, data_object *json.Json_t) []string {
 	function_call := "ping_target"
 	arr := structure.Create_evil_object(value)
 
@@ -81,5 +81,5 @@ func Ping(value string, s_json string) ([]string, string) {
 	int_target := data_object.Generate_int_array_parameter(target)
 	int_protocol := data_object.Generate_int_array_parameter(protocol)
 
-	return []string{fmt.Sprintf("%s(%s, %d, %s)", function_call, int_target, count, int_protocol)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s, %d, %s)", function_call, int_target, count, int_protocol)}
 }
