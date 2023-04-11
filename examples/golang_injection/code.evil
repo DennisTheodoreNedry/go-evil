@@ -16,12 +16,13 @@ use network
 ]
 
 %[
-    "time"
-    "fmt"
+    time
+    fmt
 ]%
 
 % b {
     time.Sleep(10)
+    fmt.Println("I'm called at boot")
 }%
 
 % l {
