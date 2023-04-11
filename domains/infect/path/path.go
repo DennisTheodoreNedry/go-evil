@@ -6,6 +6,7 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -14,8 +15,7 @@ import (
 // Requires an evil array with the following format
 // 1 - Path to infect, MUST end with the name that the copy will have
 // 2 - Should the copy be booted once the process is done? (true/false)
-func Path(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Path(value string, data_object *json.Json_t) []string {
 	function_call := "infect_path"
 	arr := structure.Create_evil_object(value)
 
@@ -57,5 +57,5 @@ func Path(value string, s_json string) ([]string, string) {
 
 	parameter_1 := data_object.Generate_int_array_parameter(path)
 
-	return []string{fmt.Sprintf("%s(%s, %t)", function_call, parameter_1, boot)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s, %t)", function_call, parameter_1, boot)}
 }
