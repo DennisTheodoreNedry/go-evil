@@ -3,15 +3,14 @@ package interfaces
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Grabs all interfaces
 // Input None
 // The return is an evil array containing all found interfaces which is placed in a runtime variable
-func Get_interfaces(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Get_interfaces(value string, data_object *json.Json_t) []string {
 	function_call := "get_interfaces"
 
 	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
@@ -27,5 +26,5 @@ func Get_interfaces(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
 	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
 
-	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}
 }
