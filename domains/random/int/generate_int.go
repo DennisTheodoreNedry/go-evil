@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -11,8 +12,7 @@ import (
 // Generates a random int value in a range
 // The input is an evil array that should only contain two values, min and max
 // The generated value is placed in a compile-time variable
-func Generate(value string, s_json string) string {
-	data_object := structure.Receive(s_json)
+func Generate(value string, data_object *json.Json_t) {
 	arr := structure.Create_evil_object(value)
 
 	if arr.Length() != 2 {
@@ -37,5 +37,4 @@ func Generate(value string, s_json string) string {
 
 	data_object.Set_variable_value(tools.Int_to_string(generated_value))
 
-	return structure.Send(data_object)
 }
