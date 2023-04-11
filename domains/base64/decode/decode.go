@@ -3,13 +3,12 @@ package decode
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Decodes the provided string and places the result in a runtime variable
-func Decode(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Decode(value string, data_object *json.Json_t) []string {
 	function_call := "base64_decode"
 
 	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
@@ -23,5 +22,5 @@ func Decode(value string, s_json string) ([]string, string) {
 
 	parameter_1 := data_object.Generate_int_array_parameter(value)
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}
 }

