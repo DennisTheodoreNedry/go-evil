@@ -3,14 +3,13 @@ package random
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Adds a random variable to the source code
-func Add_variable(amount string, s_json string) string {
-	data_object := structure.Receive(s_json)
+func Add_variable(amount string, data_object *json.Json_t) {
 
 	amount = tools.Erase_delimiter(amount, []string{"\""}, -1)
 
@@ -25,6 +24,4 @@ func Add_variable(amount string, s_json string) string {
 
 		data_object.Add_go_global(fmt.Sprintf("var %s string = \"%s\"", variable_name, random_value))
 	}
-
-	return structure.Send(data_object)
 }

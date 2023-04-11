@@ -4,15 +4,14 @@ import (
 	"fmt"
 
 	"github.com/TeamPhoneix/go-evil/domains/self/random/generate"
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Adds a random function to the source code
-func Add_function(amount string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Add_function(amount string, data_object *json.Json_t) []string {
 	amount = tools.Erase_delimiter(amount, []string{"\""}, -1)
 	calls := []string{}
 
@@ -44,5 +43,5 @@ func Add_function(amount string, s_json string) ([]string, string) {
 
 	data_object.Add_go_import("fmt")
 
-	return calls, structure.Send(data_object)
+	return calls
 }
