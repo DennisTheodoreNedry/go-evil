@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
+	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
 	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
@@ -23,7 +24,19 @@ func Grab_injected_code(data_object *json.Json_t) {
 			func_name := tools.Generate_random_n_string(8)
 			func_gut := injected_function[2 : len(injected_function)-1]
 
-			data_object.Add_function(func_name, func_type, "null", func_gut)
+			// Let's identify which type of function type this is
+			switch func_type {
+			case "l":
+				data_object.Add_loop_function(func_name)
+
+			case "b":
+				data_object.Add_boot_function(func_name)
+
+			case "e":
+				data_object.Add_end_function(func_name)
+			}
+
+			data_object.Add_go_function(functions.Go_func_t{Name: func_name, Func_type: "", Part_of_struct: "", Return_type: "", Parameters: []string{}, Gut: func_gut})
 
 		}
 	}
