@@ -1,6 +1,8 @@
 package error
 
-import "github.com/TeamPhoneix/go-evil/utility/structure/json"
+import (
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+)
 
 // Wrapper function which calls all our error checking functions
 func Check_for_errors(data_object *json.Json_t) {
