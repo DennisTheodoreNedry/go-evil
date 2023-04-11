@@ -5,11 +5,11 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Reads the contents of a directory and places the result into a runtime variable
-func List(s_json string, value string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func List(value string, data_object *json.Json_t) []string {
 	function_call := "list_dir"
 	arr := structure.Create_evil_object(value)
 
@@ -40,6 +40,6 @@ func List(s_json string, value string) ([]string, string) {
 	data_object.Add_go_import("fmt")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, arr.To_string("array"))}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, arr.To_string("array"))}
 
 }

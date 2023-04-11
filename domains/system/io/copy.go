@@ -5,12 +5,12 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Copies the target file to the new provided location
-func Copy(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Copy(value string, data_object *json.Json_t) []string {
 	function_call := "copy"
 
 	arr := structure.Create_evil_object(value)
@@ -54,5 +54,5 @@ func Copy(value string, s_json string) ([]string, string) {
 	old_parameter := data_object.Generate_int_array_parameter(old_path)
 	new_parameter := data_object.Generate_int_array_parameter(new_path)
 
-	return []string{fmt.Sprintf("%s(%s, %s)", function_call, old_parameter, new_parameter)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s, %s)", function_call, old_parameter, new_parameter)}
 }

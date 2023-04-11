@@ -5,13 +5,13 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Creates a user on the local machine
 // Input, an evil array in the following format ${"username", "password"}$
-func Create(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Create(value string, data_object *json.Json_t) []string {
 	function_call := "create_user"
 
 	arr := structure.Create_evil_object(value)
@@ -52,5 +52,5 @@ func Create(value string, s_json string) ([]string, string) {
 	parameter_1 := data_object.Generate_int_array_parameter(arr.Get(0))
 	parameter_2 := data_object.Generate_int_array_parameter(arr.Get(1))
 
-	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_1, parameter_2)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_1, parameter_2)}
 }

