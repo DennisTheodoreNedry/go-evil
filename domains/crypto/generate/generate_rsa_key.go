@@ -3,17 +3,16 @@ package generate
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Generates a rsa key used for encrypting/decrypting
-func RSA_key(value string, s_json string) ([]string, string) {
+func RSA_key(value string, data_object *json.Json_t) []string {
 	value = tools.Erase_delimiter(value, []string{"\""}, -1)
 	function_call := "generate_rsa_key"
-	data_object := structure.Receive(s_json)
 
 	// Check if the key is valid
 	if ok := tools.String_to_int(value); ok == -1 {
@@ -29,5 +28,5 @@ func RSA_key(value string, s_json string) ([]string, string) {
 			"}",
 		}})
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, value)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, value)}
 }

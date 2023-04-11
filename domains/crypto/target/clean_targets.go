@@ -3,13 +3,12 @@ package target
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Removes every previously added target
-func Clean(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Clean(value string, data_object *json.Json_t) []string {
 	function_call := "clean_targets"
 
 	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
@@ -18,5 +17,5 @@ func Clean(value string, s_json string) ([]string, string) {
 			"spine.crypt.target = []string{}",
 		}})
 
-	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}
 }
