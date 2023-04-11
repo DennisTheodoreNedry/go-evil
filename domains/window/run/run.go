@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Drops all the needed code from the json strucutre into one function
-func Run(s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Run(data_object *json.Json_t) []string {
 	function_call := "Run()"
 
 	html_content := strings.Join(data_object.Html_gut, "\n")
@@ -54,5 +53,5 @@ func Run(s_json string) ([]string, string) {
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 	data_object.Add_go_import("fmt")
 
-	return []string{function_call}, structure.Send(data_object)
+	return []string{function_call}
 }
