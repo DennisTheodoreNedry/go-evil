@@ -3,15 +3,14 @@ package string
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Generates a random string where the provded value is the length of the string
 // The generated value is placed in a compile-time variable
-func Generate(value string, s_json string) string {
-	data_object := structure.Receive(s_json)
+func Generate(value string, data_object *json.Json_t) {
 
 	roof := tools.Erase_delimiter(value, []string{"\""}, -1)
 	length := tools.String_to_int(roof)
@@ -24,5 +23,4 @@ func Generate(value string, s_json string) string {
 
 	data_object.Set_variable_value(generated_value)
 
-	return structure.Send(data_object)
 }
