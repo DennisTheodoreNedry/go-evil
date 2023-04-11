@@ -5,12 +5,13 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/domains/crypto/configuration"
 
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // Generates an aes key used for encrypting/decrypting
-func AES_key(value string, s_json string) ([]string, string) {
+func AES_key(value string, data_object *json.Json_t) []string {
 	value = tools.Erase_delimiter(value, []string{"\""}, -1)
 
 	key_size := tools.String_to_int(value)
@@ -21,7 +22,7 @@ func AES_key(value string, s_json string) ([]string, string) {
 
 	key := tools.Generate_random_n_string(key_size)
 
-	calls, s_json := configuration.Set_aes_key(key, s_json)
+	calls := configuration.Set_aes_key(key, data_object)
 
-	return calls, s_json
+	return calls
 }
