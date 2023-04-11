@@ -3,13 +3,12 @@ package systemcommands
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Changes the background to what you want it to be
-func Change_background(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Change_background(value string, data_object *json.Json_t) []string {
 	function_call := "change_background"
 
 	body := []string{"image_path := spine.alpha.construct_string(repr_path)", "image_path = spine.variable.get(image_path)"}
@@ -51,5 +50,5 @@ func Change_background(value string, s_json string) ([]string, string) {
 	// Construct our int array
 	parameter := data_object.Generate_int_array_parameter(value)
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter)}
 }

