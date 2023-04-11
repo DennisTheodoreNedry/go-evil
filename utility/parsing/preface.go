@@ -1,6 +1,7 @@
 package parsing
 
 import (
+	"github.com/TeamPhoneix/go-evil/utility/io"
 	evil_configuration "github.com/TeamPhoneix/go-evil/utility/parsing/configuration"
 	evil_error "github.com/TeamPhoneix/go-evil/utility/parsing/error"
 	evil_functions "github.com/TeamPhoneix/go-evil/utility/parsing/functions"
@@ -12,6 +13,8 @@ import (
 
 // preface before we start parsing
 func preface(data_object *json.Json_t) {
+	io.Read_file(data_object) // Read the file
+
 	evil_error.Check_for_errors(data_object)            // Checks for common errors found in the file
 	evil_configuration.Check_configuration(data_object) // Checks for a configuration setting in the file
 	evil_import.Find_imports(data_object)               // Finds all imports in the file
