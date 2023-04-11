@@ -9,7 +9,6 @@ import (
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-// The main parser for the Powershell domain
 func Parser(function string, value string, data_object *json.Json_t) []string {
 	call := []string{}
 
