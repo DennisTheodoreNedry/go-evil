@@ -1,6 +1,7 @@
 @ With the upcoming changes in version 3.0 you will be able to inject code/headers into your malware  @
 @ The injected golang code is placed within a function in the final executable, and will be executed depending on the function type @
 @ In this example, we will showcase that you can import time and execute a simple Sleep function @
+@ It's highly recommended to  set the debug flag to true to observe the results @ 
 
 use system
 use network
@@ -16,6 +17,7 @@ use network
 
 %[
     "time"
+    "fmt"
 ]%
 
 % b {
@@ -24,6 +26,7 @@ use network
 
 % l {
     time.Sleep(10)
+    fmt.Println("It has gone 10 seconds")
 }%
 
 l main_func {
