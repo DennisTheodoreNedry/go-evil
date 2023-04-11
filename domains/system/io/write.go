@@ -6,12 +6,12 @@ import (
 
 	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 )
 
 // Writes a provided content to a provided file
-func Write(s_json string, value string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Write(value string, data_object *json.Json_t) []string {
 	function_call := "Write"
 
 	arr := structure.Create_evil_object(value)
@@ -60,5 +60,5 @@ func Write(s_json string, value string) ([]string, string) {
 	parameter_path := data_object.Generate_int_array_parameter(path)
 	parameter_data := data_object.Generate_int_array_parameter(data)
 
-	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_path, parameter_data)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s, %s)", function_call, parameter_path, parameter_data)}
 }

@@ -3,13 +3,12 @@ package systemcommands
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Reboots the computer
-func Reboot(s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Reboot(data_object *json.Json_t) []string {
 	function_call := "Reboot"
 
 	cmd := ""
@@ -27,6 +26,6 @@ func Reboot(s_json string) ([]string, string) {
 
 	data_object.Add_go_import("os/exec")
 
-	return []string{fmt.Sprintf("%s()", function_call)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s()", function_call)}
 
 }
