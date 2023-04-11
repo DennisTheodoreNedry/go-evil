@@ -7,46 +7,47 @@ import (
 	"github.com/TeamPhoneix/go-evil/domains/window/navigate"
 	"github.com/TeamPhoneix/go-evil/domains/window/run"
 	"github.com/TeamPhoneix/go-evil/domains/window/set"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 // The main parser for the window domain
-func Parser(function string, value string, s_json string) ([]string, string) {
+func Parser(function string, value string, data_object *json.Json_t) []string {
 	call := []string{}
 
 	switch function {
 	case "run":
-		call, s_json = run.Run(s_json)
+		call = run.Run(data_object)
 
 	case "html":
-		s_json = set.HTML(value, s_json)
+		set.HTML(value, data_object)
 
 	case "js":
-		s_json = set.Javascript(value, s_json)
+		set.Javascript(value, data_object)
 
 	case "css":
-		s_json = set.Css(value, s_json)
+		set.Css(value, data_object)
 
 	case "width":
-		s_json = set.Width(value, s_json)
+		set.Width(value, data_object)
 
 	case "height":
-		s_json = set.Height(value, s_json)
+		set.Height(value, data_object)
 
 	case "title":
-		s_json = set.Title(value, s_json)
+		set.Title(value, data_object)
 
 	case "bind":
-		s_json = bind.Bind(value, s_json)
+		bind.Bind(value, data_object)
 
 	case "navigate":
-		call, s_json = navigate.Navigate(value, s_json)
+		call = navigate.Navigate(value, data_object)
 
 	default:
 		notify.Error(fmt.Sprintf("Unknown function '%s'", function), "window.Parser()")
 
 	}
 
-	return call, s_json
+	return call
 }

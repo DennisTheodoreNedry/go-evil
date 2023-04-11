@@ -3,13 +3,12 @@ package navigate
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 )
 
 // Makes the window enter a website of your choice
-func Navigate(website string, s_json string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Navigate(website string, data_object *json.Json_t) []string {
 	function_call := "Navigate"
 
 	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
@@ -31,5 +30,5 @@ func Navigate(website string, s_json string) ([]string, string) {
 
 	parameter_1 := data_object.Generate_int_array_parameter(website)
 
-	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}, structure.Send(data_object)
+	return []string{fmt.Sprintf("%s(%s)", function_call, parameter_1)}
 }

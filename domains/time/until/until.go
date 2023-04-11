@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
 	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
+	"github.com/TeamPhoneix/go-evil/utility/structure/json"
 	"github.com/TeamPhoneix/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
@@ -17,8 +17,7 @@ const (
 )
 
 // Makes the malware wait until the yyyy-mm-dd-hh-mm has been reached
-func Until(s_json string, value string) ([]string, string) {
-	data_object := structure.Receive(s_json)
+func Until(value string, data_object *json.Json_t) []string {
 	function_call := "Until"
 
 	regex := regexp.MustCompile(GRAB_FULL_DATE)
@@ -74,6 +73,5 @@ func Until(s_json string, value string) ([]string, string) {
 	}
 
 	return []string{fmt.Sprintf("%s(%s, %s, %s, %s, %s)", function_call, constructed_parameters[0], constructed_parameters[1], constructed_parameters[2],
-			constructed_parameters[3], constructed_parameters[4])},
-		structure.Send(data_object)
+		constructed_parameters[3], constructed_parameters[4])}
 }
