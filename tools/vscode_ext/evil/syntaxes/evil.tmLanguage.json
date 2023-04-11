@@ -31,6 +31,12 @@
 		},
 		{
 			"include": "#domain_function"
+		},
+		{
+			"include": "#inject_header"
+		},
+		{
+			"include": "#inject_code"
 		}
 	],
 	
@@ -140,6 +146,26 @@
 				{
 					"name": "entity.other",
 					"match": "\\b(false|true)\\b"
+				}
+			]
+		},
+		"inject_header":{
+			"patterns": [
+				{
+					"name": "constant.character",
+					"begin": "% *\\[",
+					"end": "\\] *%",
+					"match": "\n* *((.*|\n*)*?)\n*"
+				}
+			]
+		},
+		"inject_code":{
+			"patterns": [
+				{
+					"name": "constant.character",
+					"begin": "% *([ble]) *{",
+					"end": "} *%",
+					"match": "\n* *((.*|\n*)*?)\n*"
 				}
 			]
 		}

@@ -1,10 +1,12 @@
 @ With the upcoming changes in version 3.0 you will be able to inject code/headers into your malware  @
+@ The injected golang code is placed within a function in the final executable, and will be executed depending on the function type @
+@ In this example, we will showcase that you can import time and execute a simple Sleep function @
 
 use system
 use network
 
 [
-    version 2.0
+    version 3.0
     output code_injection
     os linux
     arch amd64
