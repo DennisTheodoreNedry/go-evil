@@ -12,5 +12,5 @@ func TestGrabUsername(t *testing.T) {
 	result := tools.Grab_username()
 	user, _ := user.Current()
 
-	assert.Equal(t, user.Name, result)
+	assert.Equal(t, user.Username, result)
 }
