@@ -94,6 +94,25 @@ func main(){
 
 ```
 
+### Predefined variables
+
+There exist two types of variables in go-evil.
+1. Compile-time `$<number>$`
+2. Runtime      `€<number>€`
+
+They exist during two different times in the lifespan of a malware and their names indicate where they are utilized.
+
+| Value | Compile time | Runtime | Description |
+|--------------|-----------|------------|------------|
+| 1 - 5 | X | X | Variables that the user can utilize |
+| 13 | - | X | Each value in a foreach is placed in `€13€`|
+| 23 | X | X | Returns the executables name  |
+| 39 | X | X | Grabs the current working directory |
+| 40 | X | X | Grabs the path to the current user's home directory |
+| 666 | X | X | Grabs the current user's name |
+
+The pattern that emerges here is that most variables do the exact same thing with the exception of in which stage they are parsed and set. E.g. the username obtained through `$666$` might not be the same as the one in `€666€`.
+
 ## Examples
 ### Hello world
 ```
