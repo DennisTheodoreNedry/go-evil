@@ -27,6 +27,19 @@ jobs:
       with:
         go-version: 1.19
       
+    - name: Install dependencies
+      run: |
+          make dependencies
+      
+    - name: Compile the compiler
+      run: |
+          make
+      
     - name: Check if the compiler works
       run: |
           python tools/compile_test.py
+          
+    - name: Clean up
+      run: |
+          make clean
+          rm -r output
