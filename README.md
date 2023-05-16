@@ -56,21 +56,23 @@ But if you're lazy you can also utilize the script labeled `gevil` under the `to
 If you still want to compile the project locally, just run `make dependencies` and `make` to compile the project. After this you can utilize the compiler as intended. 
 
 ## Anatomy of a go-evil based malware
-We have currently three different functions, these are marked by a one character long string preceding the functions name.<br/>
-And of course they have different meanings.
+We have currently four different functions, these are marked by a unique name preceding the functions name.<br/>
 
-1. `boot`, these are functions that will be automatically called on boot of the program.
-2. `loop`, these are functions that will be automatically called within the for-loop in the main function.
-3. `call`, these are functions that will need to be called by the developer, e.g. `self::call("<function_name>")` or through a binding.
-4. `end`, functions that are called just before the malware exits
+| Function type | Description | Extra |
+|--------------|-----------|-----------|
+| boot | Executed at the beginning of the malware | - |
+| loop | Placed and executed within a for-loop | - |
+| call | Manually needs to be called | Binding and utilizing `self::call("<function_name>")` can solve this |
+| end | Executed just before the malware exits | - |
 
-Shown below is the general structure that each malware compiled by goevil has in their source code.
+
+Shown below is the general skeleton that each malware compiled by goevil has in their source code.
 ```
 package main
 
 import(
     ...
-    )
+)
 
 // Structs
 
