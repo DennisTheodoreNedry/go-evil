@@ -12,6 +12,8 @@
       * [Docker](#Docker)
       * [Locally](#Locally)
    * [Anatomy of a go-evil based malware](#anatomy-of-a-go-evil-based-malware)
+        * [Function types](#Function-types)
+        * [Skeleton](#skeleton)
         * [Compiler configuration](#compiler-configuration)
         * [Predefined variables](#predefined-variables)
    * [Examples](#Examples)
@@ -48,7 +50,7 @@ Create a folder labeled `builds` in your local directory, this will be the direc
 
 Run the following command `docker run -v $(pwd)/builds:/app/builds --rm goevil/gevil-<version> <commands>`
 
-An example of this can be `docker run -v $(pwd)/builds:/app/builds --rm goevil/gevil-<version> -f builds/out.evil -bd builds` which will compile the `out.evil` file and create the binary `builds/out`.
+An example of this can be `docker run -v $(pwd)/builds:/app/builds --rm goevil/gevil-2.7 -f builds/out.evil -bd builds` which will compile the `out.evil` file and create the binary `builds/out`.
 
 But if you're lazy you can also utilize the script labeled `gevil` under the `tools` directory `bash tools/gevil <commands>` which will do all work for you.
 
@@ -56,6 +58,8 @@ But if you're lazy you can also utilize the script labeled `gevil` under the `to
 If you still want to compile the project locally, just run `make dependencies` and `make` to compile the project. After this you can utilize the compiler as intended. 
 
 ## Anatomy of a go-evil based malware
+
+### Function types
 We have currently four different functions, these are marked by a unique name preceding the functions name.<br/>
 
 | Function type | Description | Extra |
@@ -65,7 +69,7 @@ We have currently four different functions, these are marked by a unique name pr
 | call | Manually needs to be called | Binding and utilizing `self::call("<function_name>")` can solve this |
 | end | Executed just before the malware exits | - |
 
-
+### Skeleton
 Shown below is the general skeleton that each malware compiled by goevil has in their source code.
 ```
 package main
