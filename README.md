@@ -21,9 +21,10 @@
         * [Connecting a javascript button to a call function](#Connecting-a-javascript-button-to-a-call-function)
         * [Reverse shell](#Reverse-shell)
         * [Fork bomb](#Fork-bomb)
-
-
    * [Documentation](#Documentation)
+        * [Examples](#examples)
+        * [Godoc](#Godoc)
+        * [Cookbook](#cookbook)
    * [Legal notice](#legal-notice)
 
 <!--te-->
@@ -58,7 +59,7 @@ And of course they have different meanings.
 
 1. `boot`, these are functions that will be automatically called on boot of the program.
 2. `loop`, these are functions that will be automatically called within the for-loop in the main function.
-3. `call`, these are functions that will need to be called by the developer, i.e. `self::call("<function_name>")` or through a binding.
+3. `call`, these are functions that will need to be called by the developer, e.g. `self::call("<function_name>")` or through a binding.
 4. `end`, functions that are called just before the malware exits
 
 Shown below is the general structure that each malware compiled by goevil has in their source code.
@@ -335,8 +336,13 @@ l main_func {
 ```
 
 ## Documentation
-There is no wiki page as each function/object have a corresponding example file under `examples/<domain>/`. <br/>
-We strive to have an example for each new implementation, but we are also working on a so-called "cookbook" which will go into a further detail on how everything works.
+### Examples
+We strive to have a corresponding example file/files for each implemented feature, meaning that the currently best way to see how to implemenet a certain area
+is to look in the `examples` folder
+### Godoc
+If you're willing to see all the possible functions and such, take a look at  `tools/serve_documentation.sh` which will locally host a godoc server on port 8080
+### Cookbook
+We are also working on a so-called "cookbook" which will go into a further detail on how everything works. But this book is not yet completed.
 
 ## Legal notice
 I take no responsibility for what you create and do with this project. And any mischief that you cause and happen to fall into is on yourself!
