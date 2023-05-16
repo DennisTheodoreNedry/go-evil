@@ -1,8 +1,8 @@
 package bind
 
 import (
-	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/structure"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // Binds a go function to a corresponding javascript function

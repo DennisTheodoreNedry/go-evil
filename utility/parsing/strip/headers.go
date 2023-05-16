@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"strings"
 
-	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // Finds all comments and removes them

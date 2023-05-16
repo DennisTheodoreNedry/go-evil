@@ -3,9 +3,9 @@ package target
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
-	"github.com/TeamPhoneix/go-evil/utility/tools"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/tools"
 )
 
 // Appends a target to focus on, you can also pass in a evil array with all your targets aswell

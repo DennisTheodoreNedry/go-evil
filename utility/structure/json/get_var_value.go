@@ -3,7 +3,7 @@ package json
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/tools"
+	"github.com/s9rA16Bf4/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 

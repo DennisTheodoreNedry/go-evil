@@ -3,9 +3,9 @@ package random
 import (
 	"fmt"
 
-	evil_int "github.com/TeamPhoneix/go-evil/domains/random/int"
-	evil_string "github.com/TeamPhoneix/go-evil/domains/random/string"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	evil_int "github.com/s9rA16Bf4/go-evil/domains/random/int"
+	evil_string "github.com/s9rA16Bf4/go-evil/domains/random/string"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )

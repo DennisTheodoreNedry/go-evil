@@ -3,7 +3,7 @@ package json
 import (
 	"strings"
 
-	"github.com/TeamPhoneix/go-evil/utility/tools"
+	"github.com/s9rA16Bf4/go-evil/utility/tools"
 )
 
 // Checks if the provided string is a global variabel

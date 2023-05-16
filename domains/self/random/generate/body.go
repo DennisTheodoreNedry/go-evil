@@ -1,7 +1,7 @@
 package generate
 
 import (
-	"github.com/TeamPhoneix/go-evil/utility/tools"
+	"github.com/s9rA16Bf4/go-evil/utility/tools"
 )
 
 func Generate_function_body(return_type string) []string {

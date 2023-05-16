@@ -3,11 +3,11 @@ package window
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/domains/window/bind"
-	"github.com/TeamPhoneix/go-evil/domains/window/navigate"
-	"github.com/TeamPhoneix/go-evil/domains/window/run"
-	"github.com/TeamPhoneix/go-evil/domains/window/set"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/domains/window/bind"
+	"github.com/s9rA16Bf4/go-evil/domains/window/navigate"
+	"github.com/s9rA16Bf4/go-evil/domains/window/run"
+	"github.com/s9rA16Bf4/go-evil/domains/window/set"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )

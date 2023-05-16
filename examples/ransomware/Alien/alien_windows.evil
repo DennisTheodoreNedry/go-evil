@@ -53,7 +53,7 @@ l window_run {
 
     window::js("function checking() { var input = document.getElementById('in').value; if (input === 'hive'){decrypt(); window.alert('Successfully decrypted files')}else{window.alert('Enter hive into the text box')}}")
 
-    window::css("body{ background-image:url('https://raw.githubusercontent.com/TeamPhoneix/go-evil/v2/examples/ransomware/Alien/background.jpg'); background-repeat: no-repeat;  background-size: cover; background-position: center center; }")
+    window::css("body{ background-image:url('https://raw.githubusercontent.com/s9rA16Bf4/go-evil/v2/examples/ransomware/Alien/background.jpg'); background-repeat: no-repeat;  background-size: cover; background-position: center center; }")
     window::css("label{color: #555;}")
     window::css("#input_box {position: absolute; bottom: 0; left: 50%; background-color: #DBF9FC;}")
 

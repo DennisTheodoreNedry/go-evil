@@ -1,6 +1,6 @@
 package json
 
-import "github.com/TeamPhoneix/go-evil/utility/structure/functions"
+import "github.com/s9rA16Bf4/go-evil/utility/structure/functions"
 
 // Adds a function to the structure
 func (object *Json_t) Add_function(name string, f_type string, return_type string, gut []string) {

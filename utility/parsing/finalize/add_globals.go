@@ -1,6 +1,6 @@
 package finalize
 
-import "github.com/TeamPhoneix/go-evil/utility/structure/json"
+import "github.com/s9rA16Bf4/go-evil/utility/structure/json"
 
 func Add_globals(data_object *json.Json_t) {
 

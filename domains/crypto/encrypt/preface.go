@@ -3,11 +3,11 @@ package encrypt
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/domains/crypto/configuration"
-	"github.com/TeamPhoneix/go-evil/domains/crypto/generate"
-	evil_target "github.com/TeamPhoneix/go-evil/domains/crypto/target"
-	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/domains/crypto/configuration"
+	"github.com/s9rA16Bf4/go-evil/domains/crypto/generate"
+	evil_target "github.com/s9rA16Bf4/go-evil/domains/crypto/target"
+	"github.com/s9rA16Bf4/go-evil/utility/structure"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 

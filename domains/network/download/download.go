@@ -3,8 +3,8 @@ package download
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // Downloads a file from the provided url and saves it with the same name on the disk

@@ -3,9 +3,9 @@ package powershell
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/domains/powershell/policy"
+	"github.com/s9rA16Bf4/go-evil/domains/powershell/policy"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 

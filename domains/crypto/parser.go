@@ -3,12 +3,12 @@ package crypto
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/domains/crypto/configuration"
-	"github.com/TeamPhoneix/go-evil/domains/crypto/decrypt"
-	"github.com/TeamPhoneix/go-evil/domains/crypto/encrypt"
-	"github.com/TeamPhoneix/go-evil/domains/crypto/generate"
-	"github.com/TeamPhoneix/go-evil/domains/crypto/target"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/domains/crypto/configuration"
+	"github.com/s9rA16Bf4/go-evil/domains/crypto/decrypt"
+	"github.com/s9rA16Bf4/go-evil/domains/crypto/encrypt"
+	"github.com/s9rA16Bf4/go-evil/domains/crypto/generate"
+	"github.com/s9rA16Bf4/go-evil/domains/crypto/target"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 

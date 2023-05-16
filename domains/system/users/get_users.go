@@ -3,8 +3,8 @@ package users
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // Tries to grab all users
@@ -29,7 +29,7 @@ func Get(value string, data_object *json.Json_t) []string {
 		}})
 
 	data_object.Add_go_import("github.com/redcode-labs/Coldfire")
-	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/structure")
+	data_object.Add_go_import("github.com/s9rA16Bf4/go-evil/utility/structure")
 
 	return []string{fmt.Sprintf("%s()", function_call)}
 }

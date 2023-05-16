@@ -1,6 +1,6 @@
 package json
 
-import "github.com/TeamPhoneix/go-evil/utility/tools"
+import "github.com/s9rA16Bf4/go-evil/utility/tools"
 
 // Sets the js code being used in the window
 func (object *Json_t) Set_js(content string) {

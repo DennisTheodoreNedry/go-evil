@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/version"
-	"github.com/TeamPhoneix/go-evil/utility/wrapper"
+	"github.com/s9rA16Bf4/go-evil/utility/structure"
+	"github.com/s9rA16Bf4/go-evil/utility/version"
+	"github.com/s9rA16Bf4/go-evil/utility/wrapper"
 
 	arg "github.com/s9rA16Bf4/ArgumentParser/go/arguments"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure"
-	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
-	"github.com/TeamPhoneix/go-evil/utility/tools"
+	"github.com/s9rA16Bf4/go-evil/utility/structure"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/tools"
 )
 
 // Writes a provided content to a provided file
@@ -54,7 +54,7 @@ func Write(value string, data_object *json.Json_t) []string {
 	data_object.Add_go_import("encoding/hex")
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("strings")
-	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
+	data_object.Add_go_import("github.com/s9rA16Bf4/go-evil/utility/tools")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 
 	parameter_path := data_object.Generate_int_array_parameter(path)

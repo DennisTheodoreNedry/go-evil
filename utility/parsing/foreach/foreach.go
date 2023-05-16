@@ -1,8 +1,8 @@
 package foreach
 
 import (
-	"github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-	"github.com/TeamPhoneix/go-evil/utility/tools"
+	"github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
+	"github.com/s9rA16Bf4/go-evil/utility/tools"
 )
 
 // Gathers all data needed for an foreach statement

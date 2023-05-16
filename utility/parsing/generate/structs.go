@@ -1,8 +1,8 @@
 package generate
 
 import (
-	"github.com/TeamPhoneix/go-evil/utility/parsing/generate/structs"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/parsing/generate/structs"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // Generate different structs in the final malware

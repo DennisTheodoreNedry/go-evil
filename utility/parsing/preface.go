@@ -1,14 +1,14 @@
 package parsing
 
 import (
-	"github.com/TeamPhoneix/go-evil/utility/io"
-	evil_configuration "github.com/TeamPhoneix/go-evil/utility/parsing/configuration"
-	evil_error "github.com/TeamPhoneix/go-evil/utility/parsing/error"
-	evil_functions "github.com/TeamPhoneix/go-evil/utility/parsing/functions"
-	evil_import "github.com/TeamPhoneix/go-evil/utility/parsing/imports"
-	evil_inject "github.com/TeamPhoneix/go-evil/utility/parsing/injection"
-	evil_strip "github.com/TeamPhoneix/go-evil/utility/parsing/strip"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/io"
+	evil_configuration "github.com/s9rA16Bf4/go-evil/utility/parsing/configuration"
+	evil_error "github.com/s9rA16Bf4/go-evil/utility/parsing/error"
+	evil_functions "github.com/s9rA16Bf4/go-evil/utility/parsing/functions"
+	evil_import "github.com/s9rA16Bf4/go-evil/utility/parsing/imports"
+	evil_inject "github.com/s9rA16Bf4/go-evil/utility/parsing/injection"
+	evil_strip "github.com/s9rA16Bf4/go-evil/utility/parsing/strip"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // preface before we start parsing

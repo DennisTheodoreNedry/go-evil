@@ -1,6 +1,6 @@
 package json
 
-import "github.com/TeamPhoneix/go-evil/utility/tools"
+import "github.com/s9rA16Bf4/go-evil/utility/tools"
 
 // Set the build directory
 func (object *Json_t) Set_build_directory(new_bd string) {

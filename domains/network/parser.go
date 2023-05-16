@@ -3,12 +3,12 @@ package network
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/domains/network/dns"
-	"github.com/TeamPhoneix/go-evil/domains/network/download"
-	"github.com/TeamPhoneix/go-evil/domains/network/interfaces"
-	"github.com/TeamPhoneix/go-evil/domains/network/ip"
-	"github.com/TeamPhoneix/go-evil/domains/network/network"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/domains/network/dns"
+	"github.com/s9rA16Bf4/go-evil/domains/network/download"
+	"github.com/s9rA16Bf4/go-evil/domains/network/interfaces"
+	"github.com/s9rA16Bf4/go-evil/domains/network/ip"
+	"github.com/s9rA16Bf4/go-evil/domains/network/network"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )

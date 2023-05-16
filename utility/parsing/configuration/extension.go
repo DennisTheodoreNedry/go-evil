@@ -3,7 +3,7 @@ package configuration
 import (
 	"os"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // Checks if the user specificed an extension for the malware

@@ -1,6 +1,6 @@
 package json
 
-import "github.com/TeamPhoneix/go-evil/utility/tools"
+import "github.com/s9rA16Bf4/go-evil/utility/tools"
 
 // Generates an int array representing the provided string
 func (object *Json_t) Generate_int_array(message string) []int {

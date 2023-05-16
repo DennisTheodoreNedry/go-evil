@@ -3,11 +3,11 @@ package self
 import (
 	"fmt"
 
-	evil_call "github.com/TeamPhoneix/go-evil/domains/self/call"
-	"github.com/TeamPhoneix/go-evil/domains/self/include"
-	"github.com/TeamPhoneix/go-evil/domains/self/random"
-	"github.com/TeamPhoneix/go-evil/domains/self/set"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	evil_call "github.com/s9rA16Bf4/go-evil/domains/self/call"
+	"github.com/s9rA16Bf4/go-evil/domains/self/include"
+	"github.com/s9rA16Bf4/go-evil/domains/self/random"
+	"github.com/s9rA16Bf4/go-evil/domains/self/set"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )

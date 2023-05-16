@@ -3,8 +3,8 @@ package sleep
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // Makes the malware sleep for an n amount of seconds
@@ -20,7 +20,7 @@ func Sleep(value string, data_object *json.Json_t) []string {
 		}})
 
 	data_object.Add_go_import("time")
-	data_object.Add_go_import("github.com/TeamPhoneix/go-evil/utility/tools")
+	data_object.Add_go_import("github.com/s9rA16Bf4/go-evil/utility/tools")
 
 	parameter_1 := data_object.Generate_int_array_parameter(value)
 

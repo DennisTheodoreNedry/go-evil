@@ -1,9 +1,9 @@
 package json
 
 import (
-	compilevar "github.com/TeamPhoneix/go-evil/utility/structure/compile_var"
-	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
-	"github.com/TeamPhoneix/go-evil/utility/structure/structs"
+	compilevar "github.com/s9rA16Bf4/go-evil/utility/structure/compile_var"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/structs"
 )
 
 type Json_t struct {

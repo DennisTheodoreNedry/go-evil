@@ -3,7 +3,7 @@ package cleanup
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // Prints the json file to the screen

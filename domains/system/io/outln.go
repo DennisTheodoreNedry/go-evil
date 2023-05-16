@@ -3,8 +3,8 @@ package io
 import (
 	"fmt"
 
-	"github.com/TeamPhoneix/go-evil/utility/structure/functions"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // Prints a message to the screen, but appends a newline at the end of each print

@@ -1,4 +1,4 @@
-module github.com/TeamPhoneix/go-evil
+module github.com/s9rA16Bf4/go-evil
 
 go 1.18
 

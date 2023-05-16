@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"runtime"
 
-	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
 
 // Checks if the user specificed an os for the malware

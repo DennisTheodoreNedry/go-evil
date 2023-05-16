@@ -3,12 +3,12 @@ package generate
 import (
 	"regexp"
 
-	"github.com/TeamPhoneix/go-evil/utility/parsing/foreach"
-	if_else "github.com/TeamPhoneix/go-evil/utility/parsing/if_else"
-	"github.com/TeamPhoneix/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/parsing/foreach"
+	if_else "github.com/s9rA16Bf4/go-evil/utility/parsing/if_else"
+	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 
-	"github.com/TeamPhoneix/go-evil/utility/parsing/imports"
-	evil_regex "github.com/TeamPhoneix/go-evil/utility/parsing/regex"
+	"github.com/s9rA16Bf4/go-evil/utility/parsing/imports"
+	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
 )
 
 // Converts evil code to golang code and returns it
