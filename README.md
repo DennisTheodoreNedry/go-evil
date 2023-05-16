@@ -11,10 +11,10 @@
    * [Installation](#Installation)
       * [Docker](#Docker)
       * [Locally](#Locally)
-   * [Anatomy of a go-evil based malware](#anatomy)
+   * [Anatomy of a go-evil based malware](#anatomy-of-a-go-evil-based-malware)
    * [Examples](#Examples)
    * [Documentation](#Documentation)
-   * [Legal notice](#legal_notice)
+   * [Legal notice](#legal-notice)
 
 <!--te-->
 
