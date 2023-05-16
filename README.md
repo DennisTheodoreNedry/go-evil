@@ -12,7 +12,8 @@
       * [Docker](#Docker)
       * [Locally](#Locally)
    * [Anatomy of a go-evil based malware](#anatomy-of-a-go-evil-based-malware)
-   * [Predefined variables](#predefined-variables)
+        * [Compiler configuration](#compiler-configuration)
+        * [Predefined variables](#predefined-variables)
    * [Examples](#Examples)
         * [Hello world](#Hello-world)
         * [If/else statements](#If/else-statements)
@@ -95,11 +96,31 @@ func main(){
 
 ```
 
+### Compiler configuration
+Each go-evil malware require a so-called `Compiler configuration`.
+```
+[
+    <Compiler configuration>
+]
+```
+The compiler configuration informs the compiler on how the malware should be configured and compiled and can contain the following fields.
+
+| Field | Description | Value type |
+|--------------|-----------|-----------|
+| version | Target compiler version | string |
+| output | The name of the malware after being compiled | string |
+| os | Target operating system | string |
+| arch | Target architecture | string |
+| obfuscate | Should the source code be obfuscated? | boolean |
+| debugger_behavior | How should the malware react if it detects a debugger? | string |
+
+Most of these values are the same as the flags that can be sent in through the argument parser and any sent in args will overwrite what the compiler configuration contains.
+
 ### Predefined variables
 
 There exist two types of variables in go-evil.
-1. Compile-time `$<number>$`
-2. Runtime      `€<number>€`
+1. Compile-time `$<value>$`
+2. Runtime      `€<value>€`
 
 They exist during two different times in the lifespan of a malware and their names indicate where they are utilized.
 
