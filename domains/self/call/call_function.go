@@ -11,7 +11,7 @@ import (
 // Adds a function function_call to the src code
 // Calls function of the type 'c'
 func Function(func_name string, data_object *json.Json_t) []string {
-	function_call := fmt.Sprintf("function_call_%s", tools.Generate_random_n_string(16))
+	function_call := fmt.Sprintf("function_call_%s()", tools.Generate_random_n_string(16))
 
 	func_name = tools.Erase_delimiter(func_name, []string{"\""}, -1) // Removes all " from the string
 

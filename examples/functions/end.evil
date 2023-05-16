@@ -4,7 +4,7 @@
 use system
 
 [
-    version 4.0
+    version 3.0
     output end_function
     os linux
     arch amd64

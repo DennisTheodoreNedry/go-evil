@@ -75,6 +75,7 @@ func Ping(value string, data_object *json.Json_t) []string {
 
 	data_object.Add_go_import("fmt")
 	data_object.Add_go_import("net")
+	data_object.Add_go_import("time")
 	data_object.Add_go_import("github.com/tatsushid/go-fastping")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 

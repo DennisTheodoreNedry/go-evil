@@ -47,6 +47,7 @@ func Copy(value string, data_object *json.Json_t) []string {
 			"}",
 		}})
 
+	data_object.Add_go_import("io")
 	data_object.Add_go_import("os")
 	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
 

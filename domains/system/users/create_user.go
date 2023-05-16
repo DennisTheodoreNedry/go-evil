@@ -40,7 +40,7 @@ func Create(value string, data_object *json.Json_t) []string {
 		"_, err := cmd.CombinedOutput()",
 		"if err != nil {",
 		"spine.log(err.Error())",
-		"}}"}...)
+		"}"}...)
 
 	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
 		Parameters: []string{"repr_1 []int", "repr_2 []int"},
