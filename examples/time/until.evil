@@ -7,7 +7,7 @@ use system
 use time
 
 [
-    version 2.0
+    version 3.0
     output until
     os linux
     arch amd64
@@ -15,7 +15,7 @@ use time
     debugger_behavior stop
 ]
 
-l main_func {
+loop main_func {
     time::until("10:45")
     system::outln("Hello I've launched!!")
     

@@ -5,7 +5,7 @@ use system
 use random
 
 [
-    version 2.0
+    version 3.0
     output random_str
     os linux
     arch amd64
@@ -14,7 +14,7 @@ use random
 ]
 
 
-l main_func {
+loop main_func {
     random::string("2048")
     system::outln("$1$")
     system::exit("0")

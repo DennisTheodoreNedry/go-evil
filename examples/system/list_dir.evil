@@ -3,7 +3,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output list_dir
     os linux
     arch amd64
@@ -13,7 +13,7 @@ use system
 
 
 
-l main_func {
+loop main_func {
     system::list_dir(${"", "€39€/examples/system/"}$) @ This will place the result into the first available runtime variable @
     foreach("€1€"):
         system::outln("€13€") @ This prints all the found files @

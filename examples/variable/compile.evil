@@ -4,7 +4,7 @@ use system
 use self
 
 [
-    version 2.0
+    version 3.0
     output compile
     os linux
     arch amd64
@@ -12,7 +12,7 @@ use self
     debugger_behavior stop
 ]
 
-l main_func {
+loop main_func {
     system::outln("$1$") @ This will print NULL @
     self::set_comp("My god!")
     system::outln("$1$") @ This will now print "My god!" @

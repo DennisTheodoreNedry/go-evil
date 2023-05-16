@@ -8,8 +8,8 @@ package regex
 
 const (
 	// Functions //
-	FUNC              = "([blce]) ([a-z0-9_]+) *(-> (string|boolean|integer|null))? *{\n* *((.*|\n*)*?)\n*}" // Extracts all functions
-	DOMAIN_FUNC_VALUE = "([a-z_#0-9]+)::([a-z_0-9]+)\\((.*)\\)"                                              // Extracts the domain, function being called and if a value was sent with it
+	FUNC              = "(boot|loop|call|end) ([a-z0-9_]+) *(-> (string|boolean|integer|null|nil|none))? *{\n* *((.*|\n*)*?)\n*}" // Extracts all functions
+	DOMAIN_FUNC_VALUE = "([a-z_#0-9]+)::([a-z_0-9]+)\\((.*)\\)"                                                                   // Extracts the domain, function being called and if a value was sent with it
 
 	// Imports //
 	IMPORT = "use (.*)" // Finds imports
@@ -41,6 +41,6 @@ const (
 	CONFIGURATION_DEBUGGER_BEHAVIOR = "debugger_behavior +(.*)"    // Decides how the malware will act if it detects a debugger
 
 	// Injections //
-	INJECTION_GO_CODE    = "% *([ble]) *{\n* *((.*|\n*)*?)\n*} *%" // Grab golang code to inject into your application
-	INJECTION_GO_HEADERS = "% *\\[\n* *((.*|\n*)*?)\n*\\] *%"      // Grab potential golang imports
+	INJECTION_GO_CODE    = "% *(boot|loop|call|end) *{\n* *((.*|\n*)*?)\n*} *%" // Grab golang code to inject into your application
+	INJECTION_GO_HEADERS = "% *\\[\n* *((.*|\n*)*?)\n*\\] *%"                   // Grab potential golang imports
 )

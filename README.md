@@ -149,7 +149,7 @@ The pattern that emerges here is that most variables do the exact same thing wit
 use system
 
 [
-    version 2.0
+    version 3.0
     output out
     os linux
     arch amd64
@@ -182,7 +182,7 @@ use system
 use self
 
 [
-    version 2.0
+    version 3.0
     output if_else
     os linux
     arch amd64
@@ -209,7 +209,7 @@ l main_func {
 use system
 
 [
-    version 2.0
+    version 3.0
     output foreach
     os linux
     arch amd64
@@ -237,7 +237,7 @@ use system
 use self
 
 [
-    version 2.0
+    version 3.0
     output random_func
     os linux
     arch amd64
@@ -267,7 +267,7 @@ use system
 use time
 
 [
-    version 2.0
+    version 3.0
     output until
     os linux
     arch amd64
@@ -297,7 +297,7 @@ use system
 use window
 
 [
-    version 2.0
+    version 3.0
     output bind
     os linux
     arch amd64
@@ -337,7 +337,7 @@ use system
 use network
 
 [
-    version 2.0
+    version 3.0
     output reverse_shell
     os linux
     arch amd64
@@ -362,7 +362,7 @@ use bombs
 use time
 
 [
-    version 2.0
+    version 3.0
     output fork_bomb
     os linux
     arch amd64

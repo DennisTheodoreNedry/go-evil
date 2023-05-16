@@ -5,7 +5,7 @@ use system
 use self
 
 [
-    version 2.0
+    version 3.0
     output compile_username
     os linux
     arch amd64
@@ -13,7 +13,7 @@ use self
     debugger_behavior stop
 ]
 
-l main_func {
+loop main_func {
     system::outln("Hello $666$!") @ As you can see $666$ is reserved for when you want a username @
     system::exit("0")
 }

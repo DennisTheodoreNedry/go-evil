@@ -3,7 +3,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output out
     os linux
     arch amd64
@@ -13,7 +13,7 @@ use system
 
 
 
-l main_func {
+loop main_func {
     system::outln("Hello with a newline!") @ Adds a new line at the end @
     system::out("Hello without a newline!") 
     system::exit("0")

@@ -6,7 +6,7 @@ use crypto
 use system
 use time
 [
-    version 2.0
+    version 3.0
     output alternative_rsa
     os linux
     arch amd64
@@ -15,7 +15,7 @@ use time
 ]
 
 
-l main_func {
+loop main_func {
     crypto::encrypt(${"rsa", "2048", "", ".why_do_i_have_to_scream" , "€39€/examples/crypto/target_file.txt"}$)
     
     crypto::clean_targets() @ Removes every prevously added target @

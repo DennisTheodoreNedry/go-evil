@@ -6,7 +6,7 @@ use system
 use window
 
 [
-    version 2.0
+    version 3.0
     output input
     os linux
     arch amd64
@@ -14,7 +14,7 @@ use window
     debugger_behavior stop
 ]
 
-b multishow_example {
+boot multishow_example {
     window::html("<h2>Example</h2>")
     window::html("<label for='passcode'>Enter the secret password for encryption</label>")
     window::html("<input type='text' id='passcode'>")
@@ -30,6 +30,6 @@ b multishow_example {
     window::run()
 }
 
-l loop {
+loop main_loop {
     system::exit("0")
 }

@@ -20,17 +20,17 @@ use network
     fmt
 ]%
 
-% b {
+% boot {
     time.Sleep(10)
     fmt.Println("I'm called at boot")
 }%
 
-% l {
+% loop {
     time.Sleep(10)
     fmt.Println("It has gone 10 seconds")
 }%
 
-l main_func {
+loop main_func {
     system::outln("Test")
     
     system::exit("0")

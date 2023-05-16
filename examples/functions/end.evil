@@ -12,15 +12,15 @@ use system
     debugger_behavior stop
 ]
 
-b boot_func {
+boot boot_func {
     system::outln("I am called at boot")
 }
 
-l main_func {
+loop main_func {
     system::outln("I am called within a loop")
     system::exit("0")
 }
 
-e exit_func {
+end exit_func {
     system::outln("I am called before the program is terminated")
 }

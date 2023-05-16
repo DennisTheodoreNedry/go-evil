@@ -34,7 +34,7 @@ require (
 	github.com/tatsushid/go-fastping v0.0.0-20160109021039-d7bb493dee3e // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
-	github.com/webview/webview v0.0.0-20230210061304-7b40e46d97e9 // indirect
+	github.com/webview/webview v0.0.0-20230415172654-8387ff8945fc // indirect
 	github.com/xlab/treeprint v1.1.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	github.com/zserge/lorca v0.1.10 // indirect

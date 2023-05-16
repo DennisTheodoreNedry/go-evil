@@ -4,7 +4,7 @@ use system
 use network
 
 [
-    version 2.0
+    version 3.0
     output dns_lookup
     os linux
     arch amd64
@@ -13,7 +13,7 @@ use network
 ]
 
 
-l main_func {
+loop main_func {
     network::dns_lookup("google.com") @ The result is placed in a runtime variable @
     system::outln("€1€")
     

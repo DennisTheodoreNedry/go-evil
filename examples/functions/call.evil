@@ -6,7 +6,7 @@ use system
 use self
 
 [
-    version 2.0
+    version 3.0
     output call
     os linux
     arch amd64
@@ -14,15 +14,15 @@ use self
     debugger_behavior stop
 ]
 
-c function_to_call -> null {
+call function_to_call -> null {
     system::outln("Hello I was summoned!")
 }
 
-c return_function -> integer {
+call return_function -> integer {
     self::set_run("0") @ Set the return element @
 }
 
-l main_func {
+loop main_func {
     self::call("function_to_call")
     system::exit("0")
 }

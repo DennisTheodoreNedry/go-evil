@@ -75,6 +75,8 @@ github.com/tklauser/numcpus v0.6.0 h1:kebhY2Qt+3U6RNK7UqpYNA+tJ23IBEGKkB7JQBfDYm
 github.com/tklauser/numcpus v0.6.0/go.mod h1:FEZLMke0lhOUG6w2JadTzp0a+Nl8PF/GFkQ5UVIcaL4=
 github.com/webview/webview v0.0.0-20230210061304-7b40e46d97e9 h1:SPyWnfToUom3xNh3dKGkq1ZV7pw+VSWDcfVrUM1nRWs=
 github.com/webview/webview v0.0.0-20230210061304-7b40e46d97e9/go.mod h1:rpXAuuHgyEJb6kXcXldlkOjU6y4x+YcASKKXJNUhh0Y=
+github.com/webview/webview v0.0.0-20230415172654-8387ff8945fc h1:3LWOLV/SbVjPYCARWGcRpOKP30U/I6EP1v8PSIoh1aU=
+github.com/webview/webview v0.0.0-20230415172654-8387ff8945fc/go.mod h1:rpXAuuHgyEJb6kXcXldlkOjU6y4x+YcASKKXJNUhh0Y=
 github.com/xlab/treeprint v1.1.0 h1:G/1DjNkPpfZCFt9CSh6b5/nY4VimlbHF3Rh4obvtzDk=
 github.com/xlab/treeprint v1.1.0/go.mod h1:gj5Gd3gPdKtR1ikdDK6fnFLdmIS0X30kTTuNd/WEJu0=
 github.com/yusufpapurcu/wmi v1.2.2 h1:KBNDSne4vP5mbSWnJbO+51IMOXJB67QiYCSBrubbPRg=

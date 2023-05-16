@@ -4,7 +4,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output clear_logs
     os linux
     arch amd64
@@ -12,7 +12,7 @@ use system
     debugger_behavior stop
 ]
 
-l main_func {
+loop main_func {
     system::outln("## Warning don't run this script on your own machine ##")
     system::clear_logs()
 

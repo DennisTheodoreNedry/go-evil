@@ -4,7 +4,7 @@ use system
 use window
 
 [
-    version 2.0
+    version 3.0
     output navigate
     os linux
     arch amd64
@@ -12,10 +12,10 @@ use window
     debugger_behavior stop
 ]
 
-b navigate {
+boot navigate {
     window::navigate("https://google.com/")
 }
 
-l loop {
+loop main_loop {
     system::exit("0")
 }

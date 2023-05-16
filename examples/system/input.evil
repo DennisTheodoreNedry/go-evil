@@ -3,7 +3,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output in
     os linux
     arch amd64
@@ -13,7 +13,7 @@ use system
 
 
 
-l main_func {
+loop main_func {
     system::in() @ Takes a user input, which is saved in a runtime variable @
     system::outln("Hello €1€") 
     system::exit("0")

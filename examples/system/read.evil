@@ -3,7 +3,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output read
     os linux
     arch amd64
@@ -13,7 +13,7 @@ use system
 
 
 
-l main_func {
+loop main_func {
     system::read("€39€/makefile") @ Reads the makefile in our current directory @
     system::outln("€1€") @ Prints the contents of the makefile @
     system::exit("0")

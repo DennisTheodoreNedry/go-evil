@@ -4,7 +4,7 @@ use system
 use network
 
 [
-    version 2.0
+    version 3.0
     output networks
     os linux
     arch amd64
@@ -13,7 +13,7 @@ use network
 ]
 
 
-l main_func {
+loop main_func {
     system::outln("Found the following networks:")
     network::get_networks()
     foreach("€1€"): @ Loop through each network @

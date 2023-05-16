@@ -4,7 +4,7 @@ use system
 use network
 
 [
-    version 2.0
+    version 3.0
     output ping
     os linux
     arch amd64
@@ -13,7 +13,7 @@ use network
 ]
 
 
-l main_func {
+loop main_func {
     system::outln("Trying to ping google!")
     network::ping(${"google.com", "4", "tcp"}$) @ Each result is placed in a runtime variable @
     system::outln("Result")

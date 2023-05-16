@@ -21,7 +21,7 @@ func Build_functions_structs(data_object *json.Json_t) {
 			f_type := function[1]
 			name := function[2]
 
-			if f_type == "c" {
+			if f_type == "call" {
 				return_type = function[4]
 				index = 5
 			}

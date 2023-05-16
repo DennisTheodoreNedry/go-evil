@@ -5,7 +5,7 @@ use system
 use self
 
 [
-    version 2.0
+    version 3.0
     output include_n_write
     os linux
     arch amd64
@@ -13,11 +13,11 @@ use self
     debugger_behavior stop
 ]
 
-b include {
+boot include {
     self::include("$39$/main.go") @ The result is placed into $1$ @
 }
 
-l main_func {
+loop main_func {
     system::write(${"/tmp/main.go", "$1$"}$)
     system::exit("0")
 }

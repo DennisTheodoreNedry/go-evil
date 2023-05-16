@@ -3,7 +3,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output copy
     os linux
     arch amd64
@@ -12,7 +12,7 @@ use system
 ]
 
 
-l main_func {
+loop main_func {
     system::write(${"./test.txt", "hello, world!\n"}$)
     system::copy(${"./test.txt", "./test_copy.txt"}$)
     system::exit("0")

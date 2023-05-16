@@ -4,7 +4,7 @@ use system
 use self
 
 [
-    version 2.0
+    version 3.0
     output set_run
     os linux
     arch amd64
@@ -13,7 +13,7 @@ use self
 ]
 
 
-l main_func {
+loop main_func {
     self::set_run("Hello world!") @ Assigns the first runtime variable a value @
     system::outln("€1€")
     system::exit("0")

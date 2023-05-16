@@ -5,7 +5,7 @@ use crypto
 use system
 
 [
-    version 2.0
+    version 3.0
     output aes
     os linux
     arch amd64
@@ -14,7 +14,7 @@ use system
 ]
 
 
-l main_func {
+loop main_func {
     crypto::generate_aes_key("16") @ Make sure that the length of the key is long enough to encrypt the file @
     crypto::add_target("€39€/examples/crypto/target_file.txt") @ Target file @
     crypto::set_method("aes")

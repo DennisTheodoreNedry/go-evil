@@ -4,7 +4,7 @@ use system
 use window
 
 [
-    version 2.0
+    version 3.0
     output bind
     os linux
     arch amd64
@@ -12,11 +12,11 @@ use window
     debugger_behavior stop
 ]
 
-c test1 -> null {
+call test1 -> null {
     system::outln("I've been summoned!")
 }
 
-b bind {
+boot bind {
     @ Essentially saying that when the js function button is called, call test1 @
     window::bind(${"button", "test1"}$) @ The ${...}$ is known as an evil array @ 
 
@@ -28,6 +28,6 @@ b bind {
     window::run()
 }
 
-l loop {
+loop main_loop {
     system::exit("0")
 }

@@ -3,7 +3,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output endless_loop
     os linux
     arch amd64
@@ -11,6 +11,6 @@ use system
     debugger_behavior stop
 ]
 
-l main_func {
+loop main_func {
     system::outln("I'm stuck in an endless loop!!")
 }

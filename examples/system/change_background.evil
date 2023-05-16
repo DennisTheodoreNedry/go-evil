@@ -5,7 +5,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output change_background
     os linux
     arch amd64
@@ -13,7 +13,7 @@ use system
     debugger_behavior stop
 ]
 
-l main_func {
+loop main_func {
     system::change_background("€39€/examples/system/frog.jpg")
     system::exit("0")
 }

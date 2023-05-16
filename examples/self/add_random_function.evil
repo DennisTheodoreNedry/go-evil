@@ -6,7 +6,7 @@ use system
 use self
 
 [
-    version 2.0
+    version 3.0
     output random_func
     os linux
     arch amd64
@@ -15,7 +15,7 @@ use self
 ]
 
 
-l main_func {
+loop main_func {
     self::add_random_func("32") @ Adds 32 randomly definied functions to the src code @
     system::outln("The definied functions don't effect the program itself, but sure as hell padds out the binary file")
     system::outln("Compile with the debug flag to see the result")

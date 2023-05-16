@@ -4,7 +4,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output get_processes
     os linux
     arch amd64
@@ -12,7 +12,7 @@ use system
     debugger_behavior stop
 ]
 
-b all {
+boot all {
     system::outln("## Processes ##")
     system::get_processes() @ The output is placed in a runtime variable and is in the format of an evil array @
 
@@ -21,7 +21,7 @@ b all {
     end foreach
 }
 
-b name {
+boot name {
     system::outln("## Process name ##")
     system::get_processes_name() @ The output is placed in a runtime variable and is in the format of an evil array @
 
@@ -30,7 +30,7 @@ b name {
     end foreach
 }
 
-b pid {
+boot pid {
     system::outln("## Process pid ##")
     system::get_processes_pid() @ The output is placed in a runtime variable and is in the format of an evil array @
 
@@ -39,6 +39,6 @@ b pid {
     end foreach
 }
 
-l main_func {
+loop main_func {
     system::exit("0")
 }

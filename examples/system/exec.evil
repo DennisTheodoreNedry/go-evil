@@ -3,7 +3,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output exec
     os linux
     arch amd64
@@ -11,7 +11,7 @@ use system
     debugger_behavior stop
 ]
 
-l main_func {
+loop main_func {
     system::exec("echo 'hello, world!'")
     system::exit("0")
 }

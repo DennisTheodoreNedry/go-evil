@@ -3,7 +3,7 @@
 use system
 
 [
-    version 2.0
+    version 3.0
     output get_disks
     os linux
     arch amd64
@@ -11,7 +11,7 @@ use system
     debugger_behavior stop
 ]
 
-l main_func {
+loop main_func {
     system::outln("## Disks ##")
     system::get_disks() @ The output is placed in a runtime variable and is in the format of an evil array @
 
