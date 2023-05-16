@@ -345,8 +345,8 @@ If you're willing to see all the possible functions and such, take a look at  `t
 We are also working on a so-called "cookbook" which will go into a further detail on how everything works. But this book is not yet completed.
 
 ## Legal notice
-I take no responsibility for what you create and do with this project. And any mischief that you cause and happen to fall into is on yourself!
-But do share your art, as it's fun to see!
+We take no responsibility for what you create and do with this project. Any mischief that you cause and happen to fall into is on yourself!
+But we do encourage open sourcing your malware so that the world can see your art!
 
 
 
