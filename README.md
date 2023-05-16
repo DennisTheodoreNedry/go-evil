@@ -12,6 +12,7 @@
       * [Docker](#Docker)
       * [Locally](#Locally)
    * [Anatomy of a go-evil based malware](#anatomy-of-a-go-evil-based-malware)
+   * [Predefined variables](#predefined-variables)
    * [Examples](#Examples)
         * [Hello world](#Hello-world)
         * [If/else statements](#If/else-statements)
