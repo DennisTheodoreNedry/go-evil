@@ -14,7 +14,7 @@ func Remove(value string, data_object *json.Json_t) []string {
 	data_object.Add_go_function(functions.Go_func_t{Name: function_call, Func_type: "", Part_of_struct: "", Return_type: "",
 		Parameters: []string{"repr_1  []int"},
 		Gut: []string{
-			"target := spine.alpha.construct_string(repr)",
+			"target := spine.alpha.construct_string(repr_1)",
 			"target = spine.variable.get(target)",
 			"err := os.Remove(target)",
 			"if err != nil{",

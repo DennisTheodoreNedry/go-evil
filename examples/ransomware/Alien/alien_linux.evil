@@ -21,7 +21,7 @@ use time
     obfuscate false
 ]
 
-c decrypt_files {
+c decrypt_files -> null {
     crypto::clean_targets() @ Remove all our prevously gathered targets @
     crypto::set_extension(".cleared")
     crypto::set_aes_key("hiveXXXXXXXXXXXX")

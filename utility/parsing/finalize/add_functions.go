@@ -22,6 +22,10 @@ func Add_functions(data_object *json.Json_t) {
 		// Parameters
 		if len(new_func.Parameters) > 0 {
 			for _, parameter := range new_func.Parameters {
+				if parameter == "" { // It's empty so skip this one
+					continue
+				}
+
 				header += fmt.Sprintf("%s,", parameter)
 			}
 		}
@@ -33,6 +37,19 @@ func Add_functions(data_object *json.Json_t) {
 		// Construct the body
 		body = append(body, header)
 		body = append(body, new_func.Gut...)
+
+		switch new_func.Return_type {
+		case "int":
+			body = append(body, "return 0")
+
+		case "bool":
+			body = append(body, "return true")
+
+		case "string":
+			body = append(body, "return \"\"")
+
+		}
+
 		body = append(body, "}")
 
 		data_object.Add_malware_lines(body)
