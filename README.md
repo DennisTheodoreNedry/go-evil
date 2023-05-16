@@ -2,6 +2,9 @@
 
 <img src="./images/logo.png" width="1000"/>
 
+
+[![Check if the compiler passes all tests](https://github.com/s9rA16Bf4/go-evil/actions/workflows/check_compiler.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/check_compiler.yml)
+
 Go-evil is a red teams wet dream, a tool to beat all other tools of it's kind.<br>
 What is go-evil, I hear you ask? Go-evil is a project all about the art of creating malware with a simpel language.<br>
 The programming language we utilize is called evil, which only purpose is to translate ideas like "Hey I want a backdoor" into working code without the malware artist needing to know every every nook and cranny.<br> 
