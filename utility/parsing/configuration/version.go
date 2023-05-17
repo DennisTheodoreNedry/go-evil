@@ -13,16 +13,16 @@ func check_version(line string) {
 
 	regex := regexp.MustCompile(evil_regex.COMPILER_VERSION)
 	result := regex.FindAllStringSubmatch(line, -1)
-	current_version := version.EVIL_VERSION
+	current_version := version.EVIL_VERSION_SMALL
 
 	if len(result) > 0 {
 		grabbed_version := result[0][1]
 
 		if grabbed_version > current_version {
-			notify.Error("The provided Evil file is targeting a newer version of go-evil and is therefore not supported", "parsing.check_version()")
+			notify.Error("The provided evil file is targeting a newer version of go-evil and is therefore not supported", "parsing.check_version()")
 
 		} else if grabbed_version < current_version {
-			notify.Warning("The provided Evil file is targeting an older version of go-evil and therefore might not be supported by this compiler")
+			notify.Warning("The provided evil file is targeting an older version of go-evil and therefore might not be supported by this compiler")
 		}
 	}
 

@@ -24,7 +24,8 @@ dependencies:
 	go get github.com/ARaChn3/gfb
 	go get github.com/ARaChn3/puffgo
 	go get github.com/redcode-labs/Coldfire
-
+	go get github.com/MarinX/keylogger
+	go get github.com/KindlyFire/go-keylogger
 
 install_ext:
 	cp -R $(EXT) ~/.vscode/extensions/

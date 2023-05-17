@@ -12,6 +12,9 @@ require (
 require (
 	github.com/ARaChn3/gfb v1.0.0 // indirect
 	github.com/ARaChn3/puffgo v1.1.0 // indirect
+	github.com/KindlyFire/go-keylogger v0.0.0-20180814110756-f2fda1034e3a // indirect
+	github.com/MarinX/keylogger v0.0.0-20210528193429-a54d7834cc1a // indirect
+	github.com/TheTitanrain/w32 v0.0.0-20200114052255-2654d97dbd3d // indirect
 	github.com/anvie/port-scanner v0.0.0-20180225151059-8159197d3770 // indirect
 	github.com/c-robinson/iplib v1.0.3 // indirect
 	github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21 // indirect

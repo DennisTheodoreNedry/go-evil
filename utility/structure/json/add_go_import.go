@@ -20,3 +20,11 @@ func (object *Json_t) Add_go_import(new_import string) {
 
 	object.GO_imports = append(object.GO_imports, new_import)
 }
+
+func (object *Json_t) Add_go_imports(new_imports []string) {
+
+	for _, go_import := range new_imports {
+		object.Add_go_import(go_import)
+	}
+
+}

