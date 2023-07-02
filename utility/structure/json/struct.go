@@ -64,4 +64,7 @@ type Json_t struct {
 	Boot_functions []string `json:"boot_function"`
 	Loop_functions []string `json:"loop_function"`
 	End_functions  []string `json:"end_function"`
+
+	// External domain (lib) folders
+	External_domain_paths []string `json:"external_domain_paths"`
 }

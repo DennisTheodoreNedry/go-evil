@@ -25,6 +25,7 @@ func main() {
 	arg.Argument_add_with_options("--debugger_behavior", "-db", true, "Changes the behavior of the malware after detecting a debugger", []string{"none", "stop", "remove", "loop"})
 	arg.Argument_add("--build_directory", "-bd", true, "Sets the directory where all compiled files, source code, etc will be placed")
 	arg.Argument_add("--alphabet", "-A", true, "Sets the internal alphabet utilized")
+	arg.Argument_add("--external_domain_path", "-xdp", true, "Adds an external domain which the program can use")
 
 	parsed := arg.Argument_parse()
 	object := structure.Create_json_object()
@@ -64,6 +65,9 @@ func main() {
 				object.Set_build_directory(value)
 			case "-A":
 				object.Set_alphabet(value)
+
+			case "-xdp":
+				object.Add_external_domains_path(value)
 
 			}
 		}

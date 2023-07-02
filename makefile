@@ -10,8 +10,11 @@ submodules:
 	git submodule init
 	git submodule update
 
-compile:
+compile: compile_domains
 	$(CC) $(OPTION) -o $(BIN) $(SRC)
+
+compile_domains:
+	bash tools/compile_domains.sh
 
 clean: clean_binary
 

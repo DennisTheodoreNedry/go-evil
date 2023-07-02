@@ -2,23 +2,36 @@ package imports
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+	"plugin"
 
-	"github.com/s9rA16Bf4/go-evil/domains/base64"
-	"github.com/s9rA16Bf4/go-evil/domains/bombs"
-	"github.com/s9rA16Bf4/go-evil/domains/crypto"
-	"github.com/s9rA16Bf4/go-evil/domains/infect"
-	"github.com/s9rA16Bf4/go-evil/domains/keylogger"
-	"github.com/s9rA16Bf4/go-evil/domains/network"
-	"github.com/s9rA16Bf4/go-evil/domains/powershell"
-	"github.com/s9rA16Bf4/go-evil/domains/random"
-	"github.com/s9rA16Bf4/go-evil/domains/self"
-	"github.com/s9rA16Bf4/go-evil/domains/system"
-	"github.com/s9rA16Bf4/go-evil/domains/time"
-	"github.com/s9rA16Bf4/go-evil/domains/window"
 	compile_time_var "github.com/s9rA16Bf4/go-evil/utility/parsing/compile_time_var"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/s9rA16Bf4/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
+
+// Finds all available domains that the malware can utilize
+func find_available_domains(data_object *json.Json_t) []string {
+	found_domains := []string{}
+	folders_to_investigate := []string{"domains"}
+	folders_to_investigate = append(folders_to_investigate, data_object.External_domain_paths...)
+
+	for _, domain_path := range folders_to_investigate {
+		entries, err := os.ReadDir(domain_path)
+
+		if err != nil {
+			notify.Error(err.Error(), "imports.find_available_domains()")
+		}
+
+		for _, entry := range entries {
+			found_domains = append(found_domains, fmt.Sprintf("%s/%s", domain_path, entry.Name()))
+		}
+	}
+
+	return found_domains
+}
 
 // Construct function code for each of the used functions in the domains
 func Construct_domain_code(domain string, function string, value string, data_object *json.Json_t) []string {
@@ -26,46 +39,37 @@ func Construct_domain_code(domain string, function string, value string, data_ob
 
 	// Translating compile time variables
 	value = compile_time_var.Parse_compile_time_vars(value, data_object)
+	domains := find_available_domains(data_object)
+	found_domain := false
 
-	// Going through all available domains
-	switch domain {
-	case "system":
-		call_functions = system.Parser(function, value, data_object)
+	for _, local_domain_path := range domains {
+		// Check if the path contains the requested domain
+		result := tools.Contains(local_domain_path, []string{domain})
 
-	case "time":
-		call_functions = time.Parser(function, value, data_object)
+		// We have found the domain that the user requested
+		if ok := result[domain]; ok {
+			found_domain = true
+			compiled_domain := filepath.Base(local_domain_path)
+			domain_plugin, err := plugin.Open(fmt.Sprintf("%s/%s.so", local_domain_path, compiled_domain))
 
-	case "window":
-		call_functions = window.Parser(function, value, data_object)
+			if err != nil {
+				notify.Error(err.Error(), "functions.Construct_domain_code()")
+			}
 
-	case "self":
-		call_functions = self.Parser(function, value, data_object)
+			// Does it contain a parser?
+			domain_parser, err := domain_plugin.Lookup("Parser")
+			if err != nil {
+				notify.Error(err.Error(), "functions.Construct_domain_code()")
+			}
 
-	case "random":
-		call_functions = random.Parser(function, value, data_object)
+			// Call it
+			call_functions = domain_parser.(func(string, string, *json.Json_t) []string)(function, value, data_object)
 
-	case "crypto":
-		call_functions = crypto.Parser(function, value, data_object)
+		}
 
-	case "powershell":
-		call_functions = powershell.Parser(function, value, data_object)
+	}
 
-	case "infect":
-		call_functions = infect.Parser(function, value, data_object)
-
-	case "network":
-		call_functions = network.Parser(function, value, data_object)
-
-	case "bombs":
-		call_functions = bombs.Parser(function, value, data_object)
-
-	case "base64":
-		call_functions = base64.Parser(function, value, data_object)
-
-	case "keylogger":
-		call_functions = keylogger.Parser(function, value, data_object)
-
-	default:
+	if !found_domain {
 		notify.Error(fmt.Sprintf("Unknown domain '%s'", domain), "functions.Construct_domain_code()")
 	}
 
