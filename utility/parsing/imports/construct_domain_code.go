@@ -26,7 +26,16 @@ func find_available_domains(data_object *json.Json_t) []string {
 		}
 
 		for _, entry := range entries {
-			found_domains = append(found_domains, fmt.Sprintf("%s/%s", domain_path, entry.Name()))
+			path := fmt.Sprintf("%s/%s", domain_path, entry.Name())
+			fileInfo, err := os.Stat(path)
+
+			if err != nil {
+				notify.Error(err.Error(), "imports.find_available_domains()")
+			}
+
+			if fileInfo.IsDir() {
+				found_domains = append(found_domains, path)
+			}
 		}
 	}
 
