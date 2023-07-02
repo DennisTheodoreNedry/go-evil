@@ -1,0 +1,3 @@
+[submodule "go-evil-standard-lib"]
+	path = domains
+	url = https://github.com/s9rA16Bf4/go-evil-standard-lib
