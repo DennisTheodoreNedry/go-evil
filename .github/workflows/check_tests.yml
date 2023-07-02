@@ -19,6 +19,10 @@ jobs:
           with:
             go-version: 1.19
 
+        - name: Get submodules
+          run: |
+              make submodules
+
         - name: Install dependencies
           run: |
               make dependencies

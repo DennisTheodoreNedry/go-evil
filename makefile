@@ -4,6 +4,10 @@ SRC := .
 BIN := gevil
 EXT := ./tools/vscode_ext/evil
 
+submodules:
+	git submodule init
+	git submodule update
+
 compile:
 	$(CC) $(OPTION) -o $(BIN) $(SRC)
 
