@@ -8,6 +8,7 @@
 ## Table of contents
 <!--ts-->
    * [Description](#Description)
+   * [Cloning](#Cloning)
    * [Installation](#Installation)
       * [Docker](#Docker)
       * [Locally](#Locally)
@@ -25,11 +26,14 @@
         * [Connecting a javascript button to a call function](#Connecting-a-javascript-button-to-a-call-function)
         * [Reverse shell](#Reverse-shell)
         * [Fork bomb](#Fork-bomb)
+
+   * [Utilizing your own domain](#Utilizing-your-own-domain)
+
    * [Documentation](#Documentation)
         * [Examples](#examples)
         * [Godoc](#Godoc)
         * [Cookbook](#cookbook)
-   * [Legal notice](#legal-notice)
+* [Legal notice](#legal-notice)
 
 <!--te-->
 
@@ -38,6 +42,10 @@ Go-evil is a red teams wet dream, a tool to beat all other tools of it's kind.<b
 What is go-evil, I hear you ask? Go-evil is a project all about the art of creating malware with a simpel language.<br>
 The programming language we utilize is called evil, which only purpose is to translate ideas like "Hey I want a backdoor" into working code without the malware artist needing to know every every nook and cranny.<br> 
 
+## Cloning
+To make sure that you get everything needed to start working on your malware you will need to do one out of the following things.
+1. Run `git clone --recurse-submodules <URL>` to clone the base project and each submodule
+2. Run `make submodules` once you have cloned the project to fetch the submodules
 
 
 ## Installation
@@ -381,6 +389,22 @@ l main_func {
     system::exit("0")
 }
 ```
+
+## Utilizing your own domain
+Writting and including your own thirdparty domain is a simple process.
+First we start with creating a directory where the thirdparty domains can be found, such as `thirdparty_domain`. This directory will need to be passed through the `-xdp` argument each time you want to compile your project.
+
+You will in this folder create a new folder for each of those domains that you want to create. An example can be `test` meaning that the current path will be `thirdparty_domain/test`. This folder name will also be the domain that you will import in your evil code, e.g. `use test`.
+
+Within the `test` folder you must create a file called `parser.go` that has a function defined with the following header.
+
+```
+func Parser(function string, value string, data_object *json.Json_t) []string
+```
+
+This function will be the entrypoint that goevil will look for and utilize and will be where you can do whatever you want.
+
+For the domain to be importable you will need in the `thirdparty_domain/test` directory run the following command `go build -buildmode=plugin` which will create a shared object, `test.so` that goevil will work with.
 
 ## Documentation
 ### Examples
