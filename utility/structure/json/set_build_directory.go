@@ -1,6 +1,6 @@
 package json
 
-import "github.com/s9rA16Bf4/go-evil/utility/tools"
+import tools "github.com/s9rA16Bf4/Go-tools"
 
 // Set the build directory
 func (object *Json_t) Set_build_directory(new_bd string) {

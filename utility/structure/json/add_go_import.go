@@ -3,7 +3,7 @@ package json
 import (
 	"fmt"
 
-	"github.com/s9rA16Bf4/go-evil/utility/tools"
+	tools "github.com/s9rA16Bf4/Go-tools"
 )
 
 // Adds a import line to the final go code

@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 	"plugin"
 
+	tools "github.com/s9rA16Bf4/Go-tools"
 	compile_time_var "github.com/s9rA16Bf4/go-evil/utility/parsing/compile_time_var"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	"github.com/s9rA16Bf4/go-evil/utility/tools"
 	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
