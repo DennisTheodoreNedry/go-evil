@@ -3,7 +3,7 @@ package json
 import (
 	"strings"
 
-	tools "github.com/s9rA16Bf4/Go-tools"
+	"github.com/s9rA16Bf4/Go-tools/tools"
 )
 
 // Checks if the provided string is a global variabel

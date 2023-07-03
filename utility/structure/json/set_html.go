@@ -1,6 +1,6 @@
 package json
 
-import tools "github.com/s9rA16Bf4/Go-tools"
+import "github.com/s9rA16Bf4/Go-tools/tools"
 
 // Sets the html code being displayed
 func (object *Json_t) Set_html(content string) {

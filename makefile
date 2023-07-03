@@ -35,8 +35,8 @@ dependencies:
 	go get github.com/redcode-labs/Coldfire
 	go get github.com/MarinX/keylogger
 	go get github.com/KindlyFire/go-keylogger
-	go get github.com/s9rA16Bf4/Go-tools
-	
+	go get github.com/s9rA16Bf4/Go-tools/tools
+
 install_ext:
 	cp -R $(EXT) ~/.vscode/extensions/
 

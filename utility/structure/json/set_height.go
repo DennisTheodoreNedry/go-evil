@@ -1,6 +1,6 @@
 package json
 
-import tools "github.com/s9rA16Bf4/Go-tools"
+import "github.com/s9rA16Bf4/Go-tools/tools"
 
 // Sets the height of the text editor
 func (object *Json_t) Set_height(value string) {
