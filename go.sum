@@ -54,6 +54,8 @@ github.com/redcode-labs/Coldfire v0.0.0-20220602151245-e8ed4b6c6dc2/go.mod h1:xm
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220910114610-98aa712211c5 h1:00qlcUrvrDhwYoLWD8ICRwlZAwSMFEAs344GRRdYXQs=
 github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220910114610-98aa712211c5/go.mod h1:NRKlnWNTdhYI+whq5u0Dx+pH/iE+NMGg/31yuWPHwaU=
+github.com/s9rA16Bf4/Go-tools v0.0.0-20230703053354-3b6d460e1d98 h1:SWgJdyxhsmUV5ZbmVwsL/AL7mQMczIwAz0QCSr9kp6s=
+github.com/s9rA16Bf4/Go-tools v0.0.0-20230703053354-3b6d460e1d98/go.mod h1:RGG1PykHV2JOoO66p1SnMzRi7jbUfWLM9s2Vlx4RDiA=
 github.com/s9rA16Bf4/notify_handler v0.0.0-20220414214026-7cbc65f663ea h1:ENRxm6DdCRYiq2xVM+RHA6IPzXaeaqRa86+3l8jfpUk=
 github.com/s9rA16Bf4/notify_handler v0.0.0-20220414214026-7cbc65f663ea/go.mod h1:QNjxlxplV4bgRq0hMkD/ssRExdUmsuqql+lRh9afWgA=
 github.com/savaki/jq v0.0.0-20161209013833-0e6baecebbf8 h1:ajJQhvqPSQFJJ4aV5mDAMx8F7iFi6Dxfo6y62wymLNs=
