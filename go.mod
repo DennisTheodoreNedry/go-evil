@@ -1,6 +1,6 @@
 module github.com/s9rA16Bf4/go-evil
 
-go 1.18
+go 1.20
 
 require (
 	github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220910114610-98aa712211c5
