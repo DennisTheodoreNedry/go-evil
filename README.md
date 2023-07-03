@@ -13,6 +13,7 @@
       * [Docker](#Docker)
       * [Locally](#Locally)
    * [Anatomy of a go-evil based malware](#anatomy-of-a-go-evil-based-malware)
+        * [Strings](#Strings)
         * [Function types](#Function-types)
         * [Skeleton](#skeleton)
         * [Compiler configuration](#compiler-configuration)
@@ -66,6 +67,16 @@ But if you're lazy you can also utilize the script labeled `gevil` under the `to
 If you still want to compile the project locally, just run `make dependencies` and `make` to compile the project. After this you can utilize the compiler as intended. 
 
 ## Anatomy of a go-evil based malware
+
+### Strings
+All user definied strings in a 'goevil created malware' are represented as an integer array, this to prevent the possibilty to dump the strings when reverse engineering or atleast making it harder.
+
+The standard alphabet utilized for this is,
+```0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,!,#,$,€,%,&,(,),*,+,,,-,.,/,:,;,<,=,>,?,@,[,],^,_,`,{,|,},~```
+
+Goevil will read the alphabet linearly and represent the character with the index of said character in a array that is constructed during compile-time and runtime.
+
+This alphabet can easily be changed with the `-A`/`--alphabet` parameter which needs a comma-seperated string just like how the standard alphabet above is presented.
 
 ### Function types
 We have currently four different functions, these are marked by a unique name preceding the functions name.<br/>
@@ -392,7 +403,7 @@ l main_func {
 
 ## Utilizing your own domain
 Writting and including your own thirdparty domain is a simple process.
-First we start with creating a directory where the thirdparty domains can be found, such as `thirdparty_domain`. This directory will need to be passed through the `-xdp` argument each time you want to compile your project.
+First we start with creating a directory where the thirdparty domains can be found, such as `thirdparty_domain`. This directory will need to be passed through the `-xdp`/`--external_domain_path` argument each time you want to compile your project.
 
 You will in this folder create a new folder for each of those domains that you want to create. An example can be `test` meaning that the current path will be `thirdparty_domain/test`. This folder name will also be the domain that you will import in your evil code, e.g. `use test`.
 
