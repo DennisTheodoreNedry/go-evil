@@ -18,7 +18,7 @@ func check_obfuscate(line string, data_object *json.Json_t) {
 		if len(result) > 0 {
 			option := strings.ToLower(result[0][1])
 			if option == "true" {
-				data_object.Enable_obfuscate()
+				data_object.Enable_obfuscate("")
 			}
 		}
 	}

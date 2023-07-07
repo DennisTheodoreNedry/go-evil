@@ -3,11 +3,10 @@ package injection
 import (
 	"regexp"
 
-	"github.com/s9rA16Bf4/Go-tools/tools"
+	tools "github.com/s9rA16Bf4/Go-tools"
 	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
 )
 
 func Grab_injected_code(data_object *json.Json_t) {
@@ -16,7 +15,7 @@ func Grab_injected_code(data_object *json.Json_t) {
 	result := regex.FindAllStringSubmatch(data_object.File_gut, -1)
 
 	if len(result) == 0 {
-		notify.Log("Found no code injection", data_object.Verbose_lvl, "2")
+		data_object.Log_object.Log("Found no code injection", 2)
 
 	} else {
 		for _, injected_function := range result {

@@ -6,10 +6,10 @@ import (
 	"path/filepath"
 	"plugin"
 
-	"github.com/s9rA16Bf4/Go-tools/tools"
+	tools "github.com/s9rA16Bf4/Go-tools"
 	compile_time_var "github.com/s9rA16Bf4/go-evil/utility/parsing/compile_time_var"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 // Finds all available domains that the malware can utilize
@@ -22,7 +22,7 @@ func find_available_domains(data_object *json.Json_t) []string {
 		entries, err := os.ReadDir(domain_path)
 
 		if err != nil {
-			notify.Error(err.Error(), "imports.find_available_domains()")
+			notify.Error(err.Error(), "imports.find_available_domains()", 1)
 		}
 
 		for _, entry := range entries {
@@ -30,7 +30,7 @@ func find_available_domains(data_object *json.Json_t) []string {
 			fileInfo, err := os.Stat(path)
 
 			if err != nil {
-				notify.Error(err.Error(), "imports.find_available_domains()")
+				notify.Error(err.Error(), "imports.find_available_domains()", 1)
 			}
 
 			if fileInfo.IsDir() {
@@ -62,13 +62,13 @@ func Construct_domain_code(domain string, function string, value string, data_ob
 			domain_plugin, err := plugin.Open(fmt.Sprintf("%s/%s.so", local_domain_path, compiled_domain))
 
 			if err != nil {
-				notify.Error(err.Error(), "functions.Construct_domain_code()")
+				notify.Error(err.Error(), "functions.Construct_domain_code()", 1)
 			}
 
 			// Does it contain a parser?
 			domain_parser, err := domain_plugin.Lookup("Parser")
 			if err != nil {
-				notify.Error(err.Error(), "functions.Construct_domain_code()")
+				notify.Error(err.Error(), "functions.Construct_domain_code()", 1)
 			}
 
 			// Call it
@@ -79,7 +79,7 @@ func Construct_domain_code(domain string, function string, value string, data_ob
 	}
 
 	if !found_domain {
-		notify.Error(fmt.Sprintf("Unknown domain '%s'", domain), "functions.Construct_domain_code()")
+		notify.Error(fmt.Sprintf("Unknown domain '%s'", domain), "functions.Construct_domain_code()", 1)
 	}
 
 	return call_functions

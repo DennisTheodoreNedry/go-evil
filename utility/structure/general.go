@@ -8,7 +8,7 @@ import (
 	evilarray "github.com/s9rA16Bf4/go-evil/utility/structure/evil_array"
 	evil_json "github.com/s9rA16Bf4/go-evil/utility/structure/json"
 
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 // Creates a json object and returns it
@@ -33,7 +33,11 @@ func Create_json_object() evil_json.Json_t {
 		new_json.Comp_var = append(new_json.Comp_var, new_var)
 	}
 
+	// Default alphabet
 	new_json.Set_alphabet("0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,!,#,$,€,%,&,(,),*,+,,,-,.,/,:,;,<,=,>,?,@,[,],^,_,`,{,|,},~, ,%t,%n,%r,%x0b,%x0c")
+
+	// Set default value
+	new_json.Set_verbose_lvl("0")
 
 	return new_json
 }
@@ -54,7 +58,7 @@ func Send(object evil_json.Json_t) string {
 	serial_json, err := json.Marshal(object)
 
 	if err != nil {
-		notify.Error(err.Error(), "json.Convert_to_json()")
+		notify.Error(err.Error(), "json.Convert_to_json()", 1)
 	}
 
 	return base64.StdEncoding.EncodeToString(serial_json)
@@ -65,12 +69,12 @@ func Receive(object string) evil_json.Json_t {
 	serialize_json, err := base64.StdEncoding.DecodeString(object)
 
 	if err != nil {
-		notify.Error(err.Error(), "json.Receive()")
+		notify.Error(err.Error(), "json.Receive()", 1)
 	}
 
 	var result evil_json.Json_t
 	if err := json.Unmarshal(serialize_json, &result); err != nil {
-		notify.Error(err.Error(), "json.Convert_to_Json_t()")
+		notify.Error(err.Error(), "json.Convert_to_Json_t()", 1)
 	}
 
 	return result

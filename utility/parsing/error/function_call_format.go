@@ -7,7 +7,7 @@ import (
 
 	"github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 // Checks if potential call functions are wrongly formatted
@@ -18,7 +18,7 @@ func check_call_function_format(data_object *json.Json_t) {
 
 	for _, d_func := range functions {
 		if d_func[1] == "c" && !strings.Contains(d_func[3], "->") {
-			notify.Error(fmt.Sprintf("Found a wrongly formatted function with the name '%s'", d_func[2]), "error.check_call_function_format()")
+			notify.Error(fmt.Sprintf("Found a wrongly formatted function with the name '%s'", d_func[2]), "error.check_call_function_format()", 1)
 		}
 	}
 }

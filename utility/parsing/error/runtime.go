@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 // Checks for runtime variables that have not been terminated
@@ -17,7 +17,7 @@ func check_runtime_variable(data_object *json.Json_t) {
 		count := strings.Count(line, "€")
 
 		if count%2 != 0 {
-			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()")
+			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()", 1)
 		}
 
 	}

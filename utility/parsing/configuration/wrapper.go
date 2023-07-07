@@ -6,7 +6,7 @@ import (
 
 	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 // Checks for a configuration section in the structure
@@ -31,16 +31,16 @@ func Check_configuration(data_object *json.Json_t) {
 	check_obfuscate(line, data_object)
 	check_debugger_behavior(line, data_object)
 
-	notify.Log(fmt.Sprintf("The malware will be called `%s`", data_object.Binary_name), data_object.Verbose_lvl, "2")
-	notify.Log(fmt.Sprintf("The malware will be compiled for `%s`", data_object.Target_os), data_object.Verbose_lvl, "2")
-	notify.Log(fmt.Sprintf("The malware will be compiled for a/an `%s` based processor", data_object.Target_arch), data_object.Verbose_lvl, "2")
-	notify.Log(fmt.Sprintf("The malware will have the extension `%s`", data_object.Extension), data_object.Verbose_lvl, "2")
-	notify.Log(fmt.Sprintf("The malware will have the behavior `%s` if it's being run under a debugger", data_object.Debugger_behavior), data_object.Verbose_lvl, "2")
+	data_object.Log_object.Log(fmt.Sprintf("The malware will be called `%s`", data_object.Binary_name), 2)
+	data_object.Log_object.Log(fmt.Sprintf("The malware will be compiled for `%s`", data_object.Target_os), 2)
+	data_object.Log_object.Log(fmt.Sprintf("The malware will be compiled for a/an `%s` based processor", data_object.Target_arch), 2)
+	data_object.Log_object.Log(fmt.Sprintf("The malware will have the extension `%s`", data_object.Extension), 2)
+	data_object.Log_object.Log(fmt.Sprintf("The malware will have the behavior `%s` if it's being run under a debugger", data_object.Debugger_behavior), 2)
 
 	if data_object.Obfuscate {
-		notify.Log("The binary file will be obfuscated", data_object.Verbose_lvl, "2")
+		data_object.Log_object.Log("The binary file will be obfuscated", 2)
 	} else {
-		notify.Log("The binary file will not be obfuscated", data_object.Verbose_lvl, "2")
+		data_object.Log_object.Log("The binary file will not be obfuscated", 2)
 	}
 
 }

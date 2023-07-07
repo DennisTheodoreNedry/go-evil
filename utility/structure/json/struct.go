@@ -4,6 +4,7 @@ import (
 	compilevar "github.com/s9rA16Bf4/go-evil/utility/structure/compile_var"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/structs"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 type Json_t struct {
@@ -67,4 +68,7 @@ type Json_t struct {
 
 	// External domain (lib) folders
 	External_domain_paths []string `json:"external_domain_paths"`
+
+	// Log object
+	Log_object notify.Verbose_t `json:"log_object`
 }

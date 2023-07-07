@@ -3,11 +3,11 @@ package json
 import (
 	"fmt"
 
-	"github.com/s9rA16Bf4/Go-tools/tools"
+	tools "github.com/s9rA16Bf4/Go-tools"
 )
 
 // Sets the the extension
-func (object *Json_t) Set_extension(ext string) {
+func (object *Json_t) Set_extension(ext string) string {
 
 	if object.Extension == "" { // Update only if it doesn't contain anything
 		result := tools.Contains(ext, []string{"."}) // Checks if the extension contains a dot
@@ -18,5 +18,5 @@ func (object *Json_t) Set_extension(ext string) {
 
 		object.Extension = ext
 	}
-
+	return ""
 }

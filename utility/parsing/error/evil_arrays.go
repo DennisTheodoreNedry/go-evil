@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 // Checks for arrays that have not been terminated
@@ -18,7 +18,7 @@ func check_evil_arrays(data_object *json.Json_t) {
 		r_wing := strings.Count(line, "}$")
 
 		if l_wing != r_wing {
-			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()")
+			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()", 1)
 		}
 
 	}

@@ -20,6 +20,6 @@ func remove_behavior(data_object *json.Json_t) {
 
 	data_object.Add_go_function(functions.Go_func_t{Name: "remove_behavior", Func_type: "null", Return_type: "bool", Gut: body})
 	data_object.Add_go_import("os")
-	data_object.Add_go_import("github.com/s9rA16Bf4/Go-tools")
+	data_object.Add_go_import("tools github.com/s9rA16Bf4/Go-tools")
 
 }

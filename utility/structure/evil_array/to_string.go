@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 // Returns the contents of the array as a string
@@ -25,7 +25,7 @@ func (object *Evil_array_t) To_string(format string) string {
 		header = "[]string{"
 		footer = "}"
 	default:
-		notify.Error(fmt.Sprintf("Unknown format %s", format), "evil_array.To_string()")
+		notify.Error(fmt.Sprintf("Unknown format %s", format), "evil_array.To_string()", 1)
 	}
 
 	toReturn := header

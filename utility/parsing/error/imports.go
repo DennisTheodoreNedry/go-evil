@@ -6,7 +6,7 @@ import (
 
 	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 // Checks that a used domain has been imported
@@ -28,7 +28,7 @@ func check_imports(data_object *json.Json_t) {
 		}
 
 		if !found_domain {
-			notify.Error(fmt.Sprintf("The domain '%s' was used but were never imported!", call[1]), "error.check_imports()")
+			notify.Error(fmt.Sprintf("The domain '%s' was used but were never imported!", call[1]), "error.check_imports()", 1)
 		}
 	}
 }

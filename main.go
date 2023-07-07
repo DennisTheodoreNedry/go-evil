@@ -7,73 +7,31 @@ import (
 	"github.com/s9rA16Bf4/go-evil/utility/version"
 	"github.com/s9rA16Bf4/go-evil/utility/wrapper"
 
-	arg "github.com/s9rA16Bf4/ArgumentParser/go/arguments"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	argumentparser "github.com/s9rA16Bf4/ArgumentParser"
 )
 
 func main() {
-	arg.Argument_add("--file", "-f", true, "File to compile [REQUIRED]")
-	arg.Argument_add("--version", "-v", false, "Prints the compiler version")
-	arg.Argument_add_with_options("--platform", "-p", true, "For which platform should the malware be compiled for", []string{"darwin", "linux", "windows", "aix", "freebsd", "illumos", "js", "nacl", "netbsd", "openbasd", "plan9", "solaris"})
-	arg.Argument_add_with_options("--architecture", "-a", true, "For which architecture should the malware be compiled for", []string{"amd64", "amd64p32", "386", "arm", "arm64", "ppc64", "pppc64le", "wasm", "mips", "mips64", "mips64le", "mipsle", "s390x"})
-	arg.Argument_add_with_options("--verbose", "-vv", true, "How verbose should the program be", []string{"0", "1", "2", "3"})
-	arg.Argument_add_with_options("--debug", "-d", true, "Debug options, will not delete the src file after compilation", []string{"false", "true"})
-	arg.Argument_add("--output", "-o", true, "Name of the binary malware")
-	arg.Argument_add("--extension", "-e", true, "Extension of the binary malware")
-	arg.Argument_add("--dump_json", "-dj", false, "Prints the finalized json structure after compiling a file")
-	arg.Argument_add("--obfuscate", "-ob", false, "Obfuscates the source code at compile time")
-	arg.Argument_add_with_options("--debugger_behavior", "-db", true, "Changes the behavior of the malware after detecting a debugger", []string{"none", "stop", "remove", "loop"})
-	arg.Argument_add("--build_directory", "-bd", true, "Sets the directory where all compiled files, source code, etc will be placed")
-	arg.Argument_add("--alphabet", "-A", true, "Sets the internal alphabet utilized")
-	arg.Argument_add("--external_domain_path", "-xdp", true, "Adds an external domain which the program can use")
-
-	parsed := arg.Argument_parse()
 	object := structure.Create_json_object()
 
-	if len(parsed) == 0 {
-		notify.Error("No argument was provided", "main.main()")
+	handler := argumentparser.Constructor(true)
+	handler.AddFunction("file", "f", true, true, "File to compile", object.Set_file_path)
+	handler.AddFunction("version", "v", false, false, "Prints the compiler version", version.Version)
+	handler.AddFunctionOptions("platform", "p", true, false, "For which platform should the malware be compiled for", object.Set_target_os, []string{"darwin", "linux", "windows", "aix", "freebsd", "illumos", "js", "nacl", "netbsd", "openbasd", "plan9", "solaris"})
+	handler.AddFunctionOptions("architecture", "a", true, false, "For which architecture should the malware be compiled for", object.Set_target_arch, []string{"amd64", "amd64p32", "386", "arm", "arm64", "ppc64", "pppc64le", "wasm", "mips", "mips64", "mips64le", "mipsle", "s390x"})
+	handler.AddFunctionOptions("verbose", "vv", true, false, "How verbose should the program be", object.Set_verbose_lvl, []string{"0", "1", "2", "3"})
+	handler.AddFunctionOptions("debug", "d", true, false, "Debug options, will not delete the src file after compilation", object.Set_debug_mode, []string{"false", "true"})
+	handler.AddFunction("output", "o", true, false, "Name of the binary malware", object.Set_binary_name)
+	handler.AddFunction("extension", "e", true, false, "Extension of the binary malware", object.Set_extension)
+	handler.AddFunction("dump_json", "dj", false, false, "Prints the finalized json structure after compiling a file", object.Set_dump_json)
+	handler.AddFunction("obfuscate", "ob", false, false, "Obfuscates the source code at compile time", object.Enable_obfuscate)
+	handler.AddFunctionOptions("debugger_behavior", "db", true, false, "Changes the behavior of the malware after detecting a debugger", object.Change_detection_behavior, []string{"none", "stop", "remove", "loop"})
+	handler.AddFunction("build_directory", "bd", true, false, "Sets the directory where all compiled files, source code, etc will be placed", object.Set_build_directory)
+	handler.AddFunction("alphabet", "A", true, false, "Sets the internal alphabet utilized", object.Set_alphabet)
+	handler.AddFunction("external_domain_path", "xdp", true, false, "Adds an external domain which the program can use", object.Add_external_domains_path)
 
-	} else if _, ok := parsed["-v"]; ok {
-		version.Version()
+	handler.Parse()
 
-	} else {
-		object.Set_verbose_lvl("0") // Default value
+	object.Log_object.Log(fmt.Sprintf("Compiling file %s", object.File_path), 1)
 
-		for key, value := range parsed {
-			switch key {
-			case "-f":
-				object.Set_file_path(value)
-			case "-p":
-				object.Set_target_os(value)
-			case "-a":
-				object.Set_target_arch(value)
-			case "-vv":
-				object.Set_verbose_lvl(value)
-			case "-d":
-				object.Set_debug_mode(value)
-			case "-o":
-				object.Set_binary_name(value)
-			case "-e":
-				object.Set_extension(value)
-			case "-dj":
-				object.Set_dump_json()
-			case "-ob":
-				object.Enable_obfuscate()
-			case "-db":
-				object.Change_detection_behavior(value)
-			case "-bd":
-				object.Set_build_directory(value)
-			case "-A":
-				object.Set_alphabet(value)
-
-			case "-xdp":
-				object.Add_external_domains_path(value)
-
-			}
-		}
-
-		notify.Log(fmt.Sprintf("Compiling file %s", object.File_path), object.Verbose_lvl, "1")
-
-		wrapper.Parse_and_compile(&object)
-	}
+	wrapper.Parse_and_compile(&object)
 }

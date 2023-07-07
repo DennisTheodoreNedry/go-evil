@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 // Compiles the go file into an executable
@@ -23,7 +23,7 @@ func Compile_file(data_object *json.Json_t) {
 	env, err := exec.Command("go", "env", "GOPATH").Output()
 
 	if err != nil {
-		notify.Error(err.Error(), "io.Compile_file()")
+		notify.Error(err.Error(), "io.Compile_file()", 1)
 	}
 
 	go_env := strings.TrimRight(string(env), "\n") // Removes any newline
@@ -33,17 +33,17 @@ func Compile_file(data_object *json.Json_t) {
 
 	if err = os.Setenv("PATH", updated_path_env); err != nil { // So this is needed to *actually* update the path
 
-		notify.Error(err.Error(), "io.Compile_file()")
+		notify.Error(err.Error(), "io.Compile_file()", 1)
 	}
 
 	// Update the GOOS variable
 	if err = os.Setenv("GOOS", data_object.Target_os); err != nil {
-		notify.Error(err.Error(), "io.Compile_file()")
+		notify.Error(err.Error(), "io.Compile_file()", 1)
 	}
 
 	// Update the GOARCH variable
 	if err = os.Setenv("GOARCH", data_object.Target_arch); err != nil {
-		notify.Error(err.Error(), "io.Compile_file()")
+		notify.Error(err.Error(), "io.Compile_file()", 1)
 	}
 
 	ldflags := "-ldflags=-s -w"
@@ -51,11 +51,11 @@ func Compile_file(data_object *json.Json_t) {
 	if data_object.Obfuscate {
 		compiler = "garble"
 		build_args = append(build_args, "-literals", "-tiny", "-seed=random", "build", ldflags, "-o", malware, src)
-		notify.Log("Compiling malware and obfuscating it, this might take a while", data_object.Verbose_lvl, "1")
+		data_object.Log_object.Log("Compiling malware and obfuscating it, this might take a while", 1)
 	} else {
 		compiler = "go"
 		build_args = append(build_args, "build", "-o", malware, ldflags, src)
-		notify.Log("Compiling malware", data_object.Verbose_lvl, "1")
+		data_object.Log_object.Log("Compiling malware", 1)
 	}
 
 	cmd := exec.Command(compiler, build_args...)
@@ -68,7 +68,7 @@ func Compile_file(data_object *json.Json_t) {
 	err = cmd.Run() // Starts the build
 
 	if err != nil {
-		notify.Error(fmt.Sprintf("Failed to compile file, %s\n%s", stderr.String(), err.Error()), "io.Compile_file()")
+		notify.Error(fmt.Sprintf("Failed to compile file, %s\n%s", stderr.String(), err.Error()), "io.Compile_file()", 1)
 	}
 
 }

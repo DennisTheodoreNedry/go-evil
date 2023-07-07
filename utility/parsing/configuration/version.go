@@ -5,7 +5,7 @@ import (
 
 	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
 	"github.com/s9rA16Bf4/go-evil/utility/version"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 // Checks if the provided evil file can be compiled by this compiler
@@ -19,7 +19,7 @@ func check_version(line string) {
 		grabbed_version := result[0][1]
 
 		if grabbed_version > current_version {
-			notify.Error("The provided evil file is targeting a newer version of go-evil and is therefore not supported", "parsing.check_version()")
+			notify.Error("The provided evil file is targeting a newer version of go-evil and is therefore not supported", "parsing.check_version()", 1)
 
 		} else if grabbed_version < current_version {
 			notify.Warning("The provided evil file is targeting an older version of go-evil and therefore might not be supported by this compiler")

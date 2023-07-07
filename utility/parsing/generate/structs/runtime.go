@@ -72,8 +72,8 @@ func Generate_runtime_variable(data_object *json.Json_t) {
 			"return toReturn",
 		}})
 
-	data_object.Add_go_import("github.com/s9rA16Bf4/Go-tools")
-	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler/go/notify")
+	data_object.Add_go_import("tools github.com/s9rA16Bf4/Go-tools")
+	data_object.Add_go_import("notify github.com/s9rA16Bf4/notify_handler")
 	data_object.Add_go_import("regexp")
 	data_object.Add_go_import("strings")
 	data_object.Add_go_import("fmt")

@@ -3,13 +3,13 @@ package json
 import (
 	"fmt"
 
-	"github.com/s9rA16Bf4/Go-tools/tools"
+	tools "github.com/s9rA16Bf4/Go-tools"
 )
 
 // Adds a import line to the final go code
 func (object *Json_t) Add_go_import(new_import string) {
 
-	new_import = tools.Erase_delimiter(new_import, []string{"\""}, -1)
+	new_import = tools.EraseDelimiter(new_import, []string{"\""}, -1)
 
 	new_import = fmt.Sprintf("\"%s\"", new_import)
 	for _, old_import := range object.GO_imports {

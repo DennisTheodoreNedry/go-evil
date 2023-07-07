@@ -3,10 +3,10 @@ module github.com/s9rA16Bf4/go-evil
 go 1.20
 
 require (
-	github.com/s9rA16Bf4/ArgumentParser v0.0.0-20220910114610-98aa712211c5
-	github.com/s9rA16Bf4/notify_handler v0.0.0-20220414214026-7cbc65f663ea
+	github.com/s9rA16Bf4/ArgumentParser v0.0.0-20230706203135-1576175eef28
+	github.com/s9rA16Bf4/notify_handler v0.0.0-20230706195623-e0ea1ff0eb48
 	github.com/stretchr/testify v1.8.1
-	github.com/thanhpk/randstr v1.0.5
+	github.com/thanhpk/randstr v1.0.6
 )
 
 require (
@@ -33,7 +33,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/redcode-labs/Coldfire v0.0.0-20220602151245-e8ed4b6c6dc2 // indirect
-	github.com/s9rA16Bf4/Go-tools v0.0.0-20230703053354-3b6d460e1d98 // indirect
+	github.com/s9rA16Bf4/Go-tools v0.0.0-20230706181801-762717eda163 // indirect
 	github.com/savaki/jq v0.0.0-20161209013833-0e6baecebbf8 // indirect
 	github.com/shirou/gopsutil/v3 v3.23.1 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
@@ -41,7 +41,7 @@ require (
 	github.com/tatsushid/go-fastping v0.0.0-20160109021039-d7bb493dee3e // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
-	github.com/webview/webview v0.0.0-20230415172654-8387ff8945fc // indirect
+	github.com/webview/webview v0.0.0-20230602035950-899018ad0e5c // indirect
 	github.com/xlab/treeprint v1.1.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	github.com/zserge/lorca v0.1.10 // indirect

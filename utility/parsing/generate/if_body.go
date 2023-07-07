@@ -6,7 +6,7 @@ import (
 	"github.com/s9rA16Bf4/go-evil/utility/structure"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 var if_else_call = 0
@@ -22,14 +22,14 @@ func Construct_if_else(condition string, if_true_body []string, if_false_body []
 	arr := structure.Create_evil_object(condition)
 
 	if arr.Length() != 3 {
-		notify.Error(fmt.Sprintf("Expected three values, but recieved %d", arr.Length()), "if_else.construct_if_else()")
+		notify.Error(fmt.Sprintf("Expected three values, but recieved %d", arr.Length()), "if_else.construct_if_else()", 1)
 	}
 
 	compare_operator := arr.Get(1)
 	switch compare_operator {
 	case ">", "<", "==", "!=", "<=", ">=":
 	default:
-		notify.Error(fmt.Sprintf("Unknown and/or illegal operator %s", compare_operator), "if_else.construct_if_else()")
+		notify.Error(fmt.Sprintf("Unknown and/or illegal operator %s", compare_operator), "if_else.construct_if_else()", 1)
 	}
 
 	body := []string{

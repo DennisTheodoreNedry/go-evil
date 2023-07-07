@@ -5,11 +5,11 @@ import (
 	"path"
 	"strings"
 
-	"github.com/s9rA16Bf4/Go-tools/tools"
+	tools "github.com/s9rA16Bf4/Go-tools"
 )
 
 // Sets the binaries name
-func (object *Json_t) Set_binary_name(name string) {
+func (object *Json_t) Set_binary_name(name string) string {
 
 	object.Malware_path = fmt.Sprintf("%s%s/", object.Build_directory, path.Dir(name))
 
@@ -23,4 +23,5 @@ func (object *Json_t) Set_binary_name(name string) {
 	}
 
 	object.Binary_name = name
+	return ""
 }
