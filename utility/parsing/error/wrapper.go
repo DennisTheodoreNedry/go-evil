@@ -7,7 +7,7 @@ import (
 // Wrapper function which calls all our error checking functions
 func Check_for_errors(data_object *json.Json_t) {
 
-	comments(data_object)
+	check_comments(data_object)
 	detect_functions(data_object)
 	check_imports(data_object)
 	check_strings(data_object)

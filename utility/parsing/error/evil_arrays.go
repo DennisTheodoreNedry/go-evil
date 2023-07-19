@@ -18,7 +18,7 @@ func check_evil_arrays(data_object *json.Json_t) {
 		r_wing := strings.Count(line, "}$")
 
 		if l_wing != r_wing {
-			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()", 1)
+			notify.Error(fmt.Sprintf("Found a wrongly formatted evil array on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()", 1)
 		}
 
 	}

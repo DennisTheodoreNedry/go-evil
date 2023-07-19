@@ -17,7 +17,7 @@ func check_runtime_variable(data_object *json.Json_t) {
 		count := strings.Count(line, "€")
 
 		if count%2 != 0 {
-			notify.Error(fmt.Sprintf("Found a wrongly formatted string on line %d\nError line: '%s'", i+1, line), "error.check_evil_arrays()", 1)
+			notify.Error(fmt.Sprintf("Found a wrongly formatted runtime variable on line %d\nError line: '%s'", i+1, line), "error.check_runtime_variable()", 1)
 		}
 
 	}
