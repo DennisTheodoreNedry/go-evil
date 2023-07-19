@@ -1,7 +1,7 @@
 package foreach
 
 import (
-	tools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/s9rA16Bf4/Go-tools"
 	"github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
 )
 
@@ -11,7 +11,7 @@ func Get_foreach_body(index *int, gut []string) []string {
 	*index++ // Skips the header which is important as we otherwise get stuck in an endless loop
 
 	for ; *index < len(gut); *index++ { // Grabs all data between the header and footer, but also fast forwards the index
-		footer := tools.Contains(gut[*index], []string{regex.GET_FOREACH_FOOTER})
+		footer := gotools.Contains(gut[*index], []string{regex.GET_FOREACH_FOOTER})
 		footer_reached := footer[regex.GET_FOREACH_FOOTER]
 
 		if footer_reached {

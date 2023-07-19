@@ -3,7 +3,7 @@ package json
 import (
 	"fmt"
 
-	tools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/s9rA16Bf4/Go-tools"
 	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
@@ -11,14 +11,14 @@ import (
 func (object *Json_t) Get_var_value(var_id string) string {
 	to_return := ""
 
-	id := tools.StringToInt(var_id)
+	id := gotools.StringToInt(var_id)
 	switch id {
 	case 666:
-		to_return = tools.GrabUsername()
+		to_return = gotools.GrabUsername()
 	case 39:
-		to_return = tools.GrabCWD()
+		to_return = gotools.GrabCWD()
 	case 40:
-		to_return = tools.GrabHomeDir()
+		to_return = gotools.GrabHomeDir()
 	default:
 		id -= 1
 

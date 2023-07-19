@@ -1,7 +1,7 @@
 package ifelse
 
 import (
-	tools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/s9rA16Bf4/Go-tools"
 	"github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
 )
 
@@ -16,11 +16,11 @@ func Get_if_else_body(index *int, gut []string) ([]string, []string) {
 
 	// Grab the if true and if false body
 	for ; *index < len(gut); *index++ { // Grabs all data between the header and footer, but also fast forwards the index
-		footer := tools.Contains(gut[*index], []string{regex.GET_IF_ELSE_FOOTER})
+		footer := gotools.Contains(gut[*index], []string{regex.GET_IF_ELSE_FOOTER})
 		footer_reached := footer[regex.GET_IF_ELSE_FOOTER]
 
 		if !reached_else { // Only do this once
-			else_statement := tools.Contains(gut[*index], []string{regex.GET_ELSE_HEADER})
+			else_statement := gotools.Contains(gut[*index], []string{regex.GET_ELSE_HEADER})
 			reached_else = else_statement[regex.GET_ELSE_HEADER]
 		}
 

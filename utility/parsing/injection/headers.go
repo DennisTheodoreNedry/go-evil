@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	tools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/s9rA16Bf4/Go-tools"
 	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 )
@@ -21,7 +21,7 @@ func Grab_injected_headers(data_object *json.Json_t) {
 		headers := strings.Split(result[0][1], "\n")
 
 		for _, header := range headers {
-			header = tools.EraseDelimiter(header, []string{" "}, -1) // Erase any potential spaces
+			header = gotools.EraseDelimiter(header, []string{" "}, -1) // Erase any potential spaces
 			data_object.Add_go_import(header)
 		}
 	}

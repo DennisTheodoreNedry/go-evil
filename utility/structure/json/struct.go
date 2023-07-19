@@ -42,13 +42,14 @@ type Json_t struct {
 	Verbose_lvl string `json:"verbose_lvl"`
 
 	// Text editor/window
-	Width    int               `json:"width"`        // The width of the text editor/window
-	Height   int               `json:"height"`       // The height of the text editor/window
-	Title    string            `json:"window_title"` // Title of the window window (not the text editor)
-	Html_gut []string          `json:"html_gut"`     // The html code displayed in the window (not the text editor)
-	Js_gut   []string          `json:"js_gut"`       // The javascript code used in the window (not the text editor)
-	Css_gut  []string          `json:"css_gut"`      // The css code used in the window (not the text editor)
-	Bind_gut map[string]string `json:"bind_gut"`     // Contains all our bindings set by the user
+	Width      int               `json:"width"`        // The width of the text editor/window
+	Height     int               `json:"height"`       // The height of the text editor/window
+	Title      string            `json:"window_title"` // Title of the window window (not the text editor)
+	Html_gut   []string          `json:"html_gut"`     // The html code displayed in the window (not the text editor)
+	Js_gut     []string          `json:"js_gut"`       // The javascript code used in the window (not the text editor)
+	Css_gut    []string          `json:"css_gut"`      // The css code used in the window (not the text editor)
+	Bind_gut   map[string]string `json:"bind_gut"`     // Contains all our bindings set by the user
+	Index_file string            `json:"index_file"`   // Index file to utilize
 
 	// Variables
 	Var_max  int                        `json:"variable_max"`      // The max amount of allowed variables

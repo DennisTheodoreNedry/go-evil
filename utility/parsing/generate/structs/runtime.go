@@ -36,7 +36,7 @@ func Generate_runtime_variable(data_object *json.Json_t) {
 
 			"if len(result) > 0 {",
 			"for _, value := range result {",
-			"i_number := tools.String_to_int(value[2])",
+			"i_number := gotools.StringToInt(value[2])",
 			"grabbed_value := \"NULL\"",
 			"if i_number != -1 {",
 			"if i_number > 0 && i_number < 5 {",
@@ -48,16 +48,16 @@ func Generate_runtime_variable(data_object *json.Json_t) {
 			"grabbed_value = obj.foreach",
 
 			"case 23:",
-			"grabbed_value = tools.Grab_executable_name()",
+			"grabbed_value = gotools.GrabExecutableName()",
 
 			"case 39:",
-			"grabbed_value = tools.Grab_CWD()",
+			"grabbed_value = gotools.GrabCWD()",
 
 			"case 40:",
-			"grabbed_value = tools.Grab_home_dir()",
+			"grabbed_value = gotools.GrabHomeDir()",
 
 			"case 666:",
-			"grabbed_value = tools.Grab_username()",
+			"grabbed_value = gotools.GrabUsername()",
 
 			"default:",
 			"spine.log(fmt.Sprintf(\"Error, unknown value '%d'\", i_number))",
@@ -72,8 +72,8 @@ func Generate_runtime_variable(data_object *json.Json_t) {
 			"return toReturn",
 		}})
 
-	data_object.Add_go_import("tools github.com/s9rA16Bf4/Go-tools")
-	data_object.Add_go_import("notify github.com/s9rA16Bf4/notify_handler")
+	data_object.Add_go_import("github.com/s9rA16Bf4/Go-tools")
+	data_object.Add_go_import("github.com/s9rA16Bf4/notify_handler")
 	data_object.Add_go_import("regexp")
 	data_object.Add_go_import("strings")
 	data_object.Add_go_import("fmt")

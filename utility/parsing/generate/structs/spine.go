@@ -20,9 +20,9 @@ func Generate_spine(data_object *json.Json_t) {
 			"is_admin bool",
 			"terminate bool",
 			"return_code int",
+			"notify_handler notify.Verbose_t",
 		},
 	})
-
 	body := []string{}
 
 	if data_object.Target_os == "windows" {
@@ -35,9 +35,8 @@ func Generate_spine(data_object *json.Json_t) {
 
 	data_object.Add_go_function(functions.Go_func_t{Name: "check_privileges", Func_type: "", Part_of_struct: "spine_t",
 		Return_type: "", Parameters: []string{}, Gut: body})
-
 	data_object.Add_go_function(functions.Go_func_t{Name: "log", Func_type: "", Part_of_struct: "spine_t",
-		Return_type: "", Parameters: []string{"msg string"}, Gut: []string{"notify.Log(msg, spine.logging_lvl, \"3\")"}})
+		Return_type: "", Parameters: []string{"msg string"}, Gut: []string{"obj.notify_handler.Log(msg, 3)"}})
 
 	data_object.Add_go_import("os")
 	data_object.Add_go_global("var spine spine_t")

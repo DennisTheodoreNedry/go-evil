@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"plugin"
 
-	tools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/s9rA16Bf4/Go-tools"
 	compile_time_var "github.com/s9rA16Bf4/go-evil/utility/parsing/compile_time_var"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 	notify "github.com/s9rA16Bf4/notify_handler"
@@ -53,7 +53,7 @@ func Construct_domain_code(domain string, function string, value string, data_ob
 
 	for _, local_domain_path := range domains {
 		// Check if the path contains the requested domain
-		result := tools.Contains(local_domain_path, []string{domain})
+		result := gotools.Contains(local_domain_path, []string{domain})
 
 		// We have found the domain that the user requested
 		if ok := result[domain]; ok {

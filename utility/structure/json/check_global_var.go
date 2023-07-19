@@ -3,14 +3,14 @@ package json
 import (
 	"strings"
 
-	tools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/s9rA16Bf4/Go-tools"
 )
 
 // Checks if the provided string is a global variabel
 func (object *Json_t) Check_global_var(var_name string) bool {
 	to_return := false
 
-	var_name = tools.EraseDelimiter(var_name, []string{"\""}, -1)
+	var_name = gotools.EraseDelimiter(var_name, []string{"\""}, -1)
 
 	for _, global := range object.GO_global {
 		if strings.Contains(global, var_name) {

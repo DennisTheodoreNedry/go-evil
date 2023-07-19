@@ -9,7 +9,7 @@ package regex
 const (
 	// Functions //
 	FUNC              = "(boot|loop|call|end) ([a-z0-9_]+) *(-> (string|boolean|integer|null|nil|none))? *{\n* *((.*|\n*)*?)\n*}" // Extracts all functions
-	DOMAIN_FUNC_VALUE = "([a-z_#0-9]+)::([a-z_0-9]+)\\((.*)\\)"                                                                   // Extracts the domain, function being called and if a value was sent with it
+	DOMAIN_FUNC_VALUE = "([a-z_#0-9]+)::([a-z_0-9]+)\\(((?s:.)*)\\)"                                                              // Extracts the domain, function being called and if a value was sent with it
 
 	// Imports //
 	IMPORT = "use (.*)" // Finds imports

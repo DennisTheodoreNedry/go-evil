@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	tools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/s9rA16Bf4/Go-tools"
 	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
 	notify "github.com/s9rA16Bf4/notify_handler"
 )
@@ -16,7 +16,7 @@ func check_strings(data_object *json.Json_t) {
 
 	for i, line := range gut {
 		// We need to check so that the line doesn't start with a comment
-		comment_status := tools.StartsWith(line, []string{"@"})
+		comment_status := gotools.StartsWith(line, []string{"@"})
 		ok := comment_status["@"]
 
 		bunny_ears := strings.Count(line, "\"")

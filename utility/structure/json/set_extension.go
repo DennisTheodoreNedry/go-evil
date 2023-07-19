@@ -3,14 +3,14 @@ package json
 import (
 	"fmt"
 
-	tools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/s9rA16Bf4/Go-tools"
 )
 
 // Sets the the extension
 func (object *Json_t) Set_extension(ext string) string {
 
 	if object.Extension == "" { // Update only if it doesn't contain anything
-		result := tools.Contains(ext, []string{"."}) // Checks if the extension contains a dot
+		result := gotools.Contains(ext, []string{"."}) // Checks if the extension contains a dot
 
 		if status := result["."]; !status && ext != "" {
 			ext = fmt.Sprintf(".%s", ext)

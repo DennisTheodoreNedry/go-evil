@@ -3,7 +3,7 @@ module github.com/s9rA16Bf4/go-evil
 go 1.20
 
 require (
-	github.com/s9rA16Bf4/ArgumentParser v0.0.0-20230706203135-1576175eef28
+	github.com/s9rA16Bf4/ArgumentParser v0.0.0-20230707203633-8c174f888c1d
 	github.com/s9rA16Bf4/notify_handler v0.0.0-20230706195623-e0ea1ff0eb48
 	github.com/stretchr/testify v1.8.1
 	github.com/thanhpk/randstr v1.0.6
@@ -34,6 +34,7 @@ require (
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/redcode-labs/Coldfire v0.0.0-20220602151245-e8ed4b6c6dc2 // indirect
 	github.com/s9rA16Bf4/Go-tools v0.0.0-20230706181801-762717eda163 // indirect
+	github.com/s9rA16Bf4/lorca v0.0.0-20230719073933-1dc0b8d2b4db // indirect
 	github.com/savaki/jq v0.0.0-20161209013833-0e6baecebbf8 // indirect
 	github.com/shirou/gopsutil/v3 v3.23.1 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
@@ -44,7 +45,6 @@ require (
 	github.com/webview/webview v0.0.0-20230602035950-899018ad0e5c // indirect
 	github.com/xlab/treeprint v1.1.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
-	github.com/zserge/lorca v0.1.10 // indirect
 	golang.org/x/net v0.9.0 // indirect
 	golang.org/x/sys v0.7.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
