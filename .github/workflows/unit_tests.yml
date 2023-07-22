@@ -1,4 +1,4 @@
-name: Check if our unit tests are successful
+name: Unit tests
 
 on:
   push:
