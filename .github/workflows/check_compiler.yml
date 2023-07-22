@@ -1,4 +1,4 @@
-name: Check if the compiler passes all tests
+name: Compiles all examples
 
 on:
   push:
