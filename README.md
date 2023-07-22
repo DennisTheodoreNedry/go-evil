@@ -2,8 +2,10 @@
 
 <img src="./images/logo.png" width="1000"/>
 
-
-[![Check if the compiler passes all tests](https://github.com/s9rA16Bf4/go-evil/actions/workflows/check_compiler.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/check_compiler.yml)
+[![Builds](https://github.com/s9rA16Bf4/go-evil/actions/workflows/builds.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/builds.yml)
+[![Builds all examples](https://github.com/s9rA16Bf4/go-evil/actions/workflows/compile_examples.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/compile_examples.yml)
+[![Passes all tests](https://github.com/s9rA16Bf4/go-evil/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/unit_tests.yml)
+[![Code quality](https://github.com/s9rA16Bf4/go-evil/actions/workflows/codeql.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/codeql.yml)
 
 ## Table of contents
 <!--ts-->
