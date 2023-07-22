@@ -4,21 +4,26 @@ SRC := .
 BIN := gevil
 EXT := ./tools/vscode_ext/evil
 
-compile:
+default: compile
+
+submodules:
+	git submodule init
+	git submodule update
+
+compile: compile_domains
 	$(CC) $(OPTION) -o $(BIN) $(SRC)
 
-clean: clean_binary clean_docs
+compile_domains:
+	bash tools/compile_domains.sh
+
+clean: clean_binary
 
 clean_binary:
 	-rm $(BIN)
 
-clean_docs:
-	-rm -R docs
-
 dependencies:
 	go get github.com/s9rA16Bf4/ArgumentParser
 	go get github.com/s9rA16Bf4/notify_handler
-	go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
 	go get github.com/cloudfoundry/jibber_jabber
 	go get github.com/webview/webview
 	go install mvdan.cc/garble@latest
@@ -28,10 +33,10 @@ dependencies:
 	go get github.com/ARaChn3/gfb
 	go get github.com/ARaChn3/puffgo
 	go get github.com/redcode-labs/Coldfire
-
-	
-docs: clean_docs
-	bash tools/generate_documentation.sh
+	go get github.com/MarinX/keylogger
+	go get github.com/KindlyFire/go-keylogger
+	go get github.com/s9rA16Bf4/Go-tools
+	go get github.com/s9rA16Bf4/lorca
 
 install_ext:
 	cp -R $(EXT) ~/.vscode/extensions/

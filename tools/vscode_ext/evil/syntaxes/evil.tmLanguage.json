@@ -3,7 +3,10 @@
 	"name": "Evil",
 	"patterns": [
 		{
-			"include": "#keywords"
+			"include": "#foreach"
+		},
+		{
+			"include": "#ifelse"
 		},
 		{
 			"include": "#strings"
@@ -12,7 +15,10 @@
 			"include": "#comments"
 		},
 		{
-			"include": "#functions"
+			"include": "#function_start"
+		},
+		{
+			"include": "#call_functions_end"
 		},
 		{
 			"include": "#domain"
@@ -28,24 +34,42 @@
 		},
 		{
 			"include": "#domain_function"
+		},
+		{
+			"include": "#inject_header"
+		},
+		{
+			"include": "#inject_code"
 		}
 	],
 	
 	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.evil",
-				"match": "\\b(foreach|end foreach)\\b"
-			}]
+		"foreach": {
+			"patterns": [
+				{
+					"name": "keyword.control.evil",
+					"match": "\\b(foreach|end foreach)\\b"
+				}
+			]
 		},
+		
+		"ifelse": {
+			"patterns": [
+				{
+					"name": "keyword.control.evil",
+					"match": "\\b(if|else|end if)\\b"
+				}
+			]
+		},
+
 		"strings": {
-			"name": "string.quoted.double.evil",
+			"name": "comment.block",
 			"begin": "\"",
 			"end": "\"",
 			"patterns": [
 				{
-					"name": "constant.character.escape.evil",
-					"match": "\\\\."
+					"name": "comment.block",
+					"match": "\".*\""
 				}
 			]
 		},
@@ -59,13 +83,22 @@
 					"match": "\\\\."
 				}
 			]
-		},"functions": {
+		},"function_start": {
 			"patterns": [
 				{
 					"name": "entity.name.function",
-					"match": "[blc]{1,1} [a-z0-9_]+ *{"
+					"match": "^boot|loop|end|call{1,1}"
 				}
 			]
+		},
+
+		"call_functions_end": {
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "-> *(integer|boolean|string|none|null|nil){1,1} *{"
+				}
+			] 
 		},
 
 		"domain": {
@@ -80,7 +113,7 @@
 			"patterns": [
 				{
 					"name": "entity.name.function",
-					"match": "([a-z_]+)\\((.*)\\)"
+					"match": "([a-z_]+)"
 				}
 			]
 		},
@@ -125,6 +158,26 @@
 				{
 					"name": "entity.other",
 					"match": "\\b(false|true)\\b"
+				}
+			]
+		},
+		"inject_header":{
+			"patterns": [
+				{
+					"name": "constant.character",
+					"begin": "% *\\[",
+					"end": "\\] *%",
+					"match": "\n* *((.*|\n*)*?)\n*"
+				}
+			]
+		},
+		"inject_code":{
+			"patterns": [
+				{
+					"name": "constant.character",
+					"begin": "% *(boot|loop|end) *{",
+					"end": "} *%",
+					"match": "\n* *((.*|\n*)*?)\n*"
 				}
 			]
 		}

@@ -2,14 +2,18 @@ package version
 
 import (
 	"fmt"
+	"os"
 
-	"github.com/s9rA16Bf4/notify_handler/go/notify"
+	notify "github.com/s9rA16Bf4/notify_handler"
 )
 
 const (
-	EVIL_VERSION = "2.1.3"
+	EVIL_VERSION       = "3.0.0"
+	EVIL_VERSION_SMALL = "3.0"
 )
 
-func Version() {
+func Version(value string) string {
 	notify.Inform(fmt.Sprintf("Compiler version: %s", EVIL_VERSION))
+	os.Exit(0)
+	return ""
 }

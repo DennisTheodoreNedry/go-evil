@@ -1,0 +1,33 @@
+name: Check if our unit tests are successful
+
+on:
+  push:
+    branches: [ "main" , "nightly" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+        - uses: actions/checkout@v3
+        - name: Set up Go
+          uses: actions/setup-go@v3
+          with:
+            go-version: 1.19
+
+        - name: Get submodules
+          run: |
+              make submodules
+
+        - name: Install dependencies
+          run: |
+              make dependencies
+
+        - name: Check our unit tests
+          run: |
+              go test ./...
+        
