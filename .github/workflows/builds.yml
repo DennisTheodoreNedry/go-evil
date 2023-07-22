@@ -1,0 +1,41 @@
+name: Checks if the compiler compiles
+
+on:
+  push:
+    branches: [ "main" , "nightly" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+      
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+    
+    - name: Get submodules
+      run: |
+          make submodules
+        
+    - name: Install dependencies
+      run: |
+          make dependencies
+      
+    - name: Compile the compiler
+      run: |
+          make
+          
+    - name: Clean up
+      run: |
+          make clean
