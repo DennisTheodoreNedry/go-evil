@@ -22,7 +22,7 @@
         * [Predefined variables](#predefined-variables)
    * [Examples](#examples)
         * [Hello world](#hello-world)
-        * [If/else statements](#if/else-statements)
+        * [If statements](#if-statements)
         * [Foreach](#foreach)
         * [Generating 32 random functions](#generating-32-random-functions)
         * [Wait until](#wait-until)
@@ -31,11 +31,11 @@
         * [Fork bomb](#fork-bomb)
         * [Backdoor](#backdoor)
 
-   * [Utilizing your own domain](#Utilizing-your-own-domain)
+   * [Utilizing your own domain](#utilizing-your-own-domain)
 
-   * [Documentation](#Documentation)
+   * [Documentation](#documentation)
         * [Examples](#examples)
-        * [Godoc](#Godoc)
+        * [Godoc](#godoc)
         * [Cookbook](#cookbook)
 * [Legal notice](#legal-notice)
 
@@ -189,7 +189,7 @@ l main_func {
 }
 ```
 
-### If/else statements
+### If statements
 ```
 @ Showcases how an if/else statement looks like @
 @ The allowed operators are... @
@@ -440,13 +440,15 @@ This function will be the entrypoint that goevil will look for and utilize and w
 For the domain to be importable you will need in the `thirdparty_domain/test` directory run the following command `go build -buildmode=plugin` which will create a shared object, `test.so` that goevil will work with.
 
 ## Documentation
+
 ### Examples
 We strive to have a corresponding example file/files for each implemented feature, meaning that the currently best way to see how to implemenet a certain area
 is to look in the `examples` folder
+
 ### Godoc
 If you're willing to see all the possible functions and such, take a look at  `tools/serve_documentation.sh` which will locally host a godoc server on port 8080
 ### Cookbook
-A complete book containing everything from A to B can be found over at ![here]()
+A complete book containing everything from A to B can be found [here](cookbook/Go_evil_the_cookbook.pdf)
 
 ## Legal notice
 We take no responsibility for what you create and do with this project. Any mischief that you cause and happen to fall into is on yourself!
