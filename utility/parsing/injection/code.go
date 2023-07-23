@@ -2,6 +2,7 @@ package injection
 
 import (
 	"regexp"
+	"strings"
 
 	gotools "github.com/s9rA16Bf4/Go-tools"
 	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
@@ -24,14 +25,14 @@ func Grab_injected_code(data_object *json.Json_t) {
 			func_gut := injected_function[2 : len(injected_function)-1]
 
 			// Let's identify which type of function type this is
-			switch func_type {
-			case "l":
+			switch strings.ToLower(func_type) {
+			case "loop":
 				data_object.Add_loop_function(func_name)
 
-			case "b":
+			case "boot":
 				data_object.Add_boot_function(func_name)
 
-			case "e":
+			case "end":
 				data_object.Add_end_function(func_name)
 			}
 
