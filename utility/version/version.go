@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	EVIL_VERSION       = "3.0.0"
+	EVIL_VERSION       = "3.0.1"
 	EVIL_VERSION_SMALL = "3.0"
 )
 

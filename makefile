@@ -16,6 +16,12 @@ compile: compile_domains
 compile_domains:
 	bash tools/compile_domains.sh
 
+update_domains:
+	cd domains && git pull
+
+update_examples:
+	cd examples && git pull
+
 clean: clean_binary
 
 clean_binary:

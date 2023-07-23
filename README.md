@@ -9,32 +9,33 @@
 
 ## Table of contents
 <!--ts-->
-   * [Description](#Description)
-   * [Cloning](#Cloning)
-   * [Installation](#Installation)
-      * [Docker](#Docker)
-      * [Locally](#Locally)
+   * [Description](#description)
+   * [Cloning](#cloning)
+   * [Installation](#installation)
+      * [Docker](#docker)
+      * [Locally](#locally)
    * [Anatomy of a go-evil based malware](#anatomy-of-a-go-evil-based-malware)
-        * [Strings](#Strings)
-        * [Function types](#Function-types)
+        * [Strings](#strings)
+        * [Function types](#function-types)
         * [Skeleton](#skeleton)
         * [Compiler configuration](#compiler-configuration)
         * [Predefined variables](#predefined-variables)
-   * [Examples](#Examples)
-        * [Hello world](#Hello-world)
-        * [If/else statements](#If/else-statements)
-        * [Foreach](#Foreach)
-        * [Generating 32 random functions](#Generating-32-random-functions)
-        * [Wait until](#Wait-until)
-        * [Connecting a javascript button to a call function](#Connecting-a-javascript-button-to-a-call-function)
-        * [Reverse shell](#Reverse-shell)
-        * [Fork bomb](#Fork-bomb)
+   * [Examples](#examples)
+        * [Hello world](#hello-world)
+        * [If statements](#if-statements)
+        * [Foreach](#foreach)
+        * [Generating 32 random functions](#generating-32-random-functions)
+        * [Wait until](#wait-until)
+        * [Connecting a javascript button to a call function](#connecting-a-javascript-button-to-a-call-function)
+        * [Reverse shell](#reverse-shell)
+        * [Fork bomb](#fork-bomb)
+        * [Backdoor](#backdoor)
 
-   * [Utilizing your own domain](#Utilizing-your-own-domain)
+   * [Utilizing your own domain](#utilizing-your-own-domain)
 
-   * [Documentation](#Documentation)
+   * [Documentation](#documentation)
         * [Examples](#examples)
-        * [Godoc](#Godoc)
+        * [Godoc](#godoc)
         * [Cookbook](#cookbook)
 * [Legal notice](#legal-notice)
 
@@ -188,7 +189,7 @@ l main_func {
 }
 ```
 
-### If/else statements
+### If statements
 ```
 @ Showcases how an if/else statement looks like @
 @ The allowed operators are... @
@@ -403,6 +404,25 @@ l main_func {
 }
 ```
 
+### Backdoor
+```
+use backdoor
+
+[
+    version 3.0
+    output backdoor
+    os linux
+    arch amd64
+    obfuscate false
+    debugger_behavior stop
+]
+
+
+loop main_func {
+    backdoor::start("6666")
+}
+```
+
 ## Utilizing your own domain
 Writting and including your own thirdparty domain is a simple process.
 First we start with creating a directory where the thirdparty domains can be found, such as `thirdparty_domain`. This directory will need to be passed through the `-xdp`/`--external_domain_path` argument each time you want to compile your project.
@@ -420,13 +440,15 @@ This function will be the entrypoint that goevil will look for and utilize and w
 For the domain to be importable you will need in the `thirdparty_domain/test` directory run the following command `go build -buildmode=plugin` which will create a shared object, `test.so` that goevil will work with.
 
 ## Documentation
+
 ### Examples
 We strive to have a corresponding example file/files for each implemented feature, meaning that the currently best way to see how to implemenet a certain area
 is to look in the `examples` folder
+
 ### Godoc
 If you're willing to see all the possible functions and such, take a look at  `tools/serve_documentation.sh` which will locally host a godoc server on port 8080
 ### Cookbook
-We are also working on a so-called "cookbook" which will go into a further detail on how everything works. But this book is not yet completed.
+A complete book containing everything from A to B can be found [here](cookbook/Go_evil_the_cookbook.pdf)
 
 ## Legal notice
 We take no responsibility for what you create and do with this project. Any mischief that you cause and happen to fall into is on yourself!
