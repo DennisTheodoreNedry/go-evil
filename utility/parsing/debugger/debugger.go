@@ -8,7 +8,7 @@ import (
 func Generate_behavior(data_object *json.Json_t) {
 
 	if data_object.Debugger_behavior != "none" {
-		identify(data_object) // Adds neccessary code to identify a debugger
+		identify(data_object) // Adds necessary code to identify a debugger
 
 		switch data_object.Debugger_behavior {
 		case "stop":
