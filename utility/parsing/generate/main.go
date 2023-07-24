@@ -32,7 +32,7 @@ func Generate_main(data_object *json.Json_t) {
 		body = append(body, fmt.Sprintf("spine.variable.values[%d] = \"NULL\"", i))
 	}
 
-	// Checks if the malware has any priviliges on boot
+	// Checks if the malware has any privileges on boot
 	body = append(body, "spine.check_privileges()")
 
 	// Figures out the malwares current position
