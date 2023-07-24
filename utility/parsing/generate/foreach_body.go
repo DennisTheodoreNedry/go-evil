@@ -10,7 +10,7 @@ import (
 
 var foreach_call = 0
 
-// Construcs the code needed for a "foreach" loop
+// Constructs the code needed for a "foreach" loop
 func Construct_foreach_loop(condition string, body []string, data_object *json.Json_t) []string {
 	function_call := []string{fmt.Sprintf("foreach_%d", foreach_call)}
 	foreach_call++
