@@ -6,7 +6,7 @@ import (
 	gotools "github.com/s9rA16Bf4/Go-tools"
 )
 
-// Checks if the provided string is a global variabel
+// Checks if the provided string is a global variable
 func (object *Json_t) Check_global_var(var_name string) bool {
 	to_return := false
 

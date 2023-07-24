@@ -11,7 +11,7 @@ import (
 
 var if_else_call = 0
 
-// Construcs the code needed for a "if/else" statement
+// Constructs the code needed for a "if/else" statement
 func Construct_if_else(condition string, if_true_body []string, if_false_body []string, data_object *json.Json_t) []string {
 	function_call := fmt.Sprintf("if_%d", if_else_call)
 	if_else_call++
@@ -22,7 +22,7 @@ func Construct_if_else(condition string, if_true_body []string, if_false_body []
 	arr := structure.Create_evil_object(condition)
 
 	if arr.Length() != 3 {
-		notify.Error(fmt.Sprintf("Expected three values, but recieved %d", arr.Length()), "if_else.construct_if_else()", 1)
+		notify.Error(fmt.Sprintf("Expected three values, but received %d", arr.Length()), "if_else.construct_if_else()", 1)
 	}
 
 	compare_operator := arr.Get(1)
