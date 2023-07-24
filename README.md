@@ -6,7 +6,7 @@
 [![Builds all examples](https://github.com/s9rA16Bf4/go-evil/actions/workflows/compile_examples.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/compile_examples.yml)
 [![Passes all tests](https://github.com/s9rA16Bf4/go-evil/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/unit_tests.yml)
 [![Code quality](https://github.com/s9rA16Bf4/go-evil/actions/workflows/codeql.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/codeql.yml)
-
+[![Go Report Card](https://goreportcard.com/badge/github.com/s9rA16Bf4/go-evil)](https://goreportcard.com/report/github.com/s9rA16Bf4/go-evil)
 ## Table of contents
 <!--ts-->
    * [Description](#description)
