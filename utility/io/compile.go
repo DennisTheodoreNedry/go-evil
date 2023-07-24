@@ -19,7 +19,7 @@ func Compile_file(data_object *json.Json_t) {
 	build_args := []string{}
 	compiler := ""
 
-	// Grabs the location of the go enviroment
+	// Grabs the location of the go environment
 	env, err := exec.Command("go", "env", "GOPATH").Output()
 
 	if err != nil {
