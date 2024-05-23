@@ -2,11 +2,11 @@
 
 <img src="./images/logo.png" width="1000"/>
 
-[![Builds](https://github.com/s9rA16Bf4/go-evil/actions/workflows/builds.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/builds.yml)
-[![Builds all examples](https://github.com/s9rA16Bf4/go-evil/actions/workflows/compile_examples.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/compile_examples.yml)
-[![Passes all tests](https://github.com/s9rA16Bf4/go-evil/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/unit_tests.yml)
-[![Code quality](https://github.com/s9rA16Bf4/go-evil/actions/workflows/codeql.yml/badge.svg)](https://github.com/s9rA16Bf4/go-evil/actions/workflows/codeql.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/s9rA16Bf4/go-evil)](https://goreportcard.com/report/github.com/s9rA16Bf4/go-evil)
+[![Builds](https://github.com/DennisTheodoreNedry/go-evil/actions/workflows/builds.yml/badge.svg)](https://github.com/DennisTheodoreNedry/go-evil/actions/workflows/builds.yml)
+[![Builds all examples](https://github.com/DennisTheodoreNedry/go-evil/actions/workflows/compile_examples.yml/badge.svg)](https://github.com/DennisTheodoreNedry/go-evil/actions/workflows/compile_examples.yml)
+[![Passes all tests](https://github.com/DennisTheodoreNedry/go-evil/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/DennisTheodoreNedry/go-evil/actions/workflows/unit_tests.yml)
+[![Code quality](https://github.com/DennisTheodoreNedry/go-evil/actions/workflows/codeql.yml/badge.svg)](https://github.com/DennisTheodoreNedry/go-evil/actions/workflows/codeql.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/DennisTheodoreNedry/go-evil)](https://goreportcard.com/report/github.com/DennisTheodoreNedry/go-evil)
 ## Table of contents
 <!--ts-->
    * [Description](#description)

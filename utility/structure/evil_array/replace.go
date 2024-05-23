@@ -3,7 +3,7 @@ package evilarray
 import (
 	"fmt"
 
-	notify "github.com/s9rA16Bf4/notify_handler"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Replaces data at the index with the new data

@@ -1,6 +1,6 @@
 package json
 
-import gotools "github.com/s9rA16Bf4/Go-tools"
+import gotools "github.com/DennisTheodoreNedry/Go-tools"
 
 // Generates an int array representing the provided string
 func (object *Json_t) Generate_int_array(message string) []int {

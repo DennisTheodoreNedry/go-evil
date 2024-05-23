@@ -28,8 +28,8 @@ clean_binary:
 	-rm $(BIN)
 
 dependencies:
-	go get github.com/s9rA16Bf4/ArgumentParser
-	go get github.com/s9rA16Bf4/notify_handler
+	go get github.com/DennisTheodoreNedry/ArgumentParser
+	go get github.com/DennisTheodoreNedry/notify_handler
 	go get github.com/cloudfoundry/jibber_jabber
 	go get github.com/webview/webview
 	go install mvdan.cc/garble@latest
@@ -41,8 +41,8 @@ dependencies:
 	go get github.com/redcode-labs/Coldfire
 	go get github.com/MarinX/keylogger
 	go get github.com/KindlyFire/go-keylogger
-	go get github.com/s9rA16Bf4/Go-tools
-	go get github.com/s9rA16Bf4/lorca
+	go get github.com/DennisTheodoreNedry/Go-tools
+	go get github.com/DennisTheodoreNedry/lorca
 
 install_ext:
 	cp -R $(EXT) ~/.vscode/extensions/

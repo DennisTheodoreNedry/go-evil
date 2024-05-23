@@ -3,7 +3,7 @@ package finalize
 import (
 	"fmt"
 
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 func Add_functions(data_object *json.Json_t) {

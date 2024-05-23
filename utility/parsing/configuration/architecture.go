@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"runtime"
 
-	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	evil_regex "github.com/DennisTheodoreNedry/go-evil/utility/parsing/regex"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 // Checks if the user specificed an architecture for the malware

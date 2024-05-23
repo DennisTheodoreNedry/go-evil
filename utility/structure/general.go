@@ -4,11 +4,11 @@ import (
 	"encoding/base64"
 	"encoding/json"
 
-	compilevar "github.com/s9rA16Bf4/go-evil/utility/structure/compile_var"
-	evilarray "github.com/s9rA16Bf4/go-evil/utility/structure/evil_array"
-	evil_json "github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	compilevar "github.com/DennisTheodoreNedry/go-evil/utility/structure/compile_var"
+	evilarray "github.com/DennisTheodoreNedry/go-evil/utility/structure/evil_array"
+	evil_json "github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 
-	notify "github.com/s9rA16Bf4/notify_handler"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Creates a json object and returns it

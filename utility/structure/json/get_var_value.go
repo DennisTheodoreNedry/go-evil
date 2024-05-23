@@ -3,8 +3,8 @@ package json
 import (
 	"fmt"
 
-	gotools "github.com/s9rA16Bf4/Go-tools"
-	notify "github.com/s9rA16Bf4/notify_handler"
+	gotools "github.com/DennisTheodoreNedry/Go-tools"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Grabs the value of a compiletime variable

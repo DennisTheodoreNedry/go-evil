@@ -1,10 +1,10 @@
 package wrapper
 
 import (
-	"github.com/s9rA16Bf4/go-evil/utility/cleanup"
-	"github.com/s9rA16Bf4/go-evil/utility/io"
-	"github.com/s9rA16Bf4/go-evil/utility/parsing"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/DennisTheodoreNedry/go-evil/utility/cleanup"
+	"github.com/DennisTheodoreNedry/go-evil/utility/io"
+	"github.com/DennisTheodoreNedry/go-evil/utility/parsing"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 // A simple wrapper which combines the process from reading the evil file

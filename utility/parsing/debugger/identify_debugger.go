@@ -1,8 +1,8 @@
 package debugger
 
 import (
-	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/functions"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 // Adds the responsible code used for detecting if the malware is launched

@@ -1,10 +1,10 @@
-module github.com/s9rA16Bf4/go-evil
+module github.com/DennisTheodoreNedry/go-evil
 
 go 1.20
 
 require (
-	github.com/s9rA16Bf4/ArgumentParser v0.0.0-20230707203633-8c174f888c1d
-	github.com/s9rA16Bf4/notify_handler v0.0.0-20230706195623-e0ea1ff0eb48
+	github.com/DennisTheodoreNedry/ArgumentParser v0.0.0-20230707203633-8c174f888c1d
+	github.com/DennisTheodoreNedry/notify_handler v0.0.0-20230706195623-e0ea1ff0eb48
 	github.com/stretchr/testify v1.8.1
 	github.com/thanhpk/randstr v1.0.6
 )
@@ -33,8 +33,8 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/redcode-labs/Coldfire v0.0.0-20220602151245-e8ed4b6c6dc2 // indirect
-	github.com/s9rA16Bf4/Go-tools v0.0.0-20230706181801-762717eda163 // indirect
-	github.com/s9rA16Bf4/lorca v0.0.0-20230719073933-1dc0b8d2b4db // indirect
+	github.com/DennisTheodoreNedry/Go-tools v0.0.0-20230706181801-762717eda163 // indirect
+	github.com/DennisTheodoreNedry/lorca v0.0.0-20230719073933-1dc0b8d2b4db // indirect
 	github.com/savaki/jq v0.0.0-20161209013833-0e6baecebbf8 // indirect
 	github.com/shirou/gopsutil/v3 v3.23.1 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect

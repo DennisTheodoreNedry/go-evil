@@ -3,8 +3,8 @@ package functions
 import (
 	"regexp"
 
-	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	evil_regex "github.com/DennisTheodoreNedry/go-evil/utility/parsing/regex"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 // Parses the data from the target file and generates function structures from it

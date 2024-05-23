@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 // Removes the source file used to compile the malware

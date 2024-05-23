@@ -3,9 +3,9 @@ package generate
 import (
 	"fmt"
 
-	"github.com/s9rA16Bf4/go-evil/utility/structure"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/functions"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 var foreach_call = 0
@@ -44,7 +44,7 @@ func Construct_foreach_loop(condition string, body []string, data_object *json.J
 	}
 
 	data_object.Add_go_import("fmt")
-	data_object.Add_go_import("github.com/s9rA16Bf4/go-evil/utility/structure")
+	data_object.Add_go_import("github.com/DennisTheodoreNedry/go-evil/utility/structure")
 
 	return function_call
 }

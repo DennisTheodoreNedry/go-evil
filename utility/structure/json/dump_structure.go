@@ -3,7 +3,7 @@ package json
 import (
 	"encoding/json"
 
-	notify "github.com/s9rA16Bf4/notify_handler"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Creates byte code from our json structure

@@ -3,7 +3,7 @@ package functions
 import (
 	"fmt"
 
-	notify "github.com/s9rA16Bf4/notify_handler"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Gives the function a name

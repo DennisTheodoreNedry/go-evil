@@ -1,7 +1,7 @@
 package json
 
 import (
-	gotools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/DennisTheodoreNedry/Go-tools"
 )
 
 // Sets the html code being displayed

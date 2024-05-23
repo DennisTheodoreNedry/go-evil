@@ -3,8 +3,8 @@ package generate
 import (
 	"fmt"
 
-	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/functions"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 // Generates the main function of the malware
@@ -73,7 +73,7 @@ func Generate_main(data_object *json.Json_t) {
 
 	data_object.Add_go_function(functions.Go_func_t{Name: "main", Func_type: "", Part_of_struct: "", Return_type: "", Parameters: []string{}, Gut: body})
 
-	data_object.Add_go_import("github.com/s9rA16Bf4/ArgumentParser")
+	data_object.Add_go_import("github.com/DennisTheodoreNedry/ArgumentParser")
 	data_object.Add_go_import("os")
 
 }

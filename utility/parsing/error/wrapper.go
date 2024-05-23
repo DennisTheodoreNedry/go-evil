@@ -1,7 +1,7 @@
 package error
 
 import (
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 // Wrapper function which calls all our error checking functions

@@ -5,9 +5,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	notify "github.com/s9rA16Bf4/notify_handler"
+	"github.com/DennisTheodoreNedry/go-evil/utility/parsing/regex"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Checks if potential call functions are wrongly formatted

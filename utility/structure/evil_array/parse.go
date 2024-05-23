@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	gotools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/DennisTheodoreNedry/Go-tools"
 )
 
 // Parses the provided evil array and inserts those values into this structure

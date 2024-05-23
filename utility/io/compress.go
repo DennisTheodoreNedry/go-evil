@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	notify "github.com/s9rA16Bf4/notify_handler"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Compresses the malware

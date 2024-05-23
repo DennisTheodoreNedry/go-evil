@@ -1,6 +1,6 @@
 package json
 
-import gotools "github.com/s9rA16Bf4/Go-tools"
+import gotools "github.com/DennisTheodoreNedry/Go-tools"
 
 // Sets the width of the text editor
 func (object *Json_t) Set_width(value string) {

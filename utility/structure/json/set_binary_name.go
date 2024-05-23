@@ -5,7 +5,7 @@ import (
 	"path"
 	"strings"
 
-	gotools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/DennisTheodoreNedry/Go-tools"
 )
 
 // Sets the binaries name

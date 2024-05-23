@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"github.com/s9rA16Bf4/go-evil/utility/structure"
-	"github.com/s9rA16Bf4/go-evil/utility/version"
-	"github.com/s9rA16Bf4/go-evil/utility/wrapper"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure"
+	"github.com/DennisTheodoreNedry/go-evil/utility/version"
+	"github.com/DennisTheodoreNedry/go-evil/utility/wrapper"
 
-	argumentparser "github.com/s9rA16Bf4/ArgumentParser"
+	argumentparser "github.com/DennisTheodoreNedry/ArgumentParser"
 )
 
 func main() {

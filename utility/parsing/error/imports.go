@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"regexp"
 
-	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	notify "github.com/s9rA16Bf4/notify_handler"
+	evil_regex "github.com/DennisTheodoreNedry/go-evil/utility/parsing/regex"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Checks that a used domain has been imported

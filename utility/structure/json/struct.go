@@ -1,10 +1,10 @@
 package json
 
 import (
-	compilevar "github.com/s9rA16Bf4/go-evil/utility/structure/compile_var"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/structs"
-	notify "github.com/s9rA16Bf4/notify_handler"
+	compilevar "github.com/DennisTheodoreNedry/go-evil/utility/structure/compile_var"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/functions"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/structs"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 type Json_t struct {

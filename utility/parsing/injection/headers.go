@@ -4,9 +4,9 @@ import (
 	"regexp"
 	"strings"
 
-	gotools "github.com/s9rA16Bf4/Go-tools"
-	evil_regex "github.com/s9rA16Bf4/go-evil/utility/parsing/regex"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	gotools "github.com/DennisTheodoreNedry/Go-tools"
+	evil_regex "github.com/DennisTheodoreNedry/go-evil/utility/parsing/regex"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 func Grab_injected_headers(data_object *json.Json_t) {

@@ -3,7 +3,7 @@ package json
 import (
 	"fmt"
 
-	gotools "github.com/s9rA16Bf4/Go-tools"
+	gotools "github.com/DennisTheodoreNedry/Go-tools"
 )
 
 // Adds a binding to the window

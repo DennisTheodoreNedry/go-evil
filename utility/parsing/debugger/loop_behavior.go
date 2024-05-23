@@ -1,8 +1,8 @@
 package debugger
 
 import (
-	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/functions"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 // Generates the code which will cause the malware to enter an infinite loop

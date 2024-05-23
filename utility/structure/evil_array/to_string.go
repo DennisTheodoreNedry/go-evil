@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	notify "github.com/s9rA16Bf4/notify_handler"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Returns the contents of the array as a string

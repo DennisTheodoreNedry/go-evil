@@ -3,10 +3,10 @@ package generate
 import (
 	"fmt"
 
-	"github.com/s9rA16Bf4/go-evil/utility/structure"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	notify "github.com/s9rA16Bf4/notify_handler"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/functions"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 var if_else_call = 0

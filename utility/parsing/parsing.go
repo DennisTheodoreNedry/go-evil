@@ -1,10 +1,10 @@
 package parsing
 
 import (
-	"github.com/s9rA16Bf4/go-evil/utility/parsing/debugger"
-	evil_final "github.com/s9rA16Bf4/go-evil/utility/parsing/finalize"
-	evil_generate "github.com/s9rA16Bf4/go-evil/utility/parsing/generate"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
+	"github.com/DennisTheodoreNedry/go-evil/utility/parsing/debugger"
+	evil_final "github.com/DennisTheodoreNedry/go-evil/utility/parsing/finalize"
+	evil_generate "github.com/DennisTheodoreNedry/go-evil/utility/parsing/generate"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 )
 
 // Parses the contents of the provided file

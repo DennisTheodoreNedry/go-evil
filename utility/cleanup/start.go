@@ -1,6 +1,6 @@
 package cleanup
 
-import "github.com/s9rA16Bf4/go-evil/utility/structure/json"
+import "github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
 
 // Wrapper function calling
 // * remove_src_file

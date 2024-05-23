@@ -3,3 +3,5 @@ builds/
 gevil
 *.so
 malware.go
+.gitignore
+.idea

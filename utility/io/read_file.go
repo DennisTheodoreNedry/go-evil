@@ -3,8 +3,8 @@ package io
 import (
 	"io/ioutil"
 
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	notify "github.com/s9rA16Bf4/notify_handler"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Reads the contents of the file found in the json data structure

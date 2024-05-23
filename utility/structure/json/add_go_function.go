@@ -1,7 +1,7 @@
 package json
 
 import (
-	"github.com/s9rA16Bf4/go-evil/utility/structure/functions"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/functions"
 )
 
 // Adds a go based function to the final go code

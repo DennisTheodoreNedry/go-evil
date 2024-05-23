@@ -1,6 +1,6 @@
 package json
 
-import "github.com/s9rA16Bf4/go-evil/utility/structure/structs"
+import "github.com/DennisTheodoreNedry/go-evil/utility/structure/structs"
 
 // Adds a structure to the final code
 func (object *Json_t) Add_go_struct(new_struct structs.Go_struct_t) {

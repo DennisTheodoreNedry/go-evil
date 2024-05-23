@@ -6,10 +6,10 @@ import (
 	"path/filepath"
 	"plugin"
 
-	gotools "github.com/s9rA16Bf4/Go-tools"
-	compile_time_var "github.com/s9rA16Bf4/go-evil/utility/parsing/compile_time_var"
-	"github.com/s9rA16Bf4/go-evil/utility/structure/json"
-	notify "github.com/s9rA16Bf4/notify_handler"
+	gotools "github.com/DennisTheodoreNedry/Go-tools"
+	compile_time_var "github.com/DennisTheodoreNedry/go-evil/utility/parsing/compile_time_var"
+	"github.com/DennisTheodoreNedry/go-evil/utility/structure/json"
+	notify "github.com/DennisTheodoreNedry/notify_handler"
 )
 
 // Finds all available domains that the malware can utilize
